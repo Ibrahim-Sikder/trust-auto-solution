@@ -145,7 +145,7 @@ const Home = () => {
   return (
     <div className='mt-10'>
       <div className="dashBoardRight  ">
-        <div className="md:flex items-center justify-between p-[18px]">
+        <div className="md:flex items-center justify-between md:p-[0px] lg:p-[18px]">
           <div className="mt-3 md:mt-0 flex items-center">
 
             <Link to='/addjob'><button className="SearchBtn ">Job Card </button></Link>

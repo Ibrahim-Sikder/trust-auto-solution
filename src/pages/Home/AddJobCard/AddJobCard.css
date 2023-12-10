@@ -223,6 +223,10 @@ height: 100px;
     .jobCardSingleForm input {
         width: 100% !important;
     }
+    .trustAuto{
+        font-size: 58px;
+    }
+    
 }
 @media only screen and (max-width:1024px){
     .jobCardSingleForm label {
@@ -255,7 +259,7 @@ height: 100px;
         align-items: normal;
     }
     .SearchBtn {
-        width: 55px;
+        width: 65px;
         font-size: 13px;
     }
     .jobCardSingleForm label {

@@ -58,10 +58,11 @@ body{
   padding-bottom: 0px !important;
 }
 .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root {
-  min-height: 33px !important;
+  min-height: 38px !important;
 }
-::-webkit-scrollbar-thumb {
-  background: greenyellow !important; 
+
+.css-o4b71y-MuiAccordionSummary-content.Mui-expanded, .css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded{
+  margin:0px !important;
 }
 
 table {
