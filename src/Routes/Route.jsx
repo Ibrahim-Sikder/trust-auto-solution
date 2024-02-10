@@ -38,6 +38,9 @@ import EmployeeList from "../pages/Home/Employee/EmployeeList";
 import UpdateEmployee from "../pages/Home/Employee/UpdateEmployee";
 import EmployeeProfile from "../pages/Home/Employee/EmployeeProfile";
 import AddSuppliers from "../pages/Home/Suppliers/AddSuppliers";
+import SupplierList from "../pages/Home/Suppliers/SupplierList";
+import UpdateSupplier from "../pages/Home/Suppliers/UpdateSupplier";
+import SupplierProfile from "../pages/Home/Suppliers/SupplierProfile";
 
 
 export const router = createBrowserRouter([
@@ -147,7 +150,18 @@ export const router = createBrowserRouter([
       {
         path: "add-supplier",
         element: <AddSuppliers/>
-
+      },
+      {
+        path: "supplier-list",
+        element: <SupplierList/>
+      },
+      {
+        path: "supplier-profile",
+        element: <SupplierProfile/>
+      },
+      {
+        path: "update-supplier",
+        element: <UpdateSupplier/>
       },
       {
         path: "role",

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/jsx-no-undef */
 
+import { FormControl, InputLabel, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import {  FaUsers, FaCloudUploadAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -67,12 +68,22 @@ const UpdateEmployee = () => {
                   label="Email Address "
                   id="Email Address "
                 />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Gender "
-                  id="Gender "
-                />
+                <FormControl  className="productField">
+                <InputLabel htmlFor="grouped-native-select">
+                  Gender
+                </InputLabel>
+                <Select
+                  className="addJobInputField"
+                  
+                  native
+                  id="grouped-native-select"
+                  label="Car Registration No  "
+                >
+              
+                <option value="Acura">Male</option>
+                <option value="Acura">Female</option>
+                </Select>
+              </FormControl>
                 <TextField
                   className="productField"
                   fullWidth

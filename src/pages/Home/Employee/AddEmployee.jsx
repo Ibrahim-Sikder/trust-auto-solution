@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { FormControl, InputLabel, Select } from "@mui/material";
 
 const AddEmployee = () => {
   const Search = styled("div")(({ theme }) => ({
@@ -109,12 +110,22 @@ const AddEmployee = () => {
                   label="Email Address "
                   id="Email Address "
                 />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Gender "
-                  id="Gender "
-                />
+                <FormControl  className="productField">
+                <InputLabel htmlFor="grouped-native-select">
+                  Gender
+                </InputLabel>
+                <Select
+                  className="addJobInputField"
+                  
+                  native
+                  id="grouped-native-select"
+                  label="Car Registration No  "
+                >
+              
+                <option value="Acura">Male</option>
+                <option value="Acura">Female</option>
+                </Select>
+              </FormControl>
                 <TextField
                   className="productField"
                   fullWidth

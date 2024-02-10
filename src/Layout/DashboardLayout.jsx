@@ -362,7 +362,7 @@ const DashboardLayout = () => {
               <Typography className="accordionTypoGrapy">
                 <div className="flex items-center">
                   <FaThLarge className="mr-2" />
-                  <NavLink to="/dashboard/product">SupplierList </NavLink>
+                  <NavLink to="/dashboard/supplier-list">SupplierList </NavLink>
                 </div>
               </Typography>
             </AccordionDetails>
