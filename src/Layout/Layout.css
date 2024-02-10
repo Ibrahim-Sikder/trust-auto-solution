@@ -140,6 +140,10 @@
 }
 .accordionExpandIcon {
 	color: #fff !important;
+	transition:all .5s ease-in-out;
+}
+.dashboardAccordion:hover .accordionExpandIcon{
+	color:black !important;
 }
 
 @media only screen and (max-width: 1024px) {

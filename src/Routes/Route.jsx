@@ -41,6 +41,8 @@ import AddSuppliers from "../pages/Home/Suppliers/AddSuppliers";
 import SupplierList from "../pages/Home/Suppliers/SupplierList";
 import UpdateSupplier from "../pages/Home/Suppliers/UpdateSupplier";
 import SupplierProfile from "../pages/Home/Suppliers/SupplierProfile";
+import PurchaseList from "../pages/Home/Parchase/PurchaseList";
+import AddPurchase from "../pages/Home/Parchase/AddPurchase";
 
 
 export const router = createBrowserRouter([
@@ -162,6 +164,14 @@ export const router = createBrowserRouter([
       {
         path: "update-supplier",
         element: <UpdateSupplier/>
+      },
+      {
+        path: "purchase-list",
+        element: <PurchaseList/>
+      },
+      {
+        path: "add-purchase",
+        element: <AddPurchase/>
       },
       {
         path: "role",

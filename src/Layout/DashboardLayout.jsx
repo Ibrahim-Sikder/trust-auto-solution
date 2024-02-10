@@ -333,6 +333,19 @@ const DashboardLayout = () => {
                     <NavLink to="/dashboard/product">All Product List </NavLink>
                   </div>
                 </Typography>
+                <Typography className="accordionTypoGrapy">
+                <div className="flex items-center">
+                <FaPlus className="mr-2" />
+                  <NavLink to="/dashboard/add-purchase">Add Purchase</NavLink>
+                </div>
+              </Typography>
+                <Typography className="accordionTypoGrapy">
+                  <div className="flex items-center">
+                    <FaThLarge className="mr-2" />
+                    <NavLink to="/dashboard/purchase-list">Purchase List </NavLink>
+                  </div>
+                </Typography>
+               
               </AccordionDetails>
             </Accordion>
             <Accordion
