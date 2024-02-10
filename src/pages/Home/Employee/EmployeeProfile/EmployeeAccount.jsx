@@ -1,6 +1,7 @@
 import {  FaInfo, FaRegEdit } from "react-icons/fa";
 import Card from "../../../../components/Card/Card";
 import invoice from "../../../../../public/assets/invoice.png";
+import { Link } from "react-router-dom";
 const EmployeeAccount = () => {
   return (
     <div className="customerProfileWrap">
@@ -65,7 +66,7 @@ const EmployeeAccount = () => {
           <Card>
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-semibold">Paid Service Details </h3>
-              <FaRegEdit size={30} />
+              <Link to='/dashboard/addjob'><FaRegEdit size={30} /></Link>
             </div>
             <div className=" mt-10 flex items-center justify-between">
               <div className="flex items-center my-3">
@@ -109,7 +110,7 @@ const EmployeeAccount = () => {
           <Card>
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-semibold">Free Service Details </h3>
-              <FaRegEdit size={30} />
+              <Link to='/dashboard/addjob'><FaRegEdit size={30} /></Link>
             </div>
             <img className="w-64 mx-auto " src={invoice} alt="" />
           </Card>

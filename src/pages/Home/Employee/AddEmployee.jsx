@@ -66,7 +66,7 @@ const AddEmployee = () => {
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
-            <FaUsers className="invoicIcon" />
+            <FaUsers size={70} className="invoicIcon" />
             <div className="ml-2">
               <h3 className="text-2xl font-bold"> New Employee </h3>
               <span>Add New Employee </span>
@@ -74,7 +74,7 @@ const AddEmployee = () => {
           </div>
           <div className="productHome">
             <span>Home / </span>
-            <span>Product / </span>
+            <span>Employee / </span>
             <span>New Employee </span>
           </div>
         </div>

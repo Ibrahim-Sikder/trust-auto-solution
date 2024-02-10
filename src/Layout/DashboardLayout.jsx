@@ -302,8 +302,8 @@ const DashboardLayout = () => {
 
             <Accordion
               className="dashboardAccordion"
-              expanded={expanded === "panel2"}
-              onChange={handleChange("panel2")}
+              expanded={expanded === "panel7"}
+              onChange={handleChange("panel7")}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
@@ -339,8 +339,8 @@ const DashboardLayout = () => {
             </Accordion>
             <Accordion
               className="dashboardAccordion"
-              expanded={expanded === "panel2"}
-              onChange={handleChange("panel2")}
+              expanded={expanded === "panel8"}
+              onChange={handleChange("panel8")}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
