@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-
-const AddEmployee = () => {
+import { FormControl, InputLabel, Select } from "@mui/material";
+const AddSuppliers = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -69,14 +69,14 @@ const AddEmployee = () => {
           <div className="flex items-center justify-center ">
             <FaUsers size={70} className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Employee </h3>
-              <span>Add New Employee </span>
+              <h3 className="text-2xl font-bold"> New Supplier </h3>
+              <span>Add New Supplier </span>
             </div>
           </div>
           <div className="productHome">
             <span>Home / </span>
-            <span>Employee / </span>
-            <span>New Employee </span>
+            <span>Supplier / </span>
+            <span>New Supplier </span>
           </div>
         </div>
 
@@ -109,48 +109,30 @@ const AddEmployee = () => {
                   label="Email Address "
                   id="Email Address "
                 />
+                <div >
+                <FormControl  className="productField">
+                  <InputLabel htmlFor="grouped-native-select">
+                    Gender
+                  </InputLabel>
+                  <Select
+                    className="addJobInputField"
+                    
+                    native
+                    id="grouped-native-select"
+                    label="Car Registration No  "
+                  >
+                
+                  <option value="Acura">Male</option>
+                  <option value="Acura">Female</option>
+                  </Select>
+                </FormControl>
+              </div>
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Gender "
-                  id="Gender "
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Password"
+                  label="Company Name "
                   id="Password"
                 />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Confirm Password "
-                  id="Confirm Password  "
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Join Date  "
-                  id="Join Date  "
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Left Date"
-                  id="Left Date"
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Designation  "
-                  id="Designation  "
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Date of Birth "
-                />
-            
                 
               </div>
 
@@ -184,14 +166,14 @@ const AddEmployee = () => {
               </div>
             </div>
             <div className="savebtn mt-2">
-              <button>Add Employee </button>
+              <button>Add Supplier </button>
             </div>
           </form>
         </div>
       </div>
       <div className="mt-5 mb-24 w-full">
         <div className="flex items-center justify-between  mb-5">
-          <h3 className="text-3xl font-bold text-center "> Employee List: </h3>
+          <h3 className="text-3xl font-bold text-center "> Supplier List: </h3>
           <div className="flex items-center">
             <Search>
               <SearchIconWrapper>
@@ -212,7 +194,7 @@ const AddEmployee = () => {
             <thead className="tableWrap">
               <tr>
                 <th>SL</th>
-                <th>Employee Name </th>
+                <th>Supplier Name </th>
                 <th>Phone Number </th>
                 <th>Email</th>
                 <th colSpan={3}>Action</th>
@@ -226,14 +208,14 @@ const AddEmployee = () => {
               <td>BDT1005</td>
               <td >
                 <div className='flex items-center justify-center '>
-                  <Link to='/dashboard/employee-profile'>
+                  <Link to='/dashboard/Supplier-profile'>
                   <FaUserTie className="invoicIcon" />
                   </Link>
                 </div>
               </td>
               <td >
                 <div className='editIconWrap edit'>
-                  <Link to='/dashboard/update-employee'>
+                  <Link to='/dashboard/update-Supplier'>
                     <FaEdit className='editIcon' />
                   </Link>
                 </div>
@@ -254,4 +236,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default AddSuppliers;

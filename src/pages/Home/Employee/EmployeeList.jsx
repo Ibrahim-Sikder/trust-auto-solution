@@ -67,7 +67,7 @@ const EmployeeList = () => {
     </div>
       <div className="flex items-center justify-between my-3 mb-8">
 				<div className="flex items-center justify-center ">
-          <FaUsers className="invoicIcon" />
+          <FaUsers size={70} className="invoicIcon" />
 					<div className="ml-2">
 						<h3 className="text-2xl font-bold"> Employee </h3>
 						<span>Manage Customer </span>
@@ -113,8 +113,8 @@ const EmployeeList = () => {
               <td>BMW2343</td>
               <td>BDT1005</td>
               <td >
-                <div className='editIconWrap '>
-                  <Link >
+                <div className='flex items-center justify-center '>
+                  <Link to='/dashboard/employee-profile'>
                   <FaUserTie className="invoicIcon" />
                   </Link>
                 </div>

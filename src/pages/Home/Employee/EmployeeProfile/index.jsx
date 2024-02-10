@@ -6,6 +6,7 @@ import "react-tabs/style/react-tabs.css"
 import EmployeeAccount from "./EmployeeAccount";
 
 const CustomerProfile = () => {
+
   return (
     <div>
       <div className="w-full h-52 p-5 mt-5 bg-[#03045E] text-white flex items-center  relative">

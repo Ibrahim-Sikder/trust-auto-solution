@@ -37,6 +37,7 @@ import CustomerProfile from "../pages/Home/Customer/CustomerProfile";
 import EmployeeList from "../pages/Home/Employee/EmployeeList";
 import UpdateEmployee from "../pages/Home/Employee/UpdateEmployee";
 import EmployeeProfile from "../pages/Home/Employee/EmployeeProfile";
+import AddSuppliers from "../pages/Home/Suppliers/AddSuppliers";
 
 
 export const router = createBrowserRouter([
@@ -129,7 +130,7 @@ export const router = createBrowserRouter([
         element: <AddEmployee />,
       },
       {
-        path: "employee",
+        path: "employee-list",
         element: <EmployeeList />,
 
       },
@@ -141,6 +142,11 @@ export const router = createBrowserRouter([
       {
         path: "employee-profile",
         element: <EmployeeProfile/>
+
+      },
+      {
+        path: "add-supplier",
+        element: <AddSuppliers/>
 
       },
       {
