@@ -18,7 +18,7 @@ const CustomerProfile = () => {
         <div>
           <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
             <div className="flex  ml-5">
-              <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-5 p-2 ">
+              <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
                 <ImUserTie size="80" className="text-white" />
               </div>
               <div>

@@ -35,7 +35,7 @@
 	padding: 5px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
-	width: 30px;
+	width: 50px;
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 	cursor: pointer;
 }
@@ -46,7 +46,7 @@
 
 .activeToggle {
 	position: fixed;
-	left: 238px;
+	left: 203px;
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeRightSideBarWrap {
@@ -87,7 +87,7 @@
 }
 .dashboardAccordion {
 	background: #2c3136 !important;
-	width: 290px !important;
+	width: 250px !important;
 	color: #fff !important;
 	transition: all 500s ease-in-out;
 }

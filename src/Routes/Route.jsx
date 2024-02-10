@@ -9,7 +9,6 @@ import UpdateInvoice from "../pages/Home/Invoice/UpdateInvoice";
 import Invoice from "../pages/Home/Invoice/Invoice";
 import AddRole from "../pages/Home/Role/AddRole";
 import Role from "../pages/Home/Role/Role";
-import Employee from "../pages/Home/Employee/Employee";
 import UpdateCustomer from "../pages/Home/Customer/UpdateCustomer";
 import AddExpense from "../pages/Home/Expense/AddExpense";
 import Expense from "../pages/Home/Expense/Expense";
@@ -35,6 +34,9 @@ import QuotationList from "../pages/Home/Quotation/QuotationList";
 import UpdateQuotation from "../pages/Home/Quotation/UpdateQuotation";
 import CustomerList from "../pages/Home/Customer/CustomerList";
 import CustomerProfile from "../pages/Home/Customer/CustomerProfile";
+import EmployeeList from "../pages/Home/Employee/EmployeeList";
+import UpdateEmployee from "../pages/Home/Employee/UpdateEmployee";
+import EmployeeProfile from "../pages/Home/Employee/EmployeeProfile";
 
 
 export const router = createBrowserRouter([
@@ -122,10 +124,24 @@ export const router = createBrowserRouter([
         path: "add-expense",
         element: <AddExpense />,
       },
-    
+      {
+        path: "add-employee",
+        element: <AddEmployee />,
+      },
       {
         path: "employee",
-        element: <Employee />,
+        element: <EmployeeList />,
+
+      },
+      {
+        path: "update-employee",
+        element: <UpdateEmployee />,
+
+      },
+      {
+        path: "employee-profile",
+        element: <EmployeeProfile/>
+
       },
       {
         path: "role",
@@ -171,10 +187,7 @@ export const router = createBrowserRouter([
         path: "invoice-view",
         element: <ViewInvoice />,
       },
-      {
-        path: "add-employee",
-        element: <AddEmployee />,
-      },
+     
       {
         path: "jobcard-list",
         element: <JobCardList />,

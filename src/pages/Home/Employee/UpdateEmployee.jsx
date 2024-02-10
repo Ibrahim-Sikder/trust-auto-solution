@@ -7,7 +7,7 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 
-const AddEmployee = () => {
+const UpdateEmployee = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -68,14 +68,14 @@ const AddEmployee = () => {
           <div className="flex items-center justify-center ">
             <FaUsers className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Employee </h3>
-              <span>Add New Employee </span>
+              <h3 className="text-2xl font-bold"> Update Employee </h3>
+              <span> Update Employee </span>
             </div>
           </div>
           <div className="productHome">
             <span>Home / </span>
             <span>Product / </span>
-            <span>New Employee </span>
+            <span>Update Employee </span>
           </div>
         </div>
 
@@ -175,7 +175,7 @@ const AddEmployee = () => {
               </div>
             </div>
             <div className="savebtn mt-2">
-              <button>Add Employee </button>
+              <button>Update Employee </button>
             </div>
           </form>
         </div>
@@ -243,4 +243,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default UpdateEmployee;

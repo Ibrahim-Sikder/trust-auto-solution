@@ -1,4 +1,54 @@
+/* .leftSideBar {
+	background: #f3f4f6;
+	padding: 20px 10px;
+}
+.leftSideBar div {
+	width: 100%;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #6d28d9;
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 5px;
+	text-align: center;
+	box-shadow: rgba(117, 101, 101, 0.12) 0px 5px 15px;
+} */
 
+/* .iconsWrap span {
+	color: #6d28d9;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	line-height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	margin-right: 5px;
+}
+.iconsWrap span img {
+	max-width: 30px;
+	border-radius: 50%;
+} */
+
+/* .valueWrap {
+	display: flex;
+	align-items: center;
+
+	justify-content: space-between;
+	padding: 50px;
+	box-shadow: #887eff 3px 5px 10px;
+	border-radius: 16px;
+	-webkit-border-radius: 16px;
+	-moz-border-radius: 16px;
+	-ms-border-radius: 16px;
+	-o-border-radius: 16px;
+} */
 .searchInptu {
 	width: 400px !important;
 }
@@ -25,7 +75,14 @@
 	margin-top: 10px;
 }
 
-
+/* .accordionExpandIcon {
+	color: #fff !important;
+	position: relative;
+	right: 0 !important;
+} */
+/* .searchGroup input {
+	padding: 8px !important;
+} */
 .completedServiceCards {
 	width: 100%;
 	padding: 50px 20px;
@@ -50,7 +107,13 @@
 		display: block;
 		padding: 0px 100px;
 	}
+	/* .barChart {
+		padding: 0px 50px;
+	} */
 
+	/* .pieChart {
+		margin-top: -10px;
+	} */
 
 	.downWrap {
 		display: block;
@@ -58,7 +121,11 @@
 		justify-content: center;
 		margin: 10px auto;
 	}
-
+	/* .valueWrap {
+		margin: 15px auto;
+		width: 100%;
+		text-align: left;
+	} */
 
 	.pieChart {
 		text-align: center;
