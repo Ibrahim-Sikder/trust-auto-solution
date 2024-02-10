@@ -10,7 +10,7 @@ const SupplierProfile = () => {
   return (
     <div>
       <div className="w-full h-52 p-5 mt-5 bg-[#03045E] text-white flex items-center  relative">
-      <div className="border p-5 rounded-md flex item-end  ">
+      <div className="border bg-[#F77F00] p-5 rounded-md flex item-end  ">
       <div>
       <h3 className="text-2xl">Ariful Islam</h3>
       <div className="space-y-2 mt-3">
@@ -30,9 +30,9 @@ const SupplierProfile = () => {
       </div>
     </div>
         <div>
-          <div className="bg-[#3A0CA3] border  rounded-md py-5 px-3 absolute top-16 right-5 ">
+          <div className="bg-[#3A0CA3] border  rounded-md py-5 px-3 absolute top-28 right-5 ">
             <div className="flex  ml-5">
-              <div className="w-32 h-44 flex items-center justify-center">
+              <div className="w-32 h-32 flex items-center justify-center">
                 <ImUserTie size="130" className="text-white" />
               </div>
              
