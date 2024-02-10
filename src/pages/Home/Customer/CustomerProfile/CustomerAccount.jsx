@@ -3,7 +3,7 @@ import Card from "../../../../components/Card/Card"
 import invoice from "../../../../../public/assets/invoice.png"
 const CustomerAccount = () => {
   return (
-    <div>
+    <div className="customerProfileWrap">
       <div className="flex mt-8 items-center max-w-[700px] justify-between">
         <div>
           <p>Display Name </p>
@@ -20,7 +20,7 @@ const CustomerAccount = () => {
       </div>
       <div className="block md:flex justify-between mt-5">
         <Card>
-          <h3 className="text-2xl font-semibold">More Info </h3>
+          <h3 className="text-xl font-semibold">More Info </h3>
           <span>
             Landine No: <b>Not Added </b>
           </span>
@@ -29,7 +29,7 @@ const CustomerAccount = () => {
           </span>
         </Card>
         <Card>
-          <h3 className="text-2xl font-semibold">Address Details </h3>
+          <h3 className="text-xl font-semibold">Address Details </h3>
           <span>
             Country : <b>Bangladesh </b>
           </span>
@@ -41,7 +41,7 @@ const CustomerAccount = () => {
       <div className="block md:flex justify-between mt-5">
         <Card>
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">Recent Vehicles </h3>
+            <h3 className="text-xl font-semibold">Recent Vehicles </h3>
             <FaRegEdit size={30} />
           </div>
           <div className="flex items-center my-3">
@@ -65,7 +65,7 @@ const CustomerAccount = () => {
         </Card>
         <Card>
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">Recent Job Cards </h3>
+            <h3 className="text-xl font-semibold">Recent Job Cards </h3>
             <FaRegEdit size={30} />
           </div>
           <div className="flex items-center justify-between">
@@ -99,7 +99,7 @@ const CustomerAccount = () => {
       <div className="block md:flex justify-between  mt-5">
         <Card>
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">Recent Quotations </h3>
+            <h3 className="text-xl font-semibold">Recent Quotations </h3>
             <FaRegEdit size={30} />
           </div>
           <div className=" mt-10 flex items-center justify-between">
@@ -143,7 +143,7 @@ const CustomerAccount = () => {
         </Card>
         <Card>
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-semibold">Recent Quotations</h3>
+            <h3 className="text-xl font-semibold">Recent Quotations</h3>
             <FaRegEdit size={30} />
           </div>
           <img className="w-64 mx-auto " src={invoice} alt="" />

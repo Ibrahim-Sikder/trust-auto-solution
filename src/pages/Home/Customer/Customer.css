@@ -11,3 +11,6 @@
     border-radius: 5px 5px 0 0;
   color: #37A248 !important;
 }
+.customerProfileWrap span, .customerProfileWrap div, .customerProfileWrap b{
+  font-size: 14px;
+}

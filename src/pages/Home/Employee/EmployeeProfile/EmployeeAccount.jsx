@@ -3,7 +3,7 @@ import Card from "../../../../components/Card/Card";
 import invoice from "../../../../../public/assets/invoice.png";
 const EmployeeAccount = () => {
   return (
-    <div>
+    <div className="customerProfileWrap">
       <div>
         <div className="flex mt-8 items-center max-w-[700px] justify-between">
           <div>
