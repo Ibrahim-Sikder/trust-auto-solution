@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { FormControl, InputLabel, Select, TextField } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
@@ -15,7 +16,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading/Loading";
-import { FormControl, InputLabel, Select, TextField } from "@mui/material";
+
 const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
@@ -681,9 +682,6 @@ const AddJobCard = () => {
                       inputProps={{ "aria-label": "search" }}
                     />
                   </Search>
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Customer
-                  </button>
                 </div>
               </div>
             </div>
@@ -691,31 +689,30 @@ const AddJobCard = () => {
               <div className="vehicleCard">Vehicle Job Card </div>
             </div>
             <div>
-              <b>
-                Date <span className="requiredStart">*</span>
-              </b>
-              <input
-                className="outline-none"
-                onChange={handleDateChange}
-                autoComplete="off"
-                type="date"
-                placeholder="Date"
-                max={currentDate}
-                defaultValue={formattedDate}
-              />
+              <div>
+                <b>
+                  Date <span className="requiredStart">*</span>
+                </b>
+                <input
+                  className="outline-none"
+                  onChange={handleDateChange}
+                  autoComplete="off"
+                  type="date"
+                  placeholder="Date"
+                  max={currentDate}
+                  defaultValue={formattedDate}
+                />
+              </div>
+              <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                Add Customer
+              </button>
             </div>
           </div>
 
           <div className="jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl mb-5 font-bold">Vehicle Information </h3>
-              <div>
-                <TextField
-                  className="addJobInputField"
-                  onChange={(e) => setChassisNo(e.target.value)}
-                  label="Chassis No (T&N)"
-                />
-              </div>
+
               <div className="mt-3">
                 <div className="flex items-center">
                   <FormControl className="productField">
@@ -751,7 +748,6 @@ const AddJobCard = () => {
                       <option value="CM-Sha">CM-Sha</option>
                       <option value="CM-Sa">CM-Sa</option>
                       <option value="CM-Ha">CM-Ha</option>
-
                       <option value="DM-Ka">DM-Ka</option>
                       <option value="DM-Kha">DM-Kha</option>
                       <option value="DM-Ga">DM-Ga</option>
@@ -782,13 +778,20 @@ const AddJobCard = () => {
                     label="Car R (T&N)"
                   />
                 </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  onChange={(e) => setCarModel(e.target.value)}
-                  label="Vehicle Model (N)"
-                />
+                <div>
+                  <TextField
+                    className="addJobInputField"
+                    onChange={(e) => setChassisNo(e.target.value)}
+                    label="Chassis No (T&N)"
+                  />
+                </div>
+                <div className="mt-3">
+                  <TextField
+                    className="addJobInputField"
+                    onChange={(e) => setEngineNo(e.target.value)}
+                    label="ENGINE NO & CC (T&N) "
+                  />
+                </div>
               </div>
 
               {/*  <div className="mt-3">
@@ -802,116 +805,113 @@ const AddJobCard = () => {
               <div className="mt-3">
                 <FormControl className="addJobInputField">
                   <InputLabel htmlFor="grouped-native-select">
-                    Car Registration No
+                    Vehicle Brand
                   </InputLabel>
                   <Select
                     className="addJobInputField"
                     onChange={(e) => setCarReg(e.target.value)}
                     native
                     id="grouped-native-select"
-                    label="Car Registration No  "
+                    label="Vehicle Brand"
                   >
-                
-                  <option value="Acura">Acura</option>
-                  <option value="Alfa Romeo">Alfa Romeo</option>
-                  <option value="Aston Martin">Aston Martin</option>
-                  <option value="Audi">Audi</option>
-                  <option value="Austin">Austin</option>
-                  <option value="Bentley">Bentley</option>
-                  <option value="BMW">BMW</option>
-                  <option value="Brilliance">Brilliance</option>
-                  <option value="Bugatti">Bugatti</option>
-                  <option value="Buick">Buick</option>
-                  <option value="BYD">BYD</option>
-                  <option value="Cadillac">Cadillac</option>
-                  <option value="Chana">Chana</option>
-                  <option value="Changan">Changan</option>
-                  <option value="Chery">Chery</option>
-                  <option value="Chevrolet">Chevrolet</option>
-                  <option value="Chrysler">Chrysler</option>
-                  <option value="Citroën">Citroën</option>
-                  <option value="Dacia">Dacia</option>
-                  <option value="Dadi">Dadi</option>
-                  <option value="Daewoo">Daewoo</option>
-                  <option value="Daihatsu">Daihatsu</option>
-                  <option value="Datsun">Datsun</option>
-                  <option value="De Lorean">De Lorean</option>
-                  <option value="Derways">Derways</option>
-                  <option value="Dodge">Dodge</option>
-                  <option value="DongFeng">DongFeng</option>
-                  <option value="DS">DS</option>
-                  <option value="Eagle">Eagle</option>
-                  <option value="FAW">FAW</option>
-                  <option value="Ferrari">Ferrari</option>
-                  <option value="Fiat">Fiat</option>
-                  <option value="Ford">Ford</option>
-                  <option value="Foton">Foton</option>
-                  <option value="GAC">GAC</option>
-                  <option value="Geely">Geely</option>
-                  <option value="Genesis">Genesis</option>
-                  <option value="Geo">Geo</option>
-                  <option value="GMC">GMC</option>
-                  <option value="Great Wall">Great Wall</option>
-                  <option value="Hafei">Hafei</option>
-                  <option value="Haima">Haima</option>
-                  <option value="Haval">Haval</option>
-                  <option value="Holden">Holden</option>
-                  <option value="Honda">Honda</option>
-                  <option value="Hummer">Hummer</option>
-                  <option value="Hyundai">Hyundai</option>
-                  <option value="Infiniti">Infiniti</option>
-                  <option value="Iran Khodro">Iran Khodro</option>
-                  <option value="Isuzu">Isuzu</option>
-                  <option value="JAC">JAC</option>
-                  <option value="Jaguar">Jaguar</option>
-                  <option value="Jeep">Jeep</option>
-                  <option value="Kia">Kia</option>
-                  <option value="Lamborghini">Lamborghini</option>
-                  <option value="Lancia">Lancia</option>
-                  <option value="Land Rover">Land Rover</option>
-                  <option value="Lexus">Lexus</option>
-                  <option value="Lifan">Lifan</option>
-                  <option value="Lincoln">Lincoln</option>
-                  <option value="Lotus">Lotus</option>
-                  <option value="Luxgen">Luxgen</option>
-                  <option value="Maserati">Maserati</option>
-                  <option value="Maybach">Maybach</option>
-                  <option value="Mazda">Mazda</option>
-                  <option value="Mercedes Benz">Mercedes Benz</option>
-                  <option value="Mercury">Mercury</option>
-                  <option value="MG">MG</option>
-                  <option value="Mini">Mini</option>
-                  <option value="Mitsubishi">Mitsubishi</option>
-                  <option value="Nissan">Nissan</option>
-                  <option value="Oldsmobile">Oldsmobile</option>
-                  <option value="Opel">Opel</option>
-                  <option value="Peugeot">Peugeot</option>
-                  <option value="Plymouth">Plymouth</option>
-                  <option value="Pontiac">Pontiac</option>
-                  <option value="Porsche">Porsche</option>
-                  <option value="Ravon">Ravon</option>
-                  <option value="Renault">Renault</option>
-                  <option value="Rolls-Royce">Rolls-Royce</option>
-                  <option value="Rover">Rover</option>
-                  <option value="Saab">Saab</option>
-                  <option value="Saturn">Saturn</option>
-                  <option value="Scion">Scion</option>
-                  <option value="SEAT">SEAT</option>
-                  <option value="Skoda">Skoda</option>
-                  <option value="Smart">Smart</option>
-                  <option value="SsangYong">SsangYong</option>
-                  <option value="Subaru">Subaru</option>
-                  <option value="Suzuki">Suzuki</option>
-                  <option value="Tesla">Tesla</option>
-                  <option value="Toyota">Toyota</option>
-                  <option value="Vauxhall">Vauxhall</option>
-                  <option value="Volkswagen">Volkswagen</option>
-                  <option value="Volvo">Volvo</option>
-                  <option value="Zotye">Zotye</option>
-                  <option value="Chinese cars">Chinese cars</option>
-                  <option value="USA cars">USA cars</option>
-           
-                
+                    <option value="Acura">Acura</option>
+                    <option value="Alfa Romeo">Alfa Romeo</option>
+                    <option value="Aston Martin">Aston Martin</option>
+                    <option value="Audi">Audi</option>
+                    <option value="Austin">Austin</option>
+                    <option value="Bentley">Bentley</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Brilliance">Brilliance</option>
+                    <option value="Bugatti">Bugatti</option>
+                    <option value="Buick">Buick</option>
+                    <option value="BYD">BYD</option>
+                    <option value="Cadillac">Cadillac</option>
+                    <option value="Chana">Chana</option>
+                    <option value="Changan">Changan</option>
+                    <option value="Chery">Chery</option>
+                    <option value="Chevrolet">Chevrolet</option>
+                    <option value="Chrysler">Chrysler</option>
+                    <option value="Citroën">Citroën</option>
+                    <option value="Dacia">Dacia</option>
+                    <option value="Dadi">Dadi</option>
+                    <option value="Daewoo">Daewoo</option>
+                    <option value="Daihatsu">Daihatsu</option>
+                    <option value="Datsun">Datsun</option>
+                    <option value="De Lorean">De Lorean</option>
+                    <option value="Derways">Derways</option>
+                    <option value="Dodge">Dodge</option>
+                    <option value="DongFeng">DongFeng</option>
+                    <option value="DS">DS</option>
+                    <option value="Eagle">Eagle</option>
+                    <option value="FAW">FAW</option>
+                    <option value="Ferrari">Ferrari</option>
+                    <option value="Fiat">Fiat</option>
+                    <option value="Ford">Ford</option>
+                    <option value="Foton">Foton</option>
+                    <option value="GAC">GAC</option>
+                    <option value="Geely">Geely</option>
+                    <option value="Genesis">Genesis</option>
+                    <option value="Geo">Geo</option>
+                    <option value="GMC">GMC</option>
+                    <option value="Great Wall">Great Wall</option>
+                    <option value="Hafei">Hafei</option>
+                    <option value="Haima">Haima</option>
+                    <option value="Haval">Haval</option>
+                    <option value="Holden">Holden</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Hummer">Hummer</option>
+                    <option value="Hyundai">Hyundai</option>
+                    <option value="Infiniti">Infiniti</option>
+                    <option value="Iran Khodro">Iran Khodro</option>
+                    <option value="Isuzu">Isuzu</option>
+                    <option value="JAC">JAC</option>
+                    <option value="Jaguar">Jaguar</option>
+                    <option value="Jeep">Jeep</option>
+                    <option value="Kia">Kia</option>
+                    <option value="Lamborghini">Lamborghini</option>
+                    <option value="Lancia">Lancia</option>
+                    <option value="Land Rover">Land Rover</option>
+                    <option value="Lexus">Lexus</option>
+                    <option value="Lifan">Lifan</option>
+                    <option value="Lincoln">Lincoln</option>
+                    <option value="Lotus">Lotus</option>
+                    <option value="Luxgen">Luxgen</option>
+                    <option value="Maserati">Maserati</option>
+                    <option value="Maybach">Maybach</option>
+                    <option value="Mazda">Mazda</option>
+                    <option value="Mercedes Benz">Mercedes Benz</option>
+                    <option value="Mercury">Mercury</option>
+                    <option value="MG">MG</option>
+                    <option value="Mini">Mini</option>
+                    <option value="Mitsubishi">Mitsubishi</option>
+                    <option value="Nissan">Nissan</option>
+                    <option value="Oldsmobile">Oldsmobile</option>
+                    <option value="Opel">Opel</option>
+                    <option value="Peugeot">Peugeot</option>
+                    <option value="Plymouth">Plymouth</option>
+                    <option value="Pontiac">Pontiac</option>
+                    <option value="Porsche">Porsche</option>
+                    <option value="Ravon">Ravon</option>
+                    <option value="Renault">Renault</option>
+                    <option value="Rolls-Royce">Rolls-Royce</option>
+                    <option value="Rover">Rover</option>
+                    <option value="Saab">Saab</option>
+                    <option value="Saturn">Saturn</option>
+                    <option value="Scion">Scion</option>
+                    <option value="SEAT">SEAT</option>
+                    <option value="Skoda">Skoda</option>
+                    <option value="Smart">Smart</option>
+                    <option value="SsangYong">SsangYong</option>
+                    <option value="Subaru">Subaru</option>
+                    <option value="Suzuki">Suzuki</option>
+                    <option value="Tesla">Tesla</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Vauxhall">Vauxhall</option>
+                    <option value="Volkswagen">Volkswagen</option>
+                    <option value="Volvo">Volvo</option>
+                    <option value="Zotye">Zotye</option>
+                    <option value="Chinese cars">Chinese cars</option>
+                    <option value="USA cars">USA cars</option>
                   </Select>
                 </FormControl>
               </div>
@@ -919,25 +919,16 @@ const AddJobCard = () => {
                 <TextField
                   className="addJobInputField"
                   onChange={(e) => setMileage(e.target.value)}
-                  label="Mileage (N) "
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  onChange={(e) => setColor(e.target.value)}
-                  label="Color & Code (T&N) "
+                  label="Vehicle Name "
                 />
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setEngineNo(e.target.value)}
-                  label="ENGINE NO & CC (T&N) "
+                  onChange={(e) => setCarModel(e.target.value)}
+                  label="Vehicle Model (N)"
                 />
               </div>
-
               <div className="mt-3">
                 <FormControl className="addJobInputField">
                   <InputLabel htmlFor="grouped-native-select">
@@ -950,9 +941,7 @@ const AddJobCard = () => {
                     id="grouped-native-select"
                     label="Select Vehicle Category  "
                   >
-                    <option value="Select Vehicle Category ">
-                      Select Vehicle Category{" "}
-                    </option>
+                    <option value="Vehicle Type ">Vehicle Type</option>
                     <option value="Sedans">Sedans</option>
                     <option value="Crossovers">Crossovers</option>
                     <option value="Sports">Sports</option>
@@ -969,11 +958,54 @@ const AddJobCard = () => {
                   </Select>
                 </FormControl>
               </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setColor(e.target.value)}
+                  label="Color & Code (T&N) "
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setMileage(e.target.value)}
+                  label="Mileage (N) "
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setColor(e.target.value)}
+                  label="Fuel Type (T&N) "
+                />
+              </div>
             </div>
 
             <div className="jobCardFieldRightSide">
               <h3 className="text-xl mb-5 font-bold ">Customer Information </h3>
-              <div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  label="Company Name (T)"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  label="Vehicle User Name (T)"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  label="Company Address (T)"
+                />
+              </div>
+
+              <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   onChange={(e) => setCustomerName(e.target.value)}
@@ -984,7 +1016,20 @@ const AddJobCard = () => {
                 <TextField
                   className="addJobInputField"
                   onChange={(e) => setContactNo(e.target.value)}
-                  label="Contact No (N)"
+                  label="Customer Contact No (N)"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setContactNo(e.target.value)}
+                  label="Customer Email Address (N)"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Address (T) "
                 />
               </div>
               <div className="mt-3">
@@ -998,7 +1043,7 @@ const AddJobCard = () => {
                 <TextField
                   className="addJobInputField"
                   onChange={(e) => setPhoneNo(e.target.value)}
-                  label="Contact No (N)"
+                  label="Driver Contact No (N)"
                 />
               </div>
               <div className="mt-3">
@@ -1006,19 +1051,6 @@ const AddJobCard = () => {
                   className="addJobInputField"
                   onChange={(e) => setReference(e.target.value)}
                   label="Reference Name (T) "
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Address (T) "
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  label="Company Name (T)"
                 />
               </div>
             </div>

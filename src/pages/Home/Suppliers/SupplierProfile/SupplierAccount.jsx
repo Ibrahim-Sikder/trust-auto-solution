@@ -65,7 +65,7 @@ const SupplierAccount = () => {
         <div className="block md:flex justify-between  mt-5">
           <Card>
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-semibold">Paid Service Details </h3>
+              <h3 className="text-2xl font-semibold">Paid Bill </h3>
               <Link to='/dashboard/addjob'><FaRegEdit size={30} /></Link>
             </div>
             <div className=" mt-10 flex items-center justify-between">
@@ -109,7 +109,7 @@ const SupplierAccount = () => {
           </Card>
           <Card>
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-semibold">Free Service Details </h3>
+              <h3 className="text-2xl font-semibold">Due Bill </h3>
               <Link to='/dashboard/addjob'><FaRegEdit size={30} /></Link>
             </div>
             <img className="w-64 mx-auto " src={invoice} alt="" />

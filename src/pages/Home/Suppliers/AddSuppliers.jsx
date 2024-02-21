@@ -85,17 +85,12 @@ const AddSuppliers = () => {
             <div className="flex">
               <div>
                 <h3 className="text-xl font-bold">Personal Info </h3>
+               
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Given Name "
-                  id="Give Name "
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Sur Name "
-                  id="Sur Name "
+                  label="Full Name "
+                  id="Full Name "
                 />
                 <TextField
                   className="productField"
@@ -112,7 +107,7 @@ const AddSuppliers = () => {
                 <div >
                 <FormControl  className="productField">
                   <InputLabel htmlFor="grouped-native-select">
-                    Gender
+                    Vendor Categories
                   </InputLabel>
                   <Select
                     className="addJobInputField"
@@ -122,15 +117,20 @@ const AddSuppliers = () => {
                     label="Car Registration No  "
                   >
                 
-                  <option value="Acura">Male</option>
-                  <option value="Acura">Female</option>
+                  <option value="Acura">New Parts </option>
+                  <option value="Acura">Recondition Parts</option>
+                  <option value="Acura">New & Recondition Parts</option>
+                  <option value="Acura">Body Items</option>
+                  <option value="Acura">Engine & Suspension Items</option>
+                  <option value="Acura">Electric Items</option>
+                  <option value="Acura">Others</option>
                   </Select>
                 </FormControl>
               </div>
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Company Name "
+                  label="Shop Name"
                   id="Password"
                 />
                 

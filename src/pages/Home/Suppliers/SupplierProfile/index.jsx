@@ -45,6 +45,10 @@ const SupplierProfile = () => {
         <Tabs className="tabList">
           <TabList>
             <Tab>Account</Tab>
+            <Tab>Payment</Tab>
+            <Tab>Due</Tab>
+            <Tab>Message </Tab>
+            <Tab>Order List </Tab>
           </TabList>
 
           <TabPanel>

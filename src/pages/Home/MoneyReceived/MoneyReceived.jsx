@@ -101,7 +101,7 @@ const MoneyReceiptView = () => {
         <div className=" payAdvance mt-5">
           <div className="flex  receivedField">
             <label className="advance">
-              Advance/Final Payment against bill no:{" "}
+            <input type="checkbox" />  Advance <input type="checkbox" /> Final Payment / against bill no:{" "}
             </label>
             <input
               {...register("against_bill_no", { required: true })}
@@ -122,7 +122,7 @@ const MoneyReceiptView = () => {
         </div>
         <div className="payAdvance mt-5">
           <div className="flex  receivedField">
-            <label className="checqueText">Cash/Cheque No: </label>
+            <label className="checqueText"> <input type="checkbox" /> Cash <input type="checkbox" />Cheque No: </label>
             <input
               {...register("cheque_no", { required: true })}
               className="cashInput moneyViewInputField"

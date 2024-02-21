@@ -211,68 +211,67 @@ const Detail = () => {
               <div className="pb-5 px-14 invoicePrint">
                 <div>
                 <div className=" mb-2 mx-auto text-center border-b-2 border-[#351E98] pb-2">
-                    <div className="w-full flex justify-between items-center mb-2 mt-5">
-                      <img className="w-[120px] " src={logo} alt="logo" />
-                      <div>
-                      <h2 className="trustAutoTitle qoutationTitle">Trust Auto Solution </h2>
-                        <small>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</small>
-                      </div>
-                      <div className="text-left">
-                        <small className="block"><small className="font-bold">Mobile:</small> 345689789666</small>
-                        <small className="block"><small className="font-bold">Email:</small> trustautosolution@gmail.com</small>
-                        <small className="block font-bold ">trustautosolution.com</small>
-                      </div>
-                    </div>
-                    
+                <div className="w-full flex justify-between items-center mb-2 mt-5">
+                  <img className="w-[120px] " src={logo} alt="logo" />
+                  <div>
+                  <h2 className="trustAutoTitle qoutationTitle">Trust Auto Solution </h2>
+                    <small className="block">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</small>
                   </div>
-
+                  <div className="text-left">
+                    <small className="block"><small className="font-bold">Mobile:</small> 345689789666</small>
+                    <small className="block"><small className="font-bold">Email:</small> trustautosolution@gmail.com</small>
+                    <small className="block font-bold ">trustautosolution.com</small>
+                  </div>
+                </div>
+                
+              </div>
                   {page === 1 && (
                     <div className="px-10">
-                      <div className="flex items-center justify-between border-b-2 pb-1 border-[#351E98]">
-                        <span>  <b>Customer ID:</b> TSA001</span>
-                        <b className="uppercase mr-5">Invoice</b>
-                        <b>Date: {invoicePreview?.date} </b>
+                    <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
+                      <span>  <b>Customer ID:</b> TSA001</span>
+                      <b className="uppercase mr-5">Invoice</b>
+                      <b>Date: {invoicePreview?.date} </b>
+                    </div>
+                   
+                    <div className="flex invoiceInformaiton mx-auto  items-center justify-between mt-2">
+                    <div className="flex justify-between w-[40%]">
+                      <div className="invoiceCustomerInfo">
+                        <b>SL NO</b>
+                        <b>Company</b>
+                        <b>Customer</b>
+                        <b>Phone</b>
+                        <b>Address</b>
                       </div>
-                     
-                      <div className="flex invoiceInformaiton mx-auto  items-center justify-between mt-2">
-                      <div className="flex justify-between w-[40%]">
-                        <div className="invoiceCustomerInfo">
-                          <b>SL NO</b>
-                          <b>Company</b>
-                          <b>Customer</b>
-                          <b>Phone</b>
-                          <b>Address</b>
-                        </div>
-                        <div className="invoiceCustomerInfo">
-                          <small>: 03</small>
-                          <small>: SoftyPy PVT LTD </small>
-                          <small>: Customer</small>
-                          <small>: 3456789044</small>
-                          <small>: Kuril Bishawroad </small>
-                        </div>
+                      <div className="invoiceCustomerInfo">
+                        <small>: 03</small>
+                        <small>: SoftyPy PVT LTD </small>
+                        <small>: Customer</small>
+                        <small>: 3456789044</small>
+                        <small>: Kuril Bishawroad </small>
                       </div>
-                      <div className="invoiceLine"></div>
-                      <div className="flex w-[40%] justify-between ">
-                        <div className="invoiceCustomerInfo">
-                          <b>Vehicle BN </b>
-                          <b>Vehicle Model </b>
-                          <b>Chassis No </b>
-                          <b>Engine No </b>
-                          <b>KM</b>
-                        </div>
-                        <div className="invoiceCustomerInfo">
-                          <small>: 03</small>
-                          <small>: 85456 </small>
-                          <small>: 456</small>
-                          <small>: 3454</small>
-                          <small>: 765</small>
-                        </div>
+                    </div>
+                    <div className="invoiceLine"></div>
+                    <div className="flex w-[40%] justify-between ">
+                      <div className="invoiceCustomerInfo">
+                        <b>Registration No </b>
+                        <b>Chassis No </b>
+                        <b>Engine & CC </b>
+                        <b>Vehicle Name </b>
+                        <b>Mileage </b>
                       </div>
-
+                      <div className="invoiceCustomerInfo">
+                        <small>: 03566666</small>
+                        <small>: 85456 </small>
+                        <small>: 456</small>
+                        <small>: 3454</small>
+                        <small>: 765</small>
                       </div>
-                     
+                    </div>
 
                     </div>
+                   
+
+                  </div>
                   )}
 
                   <table className=" invoiceTable2 qutationTables mt-5">
@@ -380,8 +379,8 @@ const Detail = () => {
                     </tbody>
                   </table>
                  <div className="flex justify-between">
-                 <div className="mt-[2px] text-sm">
-                      <b className="text-base">In words:</b>{" "}
+                 <div className="mt-[2px] text-[12px]">
+                      <b className=" ">In words:</b>{" "}
                       {totalAmountInWords}
                     </div>
                     <div className="flex netTotalAmounts">

@@ -15,7 +15,7 @@ const CustomerProfile = () => {
   return (
     <div>
       <div className="w-full h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
-        <div>
+        <div className="flex justify-between">
           <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
             <div className="flex  ml-5">
               <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
@@ -40,6 +40,13 @@ const CustomerProfile = () => {
               </div>
             </div>
           </div>
+          <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
+          <div className="flex  ml-5">
+          
+           <h3>Paid</h3>
+           <h3>Due</h3>
+          </div>
+        </div>
         </div>
       </div>
 
@@ -53,6 +60,7 @@ const CustomerProfile = () => {
             <Tab>Invoice </Tab>
             <Tab>Money Reciept </Tab>
             <Tab>Payment</Tab>
+            <Tab>Message</Tab>
             {/* <Tab>
            <div className="bg-[#42A1DA] p-2 cursor-pointer ">
                 <HiOutlinePlus size="30" className="text-white" />
