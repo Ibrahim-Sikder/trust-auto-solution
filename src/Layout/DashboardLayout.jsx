@@ -14,6 +14,7 @@ import {
   FaPlus,
   FaThLarge,
   FaHome,
+  FaAngleDoubleUp,
 } from "react-icons/fa";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -30,7 +31,6 @@ import {
   ShoppingBag,
 } from "@mui/icons-material";
 import { animateScroll as scroll } from "react-scroll";
-import { HiArrowNarrowUp } from "react-icons/hi";
 
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
@@ -599,7 +599,7 @@ const DashboardLayout = () => {
         </aside>
       </div>
       <button onClick={scrollToTop} id="button">
-        <HiArrowNarrowUp size={25} />
+        <FaAngleDoubleUp size={25} />
       </button>
     </main>
   );
