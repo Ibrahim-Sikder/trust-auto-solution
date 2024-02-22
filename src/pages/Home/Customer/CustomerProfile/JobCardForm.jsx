@@ -272,7 +272,7 @@ const JobCardForm = () => {
             </div>
           </div>
             <button className="block mt-3 w-full bg-[#42A1DA] text-white font-bold p-4 rounded-lg">
-              Add Job Card
+              Add Vehicle
             </button>
           </form>
         </div>
