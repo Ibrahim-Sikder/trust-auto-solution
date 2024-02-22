@@ -738,11 +738,11 @@ const Invoice = () => {
           })}
           <div className="discountFieldWrap">
             <div className="flex items-center">
-              <b> Total Amount: </b>
+              <b className='mr-2'> Total Amount: </b>
               <span>{grandTotal}</span>
             </div>
             <div>
-              <b> Discount: </b>
+              <b className='mr-2'> Discount: </b>
               <input
                 className="text-center py-1"
                 onChange={(e) => handleDiscountChange(e.target.value)}
@@ -752,7 +752,7 @@ const Invoice = () => {
               />
             </div>
             <div>
-              <b>Vat: </b>
+              <b className='mr-2'>Vat: </b>
               <input
                 className="text-center"
                 onChange={(e) => handleVATChange(e.target.value)}
@@ -763,7 +763,23 @@ const Invoice = () => {
             </div>
             <div>
               <div className="ml-3 flex items-center ">
-                <b>Final Total:</b>
+                <b className='mr-2'>Final Total:</b>
+                <span>{calculateFinalTotal()}</span>
+              </div>
+            </div>
+            <div>
+            <b className='mr-2'>Advance: </b>
+            <input
+              className="text-center"
+              onChange={(e) => handleVATChange(e.target.value)}
+              autoComplete="off"
+              type="text"
+              placeholder="Advance"
+            />
+          </div>
+          <div>
+              <div className="ml-3 flex items-center ">
+                <b className='mr-2'>Due:</b>
                 <span>{calculateFinalTotal()}</span>
               </div>
             </div>

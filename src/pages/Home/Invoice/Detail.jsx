@@ -378,8 +378,8 @@ const Detail = () => {
                       
                     </tbody>
                   </table>
-                 <div className="flex justify-between">
-                 <div className="mt-[2px] text-[12px]">
+                 <div className="flex justify-between items-center mt-3 border-b-[1px] pb-3 border-[#ddd]">
+                 <div className="mt-5 text-[12px]">
                       <b className=" ">In words:</b>{" "}
                       {totalAmountInWords}
                     </div>
@@ -389,11 +389,15 @@ const Detail = () => {
                         <b> Discount </b>
                         <b> VAT </b>
                         <b> Net Total </b>
+                        <b> Advance</b>
+                        <b> Due </b>
                       </div>
                       <div>
                         <small> : 57896</small>
                         <small> : 5%</small>
                         <small> : 56</small>
+                        <small> : 57896</small>
+                        <small> : 57896</small>
                         <small> : 57896</small>
                       </div>
                     </div>

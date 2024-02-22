@@ -69,18 +69,18 @@ const SupplierList = () => {
 				<div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />
 					<div className="ml-2">
-						<h3 className="text-2xl font-bold"> Employee </h3>
-						<span>Manage Customer </span>
+						<h3 className="text-2xl font-bold"> Supplier </h3>
+						<span>Manage Supplier </span>
 					</div>
 				</div>
 				<div className="productHome">
 					<span>Home / </span>
 					<span>Customer / </span>
-					<span>New Customer </span>
+					<span>New Supplier </span>
 				</div>
 			</div>
       <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-          <h3 className="text-3xl font-bold mb-3"> Employee List:</h3>
+          <h3 className="text-3xl font-bold mb-3"> Supplier List:</h3>
           <div className="flex items-center">
                   <Search>
                     <SearchIconWrapper>
@@ -100,7 +100,7 @@ const SupplierList = () => {
           <thead className='tableWrap'>
             <tr>
               <th>SL</th>
-              <th>Employee Name </th>
+              <th>Supplier Name </th>
               <th>Phone Number </th>
               <th>Email</th>
               <th colSpan={3}>Action</th>

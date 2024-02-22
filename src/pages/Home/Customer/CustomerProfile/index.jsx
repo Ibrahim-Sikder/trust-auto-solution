@@ -1,21 +1,23 @@
-import { HiLocationMarker } from "react-icons/hi"
-import { HiEnvelope, HiMiniPhone } from "react-icons/hi2"
+import { HiLocationMarker } from "react-icons/hi";
+import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
 import { ImUserTie } from "react-icons/im";
-import "../Customer.css"
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
-import "react-tabs/style/react-tabs.css"
-import CustomerJobCardList from "./CustomerJobCardList"
-import CustomerQoutationList from "./CustomerQoutationList"
-import CustomerInvoiceList from "./CustomerInvoiceList"
-import CustomerMoneyList from "./CustomerMoneyList"
-import CustomerAccount from "./CustomerAccount"
-import VehicleDetails from "./VehicleDetails"
+import "../Customer.css";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
+import CustomerJobCardList from "./CustomerJobCardList";
+import CustomerQoutationList from "./CustomerQoutationList";
+import CustomerInvoiceList from "./CustomerInvoiceList";
+import CustomerMoneyList from "./CustomerMoneyList";
+import CustomerAccount from "./CustomerAccount";
+import VehicleDetails from "./VehicleDetails";
+import { FaFacebookF, FaRocketchat, FaWhatsapp } from "react-icons/fa";
+import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
 
 const CustomerProfile = () => {
   return (
     <div>
       <div className="w-full h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
-        <div className="flex justify-between">
+        <div className="flex justify-between w-full 000000000">
           <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
             <div className="flex  ml-5">
               <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
@@ -40,13 +42,11 @@ const CustomerProfile = () => {
               </div>
             </div>
           </div>
-          <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
-          <div className="flex  ml-5">
-          
-           <h3>Paid</h3>
-           <h3>Due</h3>
+          <div className="bg-[#F77F00] border h-14 rounded-md p-3 relative top-32 right-5 ">
+            <div className="flex items-center">
+              <b>Due</b> /<b>Paid</b>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
@@ -54,25 +54,20 @@ const CustomerProfile = () => {
         <Tabs className="tabList">
           <TabList>
             <Tab>Account</Tab>
-            <Tab>Vehicle Details</Tab>
+            <Tab>Vehicle List</Tab>
             <Tab>Jobs Card </Tab>
             <Tab>Quotation </Tab>
             <Tab>Invoice </Tab>
             <Tab>Money Reciept </Tab>
             <Tab>Payment</Tab>
             <Tab>Message</Tab>
-            {/* <Tab>
-           <div className="bg-[#42A1DA] p-2 cursor-pointer ">
-                <HiOutlinePlus size="30" className="text-white" />
-              </div>
-           </Tab> */}
           </TabList>
 
           <TabPanel>
             <CustomerAccount />
           </TabPanel>
           <TabPanel>
-           <VehicleDetails/>
+            <VehicleDetails />
           </TabPanel>
           <TabPanel>
             <CustomerJobCardList />
@@ -87,7 +82,22 @@ const CustomerProfile = () => {
             <CustomerMoneyList />
           </TabPanel>
           <TabPanel>
-            <h3>Payment</h3>
+          <SupplierPaymentList/>
+        </TabPanel>
+          <TabPanel>
+          <div>
+          <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
+            <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
+              <FaWhatsapp size={100} />
+            </div>
+            <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
+              <FaFacebookF size={100} />
+            </div>
+            <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
+              <FaRocketchat size={100} />
+            </div>
+          </div>
+        </div>
           </TabPanel>
         </Tabs>
 
@@ -98,7 +108,7 @@ const CustomerProfile = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomerProfile
+export default CustomerProfile;

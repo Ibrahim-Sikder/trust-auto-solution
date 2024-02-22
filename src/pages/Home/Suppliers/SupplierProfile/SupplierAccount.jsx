@@ -6,48 +6,35 @@ const SupplierAccount = () => {
   return (
     <div className="customerProfileWrap">
       <div>
-        <div className="flex mt-8 items-center max-w-[700px] justify-between">
-          <div>
-            <p>Display Name </p>
-            <b>Aminul Houque </b>
-          </div>
-          <div>
-            <p>Date of Birth </p>
-            <b>01-01-2000</b>
-          </div>
-          <div>
-            <p>Gender</p>
-            <b>Male</b>
-          </div>
-        </div>
+    
         <div className="block md:flex justify-between mt-5">
           <Card>
-            <h3 className="text-xl font-semibold">More Info </h3>
+            <h3 className="text-xl font-semibold mb-2">Supplier Contact Info </h3>
             <div className="flex items-center justify-between">
               <div>
                 <div>
-                  Landine No: <b>Not Added </b>
+                Supplier Name: <b>Mr. Rahat </b>
                 </div>
                 <div>
-                  Left Date: <b>05/01/2024</b>
+                  Phone Number: <b>0657899444</b>
                 </div>
               </div>
               <div>
                 <div>
-                  Join Date: <b>05/01/2024</b>
+                 Shop Name: <b>Auto Solution </b>
                 </div>
                 <span>
-                  Designation: <b>Supporter</b>
+                  Email Address: <b>supplier@gmail.com</b>
                 </span>
               </div>
             </div>
           </Card>
           <Card>
-            <h3 className="text-xl font-semibold">Address Details </h3>
+            <h3 className="text-xl font-semibold mb-2">Address Details </h3>
             <div className="flex items-center justify-between">
               <div>
                 <div>
-                 country: <b>Bangladesh</b>
+                 Country: <b>Bangladesh</b>
                 </div>
                 <div>
                   City: <b>Dhaka</b>

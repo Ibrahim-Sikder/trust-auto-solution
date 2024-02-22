@@ -4,30 +4,29 @@ import invoice from "../../../../../public/assets/invoice.png"
 const CustomerAccount = () => {
   return (
     <div className="customerProfileWrap">
-      <div className="flex mt-8 items-center max-w-[700px] justify-between">
+  
+      <div className="block md:flex justify-between mt-5">
+      <Card>
+      <h3 className="text-xl font-semibold mb-2"> Contact Info </h3>
+      <div className="flex items-center justify-between">
         <div>
-          <p>Display Name </p>
-          <b>Aminul Houque </b>
+          <div>
+          Supplier Name: <b>Mr. Rahat </b>
+          </div>
+          <div>
+            Phone Number: <b>0657899444</b>
+          </div>
         </div>
         <div>
-          <p>Date of Birth </p>
-          <b>01-01-2000</b>
-        </div>
-        <div>
-          <p>Gender</p>
-          <b>Male</b>
+          <div>
+           Shop Name: <b>Auto Solution </b>
+          </div>
+          <span>
+            Email Address: <b>supplier@gmail.com</b>
+          </span>
         </div>
       </div>
-      <div className="block md:flex justify-between mt-5">
-        <Card>
-          <h3 className="text-xl font-semibold">More Info </h3>
-          <span>
-            Landine No: <b>Not Added </b>
-          </span>
-          <span>
-            TAX ID: <b>Not Added </b>
-          </span>
-        </Card>
+    </Card>
         <Card>
           <h3 className="text-xl font-semibold">Address Details </h3>
           <span>

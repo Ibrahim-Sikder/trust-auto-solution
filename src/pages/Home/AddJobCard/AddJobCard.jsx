@@ -6,7 +6,6 @@ import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import { FormControl, InputLabel, Select, TextField } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -669,19 +668,10 @@ const AddJobCard = () => {
               </div>
               <div>
                 <span>
-                  {" "}
                   <b>Customer ID:</b> TAS000
                 </span>
-                <div className="flex items-center">
-                  <Search>
-                    <SearchIconWrapper>
-                      <SearchIcon className="searchIcon" />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                      placeholder="Search…"
-                      inputProps={{ "aria-label": "search" }}
-                    />
-                  </Search>
+                <div className="flex items-center topSearchBa">
+                <input type="text" className="w-[200px] h-[35px] border border-[#ddd]  pl-1 rounded-sm " />
                 </div>
               </div>
             </div>
@@ -713,9 +703,9 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl mb-5 font-bold">Vehicle Information </h3>
 
-              <div className="mt-3">
+              <div className="mt-3 mb-3">
                 <div className="flex items-center">
-                  <FormControl className="productField">
+                  <FormControl className="jobCardSelect">
                     <InputLabel htmlFor="grouped-native-select">
                       Car Registration No
                     </InputLabel>
@@ -774,34 +764,26 @@ const AddJobCard = () => {
                     </Select>
                   </FormControl>
                   <TextField
+                    className="addJobInputField"
                     onChange={(e) => setRegistration(e.target.value)}
                     label="Car R (T&N)"
                   />
                 </div>
-                <div>
-                  <TextField
-                    className="addJobInputField"
-                    onChange={(e) => setChassisNo(e.target.value)}
-                    label="Chassis No (T&N)"
-                  />
-                </div>
-                <div className="mt-3">
-                  <TextField
-                    className="addJobInputField"
-                    onChange={(e) => setEngineNo(e.target.value)}
-                    label="ENGINE NO & CC (T&N) "
-                  />
-                </div>
               </div>
-
-              {/*  <div className="mt-3">
+              <div>
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setVehicleBrand(e.target.value)}
-                  label="Vehicle Brand (T&N)"
+                  onChange={(e) => setChassisNo(e.target.value)}
+                  label="Chassis No (T&N)"
                 />
               </div>
-      */}
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setEngineNo(e.target.value)}
+                  label="ENGINE NO & CC (T&N) "
+                />
+              </div>
               <div className="mt-3">
                 <FormControl className="addJobInputField">
                   <InputLabel htmlFor="grouped-native-select">
