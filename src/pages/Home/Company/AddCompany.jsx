@@ -66,7 +66,7 @@ const AddCompany = () => {
             <button> Add Job </button>
           </Link>
           <Link to="/dashboard/qutation">
-            <button>Qutation </button>
+            <button>Quotation </button>
           </Link>
           <Link to="/dashboard/invoice">
             <button>Invoice </button>
@@ -82,7 +82,7 @@ const AddCompany = () => {
           </div>
           <div className="productHome">
             <span>Home / </span>
-            <span>Product / </span>
+            <span>Company / </span>
             <span>New Company </span>
           </div>
         </div>
@@ -113,14 +113,6 @@ const AddCompany = () => {
                     label="Company Address (T)"
                   />
                 </div>
-
-                <div>
-                  <TextField
-                    className="productField"
-                    onC
-                    label="Company Name (T)"
-                  />
-                </div>
                 <div>
                   <TextField
                     className="productField"
@@ -131,12 +123,6 @@ const AddCompany = () => {
                   <TextField
                     className="productField"
                     label="Company Email Address (N)"
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Company Address (T) "
                   />
                 </div>
                 <div>
