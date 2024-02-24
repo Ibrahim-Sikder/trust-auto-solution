@@ -47,6 +47,8 @@ import UpdatePurchase from "../pages/Home/Parchase/UpdatePurchase";
 import CompanyList from "../pages/Home/Company/CompanyList";
 import AddCompany from "../pages/Home/Company/AddCompany";
 import CompanyProfile from "../pages/Home/Company/CompanyProfile";
+import AddShowRoom from "../pages/Home/ShowRoom/AddShowRoom";
+import ShowRoomList from "../pages/Home/ShowRoom/ShowRoomList";
 
 
 export const router = createBrowserRouter([
@@ -137,6 +139,14 @@ export const router = createBrowserRouter([
       {
         path: "company-list",
         element: <CompanyList/>,
+      },
+      {
+        path: "add-show-room",
+        element: <AddShowRoom/>,
+      },
+      {
+        path: "show-room-list",
+        element: <ShowRoomList/>,
       },
       {
         path: "expense",

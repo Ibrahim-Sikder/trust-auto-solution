@@ -31,7 +31,7 @@ import {
   ShoppingBag,
 } from "@mui/icons-material";
 import { animateScroll as scroll } from "react-scroll";
-import { HiOutlineUserGroup } from "react-icons/hi";
+import { HiOutlineUserAdd, HiOutlineUserGroup } from "react-icons/hi";
 
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
@@ -328,7 +328,7 @@ const DashboardLayout = () => {
               >
                 <Typography>
                   <div className="flex items-center justify-center">
-                    <FaUserTie className="dashboardIcon" />
+                    <HiOutlineUserGroup className="dashboardIcon" />
                     <span className="ml-2"> Customer</span>
                   </div>
                 </Typography>
@@ -336,7 +336,7 @@ const DashboardLayout = () => {
               <AccordionDetails>
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
-                    <FaPlus className="mr-2" />
+                    <HiOutlineUserAdd className="mr-2" />
                     <NavLink to="/dashboard/add-customer">
                       Add Customer{" "}
                     </NavLink>
@@ -352,9 +352,10 @@ const DashboardLayout = () => {
                 </Typography>
                 <Typography className="accordionTypoGrapy">
                 <span className="flex items-center">
-                  <HiOutlineUserGroup className="mr-2" />
+                  <HiOutlineUserAdd className="mr-2" />
                   <NavLink to="/dashboard/add-company">
                     Add Company
+                     
                   </NavLink>
                 </span>
               </Typography>
@@ -363,6 +364,22 @@ const DashboardLayout = () => {
                   <FaThLarge className="mr-2" />
                   <NavLink to="/dashboard/company-list">
                   Company List 
+                  </NavLink>
+                </span>
+              </Typography>
+              <Typography className="accordionTypoGrapy">
+                <span className="flex items-center">
+                  <HiOutlineUserAdd className="mr-2" />
+                  <NavLink to="/dashboard/add-show-room">
+                    Add Show Room
+                  </NavLink>
+                </span>
+              </Typography>
+              <Typography className="accordionTypoGrapy">
+                <span className="flex items-center">
+                  <FaThLarge className="mr-2" />
+                  <NavLink to="/dashboard/company-list">
+                  Show Room List 
                   </NavLink>
                 </span>
               </Typography>
