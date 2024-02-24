@@ -44,6 +44,8 @@ import SupplierProfile from "../pages/Home/Suppliers/SupplierProfile";
 import PurchaseList from "../pages/Home/Parchase/PurchaseList";
 import AddPurchase from "../pages/Home/Parchase/AddPurchase";
 import UpdatePurchase from "../pages/Home/Parchase/UpdatePurchase";
+import CompanyList from "../pages/Home/Company/CompanyList";
+import AddCompany from "../pages/Home/Company/AddCompany";
 
 
 export const router = createBrowserRouter([
@@ -242,6 +244,14 @@ export const router = createBrowserRouter([
       {
         path: "money-receipt-update",
         element: <UpdateMoneyReceipt/>,
+      },
+      {
+        path: "add-company",
+        element: <AddCompany/>,
+      },
+      {
+        path: "company-list",
+        element: <CompanyList/>,
       },
     ],
   },

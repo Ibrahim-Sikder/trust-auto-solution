@@ -31,6 +31,8 @@ import {
   ShoppingBag,
 } from "@mui/icons-material";
 import { animateScroll as scroll } from "react-scroll";
+import { HiOutlineUserGroup } from "react-icons/hi";
+
 
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
@@ -324,6 +326,45 @@ const DashboardLayout = () => {
               >
                 <Typography>
                   <div className="flex items-center justify-center">
+                    <HiOutlineUserGroup  className="dashboardIcon" />
+                    <span className="ml-2"> Company</span>
+                  </div>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography className="accordionTypoGrapy">
+                  <span className="flex items-center">
+                    <HiOutlineUserGroup className="mr-2" />
+                    <NavLink to="/dashboard/add-company">
+                      Add Customer{" "}
+                    </NavLink>
+                  </span>
+                </Typography>
+                <Typography className="accordionTypoGrapy">
+                  <span className="flex items-center">
+                    <FaThLarge className="mr-2" />
+                    <NavLink to="/dashboard/company-list">
+                      Company  List 
+                    </NavLink>
+                  </span>
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+           
+
+            <Accordion
+              className="dashboardAccordion"
+              expanded={expanded === "panel7"}
+              onChange={handleChange("panel7")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
+                aria-controls="panel2a-content"
+                id="panel2a-header"
+                className="dashboardAccordionSummary"
+              >
+                <Typography>
+                  <div className="flex items-center justify-center">
                     <FaUserTie className="dashboardIcon" />
                     <span className="ml-2"> Customer</span>
                   </div>
@@ -348,7 +389,6 @@ const DashboardLayout = () => {
                 </Typography>
               </AccordionDetails>
             </Accordion>
-           
             <Accordion
             className="dashboardAccordion"
             expanded={expanded === "panel9"}

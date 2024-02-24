@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading/Loading";
+import { carBrands, cmDmOptions, fuelType, totalYear, vehicleTypes } from "../../../constant";
 
 const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
@@ -625,215 +626,11 @@ const AddJobCard = () => {
     },
   }));
 
-  const totalYear = [];
-
-  for (let year = 1980; year <= 2024; year++) {
-    totalYear.push({ title: year });
-  }
-
-  const vehicleTypes = [
-    { label: "Vehicle Type", value: "Vehicle Type" },
-    { label: "Sedans", value: "Sedans" },
-    { label: "Crossovers", value: "Crossovers" },
-    { label: "Sports", value: "Sports" },
-    { label: "Trucks", value: "Trucks" },
-    { label: "Coupes", value: "Coupes" },
-    { label: "Convertibles", value: "Convertibles" },
-    { label: "Diesels", value: "Diesels" },
-    { label: "SUVs", value: "SUVs" },
-    { label: "Hybrid/Electric", value: "Hybrid/Electric" },
-    { label: "Vans/Minivans", value: "Vans/Minivans" },
-    { label: "Wagons", value: "Wagons" },
-    { label: "Small Cars", value: "Small Cars" },
-    { label: "CPO", value: "CPO" },
-  ];
-
-  const fuelType = [
-    { label: "Octen", value: "Octen" },
-    { label: "Octel CNG", value: "Octel CNG" },
-    { label: "Petrol", value: "Petrol" },
-    { label: "Petrol CNG", value: "Petrol CNG" },
-    { label: "Petrol LPG", value: "Petrol LPG" },
-    { label: "Diesel", value: "Diesel" },
-    { label: "CNG", value: "CNG" },
-    { label: "LPG", value: "LPG" },
-    { label: "Electric", value: "Electric" },
-    { label: "Hybrid", value: "Hybrid" },
-    { label: "Diesels", value: "Diesels" },
-    { label: "Plugin Hybrid ", value: "Plugin Hybrid " },
-    { label: "Electric Hybrid ", value: "Electric Hybrid " },
-    { label: "Mile Hybrid ", value: "Mile Hybrid " },
-  ];
-
-  const carBrands = [
-    { value: "Acura", label: "Acura" },
-    { value: "Alfa Romeo", label: "Alfa Romeo" },
-    { value: "Aston Martin", label: "Aston Martin" },
-    { value: "Audi", label: "Audi" },
-    { value: "Austin", label: "Austin" },
-    { value: "Bentley", label: "Bentley" },
-    { value: "BMW", label: "BMW" },
-    { value: "Brilliance", label: "Brilliance" },
-    { value: "Bugatti", label: "Bugatti" },
-    { value: "Buick", label: "Buick" },
-    { value: "BYD", label: "BYD" },
-    { value: "Cadillac", label: "Cadillac" },
-    { value: "Chana", label: "Chana" },
-    { value: "Changan", label: "Changan" },
-    { value: "Chery", label: "Chery" },
-    { value: "Chevrolet", label: "Chevrolet" },
-    { value: "Chrysler", label: "Chrysler" },
-    { value: "Citroën", label: "Citroën" },
-    { value: "Dacia", label: "Dacia" },
-    { value: "Dadi", label: "Dadi" },
-    { value: "Daewoo", label: "Daewoo" },
-    { value: "Daihatsu", label: "Daihatsu" },
-    { value: "Datsun", label: "Datsun" },
-    { value: "De Lorean", label: "De Lorean" },
-    { value: "Derways", label: "Derways" },
-    { value: "Dodge", label: "Dodge" },
-    { value: "DongFeng", label: "DongFeng" },
-    { value: "DS", label: "DS" },
-    { value: "Eagle", label: "Eagle" },
-    { value: "FAW", label: "FAW" },
-    { value: "Ferrari", label: "Ferrari" },
-    { value: "Fiat", label: "Fiat" },
-    { value: "Ford", label: "Ford" },
-    { value: "Foton", label: "Foton" },
-    { value: "GAC", label: "GAC" },
-    { value: "Geely", label: "Geely" },
-    { value: "Genesis", label: "Genesis" },
-    { value: "Geo", label: "Geo" },
-    { value: "GMC", label: "GMC" },
-    { value: "Great Wall", label: "Great Wall" },
-    { value: "Hafei", label: "Hafei" },
-    { value: "Haima", label: "Haima" },
-    { value: "Haval", label: "Haval" },
-    { value: "Holden", label: "Holden" },
-    { value: "Honda", label: "Honda" },
-    { value: "Hummer", label: "Hummer" },
-    { value: "Hyundai", label: "Hyundai" },
-    { value: "Infiniti", label: "Infiniti" },
-    { value: "Iran Khodro", label: "Iran Khodro" },
-    { value: "Isuzu", label: "Isuzu" },
-    { value: "JAC", label: "JAC" },
-    { value: "Jaguar", label: "Jaguar" },
-    { value: "Jeep", label: "Jeep" },
-    { value: "Kia", label: "Kia" },
-    { value: "Lamborghini", label: "Lamborghini" },
-    { value: "Lancia", label: "Lancia" },
-    { value: "Land Rover", label: "Land Rover" },
-    { value: "Lexus", label: "Lexus" },
-    { value: "Lifan", label: "Lifan" },
-    { value: "Lincoln", label: "Lincoln" },
-    { value: "Lotus", label: "Lotus" },
-    { value: "Luxgen", label: "Luxgen" },
-    { value: "Maserati", label: "Maserati" },
-    { value: "Maybach", label: "Maybach" },
-    { value: "Mazda", label: "Mazda" },
-    { value: "Mercedes Benz", label: "Mercedes Benz" },
-    { value: "Mercury", label: "Mercury" },
-    { value: "MG", label: "MG" },
-    { value: "Mini", label: "Mini" },
-    { value: "Mitsubishi", label: "Mitsubishi" },
-    { value: "Nissan", label: "Nissan" },
-    { value: "Oldsmobile", label: "Oldsmobile" },
-    { value: "Opel", label: "Opel" },
-    { value: "Peugeot", label: "Peugeot" },
-    { value: "Plymouth", label: "Plymouth" },
-    { value: "Pontiac", label: "Pontiac" },
-    { value: "Porsche", label: "Porsche" },
-    { value: "Ravon", label: "Ravon" },
-    { value: "Renault", label: "Renault" },
-    { value: "Rolls-Royce", label: "Rolls-Royce" },
-    { value: "Rover", label: "Rover" },
-    { value: "Saab", label: "Saab" },
-    { value: "Saturn", label: "Saturn" },
-    { value: "Scion", label: "Scion" },
-    { value: "SEAT", label: "SEAT" },
-    { value: "Skoda", label: "Skoda" },
-    { value: "Smart", label: "Smart" },
-    { value: "SsangYong", label: "SsangYong" },
-    { value: "Subaru", label: "Subaru" },
-    { value: "Suzuki", label: "Suzuki" },
-    { value: "Tesla", label: "Tesla" },
-    { value: "Toyota", label: "Toyota" },
-    { value: "Vauxhall", label: "Vauxhall" },
-    { value: "Volkswagen", label: "Volkswagen" },
-    { value: "Volvo", label: "Volvo" },
-    { value: "Zotye", label: "Zotye" },
-    { value: "Chinese cars", label: "Chinese cars" },
-    { value: "USA cars", label: "USA cars" },
-  ];
-
-  const cmDmOptions = [
-    { value: "CM-Ka", label: "CM-Ka" },
-    { value: "CM-Kha", label: "CM-Kha" },
-    { value: "CM-Ga", label: "CM-Ga" },
-    { value: "CM-Gha", label: "CM-Gha" },
-    { value: "CM-Cha", label: "CM-Cha" },
-    { value: "CM-Chha", label: "CM-Chha" },
-    { value: "CM-Ja", label: "CM-Ja" },
-    { value: "CM-Jha", label: "CM-Jha" },
-    { value: "CM-Ta", label: "CM-Ta" },
-    { value: "CM-Tha", label: "CM-Tha" },
-    { value: "CM-Da", label: "CM-Da" },
-    { value: "CM-Dha", label: "CM-Dha" },
-    { value: "CM-Na", label: "CM-Na" },
-    { value: "CM-Pa", label: "CM-Pa" },
-    { value: "CM-Pha", label: "CM-Pha" },
-    { value: "CM-Ba", label: "CM-Ba" },
-    { value: "CM-Bha", label: "CM-Bha" },
-    { value: "CM-Ma", label: "CM-Ma" },
-    { value: "CM-Ra", label: "CM-Ra" },
-    { value: "CM-La", label: "CM-La" },
-    { value: "CM-Sha", label: "CM-Sha" },
-    { value: "CM-Sa", label: "CM-Sa" },
-    { value: "CM-Ha", label: "CM-Ha" },
-    { value: "DM-Ka", label: "DM-Ka" },
-    { value: "DM-Kha", label: "DM-Kha" },
-    { value: "DM-Ga", label: "DM-Ga" },
-    { value: "DM-Gha", label: "DM-Gha" },
-    { value: "DM-Cha", label: "DM-Cha" },
-    { value: "DM-Chha", label: "DM-Chha" },
-    { value: "DM-Ja", label: "DM-Ja" },
-    { value: "DM-Jha", label: "DM-Jha" },
-    { value: "DM-Ta", label: "DM-Ta" },
-    { value: "DM-Tha", label: "DM-Tha" },
-    { value: "DM-Da", label: "DM-Da" },
-    { value: "DM-Dha", label: "DM-Dha" },
-    { value: "DM-Na", label: "DM-Na" },
-    { value: "DM-Pa", label: "DM-Pa" },
-    { value: "DM-Pha", label: "DM-Pha" },
-    { value: "DM-Ba", label: "DM-Ba" },
-    { value: "DM-Bha", label: "DM-Bha" },
-    { value: "DM-Ma", label: "DM-Ma" },
-    { value: "DM-Ra", label: "DM-Ra" },
-    { value: "DM-La", label: "DM-La" },
-    { value: "DM-Sha", label: "DM-Sha" },
-    { value: "DM-Sa", label: "DM-Sa" },
-    { value: "DM-Ha", label: "DM-Ha" },
-  ];
-
-  console.log(cmDmOptions);
 
   return (
     <div className="addJobCardWraps">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-        {/* <div className="flex items-center justify-center">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
-          <div className="invoiceHead">
-            <h2 className=" font-bold text-center trustAuto word-sp">
-              Trust Auto Solution{" "}
-            </h2>
-            <p className=" -mt-5 text-sm">
-              It is trusted computerized Organization for all the kinds of
-              vehicle check up & maintenance such as computerized Engine
-              Analysis Engine tune up, Denting, Painting, Engine, AC, Electrical
-              Works & Car Wash.
-            </p>
-          </div>
-        </div> */}
+
         <div className="w-full flex justify-between items-center mb-2 mt-5">
           <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div>
@@ -865,6 +662,7 @@ const AddJobCard = () => {
                 <span>{jobNo}</span>
               </div>
               <div>
+
                 <span>
                   <b>Customer ID:</b> TAS000
                 </span>
@@ -920,7 +718,7 @@ const AddJobCard = () => {
                   No
                   options={cmDmOptions.map((option) => option.label)}
                   renderInput={(params) => (
-                    <TextField {...params} label="Car Registration No" />
+                    <TextField {...params} label="Car Reg No" />
                   )}
                 />
                 <TextField
