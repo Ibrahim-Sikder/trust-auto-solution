@@ -6,7 +6,13 @@ import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import { FormControl, InputLabel, Select, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  Select,
+  TextField,
+} from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
@@ -619,6 +625,198 @@ const AddJobCard = () => {
     },
   }));
 
+  const totalYear = [];
+
+  for (let year = 1980; year <= 2024; year++) {
+    totalYear.push({ title: year });
+  }
+
+  const vehicleTypes = [
+    { label: "Vehicle Type", value: "Vehicle Type" },
+    { label: "Sedans", value: "Sedans" },
+    { label: "Crossovers", value: "Crossovers" },
+    { label: "Sports", value: "Sports" },
+    { label: "Trucks", value: "Trucks" },
+    { label: "Coupes", value: "Coupes" },
+    { label: "Convertibles", value: "Convertibles" },
+    { label: "Diesels", value: "Diesels" },
+    { label: "SUVs", value: "SUVs" },
+    { label: "Hybrid/Electric", value: "Hybrid/Electric" },
+    { label: "Vans/Minivans", value: "Vans/Minivans" },
+    { label: "Wagons", value: "Wagons" },
+    { label: "Small Cars", value: "Small Cars" },
+    { label: "CPO", value: "CPO" },
+  ];
+
+  const fuelType = [
+    { label: "Octen", value: "Octen" },
+    { label: "Octel CNG", value: "Octel CNG" },
+    { label: "Petrol", value: "Petrol" },
+    { label: "Petrol CNG", value: "Petrol CNG" },
+    { label: "Petrol LPG", value: "Petrol LPG" },
+    { label: "Diesel", value: "Diesel" },
+    { label: "CNG", value: "CNG" },
+    { label: "LPG", value: "LPG" },
+    { label: "Electric", value: "Electric" },
+    { label: "Hybrid", value: "Hybrid" },
+    { label: "Diesels", value: "Diesels" },
+    { label: "Plugin Hybrid ", value: "Plugin Hybrid " },
+    { label: "Electric Hybrid ", value: "Electric Hybrid " },
+    { label: "Mile Hybrid ", value: "Mile Hybrid " },
+  ];
+
+  const carBrands = [
+    { value: "Acura", label: "Acura" },
+    { value: "Alfa Romeo", label: "Alfa Romeo" },
+    { value: "Aston Martin", label: "Aston Martin" },
+    { value: "Audi", label: "Audi" },
+    { value: "Austin", label: "Austin" },
+    { value: "Bentley", label: "Bentley" },
+    { value: "BMW", label: "BMW" },
+    { value: "Brilliance", label: "Brilliance" },
+    { value: "Bugatti", label: "Bugatti" },
+    { value: "Buick", label: "Buick" },
+    { value: "BYD", label: "BYD" },
+    { value: "Cadillac", label: "Cadillac" },
+    { value: "Chana", label: "Chana" },
+    { value: "Changan", label: "Changan" },
+    { value: "Chery", label: "Chery" },
+    { value: "Chevrolet", label: "Chevrolet" },
+    { value: "Chrysler", label: "Chrysler" },
+    { value: "Citroën", label: "Citroën" },
+    { value: "Dacia", label: "Dacia" },
+    { value: "Dadi", label: "Dadi" },
+    { value: "Daewoo", label: "Daewoo" },
+    { value: "Daihatsu", label: "Daihatsu" },
+    { value: "Datsun", label: "Datsun" },
+    { value: "De Lorean", label: "De Lorean" },
+    { value: "Derways", label: "Derways" },
+    { value: "Dodge", label: "Dodge" },
+    { value: "DongFeng", label: "DongFeng" },
+    { value: "DS", label: "DS" },
+    { value: "Eagle", label: "Eagle" },
+    { value: "FAW", label: "FAW" },
+    { value: "Ferrari", label: "Ferrari" },
+    { value: "Fiat", label: "Fiat" },
+    { value: "Ford", label: "Ford" },
+    { value: "Foton", label: "Foton" },
+    { value: "GAC", label: "GAC" },
+    { value: "Geely", label: "Geely" },
+    { value: "Genesis", label: "Genesis" },
+    { value: "Geo", label: "Geo" },
+    { value: "GMC", label: "GMC" },
+    { value: "Great Wall", label: "Great Wall" },
+    { value: "Hafei", label: "Hafei" },
+    { value: "Haima", label: "Haima" },
+    { value: "Haval", label: "Haval" },
+    { value: "Holden", label: "Holden" },
+    { value: "Honda", label: "Honda" },
+    { value: "Hummer", label: "Hummer" },
+    { value: "Hyundai", label: "Hyundai" },
+    { value: "Infiniti", label: "Infiniti" },
+    { value: "Iran Khodro", label: "Iran Khodro" },
+    { value: "Isuzu", label: "Isuzu" },
+    { value: "JAC", label: "JAC" },
+    { value: "Jaguar", label: "Jaguar" },
+    { value: "Jeep", label: "Jeep" },
+    { value: "Kia", label: "Kia" },
+    { value: "Lamborghini", label: "Lamborghini" },
+    { value: "Lancia", label: "Lancia" },
+    { value: "Land Rover", label: "Land Rover" },
+    { value: "Lexus", label: "Lexus" },
+    { value: "Lifan", label: "Lifan" },
+    { value: "Lincoln", label: "Lincoln" },
+    { value: "Lotus", label: "Lotus" },
+    { value: "Luxgen", label: "Luxgen" },
+    { value: "Maserati", label: "Maserati" },
+    { value: "Maybach", label: "Maybach" },
+    { value: "Mazda", label: "Mazda" },
+    { value: "Mercedes Benz", label: "Mercedes Benz" },
+    { value: "Mercury", label: "Mercury" },
+    { value: "MG", label: "MG" },
+    { value: "Mini", label: "Mini" },
+    { value: "Mitsubishi", label: "Mitsubishi" },
+    { value: "Nissan", label: "Nissan" },
+    { value: "Oldsmobile", label: "Oldsmobile" },
+    { value: "Opel", label: "Opel" },
+    { value: "Peugeot", label: "Peugeot" },
+    { value: "Plymouth", label: "Plymouth" },
+    { value: "Pontiac", label: "Pontiac" },
+    { value: "Porsche", label: "Porsche" },
+    { value: "Ravon", label: "Ravon" },
+    { value: "Renault", label: "Renault" },
+    { value: "Rolls-Royce", label: "Rolls-Royce" },
+    { value: "Rover", label: "Rover" },
+    { value: "Saab", label: "Saab" },
+    { value: "Saturn", label: "Saturn" },
+    { value: "Scion", label: "Scion" },
+    { value: "SEAT", label: "SEAT" },
+    { value: "Skoda", label: "Skoda" },
+    { value: "Smart", label: "Smart" },
+    { value: "SsangYong", label: "SsangYong" },
+    { value: "Subaru", label: "Subaru" },
+    { value: "Suzuki", label: "Suzuki" },
+    { value: "Tesla", label: "Tesla" },
+    { value: "Toyota", label: "Toyota" },
+    { value: "Vauxhall", label: "Vauxhall" },
+    { value: "Volkswagen", label: "Volkswagen" },
+    { value: "Volvo", label: "Volvo" },
+    { value: "Zotye", label: "Zotye" },
+    { value: "Chinese cars", label: "Chinese cars" },
+    { value: "USA cars", label: "USA cars" },
+  ];
+
+  const cmDmOptions = [
+    { value: "CM-Ka", label: "CM-Ka" },
+    { value: "CM-Kha", label: "CM-Kha" },
+    { value: "CM-Ga", label: "CM-Ga" },
+    { value: "CM-Gha", label: "CM-Gha" },
+    { value: "CM-Cha", label: "CM-Cha" },
+    { value: "CM-Chha", label: "CM-Chha" },
+    { value: "CM-Ja", label: "CM-Ja" },
+    { value: "CM-Jha", label: "CM-Jha" },
+    { value: "CM-Ta", label: "CM-Ta" },
+    { value: "CM-Tha", label: "CM-Tha" },
+    { value: "CM-Da", label: "CM-Da" },
+    { value: "CM-Dha", label: "CM-Dha" },
+    { value: "CM-Na", label: "CM-Na" },
+    { value: "CM-Pa", label: "CM-Pa" },
+    { value: "CM-Pha", label: "CM-Pha" },
+    { value: "CM-Ba", label: "CM-Ba" },
+    { value: "CM-Bha", label: "CM-Bha" },
+    { value: "CM-Ma", label: "CM-Ma" },
+    { value: "CM-Ra", label: "CM-Ra" },
+    { value: "CM-La", label: "CM-La" },
+    { value: "CM-Sha", label: "CM-Sha" },
+    { value: "CM-Sa", label: "CM-Sa" },
+    { value: "CM-Ha", label: "CM-Ha" },
+    { value: "DM-Ka", label: "DM-Ka" },
+    { value: "DM-Kha", label: "DM-Kha" },
+    { value: "DM-Ga", label: "DM-Ga" },
+    { value: "DM-Gha", label: "DM-Gha" },
+    { value: "DM-Cha", label: "DM-Cha" },
+    { value: "DM-Chha", label: "DM-Chha" },
+    { value: "DM-Ja", label: "DM-Ja" },
+    { value: "DM-Jha", label: "DM-Jha" },
+    { value: "DM-Ta", label: "DM-Ta" },
+    { value: "DM-Tha", label: "DM-Tha" },
+    { value: "DM-Da", label: "DM-Da" },
+    { value: "DM-Dha", label: "DM-Dha" },
+    { value: "DM-Na", label: "DM-Na" },
+    { value: "DM-Pa", label: "DM-Pa" },
+    { value: "DM-Pha", label: "DM-Pha" },
+    { value: "DM-Ba", label: "DM-Ba" },
+    { value: "DM-Bha", label: "DM-Bha" },
+    { value: "DM-Ma", label: "DM-Ma" },
+    { value: "DM-Ra", label: "DM-Ra" },
+    { value: "DM-La", label: "DM-La" },
+    { value: "DM-Sha", label: "DM-Sha" },
+    { value: "DM-Sa", label: "DM-Sa" },
+    { value: "DM-Ha", label: "DM-Ha" },
+  ];
+
+  console.log(cmDmOptions);
+
   return (
     <div className="addJobCardWraps">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
@@ -671,7 +869,10 @@ const AddJobCard = () => {
                   <b>Customer ID:</b> TAS000
                 </span>
                 <div className="flex items-center topSearchBa">
-                <input type="text" className="w-[200px] h-[35px] border border-[#ddd]  pl-1 rounded-sm " />
+                  <input
+                    type="text"
+                    className="w-[200px] h-[35px] border border-[#ddd]  pl-1 rounded-sm "
+                  />
                 </div>
               </div>
             </div>
@@ -703,73 +904,20 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl mb-5 font-bold">Vehicle Information </h3>
 
-              <div className="mt-3 mb-3">
-                <div className="flex items-center">
-                  <FormControl className="jobCardSelect">
-                    <InputLabel htmlFor="grouped-native-select">
-                      Car Registration No
-                    </InputLabel>
-                    <Select
-                      onChange={(e) => setCarReg(e.target.value)}
-                      native
-                      id="grouped-native-select"
-                      label="Car Registration No  "
-                    >
-                      <option value="CM-Ka">CM-Ka</option>
-                      <option value="CM-Kha">CM-Kha</option>
-                      <option value="CM-Ga">CM-Ga</option>
-                      <option value="CM-Gha">CM-Gha</option>
-                      <option value="CM-Cha">CM-Cha</option>
-                      <option value="CM-Chha">CM-Chha</option>
-                      <option value="CM-Ja">CM-Ja</option>
-                      <option value="CM-Jha">CM-Jha</option>
-                      <option value="CM-Ta">CM-Ta</option>
-                      <option value="CM-Tha">CM-Tha</option>
-                      <option value="CM-Da">CM-Da</option>
-                      <option value="CM-Dha">CM-Dha</option>
-                      <option value="CM-Na">CM-Na</option>
-                      <option value="CM-Pa">CM-Pa</option>
-                      <option value="CM-Pha">CM-Pha</option>
-                      <option value="CM-Ba">CM-Ba</option>
-                      <option value="CM-Bha">CM-Bha</option>
-                      <option value="CM-Ma">CM-Ma</option>
-                      <option value="CM-Ra">CM-Ra</option>
-                      <option value="CM-La">CM-La</option>
-                      <option value="CM-Sha">CM-Sha</option>
-                      <option value="CM-Sa">CM-Sa</option>
-                      <option value="CM-Ha">CM-Ha</option>
-                      <option value="DM-Ka">DM-Ka</option>
-                      <option value="DM-Kha">DM-Kha</option>
-                      <option value="DM-Ga">DM-Ga</option>
-                      <option value="DM-Gha">DM-Gha</option>
-                      <option value="DM-Cha">DM-Cha</option>
-                      <option value="DM-Chha">DM-Chha</option>
-                      <option value="DM-Ja">DM-Ja</option>
-                      <option value="DM-Jha">DM-Jha</option>
-                      <option value="DM-Ta">DM-Ta</option>
-                      <option value="DM-Tha">DM-Tha</option>
-                      <option value="DM-Da">DM-Da</option>
-                      <option value="DM-Dha">DM-Dha</option>
-                      <option value="DM-Na">DM-Na</option>
-                      <option value="DM-Pa">DM-Pa</option>
-                      <option value="DM-Pha">DM-Pha</option>
-                      <option value="DM-Ba">DM-Ba</option>
-                      <option value="DM-Bha">DM-Bha</option>
-                      <option value="DM-Ma">DM-Ma</option>
-                      <option value="DM-Ra">DM-Ra</option>
-                      <option value="DM-La">DM-La</option>
-                      <option value="DM-Sha">DM-Sha</option>
-                      <option value="DM-Sa">DM-Sa</option>
-                      <option value="DM-Ha">DM-Ha</option>
-                    </Select>
-                  </FormControl>
-                  <TextField
-                    className="addJobInputField"
-                    onChange={(e) => setRegistration(e.target.value)}
-                    label="Car R (T&N)"
-                  />
-                </div>
+              <div className="mt-3">
+                <Autocomplete
+                  onChange={(e) => setCarReg(e.target.value)}
+                  id="free-solo-demo"
+                  Car
+                  Registration
+                  No
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Car Registration No" />
+                  )}
+                />
               </div>
+
               <div>
                 <TextField
                   className="addJobInputField"
@@ -784,119 +932,20 @@ const AddJobCard = () => {
                   label="ENGINE NO & CC (T&N) "
                 />
               </div>
+
               <div className="mt-3">
-                <FormControl className="addJobInputField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Vehicle Brand
-                  </InputLabel>
-                  <Select
-                    className="addJobInputField"
-                    onChange={(e) => setCarReg(e.target.value)}
-                    native
-                    id="grouped-native-select"
-                    label="Vehicle Brand"
-                  >
-                    <option value="Acura">Acura</option>
-                    <option value="Alfa Romeo">Alfa Romeo</option>
-                    <option value="Aston Martin">Aston Martin</option>
-                    <option value="Audi">Audi</option>
-                    <option value="Austin">Austin</option>
-                    <option value="Bentley">Bentley</option>
-                    <option value="BMW">BMW</option>
-                    <option value="Brilliance">Brilliance</option>
-                    <option value="Bugatti">Bugatti</option>
-                    <option value="Buick">Buick</option>
-                    <option value="BYD">BYD</option>
-                    <option value="Cadillac">Cadillac</option>
-                    <option value="Chana">Chana</option>
-                    <option value="Changan">Changan</option>
-                    <option value="Chery">Chery</option>
-                    <option value="Chevrolet">Chevrolet</option>
-                    <option value="Chrysler">Chrysler</option>
-                    <option value="Citroën">Citroën</option>
-                    <option value="Dacia">Dacia</option>
-                    <option value="Dadi">Dadi</option>
-                    <option value="Daewoo">Daewoo</option>
-                    <option value="Daihatsu">Daihatsu</option>
-                    <option value="Datsun">Datsun</option>
-                    <option value="De Lorean">De Lorean</option>
-                    <option value="Derways">Derways</option>
-                    <option value="Dodge">Dodge</option>
-                    <option value="DongFeng">DongFeng</option>
-                    <option value="DS">DS</option>
-                    <option value="Eagle">Eagle</option>
-                    <option value="FAW">FAW</option>
-                    <option value="Ferrari">Ferrari</option>
-                    <option value="Fiat">Fiat</option>
-                    <option value="Ford">Ford</option>
-                    <option value="Foton">Foton</option>
-                    <option value="GAC">GAC</option>
-                    <option value="Geely">Geely</option>
-                    <option value="Genesis">Genesis</option>
-                    <option value="Geo">Geo</option>
-                    <option value="GMC">GMC</option>
-                    <option value="Great Wall">Great Wall</option>
-                    <option value="Hafei">Hafei</option>
-                    <option value="Haima">Haima</option>
-                    <option value="Haval">Haval</option>
-                    <option value="Holden">Holden</option>
-                    <option value="Honda">Honda</option>
-                    <option value="Hummer">Hummer</option>
-                    <option value="Hyundai">Hyundai</option>
-                    <option value="Infiniti">Infiniti</option>
-                    <option value="Iran Khodro">Iran Khodro</option>
-                    <option value="Isuzu">Isuzu</option>
-                    <option value="JAC">JAC</option>
-                    <option value="Jaguar">Jaguar</option>
-                    <option value="Jeep">Jeep</option>
-                    <option value="Kia">Kia</option>
-                    <option value="Lamborghini">Lamborghini</option>
-                    <option value="Lancia">Lancia</option>
-                    <option value="Land Rover">Land Rover</option>
-                    <option value="Lexus">Lexus</option>
-                    <option value="Lifan">Lifan</option>
-                    <option value="Lincoln">Lincoln</option>
-                    <option value="Lotus">Lotus</option>
-                    <option value="Luxgen">Luxgen</option>
-                    <option value="Maserati">Maserati</option>
-                    <option value="Maybach">Maybach</option>
-                    <option value="Mazda">Mazda</option>
-                    <option value="Mercedes Benz">Mercedes Benz</option>
-                    <option value="Mercury">Mercury</option>
-                    <option value="MG">MG</option>
-                    <option value="Mini">Mini</option>
-                    <option value="Mitsubishi">Mitsubishi</option>
-                    <option value="Nissan">Nissan</option>
-                    <option value="Oldsmobile">Oldsmobile</option>
-                    <option value="Opel">Opel</option>
-                    <option value="Peugeot">Peugeot</option>
-                    <option value="Plymouth">Plymouth</option>
-                    <option value="Pontiac">Pontiac</option>
-                    <option value="Porsche">Porsche</option>
-                    <option value="Ravon">Ravon</option>
-                    <option value="Renault">Renault</option>
-                    <option value="Rolls-Royce">Rolls-Royce</option>
-                    <option value="Rover">Rover</option>
-                    <option value="Saab">Saab</option>
-                    <option value="Saturn">Saturn</option>
-                    <option value="Scion">Scion</option>
-                    <option value="SEAT">SEAT</option>
-                    <option value="Skoda">Skoda</option>
-                    <option value="Smart">Smart</option>
-                    <option value="SsangYong">SsangYong</option>
-                    <option value="Subaru">Subaru</option>
-                    <option value="Suzuki">Suzuki</option>
-                    <option value="Tesla">Tesla</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Vauxhall">Vauxhall</option>
-                    <option value="Volkswagen">Volkswagen</option>
-                    <option value="Volvo">Volvo</option>
-                    <option value="Zotye">Zotye</option>
-                    <option value="Chinese cars">Chinese cars</option>
-                    <option value="USA cars">USA cars</option>
-                  </Select>
-                </FormControl>
+                <Autocomplete
+                  onChange={(e) => setCarReg(e.target.value)}
+                  id="free-solo-demo"
+                  Vehicle
+                  Brand
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Vehicle Brand" />
+                  )}
+                />
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -904,6 +953,7 @@ const AddJobCard = () => {
                   label="Vehicle Name "
                 />
               </div>
+              {/** 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -911,34 +961,32 @@ const AddJobCard = () => {
                   label="Vehicle Model (N)"
                 />
               </div>
+              */}
+
               <div className="mt-3">
-                <FormControl className="addJobInputField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Select Vehicle Category{" "}
-                  </InputLabel>
-                  <Select
-                    onChange={(e) => setVehicleCategory(e.target.value)}
-                    native
-                    defaultValue=""
-                    id="grouped-native-select"
-                    label="Select Vehicle Category  "
-                  >
-                    <option value="Vehicle Type ">Vehicle Type</option>
-                    <option value="Sedans">Sedans</option>
-                    <option value="Crossovers">Crossovers</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Trucks">Trucks</option>
-                    <option value="Coupes">Coupes</option>
-                    <option value="Convertibles">Convertibles</option>
-                    <option value="Diesels">Diesels</option>
-                    <option value="SUVs">SUVs</option>
-                    <option value="Hybrid/Electric">Hybrid/Electric</option>
-                    <option value="Vans/Minivans">Vans/Minivans</option>
-                    <option value="Wagons">Wagons</option>
-                    <option value="Small Cars ">Small Cars </option>
-                    <option value="CPO ">CPO </option>
-                  </Select>
-                </FormControl>
+                <Autocomplete
+                  onChange={(e) => setCarModel(e.target.value)}
+                  id="free-solo-demo"
+                  Vehicle
+                  Brand
+                  options={totalYear.map((option) => option.title)}
+                  renderInput={(params) => (
+                    <TextField {...params} label=" Vehicle Brand" />
+                  )}
+                />
+              </div>
+
+              <div className="mt-3">
+                <Autocomplete
+                  onChange={(e) => setVehicleCategory(e.target.value)}
+                  id="free-solo-demo"
+                  Vehicle
+                  Types
+                  options={vehicleTypes.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField {...params} label=" Vehicle Categories " />
+                  )}
+                />
               </div>
               <div className="mt-3">
                 <TextField
@@ -955,10 +1003,15 @@ const AddJobCard = () => {
                 />
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
+                <Autocomplete
                   onChange={(e) => setColor(e.target.value)}
-                  label="Fuel Type (T&N) "
+                  id="free-solo-demo"
+                  Fuel
+                  Type
+                  options={fuelType.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField {...params} label=" Fuel Type" />
+                  )}
                 />
               </div>
             </div>
