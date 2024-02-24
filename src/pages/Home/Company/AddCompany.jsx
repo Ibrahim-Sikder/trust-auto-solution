@@ -1,12 +1,19 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import { FaFileInvoice, FaEye, FaTrashAlt, FaEdit } from "react-icons/fa";
+import { FaEye, FaTrashAlt, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { FormControl, InputLabel, Select } from "@mui/material";
+import { Autocomplete } from "@mui/material";
+import {
+  carBrands,
+  cmDmOptions,
+  fuelType,
+  vehicleTypes,
+} from "../../../constant";
+import { HiOutlineUserGroup } from "react-icons/hi";
 
 const AddCompany = () => {
   const Search = styled("div")(({ theme }) => ({
@@ -59,7 +66,7 @@ const AddCompany = () => {
             <button> Add Job </button>
           </Link>
           <Link to="/dashboard/qutation">
-            <button>Quotation </button>
+            <button>Qutation </button>
           </Link>
           <Link to="/dashboard/invoice">
             <button>Invoice </button>
@@ -67,7 +74,7 @@ const AddCompany = () => {
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
-            <FaFileInvoice className="invoicIcon" />
+            <HiOutlineUserGroup className="invoicIcon" />
             <div className="ml-2">
               <h3 className="text-2xl font-bold"> New Company </h3>
               <span>Add New Company </span>
@@ -82,9 +89,9 @@ const AddCompany = () => {
 
         <div className="addProductWrap">
           <form>
-            <div className="flex">
+            <div className="flex justify-center">
               <div>
-                <h3 className="text-xl  font-bold ">Company Information </h3>
+                <h3 className="text-xl  font-bold mb-1">Company Information </h3>
                 <div>
                   <TextField
                     className="productField"
@@ -95,8 +102,23 @@ const AddCompany = () => {
                 <div>
                   <TextField
                     className="productField"
+                    onC
+                    label="Vehicle User Name (T)"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    className="productField"
                     on
                     label="Company Address (T)"
+                  />
+                </div>
+
+                <div>
+                  <TextField
+                    className="productField"
+                    onC
+                    label="Company Name (T)"
                   />
                 </div>
                 <div>
@@ -109,6 +131,12 @@ const AddCompany = () => {
                   <TextField
                     className="productField"
                     label="Company Email Address (N)"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    className="productField"
+                    label="Company Address (T) "
                   />
                 </div>
                 <div>
@@ -133,143 +161,46 @@ const AddCompany = () => {
               </div>
 
               <div>
-                <h3 className="text-xl font-bold">Vehicle Information </h3>
-
-                <div>
-                
-                  <div>
-                    <TextField
-                      className="productField"
-                      label="Chassis No (T&N)"
-                    />
-                  </div>
-                  <div>
-                    <TextField
-                      className="productField"
-                      label="ENGINE NO & CC (T&N) "
-                    />
-                  </div>
+                <h3 className="text-xl font-bold mb-2">Vehicle Information </h3>
+                <div className="flex items-center mt-1 productField">
+                  <Autocomplete
+                    className="jobCardSelect"
+                    id="reg"
+                    Car
+                    Registration
+                    No
+                    options={cmDmOptions.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Car Reg No" />
+                    )}
+                  />
+                  <TextField className="carRegNumbers" label="Car R (T&N)" />
                 </div>
 
-                {/*  <div className="mt-3">
-          <TextField
-            className="addJobInputField"
-            onChange={(e) => setVehicleBrand(e.target.value)}
-            label="Vehicle Brand (T&N)"
-          />
-        </div>
-*/}
                 <div>
-                  <FormControl className="productField">
-                    <InputLabel htmlFor="grouped-native-select">
-                      Vehicle Brand
-                    </InputLabel>
-                    <Select
-                      className="addJobInputField"
-                      native
-                      id="grouped-native-select"
-                      label="Vehicle Brand"
-                    >
-                      <option value="Acura">Acura</option>
-                      <option value="Alfa Romeo">Alfa Romeo</option>
-                      <option value="Aston Martin">Aston Martin</option>
-                      <option value="Audi">Audi</option>
-                      <option value="Austin">Austin</option>
-                      <option value="Bentley">Bentley</option>
-                      <option value="BMW">BMW</option>
-                      <option value="Brilliance">Brilliance</option>
-                      <option value="Bugatti">Bugatti</option>
-                      <option value="Buick">Buick</option>
-                      <option value="BYD">BYD</option>
-                      <option value="Cadillac">Cadillac</option>
-                      <option value="Chana">Chana</option>
-                      <option value="Changan">Changan</option>
-                      <option value="Chery">Chery</option>
-                      <option value="Chevrolet">Chevrolet</option>
-                      <option value="Chrysler">Chrysler</option>
-                      <option value="Citroën">Citroën</option>
-                      <option value="Dacia">Dacia</option>
-                      <option value="Dadi">Dadi</option>
-                      <option value="Daewoo">Daewoo</option>
-                      <option value="Daihatsu">Daihatsu</option>
-                      <option value="Datsun">Datsun</option>
-                      <option value="De Lorean">De Lorean</option>
-                      <option value="Derways">Derways</option>
-                      <option value="Dodge">Dodge</option>
-                      <option value="DongFeng">DongFeng</option>
-                      <option value="DS">DS</option>
-                      <option value="Eagle">Eagle</option>
-                      <option value="FAW">FAW</option>
-                      <option value="Ferrari">Ferrari</option>
-                      <option value="Fiat">Fiat</option>
-                      <option value="Ford">Ford</option>
-                      <option value="Foton">Foton</option>
-                      <option value="GAC">GAC</option>
-                      <option value="Geely">Geely</option>
-                      <option value="Genesis">Genesis</option>
-                      <option value="Geo">Geo</option>
-                      <option value="GMC">GMC</option>
-                      <option value="Great Wall">Great Wall</option>
-                      <option value="Hafei">Hafei</option>
-                      <option value="Haima">Haima</option>
-                      <option value="Haval">Haval</option>
-                      <option value="Holden">Holden</option>
-                      <option value="Honda">Honda</option>
-                      <option value="Hummer">Hummer</option>
-                      <option value="Hyundai">Hyundai</option>
-                      <option value="Infiniti">Infiniti</option>
-                      <option value="Iran Khodro">Iran Khodro</option>
-                      <option value="Isuzu">Isuzu</option>
-                      <option value="JAC">JAC</option>
-                      <option value="Jaguar">Jaguar</option>
-                      <option value="Jeep">Jeep</option>
-                      <option value="Kia">Kia</option>
-                      <option value="Lamborghini">Lamborghini</option>
-                      <option value="Lancia">Lancia</option>
-                      <option value="Land Rover">Land Rover</option>
-                      <option value="Lexus">Lexus</option>
-                      <option value="Lifan">Lifan</option>
-                      <option value="Lincoln">Lincoln</option>
-                      <option value="Lotus">Lotus</option>
-                      <option value="Luxgen">Luxgen</option>
-                      <option value="Maserati">Maserati</option>
-                      <option value="Maybach">Maybach</option>
-                      <option value="Mazda">Mazda</option>
-                      <option value="Mercedes Benz">Mercedes Benz</option>
-                      <option value="Mercury">Mercury</option>
-                      <option value="MG">MG</option>
-                      <option value="Mini">Mini</option>
-                      <option value="Mitsubishi">Mitsubishi</option>
-                      <option value="Nissan">Nissan</option>
-                      <option value="Oldsmobile">Oldsmobile</option>
-                      <option value="Opel">Opel</option>
-                      <option value="Peugeot">Peugeot</option>
-                      <option value="Plymouth">Plymouth</option>
-                      <option value="Pontiac">Pontiac</option>
-                      <option value="Porsche">Porsche</option>
-                      <option value="Ravon">Ravon</option>
-                      <option value="Renault">Renault</option>
-                      <option value="Rolls-Royce">Rolls-Royce</option>
-                      <option value="Rover">Rover</option>
-                      <option value="Saab">Saab</option>
-                      <option value="Saturn">Saturn</option>
-                      <option value="Scion">Scion</option>
-                      <option value="SEAT">SEAT</option>
-                      <option value="Skoda">Skoda</option>
-                      <option value="Smart">Smart</option>
-                      <option value="SsangYong">SsangYong</option>
-                      <option value="Subaru">Subaru</option>
-                      <option value="Suzuki">Suzuki</option>
-                      <option value="Tesla">Tesla</option>
-                      <option value="Toyota">Toyota</option>
-                      <option value="Vauxhall">Vauxhall</option>
-                      <option value="Volkswagen">Volkswagen</option>
-                      <option value="Volvo">Volvo</option>
-                      <option value="Zotye">Zotye</option>
-                      <option value="Chinese cars">Chinese cars</option>
-                      <option value="USA cars">USA cars</option>
-                    </Select>
-                  </FormControl>
+                  <TextField
+                    className="productField"
+                    label="Chassis No (T&N)"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    className="productField"
+                    label="ENGINE NO & CC (T&N) "
+                  />
+                </div>
+
+                <div>
+                  <Autocomplete
+                    className="productField"
+                    id="free-solo-demo"
+                    Vehicle
+                    Brand
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Vehicle Brand" />
+                    )}
+                  />
                 </div>
                 <div>
                   <TextField className="productField" label="Vehicle Name " />
@@ -281,33 +212,15 @@ const AddCompany = () => {
                   />
                 </div>
                 <div>
-                  <FormControl className="productField">
-                    <InputLabel htmlFor="grouped-native-select">
-                      Select Vehicle Category{" "}
-                    </InputLabel>
-                    <Select
-                      onCha
-                      native
-                      defaultValue=""
-                      id="grouped-native-select"
-                      label="Select Vehicle Category  "
-                    >
-                      <option value="Vehicle Type ">Vehicle Type</option>
-                      <option value="Sedans">Sedans</option>
-                      <option value="Crossovers">Crossovers</option>
-                      <option value="Sports">Sports</option>
-                      <option value="Trucks">Trucks</option>
-                      <option value="Coupes">Coupes</option>
-                      <option value="Convertibles">Convertibles</option>
-                      <option value="Diesels">Diesels</option>
-                      <option value="SUVs">SUVs</option>
-                      <option value="Hybrid/Electric">Hybrid/Electric</option>
-                      <option value="Vans/Minivans">Vans/Minivans</option>
-                      <option value="Wagons">Wagons</option>
-                      <option value="Small Cars ">Small Cars </option>
-                      <option value="CPO ">CPO </option>
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                  className="productField" 
+                    Vehicle
+                    Types
+                    options={vehicleTypes.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField {...params} label=" Vehicle Categories " />
+                    )}
+                  />
                 </div>
                 <div>
                   <TextField
@@ -319,15 +232,20 @@ const AddCompany = () => {
                   <TextField className="productField" label="Mileage (N) " />
                 </div>
                 <div>
-                  <TextField
-                    className="productField"
-                    label="Fuel Type (T&N) "
+                  <Autocomplete
+                  className="productField"
+                    Fuel
+                    Type
+                    options={fuelType.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField {...params} label=" Fuel Type" />
+                    )}
                   />
                 </div>
               </div>
             </div>
 
-            <div className="savebtn mt-2">
+            <div className="savebtn mt-2 ml-3">
               <button>Add Company </button>
             </div>
           </form>

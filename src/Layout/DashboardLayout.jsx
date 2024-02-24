@@ -33,7 +33,6 @@ import {
 import { animateScroll as scroll } from "react-scroll";
 import { HiOutlineUserGroup } from "react-icons/hi";
 
-
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
   const navRef = useRef();
@@ -269,88 +268,52 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
             <Accordion
-            className="dashboardAccordion"
-            expanded={expanded === "panel6"}
-            onChange={handleChange("panel6")}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
-              aria-controls="panel6a-content"
-              id="panel6a-header"
-            >
-              <Typography>
-                <span className="flex items-center justify-center">
-                  <ShoppingBag />
-                  <span className="ml-2"> Product </span>
-                </span>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography className="accordionTypoGrapy">
-                <div className="flex items-center">
-                  <FaPlus className="mr-2" />
-                  <NavLink to="/dashboard/add-product">Add Product </NavLink>
-                </div>
-              </Typography>
-              <Typography className="accordionTypoGrapy">
-                <div className="flex items-center">
-                  <FaThLarge className="mr-2" />
-                  <NavLink to="/dashboard/product">All Product List </NavLink>
-                </div>
-              </Typography>
-              <Typography className="accordionTypoGrapy">
-              <div className="flex items-center">
-              <FaPlus className="mr-2" />
-                <NavLink to="/dashboard/add-purchase">Add Purchase</NavLink>
-              </div>
-            </Typography>
-              <Typography className="accordionTypoGrapy">
-                <div className="flex items-center">
-                  <FaThLarge className="mr-2" />
-                  <NavLink to="/dashboard/purchase-list">Purchase List </NavLink>
-                </div>
-              </Typography>
-             
-            </AccordionDetails>
-          </Accordion>
-            <Accordion
               className="dashboardAccordion"
-              expanded={expanded === "panel7"}
-              onChange={handleChange("panel7")}
+              expanded={expanded === "panel6"}
+              onChange={handleChange("panel6")}
             >
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
-                className="dashboardAccordionSummary"
+                aria-controls="panel6a-content"
+                id="panel6a-header"
               >
                 <Typography>
-                  <div className="flex items-center justify-center">
-                    <HiOutlineUserGroup  className="dashboardIcon" />
-                    <span className="ml-2"> Company</span>
-                  </div>
+                  <span className="flex items-center justify-center">
+                    <ShoppingBag />
+                    <span className="ml-2"> Product </span>
+                  </span>
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography className="accordionTypoGrapy">
-                  <span className="flex items-center">
-                    <HiOutlineUserGroup className="mr-2" />
-                    <NavLink to="/dashboard/add-company">
-                      Add Customer{" "}
-                    </NavLink>
-                  </span>
+                  <div className="flex items-center">
+                    <FaPlus className="mr-2" />
+                    <NavLink to="/dashboard/add-product">Add Product </NavLink>
+                  </div>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
-                  <span className="flex items-center">
+                  <div className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    <NavLink to="/dashboard/company-list">
-                      Company  List 
+                    <NavLink to="/dashboard/product">All Product List </NavLink>
+                  </div>
+                </Typography>
+                <Typography className="accordionTypoGrapy">
+                  <div className="flex items-center">
+                    <FaPlus className="mr-2" />
+                    <NavLink to="/dashboard/add-purchase">Add Purchase</NavLink>
+                  </div>
+                </Typography>
+                <Typography className="accordionTypoGrapy">
+                  <div className="flex items-center">
+                    <FaThLarge className="mr-2" />
+                    <NavLink to="/dashboard/purchase-list">
+                      Purchase List{" "}
                     </NavLink>
-                  </span>
+                  </div>
                 </Typography>
               </AccordionDetails>
             </Accordion>
-           
+            
 
             <Accordion
               className="dashboardAccordion"
@@ -387,41 +350,61 @@ const DashboardLayout = () => {
                     </NavLink>
                   </span>
                 </Typography>
+                <Typography className="accordionTypoGrapy">
+                <span className="flex items-center">
+                  <HiOutlineUserGroup className="mr-2" />
+                  <NavLink to="/dashboard/add-company">
+                    Add Company
+                  </NavLink>
+                </span>
+              </Typography>
+              <Typography className="accordionTypoGrapy">
+                <span className="flex items-center">
+                  <FaThLarge className="mr-2" />
+                  <NavLink to="/dashboard/company-list">
+                  Company List 
+                  </NavLink>
+                </span>
+              </Typography>
               </AccordionDetails>
             </Accordion>
             <Accordion
-            className="dashboardAccordion"
-            expanded={expanded === "panel9"}
-            onChange={handleChange("panel9")}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
-              aria-controls="panel6a-content"
-              id="panel6a-header"
+              className="dashboardAccordion"
+              expanded={expanded === "panel9"}
+              onChange={handleChange("panel9")}
             >
-              <Typography>
-                <span className="flex items-center justify-center">
-                  <ShoppingBag />
-                  <span className="ml-2"> Suppliers </span>
-                </span>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography className="accordionTypoGrapy">
-                <div className="flex items-center">
-                  <FaPlus className="mr-2" />
-                  <NavLink to="/dashboard/add-supplier">Add Supplier </NavLink>
-                </div>
-              </Typography>
-              <Typography className="accordionTypoGrapy">
-                <div className="flex items-center">
-                  <FaThLarge className="mr-2" />
-                  <NavLink to="/dashboard/supplier-list">SupplierList </NavLink>
-                </div>
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-            
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
+                aria-controls="panel6a-content"
+                id="panel6a-header"
+              >
+                <Typography>
+                  <span className="flex items-center justify-center">
+                    <ShoppingBag />
+                    <span className="ml-2"> Suppliers </span>
+                  </span>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography className="accordionTypoGrapy">
+                  <div className="flex items-center">
+                    <FaPlus className="mr-2" />
+                    <NavLink to="/dashboard/add-supplier">
+                      Add Supplier{" "}
+                    </NavLink>
+                  </div>
+                </Typography>
+                <Typography className="accordionTypoGrapy">
+                  <div className="flex items-center">
+                    <FaThLarge className="mr-2" />
+                    <NavLink to="/dashboard/supplier-list">
+                      SupplierList{" "}
+                    </NavLink>
+                  </div>
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+
             <Accordion
               className="dashboardAccordion"
               expanded={expanded === "panel8"}
@@ -444,15 +427,15 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaPlus className="mr-2" />
-                    <NavLink to="/dashboard/add-employee">
-                      Add Employee
-                    </NavLink>
+                    <NavLink to="/dashboard/add-employee">Add Employee</NavLink>
                   </span>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    <NavLink to="/dashboard/employee-list">All Employee</NavLink>
+                    <NavLink to="/dashboard/employee-list">
+                      All Employee
+                    </NavLink>
                   </span>
                 </Typography>
               </AccordionDetails>

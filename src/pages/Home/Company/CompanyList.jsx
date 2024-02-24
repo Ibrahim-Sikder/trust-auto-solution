@@ -1,14 +1,12 @@
-import { FaTrashAlt, FaEdit,  FaUserTie } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
-import { styled, alpha } from "@mui/material/styles"
-import InputBase from "@mui/material/InputBase"
-import SearchIcon from "@mui/icons-material/Search"
+import { styled, alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
 import { HiOutlineUserGroup } from "react-icons/hi";
 const CompanyList = () => {
-
-  
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -22,7 +20,7 @@ const CompanyList = () => {
       marginLeft: theme.spacing(1),
       width: "auto",
     },
-  }))
+  }));
 
   const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
@@ -32,7 +30,7 @@ const CompanyList = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  }))
+  }));
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
@@ -49,56 +47,62 @@ const CompanyList = () => {
         },
       },
     },
-  }))
-
-
+  }));
 
   return (
     <div className="mt-5 mb-24 w-full">
-       <div className="flex justify-between border-b-2 pb-3">
-    <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-				<Link to='/dashboard/addjob'><button> Add Job </button></Link>
-				<Link to='/dashboard/qutation'><button>Quotation </button></Link>
-				<Link to='/dashboard/invoice'><button>Invoice </button></Link>
-			</div>
-      <div className="flex  justify-end items-end">
-        <NotificationAdd size={30} className="mr-2"/>
-        <FaUserGear size={30} />
-      </div>
-    </div>
-      <div className="flex items-center justify-between my-3 mb-8">
-				<div className="flex items-center justify-center ">
-          <HiOutlineUserGroup className="invoicIcon" />
-					<div className="ml-2">
-						<h3 className="text-2xl font-bold"> Company </h3>
-						<span>Manage Company </span>
-					</div>
-				</div>
-				<div className="productHome">
-					<span>Home / </span>
-					<span>Company / </span>
-					<span>New Company </span>
-				</div>
-			</div>
-      <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-          <h3 className="text-3xl font-bold mb-3"> Company List:</h3>
-          <div className="flex items-center">
-                  <Search>
-                    <SearchIconWrapper>
-                      <SearchIcon className="searchIcon" />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                      placeholder="Search…"
-                      inputProps={{ "aria-label": "search" }}
-                    />
-                  </Search>
-                 <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">Search</button>
-                </div>
+      <div className="flex justify-between border-b-2 pb-3">
+        <div className="flex items-center mr-[80px]  justify-center topProductBtn">
+          <Link to="/dashboard/addjob">
+            <button> Add Job </button>
+          </Link>
+          <Link to="/dashboard/qutation">
+            <button>Quotation </button>
+          </Link>
+          <Link to="/dashboard/invoice">
+            <button>Invoice </button>
+          </Link>
         </div>
-   
+        <div className="flex  justify-end items-end">
+          <NotificationAdd size={30} className="mr-2" />
+          <FaUserGear size={30} />
+        </div>
+      </div>
+      <div className="flex items-center justify-between my-3 mb-8">
+        <div className="flex items-center justify-center ">
+          <HiOutlineUserGroup className="invoicIcon" />
+          <div className="ml-2">
+            <h3 className="text-2xl font-bold"> Company </h3>
+            <span>Manage Company </span>
+          </div>
+        </div>
+        <div className="productHome">
+          <span>Home / </span>
+          <span>Company / </span>
+          <span>New Company </span>
+        </div>
+      </div>
+      <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+        <h3 className="text-3xl font-bold mb-3"> Company List:</h3>
+        <div className="flex items-center">
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon className="searchIcon" />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ "aria-label": "search" }}
+            />
+          </Search>
+          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+            Search
+          </button>
+        </div>
+      </div>
+
       <div className="overflow-x-auto ">
         <table className="table ">
-          <thead className='tableWrap'>
+          <thead className="tableWrap">
             <tr>
               <th>SL</th>
               <th>Company Name </th>
@@ -110,35 +114,32 @@ const CompanyList = () => {
           <tbody>
             <tr>
               <td>01</td>
-              <td>Car  </td>
+              <td>Car </td>
               <td>BMW2343</td>
               <td>BDT1005</td>
-              <td >
-                <div className='editIconWrap '>
-                  <Link to='/dashboard/Company-profile'>
-                  <FaUserTie className="invoicIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td >
-                <div className='editIconWrap edit'>
-                  <Link to='/dashboard/update-Company'>
-                    <FaEdit className='editIcon' />
+              <td>
+                <div className="editIconWrap ">
+                  <Link to="/dashboard/company-profile">
+                    <FaUserTie className="invoicIcon" />
                   </Link>
                 </div>
               </td>
               <td>
-                <div className='editIconWrap'>
-                  <FaTrashAlt className='deleteIcon' />
+                <div className="editIconWrap edit">
+                  <Link to="/dashboard/update-Company">
+                    <FaEdit className="editIcon" />
+                  </Link>
                 </div>
-
+              </td>
+              <td>
+                <div className="editIconWrap">
+                  <FaTrashAlt className="deleteIcon" />
+                </div>
               </td>
             </tr>
-
           </tbody>
         </table>
       </div>
-   
     </div>
   );
 };

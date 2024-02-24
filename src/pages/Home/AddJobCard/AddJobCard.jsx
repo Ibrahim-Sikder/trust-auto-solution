@@ -781,7 +781,7 @@ const AddJobCard = () => {
                   Brand
                   options={totalYear.map((option) => option.title)}
                   renderInput={(params) => (
-                    <TextField {...params} label=" Vehicle Brand" />
+                    <TextField {...params} label=" Vehicle Model" />
                   )}
                 />
               </div>

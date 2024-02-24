@@ -46,6 +46,7 @@ import AddPurchase from "../pages/Home/Parchase/AddPurchase";
 import UpdatePurchase from "../pages/Home/Parchase/UpdatePurchase";
 import CompanyList from "../pages/Home/Company/CompanyList";
 import AddCompany from "../pages/Home/Company/AddCompany";
+import CompanyProfile from "../pages/Home/Company/CompanyProfile";
 
 
 export const router = createBrowserRouter([
@@ -124,6 +125,18 @@ export const router = createBrowserRouter([
       {
         path: "customer-profile",
         element: <CustomerProfile/>,
+      },
+      {
+        path: "company-profile",
+        element: <CompanyProfile/>,
+      },
+      {
+        path: "add-company",
+        element: <AddCompany/>,
+      },
+      {
+        path: "company-list",
+        element: <CompanyList/>,
       },
       {
         path: "expense",
@@ -245,14 +258,7 @@ export const router = createBrowserRouter([
         path: "money-receipt-update",
         element: <UpdateMoneyReceipt/>,
       },
-      {
-        path: "add-company",
-        element: <AddCompany/>,
-      },
-      {
-        path: "company-list",
-        element: <CompanyList/>,
-      },
+    
     ],
   },
 ]);
