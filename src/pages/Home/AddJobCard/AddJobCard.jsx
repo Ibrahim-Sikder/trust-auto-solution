@@ -869,10 +869,16 @@ const AddJobCard = () => {
                   <b>Customer ID:</b> TAS000
                 </span>
                 <div className="flex items-center topSearchBa">
-                  <input
-                    type="text"
-                    className="w-[200px] h-[35px] border border-[#ddd]  pl-1 rounded-sm "
-                  />
+                <Autocomplete
+                className="jobCardSelect"
+                  onChange={(e) => setCarReg(e.target.value)}
+                  id="free-solo-demo"
+                  Customer ID 
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Customer ID " />
+                  )}
+                />
                 </div>
               </div>
             </div>
@@ -904,8 +910,9 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl mb-5 font-bold">Vehicle Information </h3>
 
-              <div className="mt-3">
+              <div className="mt-3 flex items-center ">
                 <Autocomplete
+                className="jobCardSelect"
                   onChange={(e) => setCarReg(e.target.value)}
                   id="free-solo-demo"
                   Car
@@ -916,9 +923,14 @@ const AddJobCard = () => {
                     <TextField {...params} label="Car Registration No" />
                   )}
                 />
+                <TextField
+                    className="addJobInputField"
+                    onChange={(e) => setRegistration(e.target.value)}
+                    label="Car R (T&N)"
+                  />
               </div>
 
-              <div>
+              <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   onChange={(e) => setChassisNo(e.target.value)}

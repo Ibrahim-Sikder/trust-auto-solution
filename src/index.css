@@ -147,14 +147,9 @@ input:focus {
 }
 
 
-/* .searchTopBar{
-	width:200px !important;
-	height:30px !important;
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 16.2px !important;
 }
-
- */
-
-
 
 @media only screen and (max-width: 1024px) {
 	.activeDrawer,
