@@ -559,7 +559,7 @@ const DashboardLayout = () => {
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
                   <FaCarAlt className="tooltipIcon" />
-                  <b className="toolTip">Qutation Card</b>
+                  <b className="toolTip">Quotation Card</b>
                 </div>
               </div>
               <div className="mt-[14px]">

@@ -379,26 +379,30 @@ const Detail = () => {
                       
                     </tbody>
                   </table>
-                 <div className="flex justify-between">
-                 <div className="mt-[2px] text-sm">
-                      <b className="text-base">In words:</b>{" "}
-                      {totalAmountInWords}
-                    </div>
-                    <div className="flex netTotalAmounts">
-                      <div className="">
-                        <b> Total Amount </b>
-                        <b> Discount </b>
-                        <b> VAT </b>
-                        <b> Net Total </b>
-                      </div>
-                      <div>
-                        <small> : 57896</small>
-                        <small> : 5%</small>
-                        <small> : 56</small>
-                        <small> : 57896</small>
-                      </div>
-                    </div>
-                 </div>
+                  <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
+                  <div className="mt-5 text-[12px]">
+                       <b className=" ">In words:</b>{" "}
+                       {totalAmountInWords}
+                     </div>
+                     <div className="flex netTotalAmounts">
+                       <div className="">
+                         <b> Total Amount </b>
+                         <b> Discount </b>
+                         <b> VAT </b>
+                         <b> Net Total </b>
+                         <b> Advance</b>
+                         <b> Due </b>
+                       </div>
+                       <div>
+                         <small> : 57896</small>
+                         <small> : 5%</small>
+                         <small> : 56</small>
+                         <small> : 57896</small>
+                         <small> : 57896</small>
+                         <small> : 57896</small>
+                       </div>
+                     </div>
+                  </div>
                 </div>
 
                 
