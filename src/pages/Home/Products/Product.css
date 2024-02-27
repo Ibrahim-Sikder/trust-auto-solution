@@ -12,7 +12,7 @@
 	font-size: 25px !important;
 }
 .manageProduct {
-	background: #37a248;
+	background: #42A1DA;
 	width: 136px;
 	display: flex;
 	color: #fff;
@@ -77,7 +77,7 @@
 	border-radius: 3px;
 }
 .addIcon2 {
-	background: #37a248;
+	background: #42A1DA;
 }
 .productDetail {
 	height: 150px !important;
@@ -87,10 +87,10 @@
 	padding: 10px;
 }
 .productDetail:active {
-	outline: #37a248;
+	outline: #42A1DA;
 }
 .savebtn button {
-	background-color: #37a248;
+	background-color: #42A1DA;
 	padding: 8px;
 	margin-right: 5px;
 	color: #fff;
@@ -112,10 +112,10 @@
 }
 .productHome span {
 	transition: all .5s ease;
-	color: #37a248;
+	color: #42A1DA;
 }
 .productHome span::hover {
-	color: #37a248;
+	color: #42A1DA;
 }
 .deleteIcon,
 .editIcon {
@@ -134,14 +134,14 @@
 	cursor: pointer;
 }
 .edit {
-	background: #37a248;
+	background: #42A1DA;
 }
 .edit2 {
 	background: #42a1da;
 }
 
 .addHotel {
-	background: #37a248;
+	background: #42A1DA;
 	color: #fff;
 	padding: 7px;
 	border-radius: 3px;
@@ -149,14 +149,14 @@
 }
 
 .topProductBtn button {
-	border: 1px solid #37a248;
+	border: 1px solid #42A1DA;
 	margin-right: 11px;
 	padding: 5px 15px;
 	border-radius: 2px;
 	transition: all .5s cubic-bezier(0.47, 0.5, 0.86, 0.83);
 }
 .topProductBtn button:hover {
-	background: #37a248;
+	background: #42A1DA;
 	color: white;
 }
 .searchProductField {

@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import { FaFileInvoice, FaEye, FaTrashAlt, FaEdit } from "react-icons/fa";
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
@@ -73,7 +74,7 @@ const AddCustomer = () => {
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
-            <FaFileInvoice className="invoicIcon" />
+            <HiOutlineUserGroup className="invoicIcon" />
             <div className="ml-2">
               <h3 className="text-2xl font-bold"> New Customer </h3>
               <span>Add New Customer </span>
@@ -245,7 +246,7 @@ const AddCustomer = () => {
             </div>
 
             <div className="savebtn mt-2 ml-3">
-              <button>Add Customer </button>
+              <button>Update Customer </button>
             </div>
           </form>
         </div>
@@ -276,7 +277,7 @@ const AddCustomer = () => {
                 <th>Customer Name </th>
                 <th>Phone Number </th>
                 <th>Reference Name </th>
-                <th colSpan={3}>Action</th>
+                <th colSpan={2}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -285,13 +286,6 @@ const AddCustomer = () => {
                 <td>Car </td>
                 <td>BMW2343</td>
                 <td>BDT1005</td>
-                <td>
-                  <div className="editIconWrap edit2">
-                    <Link to="/dashboard/update-product">
-                      <FaEye className="editIcon" />
-                    </Link>
-                  </div>
-                </td>
                 <td>
                   <div className="editIconWrap edit">
                     <Link to="/dashboard/update-customer">

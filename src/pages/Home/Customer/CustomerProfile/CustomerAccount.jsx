@@ -44,7 +44,7 @@ const CustomerAccount = () => {
             <FaRegEdit size={30} />
           </div>
           <div className="flex items-center my-3">
-            <div className="cardIcon bg-[#37A248]">
+            <div className="cardIcon bg-[#42A1DA]">
               <FaCarSide size={50} className="text-white" />
             </div>
             <div className="ml-3">
