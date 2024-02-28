@@ -175,10 +175,11 @@ export const cmDmOptions = [
 
  export  const fuelType = [
     { label: "Octen", value: "Octen" },
-    { label: "Octel CNG", value: "Octel CNG" },
+    { label: "Octen & CNG", value: "Octen & CNG" },
+    { label: "Octen & LPG", value: "Octen & LPG" },
     { label: "Petrol", value: "Petrol" },
-    { label: "Petrol CNG", value: "Petrol CNG" },
-    { label: "Petrol LPG", value: "Petrol LPG" },
+    { label: "Petrol & CNG", value: "Petrol & CNG" },
+    { label: "Petrol & LPG", value: "Petrol & LPG" },
     { label: "Diesel", value: "Diesel" },
     { label: "CNG", value: "CNG" },
     { label: "LPG", value: "LPG" },

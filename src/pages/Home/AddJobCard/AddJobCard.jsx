@@ -21,7 +21,13 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading/Loading";
-import { carBrands, cmDmOptions, fuelType, totalYear, vehicleTypes } from "../../../constant";
+import {
+  carBrands,
+  cmDmOptions,
+  fuelType,
+  totalYear,
+  vehicleTypes,
+} from "../../../constant";
 
 const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
@@ -629,11 +635,9 @@ const AddJobCard = () => {
     },
   }));
 
-
   return (
     <div className="addJobCardWraps">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-
         <div className="w-full flex justify-between items-center mb-2 mt-5">
           <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div>
@@ -665,21 +669,21 @@ const AddJobCard = () => {
                 <span>{jobNo}</span>
               </div>
               <div>
-
                 <span>
                   <b>Customer ID:</b> TAS000
                 </span>
                 <div className="flex items-center topSearchBa">
-                <Autocomplete
-                className="jobCardSelect"
-                  onChange={(e) => setCarReg(e.target.value)}
-                  id="free-solo-demo"
-                  Customer ID 
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Customer ID " />
-                  )}
-                />
+                  <Autocomplete
+                    className="jobCardSelect"
+                    onChange={(e) => setCarReg(e.target.value)}
+                    id="free-solo-demo"
+                    Customer
+                    ID
+                    options={cmDmOptions.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Customer ID " />
+                    )}
+                  />
                 </div>
               </div>
             </div>
@@ -701,9 +705,12 @@ const AddJobCard = () => {
                   defaultValue={formattedDate}
                 />
               </div>
-              <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                Add Customer
-              </button>
+              <Link to='/dashboard/add-customer'>
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Customer
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -713,7 +720,7 @@ const AddJobCard = () => {
 
               <div className="mt-3 flex items-center ">
                 <Autocomplete
-                className="jobCardSelect"
+                  className="jobCardSelect"
                   onChange={(e) => setCarReg(e.target.value)}
                   id="free-solo-demo"
                   Car
@@ -725,10 +732,10 @@ const AddJobCard = () => {
                   )}
                 />
                 <TextField
-                    className="addJobInputField"
-                    onChange={(e) => setRegistration(e.target.value)}
-                    label="Car R (T&N)"
-                  />
+                  className="addJobInputField"
+                  onChange={(e) => setRegistration(e.target.value)}
+                  label="Car R (T&N)"
+                />
               </div>
 
               <div className="mt-3">

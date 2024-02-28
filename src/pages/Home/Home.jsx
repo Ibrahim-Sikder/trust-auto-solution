@@ -185,7 +185,7 @@ const Home = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
-          <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#37A248] text-white ">
+          <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#42A1DA] text-white ">
             <div className="mr-5">
               <div>Completed Services</div>
               <span className="text-2xl font-bold">99 </span>
@@ -285,7 +285,7 @@ const Home = () => {
               <Bar dataKey="uv" fill="#82ca9d" />
             </BarChart>
 
-            <h2 className="text-xl centerText font-bold text-[#37A248]">
+            <h2 className="text-xl centerText font-bold text-[#42A1DA]">
               Yearly Income Chart
             </h2>
           </div>
@@ -310,7 +310,7 @@ const Home = () => {
                 label
               />
             </PieChart>
-            <h2 className="text-xl centerText center font-bold text-[#37A248]">
+            <h2 className="text-xl centerText center font-bold text-[#42A1DA]">
               Monthly Income Chart
             </h2>
           </div>
