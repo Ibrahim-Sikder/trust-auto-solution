@@ -12,8 +12,30 @@ import CustomerAccount from "./CustomerAccount";
 import VehicleDetails from "./VehicleDetails";
 import { FaFacebookF, FaRocketchat, FaWhatsapp } from "react-icons/fa";
 import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const CustomerProfile = () => {
+  const [loading, setLoading] = useState(false);
+  const [profileData, setProfileData] = useState({});
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      fetch(`http://localhost:5000/api/v1/customer/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setProfileData(data);
+          setLoading(false);
+        });
+    }
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <div className="w-full h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
@@ -28,15 +50,15 @@ const CustomerProfile = () => {
                 <div className="space-y-2 mt-3">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>45996-0789777</span>
+                    <span>{profileData.customer_contact}</span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>customer@gmail.com </span>
+                    <span>{profileData.customer_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span> Kuril Bishawroad, Dhaka-1212 </span>
+                    <span> {profileData.customer_address} </span>
                   </div>
                 </div>
               </div>
@@ -64,7 +86,7 @@ const CustomerProfile = () => {
           </TabList>
 
           <TabPanel>
-            <CustomerAccount />
+            <CustomerAccount profileData={profileData}/>
           </TabPanel>
           <TabPanel>
             <VehicleDetails />
@@ -82,22 +104,22 @@ const CustomerProfile = () => {
             <CustomerMoneyList />
           </TabPanel>
           <TabPanel>
-          <SupplierPaymentList/>
-        </TabPanel>
+            <SupplierPaymentList />
+          </TabPanel>
           <TabPanel>
-          <div>
-          <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
-            <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
-              <FaWhatsapp size={100} />
+            <div>
+              <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
+                <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
+                  <FaWhatsapp size={100} />
+                </div>
+                <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
+                  <FaFacebookF size={100} />
+                </div>
+                <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
+                  <FaRocketchat size={100} />
+                </div>
+              </div>
             </div>
-            <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
-              <FaFacebookF size={100} />
-            </div>
-            <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
-              <FaRocketchat size={100} />
-            </div>
-          </div>
-        </div>
           </TabPanel>
         </Tabs>
 
