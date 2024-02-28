@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { HiLocationMarker } from "react-icons/hi";
 import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
 import { ImUserTie } from "react-icons/im";
@@ -13,8 +14,31 @@ import CompanyJobCardList from "./CompanyJobCardList";
 import CompanyQuotationList from "./CompanyQuotationList";
 import CompanyInvoiceList from "./CompanyInvoiceList";
 import CompanyMoneyList from "./CompanyMoneyList";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const CompanyProfile = () => {
+  const [loading, setLoading] = useState(false);
+  const [profileData, setProfileData] = useState({});
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      fetch(`http://localhost:5000/api/v1/company/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setProfileData(data);
+          setLoading(false);
+        });
+    }
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(profileData);
   return (
     <div>
       <div className="w-full h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
@@ -65,13 +89,13 @@ const CompanyProfile = () => {
           </TabList>
 
           <TabPanel>
-            <CompanyAccount/>
+            <CompanyAccount />
           </TabPanel>
           <TabPanel>
             <CompanyVehicleDetails />
           </TabPanel>
           <TabPanel>
-            <CompanyJobCardList/>
+            <CompanyJobCardList />
           </TabPanel>
           <TabPanel>
             <CompanyQuotationList />
@@ -83,22 +107,22 @@ const CompanyProfile = () => {
             <CompanyMoneyList />
           </TabPanel>
           <TabPanel>
-          <SupplierPaymentList/>
-        </TabPanel>
+            <SupplierPaymentList />
+          </TabPanel>
           <TabPanel>
-          <div>
-          <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
-            <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
-              <FaWhatsapp size={100} />
+            <div>
+              <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
+                <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
+                  <FaWhatsapp size={100} />
+                </div>
+                <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
+                  <FaFacebookF size={100} />
+                </div>
+                <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
+                  <FaRocketchat size={100} />
+                </div>
+              </div>
             </div>
-            <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
-              <FaFacebookF size={100} />
-            </div>
-            <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
-              <FaRocketchat size={100} />
-            </div>
-          </div>
-        </div>
           </TabPanel>
         </Tabs>
 

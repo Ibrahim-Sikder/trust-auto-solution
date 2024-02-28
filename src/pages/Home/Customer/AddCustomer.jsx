@@ -2,7 +2,13 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import { FaFileInvoice, FaEye, FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
+import {
+  FaFileInvoice,
+  FaEye,
+  FaTrashAlt,
+  FaEdit,
+  FaUserTie,
+} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
@@ -134,7 +140,7 @@ const AddCustomer = () => {
 
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("job")) || 1
+    Number(sessionStorage.getItem("cust")) || 1
   );
   const [pageNumberLimit, setPageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
@@ -169,11 +175,11 @@ const AddCustomer = () => {
   };
 
   useEffect(() => {
-    sessionStorage.setItem("job", currentPage.toString());
+    sessionStorage.setItem("cust", currentPage.toString());
   }, [currentPage]);
 
   useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("job")) || 1;
+    const storedPage = Number(sessionStorage.getItem("cust")) || 1;
     setCurrentPage(storedPage);
     setMaxPageNumberLimit(
       Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
@@ -186,7 +192,7 @@ const AddCustomer = () => {
   const handleClick = (e) => {
     const pageNumber = Number(e.target.id);
     setCurrentPage(pageNumber);
-    sessionStorage.setItem("job", pageNumber.toString());
+    sessionStorage.setItem("cust", pageNumber.toString());
   };
   const pages = [];
   for (let i = 1; i <= Math.ceil(customerData?.length / limit); i++) {
@@ -243,9 +249,9 @@ const AddCustomer = () => {
             <tr key={card._id}>
               <td>{index + 1}</td>
               <td>{card.customer_name}</td>
-              <td>{card.job_no}</td>
+
               <td>{card.car_registration_no}</td>
-              <td> {card.contact_number} </td>
+              <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>
                 <div
@@ -281,7 +287,7 @@ const AddCustomer = () => {
   const handlePrevious = () => {
     const newPage = currentPage - 1;
     setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
+    sessionStorage.setItem("cust", newPage.toString());
 
     if (newPage % pageNumberLimit === 0) {
       setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
@@ -291,7 +297,7 @@ const AddCustomer = () => {
   const handleNext = () => {
     const newPage = currentPage + 1;
     setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
+    sessionStorage.setItem("cust", newPage.toString());
 
     if (newPage > maxPageNumberLimit) {
       setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
@@ -323,7 +329,7 @@ const AddCustomer = () => {
     );
   }
 
-  console.log(filterType)
+  console.log(filterType);
   const handleFilterType = async () => {
     try {
       const data = {
@@ -399,27 +405,24 @@ const AddCustomer = () => {
                     className="productField"
                     on
                     label="Company Name (T)"
-                    {...register("company_name", )}
+                    {...register("company_name")}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     onC
                     label="Vehicle User Name (T)"
-                    {...register("username", )}
+                    {...register("username")}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     on
                     label="Company Address (T)"
-                    {...register("company_address", )}
+                    {...register("company_address")}
                   />
-                   
                 </div>
 
                 <div>
@@ -427,16 +430,14 @@ const AddCustomer = () => {
                     className="productField"
                     onC
                     label="Customer Name (T)"
-                    {...register("customer_name", )}
+                    {...register("customer_name")}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Customer Contact No (N)"
                     {...register("customer_contact", {
-                       
                       pattern: {
                         value: /^\d{11}$/,
                         message: "Please enter a valid number.",
@@ -453,34 +454,30 @@ const AddCustomer = () => {
                   <TextField
                     className="productField"
                     label="Customer Email Address (T)"
-                    {...register("customer_email", )}
+                    {...register("customer_email")}
                     type="email"
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Customer Address (T) "
-                    {...register("customer_address", )}
+                    {...register("customer_address")}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     o
                     label="Driver Name (T)"
-                    {...register("driver_name", )}
+                    {...register("driver_name")}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Driver Contact No (N)"
                     {...register("driver_contact", {
-                       
                       pattern: {
                         value: /^\d{11}$/,
                         message: "Please enter a valid number.",
@@ -497,9 +494,8 @@ const AddCustomer = () => {
                   <TextField
                     className="productField"
                     label="Reference Name (T) "
-                    {...register("reference_name", )}
+                    {...register("reference_name")}
                   />
-                   
                 </div>
               </div>
 
@@ -517,33 +513,30 @@ const AddCustomer = () => {
                       <TextField
                         {...params}
                         label="Car Reg No"
-                        {...register("carReg_no", )}
+                        {...register("carReg_no")}
                       />
                     )}
                   />
                   <TextField
                     className="carRegNumbers"
                     label="Car R (T&N)"
-                    {...register("car_registration_no", )}
+                    {...register("car_registration_no")}
                   />
                 </div>
-                 
 
                 <div>
                   <TextField
                     className="productField"
                     label="Chassis No (T&N)"
-                    {...register("chassis_no", )}
+                    {...register("chassis_no")}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="ENGINE NO & CC (T&N) "
-                    {...register("engine_no", )}
+                    {...register("engine_no")}
                   />
-                  
                 </div>
 
                 <div>
@@ -552,32 +545,28 @@ const AddCustomer = () => {
                     id="free-solo-demo"
                     Vehicle
                     Brand
-                    
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Vehicle Brand"
-                        {...register("vehicle_brand", )}
+                        {...register("vehicle_brand")}
                       />
                     )}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Vehicle Name "
-                    {...register("vehicle_name", )}
+                    {...register("vehicle_name")}
                   />
-                   
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Vehicle Model (N)"
                     {...register("vehicle_model", {
-                      
                       pattern: {
                         value: /^\d+$/,
                         message: "Please enter a valid model number.",
@@ -595,32 +584,28 @@ const AddCustomer = () => {
                     className="productField"
                     Vehicle
                     Types
-                   
                     options={vehicleTypes.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label=" Vehicle Categories "
-                        {...register("vehicle_category", )}
+                        {...register("vehicle_category")}
                       />
                     )}
                   />
-                  
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Color & Code (T&N) "
-                    {...register("color_code", )}
+                    {...register("color_code")}
                   />
-                  
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Mileage (N)"
                     {...register("mileage", {
-                      
                       pattern: {
                         value: /^\d+$/,
                         message: "Please enter a valid number.",
@@ -638,17 +623,15 @@ const AddCustomer = () => {
                     className="productField"
                     Fuel
                     Type
-                     
                     options={fuelType.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label=" Fuel Type"
-                        {...register("fuel_type", )}
+                        {...register("fuel_type")}
                       />
                     )}
                   />
-                   
                 </div>
               </div>
             </div>
@@ -663,7 +646,12 @@ const AddCustomer = () => {
         <div className="flex items-center justify-between  mb-5">
           <h3 className="text-3xl font-bold text-center "> Customer List: </h3>
           <div className="flex items-center">
-            <button onClick={handleAllCustomer} className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white">All</button>
+            <button
+              onClick={handleAllCustomer}
+              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            >
+              All
+            </button>
             <Search>
               <SearchIconWrapper>
                 <SearchIcon className="searchIcon" />
@@ -674,7 +662,10 @@ const AddCustomer = () => {
                 onChange={(e) => setFilterType(e.target.value)}
               />
             </Search>
-            <button onClick={handleFilterType} className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+            <button
+              onClick={handleFilterType}
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2"
+            >
               Search
             </button>
           </div>
