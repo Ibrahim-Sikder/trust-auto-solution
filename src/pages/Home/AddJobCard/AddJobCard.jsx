@@ -318,6 +318,8 @@ const AddJobCard = () => {
         setLoading(false);
       });
   }, [jobNo, reload]);
+
+  
   useEffect(() => {
     if (previousPostData.job_no && !jobNo) {
       setJobNo(previousPostData.job_no + 1);
@@ -562,6 +564,7 @@ const AddJobCard = () => {
       }
       if (response.data.message === "No matching found") {
         setNoMatching(response.data.message);
+        setSearchLoading(false);
       }
     } catch (error) {
       setSearchLoading(false);
