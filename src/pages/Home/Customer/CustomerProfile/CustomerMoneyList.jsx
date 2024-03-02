@@ -1,50 +1,8 @@
 import { FaTrashAlt, FaEdit } from "react-icons/fa"
+import { HiOutlineSearch } from "react-icons/hi"
 import { Link } from "react-router-dom"
-import { styled, alpha } from "@mui/material/styles"
-import InputBase from "@mui/material/InputBase"
-import SearchIcon from "@mui/icons-material/Search"
 const CustomerMoneyList = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }))
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }))
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }))
 
   const jobData = [
     {
@@ -88,18 +46,15 @@ const CustomerMoneyList = () => {
           </button>
         </Link>
         <div className="flex items-center">
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon className="searchIcon" />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-            Search
-          </button>
+        <input
+        type="text"
+        placeholder="Search"
+        className="border py-2 px-3 rounded-md border-[#ddd]"
+      />
+      <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+        {" "}
+        <HiOutlineSearch size={22} />
+      </button>
         </div>
       </div>
 

@@ -8,9 +8,6 @@ import {
   FaUserTie,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import { Autocomplete } from "@mui/material";
 import {
   carBrands,
@@ -18,57 +15,19 @@ import {
   fuelType,
   vehicleTypes,
 } from "../../../constant";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
-import { HiOutlineSearch, HiOutlineUserGroup } from "react-icons/hi";
-const AddCustomer = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
+import { HiOfficeBuilding, HiOutlineSearch } from "react-icons/hi";
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
+const UpdateShowRoom = () => {
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+
   const [filterType, setFilterType] = useState("");
-  const [customerData, setCustomerData] = useState([]);
+  const [showRoomData, setShowRoomData] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -91,54 +50,42 @@ const AddCustomer = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/customer",
+        "http://localhost:5000/api/v1/showRoom",
         data
       );
-      if (response.data.message === "Successfully add to customer post") {
+
+      if (response.data.message === "Successfully add to show room post") {
         setReload(!reload);
-        navigate("/dashboard/customer-list");
-        toast.success("Successfully add to customer post");
+        navigate("/dashboard/show-room-list");
+        toast.success("Successfully add to show room post");
         setLoading(false);
         reset();
       }
     } catch (error) {
+      console.log(error);
       toast.error(error.message);
       setLoading(false);
     }
   };
-
-  // const handleBrandChange = (_, newInputValue) => {
-  //   setBrand(newInputValue);
-  // };
-  // const handleCategoryChange = (_, newInputValue) => {
-  //   setCategory(newInputValue);
-  // };
-  // const handleFuelChange = (_, newInputValue) => {
-  //   setGetFuelType(newInputValue);
-  // };
-
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/customer`)
+    fetch(`http://localhost:5000/api/v1/showRoom`)
       .then((res) => res.json())
       .then((data) => {
-        setCustomerData(data);
+        setShowRoomData(data);
         console.log(data);
         setLoading(false);
       });
   }, [reload]);
 
   const handleIconPreview = async (e) => {
-    navigate(`/dashboard/customer-profile?id=${e}`);
+    navigate(`/dashboard/company-profile?id=${e}`);
   };
-
-  //  show data
-
   // pagination
 
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("cust")) || 1
+    Number(sessionStorage.getItem("showRoom")) || 1
   );
   const [pageNumberLimit, setPageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
@@ -155,15 +102,15 @@ const AddCustomer = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/customer/one/${id}`,
+          `http://localhost:5000/api/v1/showRoom/one/${id}`,
           {
             method: "DELETE",
           }
         );
         const data = await res.json();
 
-        if (data.message == "Customer card delete successful") {
-          setCustomerData(customerData?.filter((pkg) => pkg._id !== id));
+        if (data.message == "Show room card delete successful") {
+          setShowRoomData(showRoomData?.filter((pkg) => pkg._id !== id));
         }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
@@ -173,11 +120,11 @@ const AddCustomer = () => {
   };
 
   useEffect(() => {
-    sessionStorage.setItem("cust", currentPage.toString());
+    sessionStorage.setItem("showRoom", currentPage.toString());
   }, [currentPage]);
 
   useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("cust")) || 1;
+    const storedPage = Number(sessionStorage.getItem("showRoom")) || 1;
     setCurrentPage(storedPage);
     setMaxPageNumberLimit(
       Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
@@ -190,10 +137,10 @@ const AddCustomer = () => {
   const handleClick = (e) => {
     const pageNumber = Number(e.target.id);
     setCurrentPage(pageNumber);
-    sessionStorage.setItem("cust", pageNumber.toString());
+    sessionStorage.setItem("showRoom", pageNumber.toString());
   };
   const pages = [];
-  for (let i = 1; i <= Math.ceil(customerData?.length / limit); i++) {
+  for (let i = 1; i <= Math.ceil(showRoomData?.length / limit); i++) {
     pages.push(i);
   }
 
@@ -222,13 +169,13 @@ const AddCustomer = () => {
   const startIndex = lastIndex - limit;
 
   let currentItems;
-  if (Array.isArray(customerData)) {
-    currentItems = customerData.slice(startIndex, lastIndex);
+  if (Array.isArray(showRoomData)) {
+    currentItems = showRoomData.slice(startIndex, lastIndex);
   } else {
     currentItems = [];
   }
 
-  const renderData = (customerData) => {
+  const renderData = (showRoomData) => {
     return (
       <table className="table">
         <thead className="tableWrap">
@@ -243,13 +190,13 @@ const AddCustomer = () => {
           </tr>
         </thead>
         <tbody>
-          {customerData?.map((card, index) => (
+          {showRoomData?.map((card, index) => (
             <tr key={card._id}>
               <td>{index + 1}</td>
-              <td>{card.customer_name}</td>
+              <td>{card.company_name}</td>
 
               <td>{card.car_registration_no}</td>
-              <td> {card.customer_contact} </td>
+              <td> {card.company_contact} </td>
               <td>{card.date}</td>
               <td>
                 <div
@@ -285,7 +232,7 @@ const AddCustomer = () => {
   const handlePrevious = () => {
     const newPage = currentPage - 1;
     setCurrentPage(newPage);
-    sessionStorage.setItem("cust", newPage.toString());
+    sessionStorage.setItem("showRoom", newPage.toString());
 
     if (newPage % pageNumberLimit === 0) {
       setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
@@ -295,7 +242,7 @@ const AddCustomer = () => {
   const handleNext = () => {
     const newPage = currentPage + 1;
     setCurrentPage(newPage);
-    sessionStorage.setItem("cust", newPage.toString());
+    sessionStorage.setItem("showRoom", newPage.toString());
 
     if (newPage > maxPageNumberLimit) {
       setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
@@ -335,12 +282,12 @@ const AddCustomer = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/customer/all`,
+        `http://localhost:5000/api/v1/showRoom/all`,
         data
       );
 
       if (response.data.message === "Filter successful") {
-        setCustomerData(response.data.result);
+        setShowRoomData(response.data.result);
         setNoMatching(null);
         setSearchLoading(false);
       }
@@ -354,10 +301,10 @@ const AddCustomer = () => {
   };
 
   const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/customer`)
+    fetch(`http://localhost:5000/api/v1/showRoom`)
       .then((res) => res.json())
       .then((data) => {
-        setCustomerData(data);
+        setShowRoomData(data);
         setNoMatching(null);
       });
   };
@@ -370,7 +317,7 @@ const AddCustomer = () => {
             <button> Add Job </button>
           </Link>
           <Link to="/dashboard/qutation">
-            <button>Qutation </button>
+            <button>Quotation </button>
           </Link>
           <Link to="/dashboard/invoice">
             <button>Invoice </button>
@@ -378,16 +325,16 @@ const AddCustomer = () => {
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
-            <HiOutlineUserGroup className="invoicIcon" />
+            <HiOfficeBuilding className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Customer </h3>
-              <span>Add New Customer </span>
+              <h3 className="text-2xl font-bold"> Update Show Room </h3>
+              <span>Update New Show Room </span>
             </div>
           </div>
           <div className="productHome">
             <span>Home / </span>
-            <span>Product / </span>
-            <span>New Customer </span>
+            <span>Show Room / </span>
+            <span>New Show Room </span>
           </div>
         </div>
 
@@ -396,14 +343,14 @@ const AddCustomer = () => {
             <div className="flex justify-center">
               <div>
                 <h3 className="text-xl  font-bold mb-1">
-                  Customer Information{" "}
+                  Show Room Information{" "}
                 </h3>
                 <div>
                   <TextField
                     className="productField"
                     on
-                    label="Company Name (T)"
-                    {...register("company_name")}
+                    label="Show Room Name (T)"
+                    {...register("showRoom_name")}
                   />
                 </div>
                 <div>
@@ -418,8 +365,8 @@ const AddCustomer = () => {
                   <TextField
                     className="productField"
                     on
-                    label="Company Address (T)"
-                    {...register("company_address")}
+                    label="Show Room Address (T)"
+                    {...register("showRoom_address")}
                   />
                 </div>
 
@@ -427,40 +374,40 @@ const AddCustomer = () => {
                   <TextField
                     className="productField"
                     onC
-                    label="Customer Name (T)"
-                    {...register("customer_name")}
+                    label="Company Name (T)"
+                    {...register("company_name")}
                   />
                 </div>
                 <div>
                   <TextField
                     className="productField"
-                    label="Customer Contact No (N)"
-                    {...register("customer_contact", {
+                    label="Company Contact No (N)"
+                    {...register("company_contact", {
                       pattern: {
                         value: /^\d{11}$/,
                         message: "Please enter a valid number.",
                       },
                     })}
                   />
-                  {errors.customer_contact && (
+                  {errors.company_contact && (
                     <span className="text-sm text-red-400">
-                      {errors.customer_contact.message}
+                      {errors.company_contact.message}
                     </span>
                   )}
                 </div>
                 <div>
                   <TextField
                     className="productField"
-                    label="Customer Email Address (T)"
-                    {...register("customer_email")}
+                    label="Company Email Address (N)"
+                    {...register("company_email")}
                     type="email"
                   />
                 </div>
                 <div>
                   <TextField
                     className="productField"
-                    label="Customer Address (T) "
-                    {...register("customer_address")}
+                    label="Company Address (T) "
+                    {...register("company_address")}
                   />
                 </div>
                 <div>
@@ -602,7 +549,7 @@ const AddCustomer = () => {
                 <div>
                   <TextField
                     className="productField"
-                    label="Mileage (N)"
+                    label="Mileage (N) "
                     {...register("mileage", {
                       pattern: {
                         value: /^\d+$/,
@@ -635,111 +582,14 @@ const AddCustomer = () => {
             </div>
 
             <div className="savebtn mt-2 ml-3">
-              <button disabled={loading}>Add Customer </button>
+              <button>Update Show Room </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
-          <h3 className="text-3xl font-bold text-center "> Customer List: </h3>
-          <div className="flex items-center">
-            <button
-              onClick={handleAllCustomer}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </button>
-            {/**  
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon className="searchIcon" />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-                onChange={(e) => setFilterType(e.target.value)}
-              />
-            </Search>
-            */}
-            <input
-              onChange={(e) => setFilterType(e.target.value)}
-              type="text"
-              placeholder="Search"
-              className="border py-2 px-3 rounded-md border-[#ddd]"
-            />
-            <button
-              onClick={handleFilterType}
-              className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
-            >
-              {" "}
-              <HiOutlineSearch size={25} />
-            </button>
-          </div>
-        </div>
-        {searchLoading ? (
-          <div className="flex justify-center items-center text-xl">
-            <Loading />
-          </div>
-        ) : (
-          <div>
-            {customerData?.length === 0 ||
-            currentItems.length === 0 ||
-            noMatching ? (
-              <div className="text-xl text-center flex justify-center items-center h-full">
-                No matching card found.
-              </div>
-            ) : (
-              <>
-                <section>
-                  {renderData(currentItems)}
-                  <ul
-                    className={
-                      minPageNumberLimit < 5
-                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
-                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
-                    }
-                  >
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentPage === pages[0] ? true : false}
-                      className={
-                        currentPage === pages[0]
-                          ? "text-gray-600"
-                          : "text-gray-300"
-                      }
-                    >
-                      Previous
-                    </button>
-                    <span
-                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
-                    >
-                      {pageDecrementBtn}
-                    </span>
-                    {renderPagesNumber}
-                    {pageIncrementBtn}
-                    <button
-                      onClick={handleNext}
-                      disabled={
-                        currentPage === pages[pages?.length - 1] ? true : false
-                      }
-                      className={
-                        currentPage === pages[pages?.length - 1]
-                          ? "text-gray-700"
-                          : "text-gray-300 pl-1"
-                      }
-                    >
-                      Next
-                    </button>
-                  </ul>
-                </section>
-              </>
-            )}
-          </div>
-        )}
-      </div>
+   
     </section>
   );
 };
 
-export default AddCustomer;
+export default UpdateShowRoom;

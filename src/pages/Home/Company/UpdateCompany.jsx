@@ -17,49 +17,10 @@ import {
   fuelType,
   vehicleTypes,
 } from "../../../constant";
+import { Autocomplete } from "@mui/material";
+import { HiOfficeBuilding } from "react-icons/hi";
 
 const UpdateCompany = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
 
   const {
     register,
@@ -140,7 +101,7 @@ const UpdateCompany = () => {
             <button> Add Job </button>
           </Link>
           <Link to="/dashboard/qutation">
-            <button>Qutation </button>
+            <button>Quotation </button>
           </Link>
           <Link to="/dashboard/invoice">
             <button>Invoice </button>
@@ -148,10 +109,10 @@ const UpdateCompany = () => {
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
-            <FaFileInvoice className="invoicIcon" />
+            <HiOfficeBuilding className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Customer </h3>
-              <span>Add New Customer </span>
+              <h3 className="text-2xl font-bold"> Update Company </h3>
+              <span>Update Company </span>
             </div>
           </div>
           <div className="productHome">

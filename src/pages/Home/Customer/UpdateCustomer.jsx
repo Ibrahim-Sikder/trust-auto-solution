@@ -18,6 +18,7 @@ import {
   vehicleTypes,
 } from "../../../constant";
 import { Autocomplete } from "@mui/material";
+import { HiOutlineUserGroup } from "react-icons/hi";
 
 const UpdateCustomer = () => {
   const Search = styled("div")(({ theme }) => ({
@@ -149,10 +150,10 @@ const UpdateCustomer = () => {
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
-            <FaFileInvoice className="invoicIcon" />
+            <HiOutlineUserGroup className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Customer </h3>
-              <span>Add New Customer </span>
+              <h3 className="text-2xl font-bold">Update New Customer </h3>
+              <span>Update New Customer </span>
             </div>
           </div>
           <div className="productHome">

@@ -1,58 +1,18 @@
 import { FaCarSide, FaEye } from "react-icons/fa";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useState } from "react";
-import { HiOutlinePlus } from "react-icons/hi";
+import { HiOutlinePlus, HiOutlineSearch } from "react-icons/hi";
 import AddVehicleModal from "./AddVehicleModal";
 import VehicleDetailsModal from "./VehicleDetailsModal";
 
 const VehicleDetails = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+
+
 
   const jobData = [
     {
@@ -93,14 +53,13 @@ const VehicleDetails = () => {
     setAge(event.target.value);
   };
 
-
   const [open, setOpen] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handVehicleDetailsOpen = ()=>setVehicleDetails(true)
-  const handleVehicleDetailsClose = ()=>setVehicleDetails(false)
+  const handVehicleDetailsOpen = () => setVehicleDetails(true);
+  const handleVehicleDetailsClose = () => setVehicleDetails(false);
 
   return (
     <div className=" mb-24 mt-10 w-full">
@@ -133,17 +92,14 @@ const VehicleDetails = () => {
           </div>
         </div>
         <div className="flex items-center">
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon className="searchIcon" />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-            Search
+          <input
+            type="text"
+            placeholder="Search"
+            className="border py-2 px-3 rounded-md border-[#ddd]"
+          />
+          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+            {" "}
+            <HiOutlineSearch size={22} />
           </button>
         </div>
       </div>
@@ -178,7 +134,10 @@ const VehicleDetails = () => {
                 <td> 04-01-2024 </td>
                 <td>
                   <div className="editIconWrap edit">
-                  <FaEye onClick={handVehicleDetailsOpen}  className="editIcon" />
+                    <FaEye
+                      onClick={handVehicleDetailsOpen}
+                      className="editIcon"
+                    />
                   </div>
                 </td>
               </tr>
@@ -187,9 +146,12 @@ const VehicleDetails = () => {
         </table>
       </div>
       {open && <AddVehicleModal open={open} onClose={handleClose} />}
-      {
-        vehicleDetails && <VehicleDetailsModal handVehicleDetailsOpen={handVehicleDetailsOpen} handleVehicleDetailsClose={handleVehicleDetailsClose} />
-      }
+      {vehicleDetails && (
+        <VehicleDetailsModal
+          handVehicleDetailsOpen={handVehicleDetailsOpen}
+          handleVehicleDetailsClose={handleVehicleDetailsClose}
+        />
+      )}
     </div>
   );
 };

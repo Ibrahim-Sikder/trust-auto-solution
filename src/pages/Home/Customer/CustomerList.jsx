@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
+import { HiOutlineSearch } from "react-icons/hi";
 const CustomerList = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -347,22 +348,23 @@ const CustomerList = () => {
           >
             All
           </button>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon className="searchIcon" />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => setFilterType(e.target.value)}
-            />
-          </Search>
-          <button
-            onClick={handleFilterType}
-            className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2"
-          >
-            Search
-          </button>
+
+          <input
+          onChange={(e) => setFilterType(e.target.value)}
+          type="text"
+          placeholder="Search"
+          className="border py-2 px-3 rounded-md border-[#ddd]"
+        />
+        <button
+          onClick={handleFilterType}
+          className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
+        >
+          {" "}
+          <HiOutlineSearch size={25} />
+        </button>
+
+
+
         </div>
       </div>
 

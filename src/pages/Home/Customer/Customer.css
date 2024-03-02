@@ -17,3 +17,8 @@
 .carRegNumbers{
   width:100% !important;
 }
+.addVehicleField{
+  width:430px !important;
+  margin-right:10px !important;
+  margin-left:10px !important
+}

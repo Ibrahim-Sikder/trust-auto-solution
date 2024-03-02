@@ -86,7 +86,7 @@ const CustomerProfile = () => {
           </TabList>
 
           <TabPanel>
-            <CustomerAccount profileData={profileData}/>
+            <CustomerAccount profileData={profileData} />
           </TabPanel>
           <TabPanel>
             <VehicleDetails />

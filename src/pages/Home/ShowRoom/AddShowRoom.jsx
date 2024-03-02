@@ -2,11 +2,12 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import { FaFileInvoice, FaEye, FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
+import {
+  FaTrashAlt,
+  FaEdit,
+  FaUserTie,
+} from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import { Autocomplete } from "@mui/material";
 import {
   carBrands,
@@ -20,49 +21,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
+import { HiOfficeBuilding, HiOutlineSearch } from "react-icons/hi";
 
 const AddShowRoom = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
 
   const [filterType, setFilterType] = useState("");
   const [showRoomData, setShowRoomData] = useState([]);
@@ -232,9 +194,9 @@ const AddShowRoom = () => {
             <tr key={card._id}>
               <td>{index + 1}</td>
               <td>{card.company_name}</td>
-            
+
               <td>{card.car_registration_no}</td>
-              <td> {card.company_contact } </td>
+              <td> {card.company_contact} </td>
               <td>{card.date}</td>
               <td>
                 <div
@@ -347,7 +309,6 @@ const AddShowRoom = () => {
       });
   };
 
-
   return (
     <section>
       <div className=" addProductWraps">
@@ -364,7 +325,7 @@ const AddShowRoom = () => {
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
-            <FaFileInvoice className="invoicIcon" />
+            <HiOfficeBuilding className="invoicIcon" />
             <div className="ml-2">
               <h3 className="text-2xl font-bold"> New Show Room </h3>
               <span>Add New Show Room </span>
@@ -636,21 +597,14 @@ const AddShowRoom = () => {
             >
               All
             </button>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon className="searchIcon" />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-                onChange={(e) => setFilterType(e.target.value)}
-              />
-            </Search>
-            <button
-              onClick={handleFilterType}
-              className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2"
-            >
-              Search
+            <input
+              type="text"
+              placeholder="Search"
+              className="border py-2 px-3 rounded-md border-[#ddd]"
+            />
+            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+              {" "}
+              <HiOutlineSearch size={22} />
             </button>
           </div>
         </div>
