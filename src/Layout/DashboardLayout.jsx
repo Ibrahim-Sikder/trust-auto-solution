@@ -110,7 +110,7 @@ const DashboardLayout = () => {
                 id="panel1bh-header"
               >
                 <Typography>
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center ">
                     <FaCarAlt />
                     <span className="ml-2">Vehicle Job Card</span>
                   </div>
