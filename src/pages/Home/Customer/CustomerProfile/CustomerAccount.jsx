@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import { FaCarSide, FaInfo, FaRegEdit } from "react-icons/fa"
 import Card from "../../../../components/Card/Card"
 import invoice from "../../../../../public/assets/invoice.png"
-const CustomerAccount = () => {
+const CustomerAccount = ({profileData}) => {
+  
   return (
     <div className="customerProfileWrap">
   
@@ -11,7 +13,7 @@ const CustomerAccount = () => {
       <div className="flex items-center justify-between">
         <div>
           <div>
-          Supplier Name: <b>Mr. Rahat </b>
+          Supplier Name: <b>{profileData.company_name} </b>
           </div>
           <div>
             Phone Number: <b>0657899444</b>
