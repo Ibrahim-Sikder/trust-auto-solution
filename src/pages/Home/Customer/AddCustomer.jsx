@@ -2,11 +2,7 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import {
-  FaTrashAlt,
-  FaEdit,
-  FaUserTie,
-} from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
@@ -25,6 +21,11 @@ import { toast } from "react-toastify";
 import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
 import { HiOutlineSearch, HiOutlineUserGroup } from "react-icons/hi";
+import Cookies from "js-cookie";
+import { v4 as uuidv4 } from 'uuid';
+
+
+
 const AddCustomer = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -89,13 +90,17 @@ const AddCustomer = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    const uniqueId = 'Id_' + Math.random().toString(36).substr(2, 9);
+    data.customerId = uniqueId;
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/customer",
         data
       );
+ 
       if (response.data.message === "Successfully add to customer post") {
         setReload(!reload);
+        Cookies.set("id", response.data.result._id);
         navigate("/dashboard/customer-list");
         toast.success("Successfully add to customer post");
         setLoading(false);
@@ -123,7 +128,7 @@ const AddCustomer = () => {
       .then((res) => res.json())
       .then((data) => {
         setCustomerData(data);
-        console.log(data);
+
         setLoading(false);
       });
   }, [reload]);
@@ -253,7 +258,7 @@ const AddCustomer = () => {
               <td>{card.date}</td>
               <td>
                 <div
-                  onClick={() => handleIconPreview(card._id)}
+                  onClick={() => handleIconPreview(card.customerId)}
                   className="editIconWrap edit2"
                 >
                   <FaUserTie className="invoicIcon" />

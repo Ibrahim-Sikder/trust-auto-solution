@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 const CustomerProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
+  const [jobCardData, setJobCardData] = useState([]);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   useEffect(() => {
@@ -31,6 +32,26 @@ const CustomerProfile = () => {
         });
     }
   }, [id]);
+
+ 
+  useEffect(() => {
+    if (id) {
+      fetch(`http://localhost:5000/api/v1/jobCard/${id}`, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "success") {
+            setJobCardData(data.jobCard);
+          }   
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors
+        });
+    }
+  }, [id]);
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -86,13 +107,13 @@ const CustomerProfile = () => {
           </TabList>
 
           <TabPanel>
-            <CustomerAccount profileData={profileData} />
+            <CustomerAccount profileData={profileData} jobCardData={jobCardData}/>
           </TabPanel>
           <TabPanel>
             <VehicleDetails />
           </TabPanel>
           <TabPanel>
-            <CustomerJobCardList />
+            <CustomerJobCardList jobCardData={jobCardData} setJobCardData={setJobCardData} id={id}/>
           </TabPanel>
           <TabPanel>
             <CustomerQoutationList />
