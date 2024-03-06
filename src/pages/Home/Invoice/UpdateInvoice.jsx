@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../../public/assets/logo.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 const UpdateInvoice = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
   const [orderNo, setOrderNo] = useState(null);
@@ -133,12 +135,18 @@ const UpdateInvoice = () => {
     }
 
     const vatAsPercentage = vat / 100;
-    const finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    const finalTotal =
+      totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
 
     return finalTotal;
   };
 
+  const trust_auto_id = Cookies.get("trust_auto_id");
+
   const handleRemoveButton = (i) => {
+    if (specificInvoice.customerId !== trust_auto_id) {
+      return toast.error("Unauthorized");
+    }
     axios
       .put(`http://localhost:5000/api/v1/invoice/${id}`, { index: i })
       .then((response) => {
@@ -149,13 +157,20 @@ const UpdateInvoice = () => {
       .catch((error) => {});
   };
 
+
+ 
+
+
   const handleUpdateInvoice = async (e) => {
     e.preventDefault();
-
+    if (specificInvoice.customerId !== trust_auto_id) {
+      return toast.error("Unauthorized");
+    }
     try {
       const values = {
         username: specificInvoice.username,
         // serial_no: formattedSerialNo,
+        customerId: specificInvoice.customerId,
         job_no: orderNo || specificInvoice.job_no,
         date: date || specificInvoice.date,
         car_registration_no: carNumber || specificInvoice.car_registration_no,

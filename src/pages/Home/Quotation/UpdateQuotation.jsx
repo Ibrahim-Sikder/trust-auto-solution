@@ -4,6 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
   const [orderNo, setOrderNo] = useState(null);
@@ -124,13 +125,18 @@ const UpdateQuotation = () => {
     return finalTotal;
   };
 
+  const trust_auto_id = Cookies.get("trust_auto_id");
+
   const handleUpdateQuotation = async (e) => {
     e.preventDefault();
-
+    if (specificInvoice.customerId !== trust_auto_id) {
+      return toast.error("Unauthorized");
+    }
     try {
       const values = {
         username: specificInvoice.username,
         // serial_no: formattedSerialNo,
+        customerId: specificInvoice.customerId,
         job_no: orderNo || specificInvoice.job_no,
         date: date || specificInvoice.date,
         car_registration_no: carNumber || specificInvoice.car_registration_no,
@@ -177,6 +183,9 @@ const UpdateQuotation = () => {
   };
 
   const handleRemoveButton = (i) => {
+    if (specificInvoice.customerId !== trust_auto_id) {
+      return toast.error("Unauthorized");
+    }
     axios
       .put(`http://localhost:5000/api/v1/quotation/${id}`, { index: i })
       .then((response) => {
@@ -184,13 +193,15 @@ const UpdateQuotation = () => {
           setReload(!reload);
         }
       })
-      .catch((error) => {toast.error("Something went wrong")});
+      .catch((error) => {
+        toast.error("Something went wrong");
+      });
   };
 
   return (
     <div className="py-10 px-5">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-      <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div className="invoiceHead">
             <h2 className="  trustAutoTitle trustAutoTitleQutation ">

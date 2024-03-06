@@ -5,14 +5,22 @@ import { Email, Home, WhatsApp, LocalPhone } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
- const navigate = useNavigate()
+  const navigate = useNavigate();
 
+  const trust_auto_id = Cookies.get("trust_auto_id");
 
   const onSubmit = async (data) => {
-    console.log(data);
+
+    if(!trust_auto_id){
+      return toast.error("No customer id found.")
+    }
+
     const values = {
+      customerId: trust_auto_id,
       thanks_from: data.thanks_from,
       against_bill_no: data.against_bill_no,
       vehicle_no: data.vehicle_no,
@@ -31,13 +39,12 @@ const MoneyReceiptView = () => {
         values
       );
 
-  
       if (
         response.data.message ===
         "Successfully added money receipt information."
       ) {
         reset();
-        navigate("/dashboard/money-receipt-list")
+        navigate("/dashboard/money-receipt-list");
       }
     } catch (error) {
       console.log(error);
@@ -101,7 +108,8 @@ const MoneyReceiptView = () => {
         <div className=" payAdvance mt-5">
           <div className="flex  receivedField">
             <label className="advance">
-            <input type="checkbox" />  Advance <input type="checkbox" /> Final Payment / against bill no:{" "}
+              <input type="checkbox" /> Advance <input type="checkbox" /> Final
+              Payment / against bill no:{" "}
             </label>
             <input
               {...register("against_bill_no", { required: true })}
@@ -122,7 +130,11 @@ const MoneyReceiptView = () => {
         </div>
         <div className="payAdvance mt-5">
           <div className="flex  receivedField">
-            <label className="checqueText"> <input type="checkbox" /> Cash <input type="checkbox" />Cheque No: </label>
+            <label className="checqueText">
+              {" "}
+              <input type="checkbox" /> Cash <input type="checkbox" />
+              Cheque No:{" "}
+            </label>
             <input
               {...register("cheque_no", { required: true })}
               className="cashInput moneyViewInputField"
@@ -198,8 +210,8 @@ const MoneyReceiptView = () => {
           <button className="btn btn-primary w-full">submit</button>
         </div> */}
         <div className="receivedBtn my-5">
-        <button type='submit'>Submit</button>
-      </div>
+          <button type="submit">Submit</button>
+        </div>
       </form>
       <div>
         <small className="signature">Authorized Signature</small>

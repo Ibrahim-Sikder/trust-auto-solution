@@ -15,7 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 const MoneyReceiptList = () => {
-  const [select, setSelect] = useState(null);
+ 
   const [getMoneyReceipt, setGetMoneyReceipt] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
@@ -308,19 +308,13 @@ const MoneyReceiptList = () => {
           >
             All
           </div>
-          <select onChange={(e) => setSelect(e.target.value)}>
-            <option value="SL No"> SL No</option>
-            <option value="Customer Name"> Received with thanks from</option>
-            <option value="Customer Name"> Cheque No</option>
-            <option value="Order Number"> Vehicle No</option>
-            <option value="Car Number">Bank</option>
-          </select>
+           
           <div className="searchGroup">
             <input
               onChange={(e) => setFilterType(e.target.value)}
               autoComplete="off"
               type="text"
-              placeholder={select}
+             
             />
           </div>
           <button onClick={handleFilterType} className="SearchBtn ">

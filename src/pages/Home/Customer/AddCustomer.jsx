@@ -100,7 +100,7 @@ const AddCustomer = () => {
  
       if (response.data.message === "Successfully add to customer post") {
         setReload(!reload);
-        Cookies.set("id", response.data.result._id);
+        Cookies.set("trust_auto_id", response.data.result.customerId);
         navigate("/dashboard/customer-list");
         toast.success("Successfully add to customer post");
         setLoading(false);

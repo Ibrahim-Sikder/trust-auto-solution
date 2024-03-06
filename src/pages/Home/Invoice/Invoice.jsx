@@ -13,6 +13,7 @@ import "./Invoice.css";
 import axios from "axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 const Invoice = () => {
   const [select, setSelect] = useState(null);
 
@@ -81,10 +82,10 @@ const Invoice = () => {
 
   useEffect(() => {
     const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
-  
+
     // Limiting totalSum to two decimal places
     const roundedTotalSum = parseFloat(totalSum.toFixed(2));
-  
+
     setGrandTotal(roundedTotalSum);
   }, [items]);
 
@@ -100,9 +101,9 @@ const Invoice = () => {
     newItems[index].quantity = roundedValue;
     // newItems[index].quantity = value;
     // Convert quantity to a number and calculate total
-  
+
     newItems[index].total = roundedValue * newItems[index].rate;
-  
+
     setItems(newItems);
     // newItems[index].total = Number(value) * newItems[index].rate;
     // setItems(newItems);
@@ -110,13 +111,13 @@ const Invoice = () => {
 
   // const handleQuantityChange = (index, value) => {
   //   const newItems = [...items];
-  
+
   //   // Round the value to the nearest integer
   //   const roundedValue = Math.round(value);
-  
+
   //   newItems[index].quantity = roundedValue;
   //   newItems[index].total = roundedValue * newItems[index].rate;
-  
+
   //   setItems(newItems);
   // };
 
@@ -130,16 +131,16 @@ const Invoice = () => {
 
   const handleRateChange = (index, value) => {
     const newItems = [...items];
-  
+
     // Convert rate to a number
     newItems[index].rate = parseFloat(value);
-  
+
     // Calculate total with the updated rate
     newItems[index].total = newItems[index].quantity * newItems[index].rate;
-  
+
     // Round total to two decimal places
     newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-  
+
     setItems(newItems);
   };
 
@@ -205,22 +206,24 @@ const Invoice = () => {
     const totalAfterDiscount = grandTotal - discountAsPercentage;
 
     const vatAsPercentage = vat / 100;
-    let finalTotal =
-      totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
-      finalTotal = parseFloat(finalTotal.toFixed(2));
+    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    finalTotal = parseFloat(finalTotal.toFixed(2));
 
     return finalTotal;
   };
 
-   
+  const trust_auto_id = Cookies.get("trust_auto_id");
 
   const handleAddToInvoice = async (e) => {
     e.preventDefault();
-
+    if (!trust_auto_id) {
+      return toast.error("No customer account found.");
+    }
     try {
       const values = {
         username: jobCardData?.username,
         // serial_no: formattedSerialNo,
+        customerId: trust_auto_id,
         job_no: job_no,
         date: jobCardData.date,
         car_registration_no: jobCardData.car_registration_no,
@@ -265,9 +268,15 @@ const Invoice = () => {
 
   const handlePreview = async (e) => {
     e.preventDefault();
+
+    if (!trust_auto_id) {
+      return toast.error("No customer account found.");
+    }
+
     const values = {
       username: jobCardData?.username,
       // serial_no: formattedSerialNo,
+      customerId: trust_auto_id,
       job_no: job_no,
       date: jobCardData.date,
       car_registration_no: jobCardData.car_registration_no,
@@ -542,17 +551,16 @@ const Invoice = () => {
     }
   };
 
-
   const handleAllInvoice = () => {
     try {
       fetch(`http://localhost:5000/api/v1/invoice/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setGetAllInvoice(data);
-        setNoMatching(null);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          setGetAllInvoice(data);
+          setNoMatching(null);
+        });
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   };
   return (
@@ -572,10 +580,10 @@ const Invoice = () => {
             </p>
           </div>
         </div> */}
-         <div className="w-full flex justify-between items-center mb-2 mt-5">
-        <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+        <div className="w-full flex justify-between items-center mb-2 mt-5">
+          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div>
-          <h2 className="  trustAutoTitle trustAutoTitleQutation ">
+            <h2 className="  trustAutoTitle trustAutoTitleQutation ">
               Trust Auto Solution{" "}
             </h2>
             <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
@@ -738,11 +746,11 @@ const Invoice = () => {
           })}
           <div className="discountFieldWrap">
             <div className="flex items-center">
-              <b className='mr-2'> Total Amount: </b>
+              <b className="mr-2"> Total Amount: </b>
               <span>{grandTotal}</span>
             </div>
             <div>
-              <b className='mr-2'> Discount: </b>
+              <b className="mr-2"> Discount: </b>
               <input
                 className="text-center py-1"
                 onChange={(e) => handleDiscountChange(e.target.value)}
@@ -752,7 +760,7 @@ const Invoice = () => {
               />
             </div>
             <div>
-              <b className='mr-2'>Vat: </b>
+              <b className="mr-2">Vat: </b>
               <input
                 className="text-center"
                 onChange={(e) => handleVATChange(e.target.value)}
@@ -763,23 +771,23 @@ const Invoice = () => {
             </div>
             <div>
               <div className="ml-3 flex items-center ">
-                <b className='mr-2'>Final Total:</b>
+                <b className="mr-2">Final Total:</b>
                 <span>{calculateFinalTotal()}</span>
               </div>
             </div>
             <div>
-            <b className='mr-2'>Advance: </b>
-            <input
-              className="text-center"
-              onChange={(e) => handleVATChange(e.target.value)}
-              autoComplete="off"
-              type="text"
-              placeholder="Advance"
-            />
-          </div>
-          <div>
+              <b className="mr-2">Advance: </b>
+              <input
+                className="text-center"
+                onChange={(e) => handleVATChange(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Advance"
+              />
+            </div>
+            <div>
               <div className="ml-3 flex items-center ">
-                <b className='mr-2'>Due:</b>
+                <b className="mr-2">Due:</b>
                 <span>{calculateFinalTotal()}</span>
               </div>
             </div>
@@ -811,12 +819,12 @@ const Invoice = () => {
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold mb-3">Invoice List:</h3>
           <div className="flex items-center searcList">
-          <div
-            onClick={handleAllInvoice}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </div>
+            <div
+              onClick={handleAllInvoice}
+              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            >
+              All
+            </div>
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

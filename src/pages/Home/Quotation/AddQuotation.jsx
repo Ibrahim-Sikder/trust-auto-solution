@@ -16,6 +16,7 @@ import Loading from "../../../components/Loading/Loading"
 import { styled, alpha } from "@mui/material/styles"
 import InputBase from "@mui/material/InputBase"
 import SearchIcon from "@mui/icons-material/Search"
+import Cookies from "js-cookie"
 
 const AddQuotation = () => {
   const [select, setSelect] = useState(null)
@@ -202,22 +203,23 @@ const AddQuotation = () => {
     return finalTotal
   }
 
+ const trust_auto_id = Cookies.get("trust_auto_id")
+
   const handleAddToQuotation = async (e) => {
     e.preventDefault()
-
+    if (!trust_auto_id) {
+      return toast.error("No customer account found.");
+    }
     try {
       const values = {
         username: jobCardData.username,
+        customerId : trust_auto_id,
         job_no: job_no,
         date: jobCardData.date,
         car_registration_no: jobCardData.car_registration_no,
         customer_name: jobCardData?.customer_name,
         contact_number: jobCardData?.contact_number,
         mileage: jobCardData?.mileage,
-        // descriptions: descriptions,
-        // quantity: quantity,
-        // rate: rate,
-        // amount: total,
         total_amount: grandTotal,
         discount: discount,
         vat: vat,
@@ -239,7 +241,6 @@ const AddQuotation = () => {
         values
       )
 
-      console.log(response)
       if (response.data.message === "Successfully quotation post") {
         setPostError("")
         setError("")
@@ -259,6 +260,7 @@ const AddQuotation = () => {
     e.preventDefault()
     const values = {
       username: jobCardData?.username,
+      customerId : trust_auto_id,
       // serial_no: formattedSerialNo,
       job_no: job_no,
       date: jobCardData.date,
@@ -266,10 +268,6 @@ const AddQuotation = () => {
       customer_name: jobCardData.customer_name,
       contact_number: jobCardData.contact_number,
       mileage: jobCardData.mileage,
-      // descriptions: descriptions,
-      // quantity: quantity,
-      // rate: rate,
-      // amount: total,
       total_amount: grandTotal,
       discount: discount,
       vat: vat,
