@@ -28,8 +28,12 @@ const AddJobCard = () => {
   const [allJobCard, setAllJobCard] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
+
   const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
+  const [companyDetails, setCompanyDetails] = useState([]);
+  const [showCompanyData, setShowCompanyData] = useState({});
+
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
@@ -70,7 +74,9 @@ const AddJobCard = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const formRef = useRef();
   const navigate = useNavigate();
-  const id = Cookies.get("id");
+
+  const customer_type = Cookies.get("customer_type");
+
   const onSubmit = async (data) => {
     try {
       if (!customerId) {
@@ -159,19 +165,49 @@ const AddJobCard = () => {
 
   useEffect(() => {
     try {
-      fetch(`http://localhost:5000/api/v1/customer`)
-        .then((res) => res.json())
-        .then((data) => {
-          setCustomerDetails(data);
-          const selectedCustomer = data?.find(
-            (customer) => customer?.customerId === customerId
-          );
-          setShowCustomerData(selectedCustomer);
-        });
+      if (customer_type === "customer") {
+        fetch(`http://localhost:5000/api/v1/customer`)
+          .then((res) => res.json())
+          .then((data) => {
+            setCustomerDetails(data);
+            const selectedCustomer = data?.find(
+              (customer) => customer?.customerId === customerId
+            );
+            setShowCustomerData(selectedCustomer);
+          });
+      }
+      if (customer_type === "company") {
+        fetch(`http://localhost:5000/api/v1/company`)
+          .then((res) => res.json())
+          .then((data) => {
+            // 01671426969
+            setCustomerDetails(data);
+            const selectedCompany = data?.find(
+              (customer) => customer?.companyId === customerId
+            );
+            setShowCustomerData(selectedCompany);
+          });
+      }
     } catch (error) {
       setError(error.message);
     }
-  }, [customerId]);
+  }, [customerId, customer_type]);
+
+  // useEffect(() => {
+  //   try {
+  //     fetch(`http://localhost:5000/api/v1/company`)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setCompanyDetails(data);
+  //         const selectedCompany = data?.find(
+  //           (customer) => customer?.companyId === customerId
+  //         );
+  //         setShowCompanyData(selectedCompany);
+  //       });
+  //   } catch (error) {
+  //     setError(error.message);
+  //   }
+  // }, [customerId]);
 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
@@ -716,7 +752,7 @@ const AddJobCard = () => {
                     Customer
                     ID
                     options={customerDetails?.map(
-                      (option) => option?.customerId
+                      (option) => option?.customerId || option?.companyId
                     )}
                     renderInput={(params) => (
                       <TextField

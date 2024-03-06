@@ -166,6 +166,7 @@ const CustomerProfile = () => {
               jobCardData={jobCardData}
               quotationData={quotationData}
               invoiceData={invoiceData}
+              moneyReceiptData={moneyReceiptData}
             />
           </TabPanel>
           <TabPanel>

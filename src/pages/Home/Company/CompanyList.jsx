@@ -9,9 +9,6 @@ import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 const CompanyList = () => {
-
-
-
   const [filterType, setFilterType] = useState("");
   const [companyData, setCompanyData] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
@@ -23,11 +20,10 @@ const CompanyList = () => {
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
 
- const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/company-profile?id=${e}`);
   };
-
 
   useEffect(() => {
     setLoading(true);
@@ -153,13 +149,13 @@ const CompanyList = () => {
             <tr key={card._id}>
               <td>{index + 1}</td>
               <td>{card.company_name}</td>
-            
+
               <td>{card.car_registration_no}</td>
-              <td> {card.company_contact } </td>
+              <td> {card.company_contact} </td>
               <td>{card.date}</td>
               <td>
                 <div
-                  onClick={() => handleIconPreview(card._id)}
+                  onClick={() => handleIconPreview(card.companyId)}
                   className="editIconWrap edit2"
                 >
                   <FaUserTie className="invoicIcon" />
@@ -311,14 +307,18 @@ const CompanyList = () => {
             All
           </button>
           <input
-          type="text"
-          placeholder="Search"
-          className="border py-2 px-3 rounded-md border-[#ddd]"
-        />
-        <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
-          {" "}
-          <HiOutlineSearch size={22} />
-        </button>
+            type="text"
+            placeholder="Search"
+            className="border py-2 px-3 rounded-md border-[#ddd]"
+            onChange={(e) => setFilterType(e.target.value)}
+          />
+          <button
+            onClick={handleFilterType}
+            className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1"
+          >
+            {" "}
+            <HiOutlineSearch size={22} />
+          </button>
         </div>
       </div>
 

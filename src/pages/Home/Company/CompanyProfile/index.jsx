@@ -20,6 +20,10 @@ import { useLocation } from "react-router-dom";
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
+  const [jobCardData, setJobCardData] = useState([]);
+  const [quotationData, setQuotationData] = useState([]);
+  const [invoiceData, setInvoiceData] = useState([]);
+  const [moneyReceiptData, setMoneyReceiptData] = useState([]);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   useEffect(() => {
@@ -30,6 +34,77 @@ const CompanyProfile = () => {
         .then((data) => {
           setProfileData(data);
           setLoading(false);
+        });
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetch(`http://localhost:5000/api/v1/jobCard/${id}`, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "success") {
+            setJobCardData(data.jobCard);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors
+        });
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetch(`http://localhost:5000/api/v1/quotation/${id}`, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "success") {
+            setQuotationData(data.jobCard);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors
+        });
+    }
+  }, [id]);
+  useEffect(() => {
+    if (id) {
+      fetch(`http://localhost:5000/api/v1/invoice/${id}`, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "success") {
+            setInvoiceData(data.jobCard);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors
+        });
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetch(`http://localhost:5000/api/v1/money_receipt/${id}`, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "success") {
+            setMoneyReceiptData(data.card);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors
         });
     }
   }, [id]);
@@ -89,22 +164,44 @@ const CompanyProfile = () => {
           </TabList>
 
           <TabPanel>
-            <CompanyAccount />
+            <CompanyAccount
+              profileData={profileData}
+              jobCardData={jobCardData}
+              quotationData={quotationData}
+              invoiceData={invoiceData}
+              moneyReceiptData={moneyReceiptData}
+            />
           </TabPanel>
           <TabPanel>
             <CompanyVehicleDetails />
           </TabPanel>
           <TabPanel>
-            <CompanyJobCardList />
+            <CompanyJobCardList
+              jobCardData={jobCardData}
+              setJobCardData={setJobCardData}
+              id={id}
+            />
           </TabPanel>
           <TabPanel>
-            <CompanyQuotationList />
+            <CompanyQuotationList
+              quotationData={quotationData}
+              setQuotationData={setQuotationData}
+              id={id}
+            />
           </TabPanel>
           <TabPanel>
-            <CompanyInvoiceList />
+            <CompanyInvoiceList
+              invoiceData={invoiceData}
+              setInvoiceData={setInvoiceData}
+              id={id}
+            />
           </TabPanel>
           <TabPanel>
-            <CompanyMoneyList />
+            <CompanyMoneyList
+              moneyReceiptData={moneyReceiptData}
+              setMoneyReceiptData={setMoneyReceiptData}
+              id={id}
+            />
           </TabPanel>
           <TabPanel>
             <SupplierPaymentList />
