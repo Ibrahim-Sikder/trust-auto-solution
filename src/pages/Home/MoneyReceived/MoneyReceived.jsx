@@ -21,6 +21,8 @@ const MoneyReceiptView = () => {
 
     const values = {
       customerId: trust_auto_id,
+      companyId: trust_auto_id,
+      showRoomId: trust_auto_id,
       thanks_from: data.thanks_from,
       against_bill_no: data.against_bill_no,
       vehicle_no: data.vehicle_no,

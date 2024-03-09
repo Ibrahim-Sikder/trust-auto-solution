@@ -31,26 +31,10 @@ const AddJobCard = () => {
 
   const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-  const [companyDetails, setCompanyDetails] = useState([]);
-  const [showCompanyData, setShowCompanyData] = useState({});
 
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
-  // const [registration, setRegistration] = useState(null);
-  // const [carRegNo, setCarReg] = useState(null);
-  // const [vehicleModel, setCarModel] = useState(null);
-  // const [vehicleBrand, setVehicleBrand] = useState(null);
-  // const [mileage, setMileage] = useState(null);
-  // const [color, setColor] = useState(null);
-  // const [engineNo, setEngineNo] = useState(null);
-  // const [reference, setReference] = useState(null);
-  // const [companyName, setCompanyName] = useState(null);
-  // const [vehicleCategory, setVehicleCategory] = useState(null);
-  // const [customerName, setCustomerName] = useState(null);
-  // const [contactNo, setContactNo] = useState(null);
-  // const [driverName, setDriverName] = useState(null);
-  // const [phoneNo, setPhoneNo] = useState(null);
 
   const [vehicleBody, setVehicleBody] = useState(null);
   const [clickControl, setClickControl] = useState(null);
@@ -84,6 +68,8 @@ const AddJobCard = () => {
       }
       const values = {
         customerId: customerId,
+        companyId: customerId,
+        showRoomId: customerId,
         job_no: jobNo,
         date: formattedDate,
         company_name: data.company_name,
@@ -164,50 +150,52 @@ const AddJobCard = () => {
   };
 
   useEffect(() => {
-    try {
-      if (customer_type === "customer") {
-        fetch(`http://localhost:5000/api/v1/customer`)
-          .then((res) => res.json())
-          .then((data) => {
-            setCustomerDetails(data);
-            const selectedCustomer = data?.find(
-              (customer) => customer?.customerId === customerId
-            );
-            setShowCustomerData(selectedCustomer);
-          });
+    const fetchData = async () => {
+      try {
+        let apiUrl = "";
+        switch (customer_type) {
+          case "customer":
+            apiUrl = "http://localhost:5000/api/v1/customer";
+            break;
+          case "company":
+            apiUrl = "http://localhost:5000/api/v1/company";
+            break;
+          case "show_room":
+            apiUrl = "http://localhost:5000/api/v1/showRoom";
+            break;
+          default:
+            throw new Error("Invalid customer type");
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCustomerDetails(data);
+
+        const selectedCustomer = data.find((customer) => {
+          switch (customer_type) {
+            case "customer":
+              return customer.customerId === customerId;
+            case "company":
+              return customer.companyId === customerId;
+            case "show_room":
+              return customer.showRoomId === customerId;
+            default:
+              return false;
+          }
+        });
+        setShowCustomerData(selectedCustomer);
+      } catch (error) {
+        setError(error.message);
       }
-      if (customer_type === "company") {
-        fetch(`http://localhost:5000/api/v1/company`)
-          .then((res) => res.json())
-          .then((data) => {
-            // 01671426969
-            setCustomerDetails(data);
-            const selectedCompany = data?.find(
-              (customer) => customer?.companyId === customerId
-            );
-            setShowCustomerData(selectedCompany);
-          });
-      }
-    } catch (error) {
-      setError(error.message);
-    }
+    };
+
+    fetchData();
   }, [customerId, customer_type]);
 
-  // useEffect(() => {
-  //   try {
-  //     fetch(`http://localhost:5000/api/v1/company`)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setCompanyDetails(data);
-  //         const selectedCompany = data?.find(
-  //           (customer) => customer?.companyId === customerId
-  //         );
-  //         setShowCompanyData(selectedCompany);
-  //       });
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  // }, [customerId]);
 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
@@ -752,14 +740,13 @@ const AddJobCard = () => {
                     Customer
                     ID
                     options={customerDetails?.map(
-                      (option) => option?.customerId || option?.companyId
+                      (option) =>
+                        option?.customerId ||
+                        option?.companyId ||
+                        option?.showRoomId
                     )}
                     renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Customer ID "
-                        // onChange={(e) => setCustomerId(e.target.value)}
-                      />
+                      <TextField {...params} label="Select ID" />
                     )}
                   />
                 </div>
@@ -783,12 +770,31 @@ const AddJobCard = () => {
                   defaultValue={formattedDate}
                 />
               </div>
-              <Link to="/dashboard/add-customer">
-                {" "}
-                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                  Add Customer
-                </button>
-              </Link>
+              {customer_type === "customer" && (
+                <Link to="/dashboard/add-customer">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Customer
+                  </button>
+                </Link>
+              )}
+              
+              {customer_type === "company" && (
+                <Link to="/dashboard/add-company">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Company
+                  </button>
+                </Link>
+              )}
+              {customer_type === "show_room" && (
+                <Link to="/dashboard/add-show-room">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Show Room
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
 

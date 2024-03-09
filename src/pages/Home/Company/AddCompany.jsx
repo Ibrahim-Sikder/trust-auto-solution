@@ -53,7 +53,6 @@ const AddCompany = () => {
         "http://localhost:5000/api/v1/company",
         data
       );
-      console.log(response);
       if (response.data.message === "Successfully add to company post") {
         setReload(!reload);
         toast.success("Successfully add to company post");

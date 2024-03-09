@@ -14,6 +14,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { Autocomplete, TextField } from "@mui/material";
 const Invoice = () => {
   const [select, setSelect] = useState(null);
 
@@ -29,6 +30,10 @@ const Invoice = () => {
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [customerDetails, setCustomerDetails] = useState([]);
+  const [showCustomerData, setShowCustomerData] = useState({});
+  const [customerId, setCustomerId] = useState(null);
 
   useEffect(() => {
     if (job_no) {
@@ -213,17 +218,20 @@ const Invoice = () => {
   };
 
   const trust_auto_id = Cookies.get("trust_auto_id");
+  const customer_type = Cookies.get("customer_type");
 
   const handleAddToInvoice = async (e) => {
     e.preventDefault();
     if (!trust_auto_id) {
-      return toast.error("No customer account found.");
+      return toast.error("No account found.");
     }
     try {
       const values = {
         username: jobCardData?.username,
         // serial_no: formattedSerialNo,
-        customerId: trust_auto_id,
+        customerId: customerId,
+        companyId: customerId,
+        showRoomId: customerId,
         job_no: job_no,
         date: jobCardData.date,
         car_registration_no: jobCardData.car_registration_no,
@@ -270,13 +278,15 @@ const Invoice = () => {
     e.preventDefault();
 
     if (!trust_auto_id) {
-      return toast.error("No customer account found.");
+      return toast.error("No account found.");
     }
 
     const values = {
       username: jobCardData?.username,
       // serial_no: formattedSerialNo,
-      customerId: trust_auto_id,
+      customerId: customerId,
+      companyId: customerId,
+      showRoomId: customerId,
       job_no: job_no,
       date: jobCardData.date,
       car_registration_no: jobCardData.car_registration_no,
@@ -315,6 +325,53 @@ const Invoice = () => {
         });
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let apiUrl = "";
+        switch (customer_type) {
+          case "customer":
+            apiUrl = "http://localhost:5000/api/v1/customer";
+            break;
+          case "company":
+            apiUrl = "http://localhost:5000/api/v1/company";
+            break;
+          case "show_room":
+            apiUrl = "http://localhost:5000/api/v1/showRoom";
+            break;
+          default:
+            throw new Error("Invalid customer type");
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCustomerDetails(data);
+
+        const selectedCustomer = data.find((customer) => {
+          switch (customer_type) {
+            case "customer":
+              return customer.customerId === customerId;
+            case "company":
+              return customer.companyId === customerId;
+            case "show_room":
+              return customer.showRoomId === customerId;
+            default:
+              return false;
+          }
+        });
+        setShowCustomerData(selectedCustomer);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, [customerId, customer_type]);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
@@ -655,6 +712,51 @@ const Invoice = () => {
           </div>
 
           <div className="vehicleCard">Invoice Card </div>
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center topSearchBa">
+              <Autocomplete
+                onChange={(event, value) => setCustomerId(value)}
+                className="jobCardSelect"
+                id="free-solo-demo"
+                Customer
+                ID
+                options={customerDetails?.map(
+                  (option) =>
+                    option?.customerId ||
+                    option?.companyId ||
+                    option?.showRoomId
+                )}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select ID" />
+                )}
+              />
+            </div>
+            {customer_type === "customer" && (
+              <Link to="/dashboard/add-customer">
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Customer
+                </button>
+              </Link>
+            )}
+
+            {customer_type === "company" && (
+              <Link to="/dashboard/add-company">
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Company
+                </button>
+              </Link>
+            )}
+            {customer_type === "show_room" && (
+              <Link to="/dashboard/add-show-room">
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Show Room
+                </button>
+              </Link>
+            )}
+          </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
