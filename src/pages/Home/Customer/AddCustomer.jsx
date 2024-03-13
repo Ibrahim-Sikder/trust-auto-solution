@@ -134,7 +134,11 @@ const AddCustomer = () => {
       });
   }, [reload]);
 
+
+
+
   const handleIconPreview = async (e) => {
+    console.log(e)
     navigate(`/dashboard/customer-profile?id=${e}`);
   };
 

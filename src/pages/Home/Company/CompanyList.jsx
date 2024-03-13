@@ -12,10 +12,6 @@ const CompanyList = () => {
   const [filterType, setFilterType] = useState("");
   const [companyData, setCompanyData] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
-
-  // const [brand, setBrand] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [getFuelType, setGetFuelType] = useState("");
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -31,7 +27,6 @@ const CompanyList = () => {
       .then((res) => res.json())
       .then((data) => {
         setCompanyData(data);
-        console.log(data);
         setLoading(false);
       });
   }, [reload]);
@@ -229,7 +224,7 @@ const CompanyList = () => {
     );
   }
 
-  console.log(filterType);
+ 
   const handleFilterType = async () => {
     try {
       const data = {
