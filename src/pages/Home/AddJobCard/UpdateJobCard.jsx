@@ -2,83 +2,405 @@
 import "./AddJobCard.css";
 import car from "../../../../public/assets/car2.jpeg";
 import logo from "../../../../public/assets/logo.png";
-import { useEffect, useState } from "react";
+import swal from "sweetalert";
+import { useEffect, useRef, useState } from "react";
+import { Autocomplete, TextField } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FormControl, InputLabel, Select, TextField } from "@mui/material";
+import { toast } from "react-toastify";
+import Loading from "../../../components/Loading/Loading";
+import {
+  carBrands,
+  cmDmOptions,
+  fuelType,
+  totalYear,
+  vehicleTypes,
+} from "../../../constant";
+import Cookies from "js-cookie";
+
 const UpdateJobCard = () => {
-  const [carRegNo, setCarRegNo] = useState(null);
-  const [vehicleCategory, setVehicleCategory] = useState(null);
-  const [singleCard, setSingleCard] = useState({});
+  const [previousPostData, setPreviousPostData] = useState({});
+  const [jobNo, setJobNo] = useState(previousPostData.job_no);
+  const [allJobCard, setAllJobCard] = useState([]);
+  const [noMatching, setNoMatching] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+
+  const [customerDetails, setCustomerDetails] = useState([]);
+  const [showCustomerData, setShowCustomerData] = useState({});
+
+  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("");
+  const [getFuelType, setGetFuelType] = useState("");
+
+  const [vehicleBody, setVehicleBody] = useState(null);
+  const [clickControl, setClickControl] = useState(null);
+
+  const [error, setError] = useState(null);
+  const [select, setSelect] = useState("SL No");
   const [value, setValue] = useState("");
   const [value2, setValue2] = useState("");
   const [value3, setValue3] = useState("");
+  const [reload, setReload] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [formattedDate, setFormattedDate] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [select, setSelect] = useState(false);
-  const [dateSelect, setDateSelect] = useState(false);
-  const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const id = new URLSearchParams(location.search).get("id");
+  const [filterType, setFilterType] = useState("");
 
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      fetch(`http://localhost:5000/api/v1/jobCard/one/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setSingleCard(data);
-          setLoading(false);
-        });
-    }
-  }, [id]);
+  const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const formRef = useRef();
+  const navigate = useNavigate();
+
+  const customer_type = Cookies.get("customer_type");
 
   const onSubmit = async (data) => {
-    const values = {
-      username: singleCard.username,
-      job_no: singleCard.job_no,
-      date: formattedDate || singleCard.date,
-      chassis_no: data.chassis_no || singleCard.chassis_no,
-      carReg_no: carRegNo || singleCard.carReg_no,
-      car_registration_no:
-        data.car_registration_no || singleCard.car_registration_no,
-      car_model: data.car_model || singleCard.car_model,
-      car_make: data.car_make || singleCard.car_make,
-      mileage: data.mileage || singleCard.mileage,
-      color: data.color || singleCard.color,
-      engine_no: data.engine_no || singleCard.engine_no,
-      reference_name: data.reference_name || singleCard.reference_name,
-      company_name: data.company_name || singleCard.company_name,
-      vehicle_category: vehicleCategory || singleCard.vehicle_category,
-      customer_name: data.customer_name || singleCard.customer_name,
-      contact_number: data.contact_number || singleCard.contact_number,
-      driver_name: data.driver_name || singleCard.driver_name,
-      phone_number: data.phone_number || singleCard.phone_number,
-      vehicle_interior_parts: value || singleCard.vehicle_interior_parts,
-      reported_defect: value2 || singleCard.reported_defect,
-      reported_action: value3 || singleCard.reported_action,
-      vehicle_body_report:
-        data.vehicle_body_report || singleCard.vehicle_body_report,
-      technician_name: data.technician_name || singleCard.technician_name,
-      technician_signature:
-        data.technician_signature || singleCard.technician_signature,
-      technician_date: data.technician_date || singleCard.technician_date,
-      vehicle_owner: data.vehicle_owner || singleCard.vehicle_owner,
-    };
-    setLoading(true);
-    const response = await axios.put(
-      `http://localhost:5000/api/v1/jobCard/one/${id}`,
-      values
-    );
-    if (response.data.message === "Successfully update card.") {
-      navigate("/dashboard/addjob");
+    try {
+      if (!customerId) {
+        return toast.error("Please add your Id.");
+      }
+      const values = {
+        customerId: customerId,
+        companyId: customerId,
+        showRoomId: customerId,
+        job_no: jobNo,
+        date: formattedDate,
+        company_name: data.company_name,
+        username: data.username,
+        company_address: data.company_address,
+        customer_name: data.customer_name,
+        customer_contact: data.customer_contact,
+        customer_email: data.customer_email,
+        customer_address: data.customer_address,
+        driver_name: data.driver_name,
+        driver_contact: data.driver_contact,
+        reference_name: data.reference_name,
+        carReg_no: data.carReg_no,
+        car_registration_no: data.car_registration_no,
+        chassis_no: data.chassis_no,
+        engine_no: data.engine_no,
+        vehicle_brand: data.vehicle_brand,
+        vehicle_name: data.vehicle_name,
+        vehicle_model: data.vehicle_model,
+        vehicle_category: data.vehicle_category,
+        color_code: data.color_code,
+        mileage: data.mileage,
+        fuel_type: data.fuel_type,
+        vehicle_interior_parts: value,
+        reported_defect: value2,
+        reported_action: value3,
+        vehicle_body_report: vehicleBody,
+        technician_name: data.technician_name,
+        technician_signature: data.technician_signature,
+        technician_date: data.technician_date,
+        vehicle_owner: data.vehicle_owner,
+      };
+
+      setLoading(true);
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/jobCard",
+        values
+      );
+
+      if (response.data.message === "Successfully add to card post") {
+        setLoading(false);
+        const newJobNo = jobNo + 1;
+        setJobNo(newJobNo);
+        setReload(!reload);
+        if (clickControl === "preview") {
+          fetch("http://localhost:5000/api/v1/jobCard/recent")
+            .then((res) => res.json())
+            .then((data) => {
+              if (data) {
+                navigate(`/dashboard/preview?id=${data._id}`);
+              }
+            });
+        }
+        if (clickControl === "quotation") {
+          navigate(`/dashboard/qutation?order_no=${jobNo}`);
+        }
+        if (clickControl === "invoice") {
+          navigate(`/dashboard/invoice?order_no=${jobNo}`);
+        }
+        toast.success("Add to job card successful.");
+        formRef.current.reset();
+        setError(null);
+      }
+    } catch (error) {
       setLoading(false);
+      toast.error("Something went wrong.");
     }
   };
+
+  const handleBrandChange = (_, newInputValue) => {
+    setBrand(newInputValue);
+  };
+  const handleCategoryChange = (_, newInputValue) => {
+    setCategory(newInputValue);
+  };
+  const handleFuelChange = (_, newInputValue) => {
+    setGetFuelType(newInputValue);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let apiUrl = "";
+        switch (customer_type) {
+          case "customer":
+            apiUrl = "http://localhost:5000/api/v1/customer";
+            break;
+          case "company":
+            apiUrl = "http://localhost:5000/api/v1/company";
+            break;
+          case "show_room":
+            apiUrl = "http://localhost:5000/api/v1/showRoom";
+            break;
+          default:
+            throw new Error("Invalid customer type");
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCustomerDetails(data);
+
+        const selectedCustomer = data.find((customer) => {
+          switch (customer_type) {
+            case "customer":
+              return customer.customerId === customerId;
+            case "company":
+              return customer.companyId === customerId;
+            case "show_room":
+              return customer.showRoomId === customerId;
+            default:
+              return false;
+          }
+        });
+        setShowCustomerData(selectedCustomer);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, [customerId, customer_type]);
+
+
+  // const handlePreview = async (e) => {
+  //   e.preventDefault();
+  // try {
+  //   const values = {
+  //     customerId: id,
+  //     job_no: jobNo,
+  //     date: formattedDate,
+  //     chassis_no: chassisNo,
+  //     carReg_no: carRegNo,
+  //     car_registration_no: registration,
+  //     vehicle_model: vehicleModel,
+  //     vehicle_brand: vehicleBrand,
+  //     mileage: mileage,
+  //     color: color,
+  //     engine_no: engineNo,
+  //     reference_name: reference,
+  //     company_name: companyName,
+  //     vehicle_category: vehicleCategory,
+  //     customer_name: customerName,
+  //     contact_number: contactNo,
+  //     driver_name: driverName,
+  //     phone_number: phoneNo,
+  //     vehicle_interior_parts: value,
+  //     reported_defect: value2,
+  //     reported_action: value3,
+  //     vehicle_body_report: vehicleBody,
+  //     technician_name: technicianName,
+  //     technician_signature: technicianSignature,
+  //     technician_date: technicianDate,
+  //     vehicle_owner: owner,
+  //   };
+  //   const hasPreviewNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
+
+  //   if (hasPreviewNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/jobCard",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully add to card post") {
+  //     const newJobNo = jobNo + 1;
+  //     setJobNo(newJobNo);
+  //     setReload(!reload);
+  //     fetch("http://localhost:5000/api/v1/jobCard/recent")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         if (data) {
+  //           navigate(`/dashboard/preview?id=${data._id}`);
+  //         }
+  //       });
+
+  //     // formRef.current.reset()
+  //     reset();
+  //   }
+  // } catch (error) {
+  //   toast.error(error.message);
+  // }
+  // };
+  // const handleQuotation = async (e) => {
+  // e.preventDefault();
+  // try {
+  //   const values = {
+  //     customerId: id,
+  //     job_no: jobNo,
+  //     date: formattedDate,
+  //     chassis_no: chassisNo,
+  //     carReg_no: carRegNo,
+  //     car_registration_no: registration,
+  //     vehicle_model: vehicleModel,
+  //     vehicle_brand: vehicleBrand,
+  //     mileage: mileage,
+  //     color: color,
+  //     engine_no: engineNo,
+  //     reference_name: reference,
+  //     company_name: companyName,
+  //     vehicle_category: vehicleCategory,
+  //     customer_name: customerName,
+  //     contact_number: contactNo,
+  //     driver_name: driverName,
+  //     phone_number: phoneNo,
+  //     vehicle_interior_parts: value,
+  //     reported_defect: value2,
+  //     reported_action: value3,
+  //     vehicle_body_report: vehicleBody,
+  //     technician_name: technicianName,
+  //     technician_signature: technicianSignature,
+  //     technician_date: technicianDate,
+  //     vehicle_owner: owner,
+  //   };
+  //   const hasQuotationNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
+  //   if (hasQuotationNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/jobCard",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully add to card post") {
+  //     const newJobNo = jobNo + 1;
+  //     setJobNo(newJobNo);
+  //     setReload(!reload);
+  //     navigate(`/dashboard/qutation?order_no=${jobNo}`);
+  //     // formRef.current.reset()
+  //     setLoading(false);
+  //   }
+  // } catch (error) {
+  //   setLoading(false);
+  //   toast.error("Something went wrong.");
+  // }
+  // };
+  // const handleInvoice = async (e) => {
+  // e.preventDefault();
+  // try {
+  //   const values = {
+  //     customerId: id,
+  //     job_no: jobNo,
+  //     date: formattedDate,
+  //     chassis_no: chassisNo,
+  //     carReg_no: carRegNo,
+  //     car_registration_no: registration,
+  //     vehicle_model: vehicleModel,
+  //     vehicle_brand: vehicleBrand,
+  //     mileage: mileage,
+  //     color: color,
+  //     engine_no: engineNo,
+  //     reference_name: reference,
+  //     company_name: companyName,
+  //     vehicle_category: vehicleCategory,
+  //     customer_name: customerName,
+  //     contact_number: contactNo,
+  //     driver_name: driverName,
+  //     phone_number: phoneNo,
+  //     vehicle_interior_parts: value,
+  //     reported_defect: value2,
+  //     reported_action: value3,
+  //     vehicle_body_report: vehicleBody,
+  //     technician_name: technicianName,
+  //     technician_signature: technicianSignature,
+  //     technician_date: technicianDate,
+  //     vehicle_owner: owner,
+  //   };
+  //   const hasQuotationNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
+  //   if (hasQuotationNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/jobCard",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully add to card post") {
+  //     const newJobNo = jobNo + 1;
+  //     setJobNo(newJobNo);
+  //     setReload(!reload);
+  //     setLoading(false);
+  //     navigate(`/dashboard/invoice?order_no=${jobNo}`);
+  //     // formRef.current.reset()
+  //   }
+  // } catch (error) {
+  //   setLoading(false);
+  //   toast.error("Something went wrong.");
+  // }
+  // };
+  const handleIconPreview = async (e) => {
+    navigate(`/dashboard/preview?id=${e}`);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`http://localhost:5000/api/v1/jobCard`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPreviousPostData(data);
+        setLoading(false);
+      });
+  }, [jobNo, reload]);
+
+  useEffect(() => {
+    if (previousPostData.job_no && !jobNo) {
+      setJobNo(previousPostData.job_no + 1);
+    }
+  }, [previousPostData, jobNo, reload]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`http://localhost:5000/api/v1/jobCard/all`)
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        setAllJobCard(data);
+      });
+  }, [reload]);
 
   const handleDateChange = (event) => {
     const rawDate = event.target.value;
@@ -90,235 +412,704 @@ const UpdateJobCard = () => {
     setFormattedDate(formattedDate);
   };
 
-  const handleSelectReg = () => {
-    setSelect(true);
+  // pagination
+
+  const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(
+    Number(sessionStorage.getItem("job")) || 1
+  );
+  const [pageNumberLimit, setPageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
+
+  const deletePackage = async (id) => {
+    const willDelete = await swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this card?",
+      icon: "warning",
+      dangerMode: true,
+    });
+
+    if (willDelete) {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/v1/jobCard/one/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        const data = await res.json();
+
+        if (data.message == "Job card delete successful") {
+          setAllJobCard(allJobCard?.filter((pkg) => pkg._id !== id));
+        }
+        swal("Deleted!", "Card delete successful.", "success");
+      } catch (error) {
+        swal("Error", "An error occurred while deleting the card.", "error");
+      }
+    }
   };
+
+  useEffect(() => {
+    sessionStorage.setItem("job", currentPage.toString());
+  }, [currentPage]);
+  // ...
+
+  useEffect(() => {
+    const storedPage = Number(sessionStorage.getItem("job")) || 1;
+    setCurrentPage(storedPage);
+    setMaxPageNumberLimit(
+      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
+    );
+    setMinPageNumberLimit(
+      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
+    );
+  }, [pageNumberLimit]);
+
+  // ...
+
+  const handleClick = (e) => {
+    const pageNumber = Number(e.target.id);
+    setCurrentPage(pageNumber);
+    sessionStorage.setItem("job", pageNumber.toString());
+  };
+  const pages = [];
+  for (let i = 1; i <= Math.ceil(allJobCard?.length / limit); i++) {
+    pages.push(i);
+  }
+
+  const renderPagesNumber = pages?.map((number) => {
+    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={handleClick}
+          className={
+            currentPage === number
+              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
+              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
+          }
+        >
+          {number}
+        </li>
+      );
+    } else {
+      return null;
+    }
+  });
+
+  const lastIndex = currentPage * limit;
+  const startIndex = lastIndex - limit;
+
+  let currentItems;
+  if (Array.isArray(allJobCard)) {
+    currentItems = allJobCard.slice(startIndex, lastIndex);
+  } else {
+    currentItems = [];
+  }
+
+  // ...
+
+
+
+  const handlePrevious = () => {
+    const newPage = currentPage - 1;
+    setCurrentPage(newPage);
+    sessionStorage.setItem("job", newPage.toString());
+
+    if (newPage % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
+  const handleNext = () => {
+    const newPage = currentPage + 1;
+    setCurrentPage(newPage);
+    sessionStorage.setItem("job", newPage.toString());
+
+    if (newPage > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+
+  let pageIncrementBtn = null;
+  if (pages?.length > maxPageNumberLimit) {
+    pageIncrementBtn = (
+      <li
+        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
+        className="pl-1 text-black cursor-pointer"
+      >
+        &hellip;
+      </li>
+    );
+  }
+
+  let pageDecrementBtn = null;
+  if (currentPage > pageNumberLimit) {
+    pageDecrementBtn = (
+      <li
+        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
+        className="pr-1 text-black cursor-pointer"
+      >
+        &hellip;
+      </li>
+    );
+  }
+
+  const handleFilterType = async () => {
+    try {
+      const data = {
+        filterType,
+      };
+      setSearchLoading(true);
+      const response = await axios.post(
+        `http://localhost:5000/api/v1/jobCard/all`,
+        data
+      );
+
+      if (response.data.message === "Filter successful") {
+        setAllJobCard(response.data.result);
+        setNoMatching(null);
+        setSearchLoading(false);
+      }
+      if (response.data.message === "No matching found") {
+        setNoMatching(response.data.message);
+        setSearchLoading(false);
+      }
+    } catch (error) {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleAllAddToJobCard = () => {
+    fetch(`http://localhost:5000/api/v1/jobCard/all`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAllJobCard(data);
+        setNoMatching(null);
+      });
+  };
+
   const currentDate = new Date().toISOString().split("T")[0];
+  useEffect(() => {
+    // Get the current date in the format YYYY-MM-DD
+    const currentDate = new Date().toISOString().split("T")[0];
+    setFormattedDate(currentDate);
+  }, []);
+
+  // const Search = styled("div")(({ theme }) => ({
+  //   position: "relative",
+  //   borderRadius: theme.shape.borderRadius,
+  //   backgroundColor: alpha(theme.palette.common.white, 0.15),
+  //   "&:hover": {
+  //     backgroundColor: alpha(theme.palette.common.white, 0.25),
+  //   },
+  //   marginLeft: 0,
+  //   width: "100%",
+  //   [theme.breakpoints.up("sm")]: {
+  //     marginLeft: theme.spacing(1),
+  //     width: "auto",
+  //   },
+  // }));
+
+  // const SearchIconWrapper = styled("div")(({ theme }) => ({
+  //   padding: theme.spacing(0, 2),
+  //   height: "100%",
+  //   position: "absolute",
+  //   pointerEvents: "none",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // }));
+
+  // const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  //   color: "inherit",
+  //   width: "100%",
+  //   "& .MuiInputBase-input": {
+  //     padding: theme.spacing(1, 1, 1, 0),
+  //     // vertical padding + font size from searchIcon
+  //     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+  //     transition: theme.transitions.create("width"),
+  //     [theme.breakpoints.up("sm")]: {
+  //       width: "12ch",
+  //       "&:focus": {
+  //         width: "20ch",
+  //       },
+  //     },
+  //   },
+  // }));
 
   return (
-    <div className="addJobCardWraps">
+    <div className="mb-20 addJobCardWraps">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-        <div className="flex items-center justify-center">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
-          <div className="invoiceHead">
-            <h2 className=" font-bold text-center trustAuto word-sp">
+        <div className=" addJobCardHeads">
+          <img src={logo} alt="logo" className=" addJobLogoImg" />
+          <div>
+            <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}
             </h2>
-            <p className=" text-sm">
-              It is trusted computerized Ogranizetion for all the kinds of
-              vehicle check up & maintenance such as computerized Engine
-              Analysis Engine tune up, Denting, Painting, Engine, AC, Electrical
-              Works & Car Wash.
-            </p>
+            <span className="text-[12px] lg:text-xl">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+          </div>
+          <div className="space-y-1 text-justify jobCardContactInfo">
+            <span className="block">
+              <span className="font-bold">Mobile:</span> 345689789666
+            </span>
+            <span className="block">
+              <small className="font-bold">Email:</small>{" "}
+              trustautosolution@gmail.com
+            </span>
+            <span className="block font-bold ">trustautosolution.com</span>
           </div>
         </div>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div>
-          <div className=" flex justify-between items-center my-5">
+          <div className="flex flex-wrap items-center justify-between my-5 ">
             <div>
-              <b>
-                Job No: <span className="requiredStart">*</span>{" "}
-              </b>
-              <span>{singleCard.job_no}</span>
+              <div>
+                <b>
+                  Job No: <span className="requiredStart">*</span>
+                </b>
+                <span>{jobNo}</span>
+              </div>
+              <div>
+                <span>
+                  <b>Customer ID:</b> TAS000
+                </span>
+              
+              </div>
             </div>
-            <div className="vehicleCard">Update Job Card </div>
             <div>
-              <b>
-                Date <span className="requiredStart">*</span>{" "}
-              </b>
-
-              {!dateSelect && (
-                <>
-                  <div
-                    onClick={() => setDateSelect(true)}
-                    className=" cursor-pointer"
-                  >
-                    {singleCard.date}{" "}
-                  </div>
-                </>
-              )}
-
-              {dateSelect && (
+              <div className="vehicleCard">Vehicle Job Card </div>
+            </div>
+            <div>
+              <div>
+                <b>
+                  Date <span className="requiredStart">*</span>
+                </b>
                 <input
+                  className="outline-none"
                   onChange={handleDateChange}
                   autoComplete="off"
                   type="date"
                   placeholder="Date"
-                  defaultValue={singleCard.date}
                   max={currentDate}
+                  defaultValue={formattedDate}
                 />
+              </div>
+              {customer_type === "customer" && (
+                <Link to="/dashboard/add-customer">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Customer
+                  </button>
+                </Link>
               )}
+              
+              {customer_type === "company" && (
+                <Link to="/dashboard/add-company">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Company
+                  </button>
+                </Link>
+              )}
+              
             </div>
           </div>
+
           <div className="jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl mb-5 font-bold">Company Information </h3>
-              <div>
+              <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
+
+              <div className="flex items-center mt-3 ">
+                <Autocomplete
+                  className="jobCardSelect"
+                  id="free-solo-demo"
+                  Car
+                  Registration
+                  No
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Car Reg No"
+                      {...register("carReg_no", { required: true })}
+                      value={showCustomerData?.carReg_no}
+                      focused={showCustomerData?.carReg_no}
+                    />
+                  )}
+                />
                 <TextField
-                  {...register("chassis_no")}
                   className="addJobInputField"
-                  label={singleCard.chassis_no}
-                  defaultValue={singleCard.chassis_no}
+                  label="Car R (T&N)"
+                  {...register("car_registration_no", { required: true })}
+                  value={showCustomerData?.car_registration_no}
+                  focused={showCustomerData?.car_registration_no}
                 />
               </div>
-              {/* <div className="flex items-center mt-3">
-                {!select && !carRegNo && (
-                  <div onClick={handleSelectReg} className="px-7 text-sm">
-                    {singleCard.carReg_no}
-                  </div>
+
+              {errors.car_registration_no && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  {...register("chassis_no", { required: true })}
+                  label="Chassis No (T&N)"
+                  value={showCustomerData?.chassis_no}
+                  focused={showCustomerData?.chassis_no}
+                />
+                {errors.chassis_no && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
                 )}
-                {select && (
-                  <FormControl className="productField">
-							<InputLabel htmlFor="grouped-native-select">Car Registration No</InputLabel>
-							<Select value={singleCard.carReg_no} onChange={(e) => setCarRegNo(e.target.value)}   id="grouped-native-select" label="Car Registration No  ">
-              <option value="Reg">Car Registration No </option>
-                    <option value="Reg">DM KHA</option>
-                    <option value="Reg">DM KHA</option>
-                    <option value="Reg">DM KHA</option>
-							</Select>
-             
-						</FormControl>
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  {...register("engine_no", { required: true })}
+                  label="ENGINE NO & CC (T&N) "
+                  value={showCustomerData?.engine_no}
+                  focused={showCustomerData?.engine_no}
+                />
+                {errors.engine_no && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
                 )}
-            <TextField  label={singleCard.car_registration_no} />
-              </div> */}
-              <div className="flex items-center">
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Car Registration No
-                  </InputLabel>
-                  <Select
-                    onChange={(e) => setCarRegNo(e.target.value)}
-                    native
-                    id="grouped-native-select"
-                    label="Car Registration No"
-                    value={singleCard.carReg_no}
-                  >
-                    <option value="select">Select Reg </option>
-                    <option value="DM KHA">DM KHA</option>
-                    <option value="DM KHA">DM KHA</option>
-                    <option value="DM KHA">DM KHA</option>
-                  </Select>
-                </FormControl>
-                <TextField label="Car R (T&N)" />
+              </div>
+
+              <div className="mt-3">
+                <Autocomplete
+                  id="free-solo-demo"
+                  Vehicle
+                  Brand
+                  onInputChange={handleBrandChange}
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Brand"
+                      {...register("vehicle_brand", { required: true })}
+                      value={showCustomerData?.vehicle_brand}
+                      focused={showCustomerData?.vehicle_brand}
+                    />
+                  )}
+                />
+                {errors.vehicle_brand && !brand && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  {...register("vehicle_name", { required: true })}
+                  label="Vehicle Name "
+                  value={showCustomerData?.vehicle_name}
+                  focused={showCustomerData?.vehicle_name}
+                />
+                {errors.vehicle_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
+              </div>
+              {/** 
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  onChange={(e) => setCarModel(e.target.value)}
+                  label="Vehicle Model (N)"
+                />
+              </div>
+              */}
+
+              <div className="mt-3">
+                {/* <Autocomplete
+                  onChange={(e) => setCarModel(e.target.value)}
+                  id="free-solo-demo"
+                  Vehicle
+                  Brand
+                  options={totalYear.map((option) => option.title)}
+                  renderInput={(params) => (
+                    <TextField {...params} label=" Vehicle Model" />
+                  )}
+                /> */}
+                <TextField
+                  className="addJobInputField"
+                  label="Vehicle Model (N)"
+                  {...register("vehicle_model", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "Please enter a valid model number.",
+                    },
+                  })}
+                  value={showCustomerData?.vehicle_model}
+                  focused={showCustomerData?.vehicle_model}
+                />
+
+                {errors.vehicle_model && (
+                  <span className="text-sm text-red-400">
+                    {errors.vehicle_model.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-3">
+                <Autocomplete
+                  id="free-solo-demo"
+                  Vehicle
+                  Types
+                  onInputChange={handleCategoryChange}
+                  options={vehicleTypes.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label=" Vehicle Categories "
+                      {...register("vehicle_category", { required: true })}
+                      value={showCustomerData?.vehicle_category}
+                      focused={showCustomerData?.vehicle_category}
+                    />
+                  )}
+                />
+                {errors.vehicle_category && !category && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
-                  {...register("car_model")}
                   className="addJobInputField"
-                  label={singleCard.car_registration_no}
+                  {...register("color_code", { required: true })}
+                  label="Color & Code (T&N) "
+                  value={showCustomerData?.color_code}
+                  focused={showCustomerData?.color_code}
                 />
+                {errors.color_code && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
-                  {...register("car_make")}
                   className="addJobInputField"
-                  label={singleCard.vehicle_brand}
+                  label="Mileage (N) "
+                  {...register("mileage", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.mileage}
+                  focused={showCustomerData?.mileage}
                 />
+                {errors.mileage && (
+                  <span className="text-sm text-red-400">
+                    {errors.mileage.message}
+                  </span>
+                )}
               </div>
               <div className="mt-3">
-                <TextField
-                  {...register("mileage")}
-                  className="addJobInputField"
-                  label={singleCard.mileage}
+                <Autocomplete
+                  value={showCustomerData?.fuel_type}
+                  focused={showCustomerData?.fuel_type}
+                  id="free-solo-demo"
+                  Fuel
+                  Type
+                  onInputChange={handleFuelChange}
+                  options={fuelType.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label=" Fuel Type"
+                      {...register("fuel_type", { required: true })}
+                      value={showCustomerData?.fuel_type}
+                      focused={showCustomerData?.fuel_type}
+                    />
+                  )}
                 />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  {...register("engine_no")}
-                  className="addJobInputField"
-                  label={singleCard.engine_no}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  {...register("color")}
-                  className="addJobInputField"
-                  label={singleCard.color}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  {...register("company_name")}
-                  label={singleCard.company_name}
-                  className="addJobInputField"
-                />
-              </div>
-              <div className="mt-3">
-                <FormControl className="addJobInputField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    {" "}
-                    Select Vehicle Category
-                  </InputLabel>
-                  {/* vvalue={
-                  vehicleCategory
-                    ? vehicleCategory
-                    : singleCard.vehicle_category
-                } */}
-                  <Select
-                    onChange={(e) => setVehicleCategory(e.target.value)}
-                    id="grouped-native-select"
-                    native
-                    label=" Select Vehicle Category "
-                  >
-                    <option>Select Vehicle Category </option>
-                    <option value="Sedans">Sedans</option>
-                    <option value="Crossovers">Crossovers</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Trucks">Trucks</option>
-                    <option value="Coupes">Coupes</option>
-                    <option value="Convertibles">Convertibles</option>
-                    <option value="Diesels">Diesels</option>
-                    <option value="SUVs">SUVs</option>
-                    <option value="Hybrid/Electric">Hybrid/Electric</option>
-                    <option value="Vans/Minivans">Vans/Minivans</option>
-                    <option value="Wagons">Wagons</option>
-                    <option value="Small Cars ">Small Cars </option>
-                    <option value="CPO ">CPO </option>
-                  </Select>
-                </FormControl>
+                {errors.fuel_type && !getFuelType && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
             </div>
+
             <div className="jobCardFieldRightSide">
-              <h3 className="text-xl mb-5 font-bold ">Customer Information </h3>
-              <div>
+              <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
+              <div className="mt-3">
                 <TextField
-                  {...register("reference_name")}
-                  label={singleCard.reference_name}
                   className="addJobInputField"
+                  label="Company Name (T)"
+                  {...register("company_name", { required: true })}
+                  value={showCustomerData?.company_name}
+                  focused={showCustomerData?.company_name}
                 />
+                {errors.company_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
-                  {...register("customer_name")}
-                  label={singleCard.customer_name}
                   className="addJobInputField"
+                  label="Vehicle User Name (T)"
+                  {...register("username", { required: true })}
+                  value={showCustomerData?.username}
+                  focused={showCustomerData?.username}
                 />
+                {errors.username && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
-                  {...register("contact_number")}
-                  label={singleCard.contact_number}
                   className="addJobInputField"
+                  label="Company Address (T)"
+                  {...register("company_address", { required: true })}
+                  value={showCustomerData?.company_address}
+                  focused={showCustomerData?.company_address}
                 />
+                {errors.company_address && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Name (T)"
+                  {...register("customer_name", { required: true })}
+                  value={showCustomerData?.customer_name}
+                  focused={showCustomerData?.customer_name}
+                />
+                {errors.customer_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
-                  {...register("driver_name")}
-                  label={singleCard.driver_name}
                   className="addJobInputField"
+                  label="Customer Contact No (N)"
+                  {...register("customer_contact", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d{11}$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.customer_contact}
+                  focused={showCustomerData?.customer_contact}
                 />
+                {errors.customer_contact && (
+                  <span className="text-sm text-red-400">
+                    {errors.customer_contact.message}
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
-                  {...register("phone_number")}
-                  label={singleCard.phone_number}
                   className="addJobInputField"
+                  label="Customer Email Address (T)"
+                  {...register("customer_email", { required: true })}
+                  type="email"
+                  value={showCustomerData?.customer_email}
+                  focused={showCustomerData?.customer_email}
                 />
+                {errors.customer_email && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Address (T) "
+                  {...register("customer_address", { required: true })}
+                  value={showCustomerData?.customer_address}
+                  focused={showCustomerData?.customer_address}
+                />
+                {errors.customer_address && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Driver Name (T)"
+                  {...register("driver_name", { required: true })}
+                  value={showCustomerData?.driver_name}
+                  focused={showCustomerData?.driver_name}
+                />
+                {errors.driver_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Driver Contact No (N)"
+                  {...register("driver_contact", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d{11}$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.driver_contact}
+                  focused={showCustomerData?.driver_contact}
+                />
+                {errors.driver_contact && (
+                  <span className="text-sm text-red-400">
+                    {errors.driver_contact.message}
+                  </span>
+                )}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Reference Name (T) "
+                  {...register("reference_name", { required: true })}
+                  value={showCustomerData?.reference_name}
+                  focused={showCustomerData?.reference_name}
+                />
+                {errors.reference_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
             </div>
           </div>
-          <div className="vehicleReport mt-10">
+
+          <div className="mt-10 vehicleReport">
             <div className="vehicleReportLeftSide">
               <div className=" vehicleTextField">
                 <b className="block mb-3">
@@ -326,7 +1117,7 @@ const UpdateJobCard = () => {
                   Vehicle Interior Parts, Papers, Tools, Meter Light & Others{" "}
                 </b>
                 <ReactQuill
-                  value={value || singleCard.vehicle_interior_parts}
+                  value={value}
                   className="textEditor"
                   onChange={setValue}
                   modules={{
@@ -353,7 +1144,7 @@ const UpdateJobCard = () => {
               <div className="mt-5">
                 <b className="block mb-1"> Reported Defect </b>
                 <ReactQuill
-                  value={value2 || singleCard.reported_defect}
+                  value={value2}
                   className="textEditor"
                   onChange={setValue2}
                   modules={{
@@ -373,7 +1164,7 @@ const UpdateJobCard = () => {
               <div className="mt-5">
                 <b className="block mb-1"> Reported Action </b>
                 <ReactQuill
-                  value={value3 || singleCard.reported_action}
+                  value={value3}
                   className="textEditor"
                   onChange={setValue3}
                   modules={{
@@ -396,7 +1187,7 @@ const UpdateJobCard = () => {
                 {" "}
                 Vehicle Body Report (Mark with X where damage )
               </b>
-              <div className="imgWrap mt-2">
+              <div className="mt-2 imgWrap">
                 <img src={car} alt="car" />
               </div>
               <div className="mt-3">
@@ -421,77 +1212,88 @@ const UpdateJobCard = () => {
               <div className="mt-5">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
                 <textarea
-                  defaultValue={singleCard.vehicle_body_report}
+                  onChange={(e) => setVehicleBody(e.target.value)}
+                  required
+                  autoComplete="off"
                 ></textarea>
               </div>
             </div>
           </div>
-          <div className="jobCardSingleForm">
+          <div className="flex flex-wrap items-center justify-between mt-5">
             <div>
-              <label>
-                Technician Name <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                {...register("technician_name")}
-                // name="tname"
-                autoComplete="off"
-                type="text"
-                placeholder="Technician Name"
-                defaultValue={singleCard.technician_name}
+              <TextField
+                className="ownerInput"
+                {...register("technician_name", { required: true })}
+                label="Technician Name (T) "
               />
+              <br />
+              {errors.technician_name && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
             <div>
-              <label>
-                Technician Signature <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                {...register("technician_signature")}
-                // name="tsignature"
-                className="registrationForm"
-                autoComplete="off"
-                type="text"
-                placeholder="Technician Signature"
-                defaultValue={singleCard.technician_signature}
+              <TextField
+              disabled
+              className="ownerInput"
+                o
+                {...register("technician_signature", { required: true })}
+                label="Technician Signature (T) "
               />
+              <br />
+              {errors.technician_signature && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
             <div>
-              <label>
-                Date <span className="requiredStart">*</span>{" "}
-              </label>
               <input
-                {...register("technician_date")}
+                {...register("technician_date", { required: true })}
+                required
                 autoComplete="off"
                 type="date"
                 placeholder="Date"
-                defaultValue={singleCard.technician_date}
                 min={currentDate}
+                className="p-3 border-2 ownerInput"
               />
+              {errors.technician_date && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
             <div>
-              <label>For Vehicle Owner</label>
-              <input
-                {...register("vehicle_owner")}
-                // name="vehicleowner"
-                autoComplete="off"
-                type="text"
-                placeholder="For Vehicle Owner"
-                defaultValue={singleCard.vehicle_owner}
+              <TextField
+              disabled
+                className="ownerInput"
+                {...register("vehicle_owner", { required: true })}
+                label="Vehicle Owner (T) "
               />
+              <br />
+              {errors.vehicle_owner && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
-          </div>
-          <div className="mt-3">
-            <b>This is not an invoice, all estimates are valid for 30 days </b>
           </div>
 
-          <div className="buttonGroup updateJobCardBtn">
-            <div className="submitQutationBtn flex items-center justify-center">
-              <button disabled={loading} type="submit" className="">
-                Update Job Card{" "}
+           <div className="mt-12">
+              <button
+                disabled={loading}
+                // onClick={handleAddToCard}
+                type="submit"
+                className="addJobBtn"
+              >
+               Update Job Card{" "}
               </button>
             </div>
-          </div>
         </div>
       </form>
+    
+
     </div>
   );
 };

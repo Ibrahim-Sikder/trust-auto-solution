@@ -12,6 +12,7 @@ import { Autocomplete } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
+  
   fuelType,
   vehicleTypes,
 } from "../../../constant";
@@ -259,7 +260,7 @@ const AddShowRoom = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -271,7 +272,7 @@ const AddShowRoom = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -346,7 +347,7 @@ const AddShowRoom = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-center">
               <div>
-                <h3 className="text-xl  font-bold mb-1">
+                <h3 className="mb-1 text-xl font-bold">
                   Show Room Information{" "}
                 </h3>
                 <div>
@@ -449,7 +450,7 @@ const AddShowRoom = () => {
               </div>
 
               <div>
-                <h3 className="text-xl font-bold mb-2">Vehicle Information </h3>
+                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -585,14 +586,14 @@ const AddShowRoom = () => {
               </div>
             </div>
 
-            <div className="savebtn mt-2 ml-3">
+            <div className="mt-2 ml-3 savebtn">
               <button>Add Show Room </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
+      <div className="w-full mt-5 mb-24">
+        <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold text-center "> Show Room List: </h3>
           <div className="flex items-center">
             <button
@@ -613,7 +614,7 @@ const AddShowRoom = () => {
           </div>
         </div>
         {searchLoading ? (
-          <div className="flex justify-center items-center text-xl">
+          <div className="flex items-center justify-center text-xl">
             <Loading />
           </div>
         ) : (
@@ -621,7 +622,7 @@ const AddShowRoom = () => {
             {showRoomData?.length === 0 ||
             currentItems.length === 0 ||
             noMatching ? (
-              <div className="text-xl text-center flex justify-center items-center h-full">
+              <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
             ) : (

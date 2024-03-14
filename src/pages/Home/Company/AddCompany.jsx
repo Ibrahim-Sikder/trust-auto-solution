@@ -49,6 +49,7 @@ const AddCompany = () => {
     const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
     data.companyId = uniqueId;
     try {
+      
       const response = await axios.post(
         "http://localhost:5000/api/v1/company",
         data
@@ -270,7 +271,7 @@ const AddCompany = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -282,7 +283,7 @@ const AddCompany = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -339,25 +340,25 @@ const AddCompany = () => {
           </Link>
         </div>
         <div className="productHeadWrap">
-          <div className="flex items-center justify-center ">
-            <HiOutlineUserGroup className="invoicIcon" />
-            <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Company </h3>
-              <span>Add New Company </span>
-            </div>
-          </div>
-          <div className="productHome">
-            <span>Home / </span>
-            <span>Company / </span>
-            <span>New Company </span>
+        <div className="flex flex-wrap items-center justify-center">
+          <HiOutlineUserGroup className="invoicIcon" />
+          <div className="ml-2">
+            <h3 className="text-sm font-bold md:text-2xl"> New Company </h3>
+            <span>Update New Company </span>
           </div>
         </div>
+        <div className="productHome">
+          <span>Home / </span>
+          <span>Product / </span>
+          <span>New Company </span>
+        </div>
+      </div>
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center">
               <div>
-                <h3 className="text-xl  font-bold mb-1">
+                <h3 className="mb-1 text-xl font-bold">
                   Company Information{" "}
                 </h3>
                 <div>
@@ -443,8 +444,8 @@ const AddCompany = () => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-xl font-bold mb-2">Vehicle Information </h3>
+              <div className="mt-5 lg:mt-0">
+                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -580,15 +581,15 @@ const AddCompany = () => {
               </div>
             </div>
 
-            <div className="savebtn mt-2 ml-3">
+            <div className="mt-2 ml-0 md:ml-3 savebtn">
               <button>Add Company </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
-          <h3 className="text-3xl font-bold text-center "> Company List: </h3>
+      <div className="w-full mt-5 mb-24">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="ml-2 font-bold text-center md:ml-0 tex2t-sm md:text-3xl"> Company List: </h3>
           <div className="flex items-center">
             <button
               onClick={handleAllCustomer}
@@ -609,7 +610,7 @@ const AddCompany = () => {
           </div>
         </div>
         {searchLoading ? (
-          <div className="flex justify-center items-center text-xl">
+          <div className="flex items-center justify-center text-xl">
             <Loading />
           </div>
         ) : (
@@ -617,7 +618,7 @@ const AddCompany = () => {
             {companyData?.length === 0 ||
             currentItems.length === 0 ||
             noMatching ? (
-              <div className="text-xl text-center flex justify-center items-center h-full">
+              <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
             ) : (

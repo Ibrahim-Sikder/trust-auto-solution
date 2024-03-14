@@ -4,9 +4,6 @@
 import TextField from "@mui/material/TextField";
 import { FaFileInvoice, FaEye, FaTrashAlt, FaEdit } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -21,47 +18,7 @@ import { Autocomplete } from "@mui/material";
 import { HiOutlineUserGroup } from "react-icons/hi";
 
 const UpdateCustomer = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
 
   const {
     register,
@@ -149,25 +106,25 @@ const UpdateCustomer = () => {
           </Link>
         </div>
         <div className="productHeadWrap">
-          <div className="flex items-center justify-center ">
-            <HiOutlineUserGroup className="invoicIcon" />
-            <div className="ml-2">
-              <h3 className="text-2xl font-bold">Update New Customer </h3>
-              <span>Update New Customer </span>
-            </div>
-          </div>
-          <div className="productHome">
-            <span>Home / </span>
-            <span>Product / </span>
-            <span>New Customer </span>
+        <div className="flex flex-wrap items-center justify-center">
+          <HiOutlineUserGroup className="invoicIcon" />
+          <div className="ml-2">
+            <h3 className="text-sm font-bold md:text-2xl"> New Company </h3>
+            <span>Update New Company </span>
           </div>
         </div>
+        <div className="productHome">
+          <span>Home / </span>
+          <span>Product / </span>
+          <span>New Company </span>
+        </div>
+      </div>
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center">
               <div>
-                <h3 className="text-xl  font-bold mb-1">
+                <h3 className="mb-1 text-xl font-bold">
                   Customer Information{" "}
                 </h3>
                 <div>
@@ -267,8 +224,8 @@ const UpdateCustomer = () => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-xl font-bold mb-2">Vehicle Information </h3>
+              <div className="mt-5 lg:mt-0" >
+                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -405,14 +362,14 @@ const UpdateCustomer = () => {
               </div>
             </div>
 
-            <div className="savebtn mt-2 ml-3 flex justify-end">
+            <div className="flex justify-end mt-2 ml-3 savebtn">
               <button disabled={loading}>Update Customer </button>
             </div>
           </form>
         </div>
       </div>
-      {/* <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
+      {/* <div className="w-full mt-5 mb-24">
+        <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold text-center "> Customer List: </h3>
           <div className="flex items-center">
             <Search>

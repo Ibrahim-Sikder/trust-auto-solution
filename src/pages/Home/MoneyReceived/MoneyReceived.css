@@ -276,12 +276,28 @@
 	.moneyReceivedWrap {
 		padding: 10px 5px;
 	}
-	.advance {
-		width: 351px;
-	}
+
 	.amount input {
 		width: 250px;
 	}
+	.receivedMoneyText {
+		width: 297px;
+	}
+	.vehicleText {
+		width: 188px;
+	}
+	.checqueText {
+		width: 315px;
+	}
+	.date2 {
+		width: 47px;
+		margin-left: 15px;
+	}
+	.totalAmountText2 {
+		width: 236px;
+	}
+
+
 }
 @media only screen and (max-width: 768px) {
 	.advance {
@@ -303,5 +319,30 @@
 
 	.moneyFormWrap {
 		margin-left: 23px;
+	}
+	.moneyRecieved {
+		flex-wrap: wrap;
+	}
+	.logoWrap {
+		width: 149px;
+	}
+	.receivedField {
+		display: block;
+	}
+
+}
+@media only screen and (max-width:500px) {
+	.amount, .amount2 {
+		flex-wrap: wrap;
+		row-gap: 5px;
+	}
+	.wordTaka input {
+		width: 100%;
+	}
+	.logoWrap {
+		width: 80px;
+	}
+	.receivedTitle {
+		font-size: 25px;
 	}
 }

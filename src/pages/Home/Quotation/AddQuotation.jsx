@@ -455,7 +455,7 @@ const AddQuotation = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -467,7 +467,7 @@ const AddQuotation = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -603,30 +603,31 @@ const AddQuotation = () => {
   }));
 
   return (
-    <div className="py-10 px-5">
-      <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-        <div className="w-full flex justify-between items-center mb-2 mt-5">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
-          <div>
-            <h2 className="  trustAutoTitle trustAutoTitleQutation ">
-              Trust Auto Solution{" "}
-            </h2>
-            <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
-          </div>
-          <div className="text-left">
-            <span className="block">
-              <span className="font-bold">Mobile:</span> 345689789666
-            </span>
-            <span className="block">
-              <small className="font-bold">Email:</small>{" "}
-              trustautosolution@gmail.com
-            </span>
-            <span className="block font-bold ">trustautosolution.com</span>
-          </div>
-        </div>
+    <div className="px-5 py-10">
+    <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
+    <div className=" addJobCardHeads">
+      <img src={logo} alt="logo" className=" addJobLogoImg" />
+      <div>
+        <h2 className=" trustAutoTitle trustAutoTitleQutation">
+          Trust Auto Solution{" "}
+        </h2>
+        <span className="text-[12px] lg:text-xl">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
       </div>
+      <div className="space-y-1 text-justify jobCardContactInfo">
+        <span className="block">
+          <span className="font-bold">Mobile:</span> 345689789666
+        </span>
+        <span className="block">
+          <small className="font-bold">Email:</small>{" "}
+          trustautosolution@gmail.com
+        </span>
+        <span className="block font-bold ">trustautosolution.com</span>
+      </div>
+    </div>
+  </div>
       <div className="mt-5">
         <form>
+        {/** 
           <div className="lg:flex gap-x-2">
             <div>
               <label className="block">Order Number </label>
@@ -642,7 +643,7 @@ const AddQuotation = () => {
             {jobLoading ? (
               <div>Loading...</div>
             ) : (
-              <div className="qutationForm invoicForm flex gap-x-3">
+              <div className="flex qutationForm invoicForm gap-x-3">
                 <div>
                   <label className="block">Customer Name </label>
                   <input
@@ -684,14 +685,100 @@ const AddQuotation = () => {
               </div>
             )}
           </div>
+          */}
+          
+<div className="mb-10 jobCardFieldWraps">
+  
+<div className='jobCardFieldLeftSide'>
+<h3 className="text-3xl font-bold">Customer Info</h3>
+<div className="mt-3">
+<TextField
+className="addJobInputField"
+  label="Customer Id" 
+/>
+</div>
+<div className="mt-3">
+<TextField
+className="addJobInputField"
+  label="Serial No"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Company"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Customer"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Phone"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Address"
+/>
+</div>
+</div>
+
+<div className='mt-3 md:mt-0 jobCardFieldRightSide'>
+<h3 className="text-3xl font-bold">Vehicle Info</h3>
+
+
+
+
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Registration No"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Chassis No"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Engine & CC"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Vehicle Name"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Mileage"
+/>
+</div>
+</div>
+</div>
+
 
           <div className="vehicleCard">Quotation Card </div>
+          {/**
           <div className="mb-5">
+          
+        
             <span>
               {" "}
               <b>ID:</b> TAS000
             </span>
-            <div className="flex justify-between items-center mt-2">
+            <div className="flex items-center justify-between mt-2">
               <div className="flex items-center topSearchBa">
                 <Autocomplete
                   onChange={(event, value) => setCustomerId(value)}
@@ -736,7 +823,10 @@ const AddQuotation = () => {
                 </Link>
               )}
             </div>
+           
           </div>
+          */}
+          
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
@@ -748,7 +838,7 @@ const AddQuotation = () => {
             return (
               <div key={i}>
                 <div className="qutationForm">
-                  <div>
+                  <div className="removeBtn">
                     {items.length !== 0 && (
                       <button
                         onClick={() => handleRemove(i)}
@@ -758,7 +848,7 @@ const AddQuotation = () => {
                       </button>
                     )}
                   </div>
-                  <div>
+                  <div >
                     <input
                       className="firstInputField"
                       autoComplete="off"
@@ -816,7 +906,7 @@ const AddQuotation = () => {
                   {items.length - 1 === i && (
                     <div
                       onClick={handleAddClick}
-                      className="flex justify-end mt-2"
+                      className="flex justify-end mt-2 addQuotationBtns "
                     >
                       <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white">
                         Add
@@ -829,13 +919,13 @@ const AddQuotation = () => {
           })}
           <div className="discountFieldWrap">
             <div className="flex items-center ">
-              <b> Total Amount: </b>
+              <b className="mr-2"> Total Amount: </b>
               <span>{grandTotal}</span>
             </div>
             <div>
-              <b> Discount: </b>
+              <b className="mr-2"> Discount: </b>
               <input
-                className="text-center py-1"
+                className="py-1 text-center"
                 onChange={(e) => handleDiscountChange(e.target.value)}
                 autoComplete="off"
                 type="text"
@@ -843,7 +933,7 @@ const AddQuotation = () => {
               />
             </div>
             <div>
-              <b>Vat: </b>
+              <b className="mr-2">Vat: </b>
               <input
                 className="text-center"
                 onChange={(e) => handleVATChange(e.target.value)}
@@ -853,14 +943,14 @@ const AddQuotation = () => {
               />
             </div>
             <div>
-              <div className="ml-3 flex items-center ">
-                <b>Final Total: </b>
+              <div className="flex items-center ml-3 ">
+                <b className="mr-2">Final Total: </b>
                 <span>{calculateFinalTotal()}</span>
               </div>
             </div>
           </div>
 
-          <div className="buttonGroup mt-8">
+          <div className="mt-8 buttonGroup">
             <div>
               {/* <Link to={}> */}
               <button onClick={handlePreview}>Preview</button>
@@ -875,16 +965,16 @@ const AddQuotation = () => {
             </div>
           </div>
           {error && (
-            <div className="pt-6 text-red-400 text-center">{error}</div>
+            <div className="pt-6 text-center text-red-400">{error}</div>
           )}
           {postError && (
-            <div className="pt-6 text-red-400 text-center">{postError}</div>
+            <div className="pt-6 text-center text-red-400">{postError}</div>
           )}
         </form>
       </div>
-      <div className="overflow-x-auto mt-20">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-3xl font-bold mb-3">Invoice List:</h3>
+      <div className="mt-20 overflow-x-auto">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="mb-3 text-3xl font-bold">Quotaiton List:</h3>
           <div className="flex items-center searcList">
             {/* <select onChange={(e) => setSelect(e.target.value)}>
               <option value="SL No"> SL No</option>
@@ -913,13 +1003,13 @@ const AddQuotation = () => {
           </div>
         </div>
         {loading ? (
-          <div className="flex justify-center items-center text-xl">
+          <div className="flex items-center justify-center text-xl">
             <Loading />
           </div>
         ) : (
           <div>
             {getAllQuotation?.length === 0 || currentItems.length === 0 ? (
-              <div className="text-xl text-center flex justify-center items-center h-full">
+              <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
             ) : (

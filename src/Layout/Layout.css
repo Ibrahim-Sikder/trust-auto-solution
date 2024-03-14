@@ -35,7 +35,7 @@
 	padding: 5px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
-	width: 50px;
+	width: 43px;
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 	cursor: pointer;
 }
@@ -46,8 +46,8 @@
 
 .activeToggle {
 	position: fixed;
-	left: 203px;
-	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
+    left: 320px;
+    transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeRightSideBarWrap {
 	width: 89px;
@@ -87,7 +87,7 @@
 }
 .dashboardAccordion {
 	background: #2c3136 !important;
-	width: 250px !important;
+	width: 365px !important;
 	color: #fff !important;
 	transition: all 500s ease-in-out;
 }
@@ -167,4 +167,30 @@
 	.navActive {
 		left: 10px;
 	}
+	.activeRightSideBarWrap {
+		display: none;
+	}
+	.navActive {
+		left: 0px;
+	}
+	.activeDrawer {
+		width: 92%;
+	}
+	.activeDrawer {
+		width: 98%;
+	}
+}
+
+@media only screen and (max-width: 500px){
+
+	.bar {
+		width: 23px;
+		height: 2px;
+		margin: 4px;
+		margin-left: 0px;
+	}
+	.navActive, .activeToggle {
+		width: 32px;
+	}
+	
 }

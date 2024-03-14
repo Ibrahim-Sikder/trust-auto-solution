@@ -15,6 +15,7 @@ import {
   carBrands,
   cmDmOptions,
   fuelType,
+  
   vehicleTypes,
 } from "../../../constant";
 import { Autocomplete } from "@mui/material";
@@ -121,12 +122,13 @@ const UpdateCompany = () => {
             <span>New Customer </span>
           </div>
         </div>
+        
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-center">
               <div>
-                <h3 className="text-xl  font-bold mb-1">
+                <h3 className="mb-1 text-xl font-bold">
                   Company Information{" "}
                 </h3>
                 <div>
@@ -212,7 +214,7 @@ const UpdateCompany = () => {
               </div>
 
               <div>
-                <h3 className="text-xl font-bold mb-2">Vehicle Information </h3>
+                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -348,14 +350,14 @@ const UpdateCompany = () => {
               </div>
             </div>
 
-            <div className="savebtn mt-2 ml-3">
+            <div className="mt-2 ml-3 savebtn">
               <button>Update Company </button>
             </div>
           </form>
         </div>
       </div>
-      {/* <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
+      {/* <div className="w-full mt-5 mb-24">
+        <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold text-center "> Customer List: </h3>
           <div className="flex items-center">
             <Search>

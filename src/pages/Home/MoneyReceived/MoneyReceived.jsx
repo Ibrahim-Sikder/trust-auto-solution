@@ -52,6 +52,7 @@ const MoneyReceiptView = () => {
       console.log(error);
     }
   };
+  
 
   return (
     <div className="moneyReceptWrap ">
@@ -91,12 +92,12 @@ const MoneyReceiptView = () => {
       <div className="receivedBtn">
         <button>Receipt</button>
       </div>
-      <div className="flex justify-between ">
+      <div className="flex justify-between mt-5 lg:mt-0 ">
         <b>Serial No: 01</b>
         <b>Date: 12-12-21</b>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex receivedField mt-3">
+        <div className="flex mt-3 receivedField">
           <label className="receivedMoneyText">
             Received with thanks from{" "}
           </label>
@@ -107,8 +108,8 @@ const MoneyReceiptView = () => {
             autoComplete="off"
           />
         </div>
-        <div className=" payAdvance mt-5">
-          <div className="flex  receivedField">
+        <div className="mt-5 payAdvance">
+          <div className="flex receivedField">
             <label className="advance">
               <input type="checkbox" /> Advance <input type="checkbox" /> Final
               Payment / against bill no:{" "}
@@ -120,7 +121,7 @@ const MoneyReceiptView = () => {
               autoComplete="off"
             />
           </div>
-          <div className="flex receivedField">
+          <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
             <label className="vehicleText">Vehicle No: </label>
             <input
               {...register("vehicle_no", { required: true })}
@@ -130,8 +131,8 @@ const MoneyReceiptView = () => {
             />
           </div>
         </div>
-        <div className="payAdvance mt-5">
-          <div className="flex  receivedField">
+        <div className="mt-5 payAdvance">
+          <div className="flex receivedField">
             <label className="checqueText">
               {" "}
               <input type="checkbox" /> Cash <input type="checkbox" />
@@ -144,8 +145,8 @@ const MoneyReceiptView = () => {
               autoComplete="off"
             />
           </div>
-          <div className="flex receivedField">
-            <b className="date2 mr-2">Date: </b>
+          <div className="flex mt-6 receivedField md:mt-0">
+            <b className="mr-2 date2">Date: </b>
             <input
               {...register("date_one", { required: true })}
               className="dateInput moneyViewInputField"
@@ -154,8 +155,8 @@ const MoneyReceiptView = () => {
             />
           </div>
         </div>
-        <div className=" payAdvance mt-5">
-          <div className="flex  receivedField">
+        <div className="mt-5 payAdvance">
+          <div className="flex receivedField">
             <label className="backText">Bank: </label>
             <input
               {...register("bank", { required: true })}
@@ -174,7 +175,7 @@ const MoneyReceiptView = () => {
             />
           </div>
         </div>
-        <div className="amount2 mt-5">
+        <div className="mt-5 amount2">
           <div className="flex ">
             <label className="totalAmountText2">Total Amount Tk:</label>
             <input
@@ -200,7 +201,7 @@ const MoneyReceiptView = () => {
             />
           </div>
         </div>
-        <div className="wordTaka mt-5">
+        <div className="mt-5 wordTaka">
           <label>in word (taka) </label>
           <input
             {...register("taka_in_word", { required: true })}
@@ -209,9 +210,9 @@ const MoneyReceiptView = () => {
           />
         </div>
         {/* <div className="flex justify-end my-10">
-          <button className="btn btn-primary w-full">submit</button>
+          <button className="w-full btn btn-primary">submit</button>
         </div> */}
-        <div className="receivedBtn my-5">
+        <div className="my-5 receivedBtn">
           <button type="submit">Submit</button>
         </div>
       </form>

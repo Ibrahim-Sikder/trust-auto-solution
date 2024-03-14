@@ -2,15 +2,16 @@
 /* eslint-disable no-unused-vars */
 import { FaCarSide, FaInfo, FaRegEdit } from "react-icons/fa";
 import Card from "../../../../components/Card/Card";
-import invoice from "../../../../../public/assets/invoice.png";
-const CompanyAccount = ({
+import React from "react";
+// import invoice from "../../../../../public/assets/invoice.png";
+
+
+const ShowRoomAccount = ({
   profileData,
   jobCardData,
   quotationData,
   moneyReceiptData,
 }) => {
-  
-  console.log(profileData)
   return (
     <div className="customerProfileWrap">
       <div className="justify-between block mt-5 md:flex">
@@ -19,7 +20,7 @@ const CompanyAccount = ({
           <div className="flex items-center justify-between">
             <div>
               <div>
-                Supplier Name: <b>Mr. Rahat </b>
+                Show Room Name: <b>Mr. Rahat </b>
               </div>
               <div>
                 Phone Number: <b>0657899444</b>
@@ -154,11 +155,11 @@ const CompanyAccount = ({
             <h3 className="text-xl font-semibold">Recent Quotations</h3>
             <FaRegEdit size={30} />
           </div>
-          <img className="w-64 mx-auto " src={invoice} alt="" />
+          {/* <img className="w-64 mx-auto " src={invoice} alt="" /> */}
         </Card>
       </div>
     </div>
   );
 };
 
-export default CompanyAccount;
+export default ShowRoomAccount;

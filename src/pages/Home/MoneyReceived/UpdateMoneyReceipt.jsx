@@ -102,7 +102,7 @@ const UpdateMoneyReceipt = () => {
         <b>Date: 12-12-21</b>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex receivedField mt-3">
+        <div className="flex mt-3 receivedField">
           <label className="receivedMoneyText">
             Received with thanks from{" "}
           </label>
@@ -114,8 +114,8 @@ const UpdateMoneyReceipt = () => {
             {...register("thanks_from")}
           />
         </div>
-        <div className=" payAdvance mt-5">
-          <div className="flex  receivedField">
+        <div className="mt-5 payAdvance">
+          <div className="flex receivedField">
             <label className="advance">
               Advance/Final Payment against bill no:{" "}
             </label>
@@ -127,7 +127,7 @@ const UpdateMoneyReceipt = () => {
               {...register("against_bill_no" )}
             />
           </div>
-          <div className="flex receivedField">
+          <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
             <label className="vehicleText2">Vehicle No: </label>
             <input
               defaultValue={specificMoneyReceipt.vehicle_no}
@@ -138,8 +138,8 @@ const UpdateMoneyReceipt = () => {
             />
           </div>
         </div>
-        <div className="payAdvance mt-5">
-          <div className="flex  receivedField">
+        <div className="mt-5 payAdvance">
+          <div className="flex receivedField">
             <label className="checqueText2">Cash/Cheque No: </label>
             <input
               defaultValue={specificMoneyReceipt.cheque_no}
@@ -149,7 +149,7 @@ const UpdateMoneyReceipt = () => {
               {...register("cheque_no" )}
             />
           </div>
-          <div className="flex receivedField">
+          <div className="flex mt-6 receivedField md:mt-0">
             <b className="date">Date: </b>
             <input
               defaultValue={specificMoneyReceipt?.date_one }
@@ -160,8 +160,8 @@ const UpdateMoneyReceipt = () => {
             />
           </div>
         </div>
-        <div className=" payAdvance mt-5">
-          <div className="flex  receivedField">
+        <div className="mt-5 payAdvance">
+          <div className="flex receivedField">
             <label className="backText">Bank : </label>
             <input
               defaultValue={specificMoneyReceipt.bank}
@@ -182,7 +182,7 @@ const UpdateMoneyReceipt = () => {
             />
           </div>
         </div>
-        <div className="amount2 mt-5">
+        <div className="mt-5 amount2">
           <div className="flex ">
             <label className="totalAmountText2">Total Amount Tk:</label>
             <input
@@ -211,7 +211,7 @@ const UpdateMoneyReceipt = () => {
             />
           </div>
         </div>
-        <div className="wordTaka mt-5">
+        <div className="mt-5 wordTaka">
           <label>in word (taka) </label>
           <input
             defaultValue={specificMoneyReceipt.taka_in_word}
@@ -221,9 +221,9 @@ const UpdateMoneyReceipt = () => {
           />
         </div>
         {/* <div>
-            <button className="btn btn-warning w-full my-10"> Update</button>
+            <button className="w-full my-10 btn btn-warning"> Update</button>
         </div> */}
-         <div className="receivedBtn my-5">
+         <div className="my-5 receivedBtn">
         <button type='submit'>Update</button>
       </div>
       </form>
@@ -231,7 +231,7 @@ const UpdateMoneyReceipt = () => {
         <small className="signature">Authorized Signature</small>
       </div>
       <hr className="my-3" />
-      <div className="text-center mt-5">
+      <div className="mt-5 text-center">
         <p>
           <b>Office: </b>Ka-93/4/C, Kuril Bishawroad, Dhaka-1229,
           www.trustautosolution.com

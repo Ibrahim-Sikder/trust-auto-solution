@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { TextField } from "@mui/material";
 const UpdateInvoice = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
   const [orderNo, setOrderNo] = useState(null);
@@ -212,82 +213,113 @@ const UpdateInvoice = () => {
     }
   };
   return (
-    <div className="py-10 px-5">
-      <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-        <div className="flex items-center justify-center">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[160px]" />
-          <div className="invoiceHead">
-            <h2 className=" font-bold text-center trustAuto word-sp">
-              Trust Auto Solution{" "}
-            </h2>
-            <p className="-mt-5 text-sm">
-              It is trusted computerized Ogranizetion for all the kinds of
-              vehicle check up & maintenance such as computerized Engine
-              Analysis Engine tune up, Denting, Painting, Engine, AC, Electrical
-              Works & Car Wash.
-            </p>
-          </div>
-        </div>
+    <div className="px-5 py-10">
+  
+      <div className="flex items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
+      <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+      <div>
+        <h2 className=" trustAutoTitle trustAutoTitleQutation">
+          Trust Auto Solution{" "}
+        </h2>
+        <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
       </div>
+      <div className="space-y-1 text-justify">
+        <span className="block">
+          <span className="font-bold">Mobile:</span> 345689789666
+        </span>
+        <span className="block">
+          <small className="font-bold">Email:</small>{" "}
+          trustautosolution@gmail.com
+        </span>
+        <span className="block font-bold ">trustautosolution.com</span>
+      </div>
+    </div>
+      
+      
       <div className="mt-5">
         <div>
-          <div className="qutationForm invoicForm">
-            <div>
-              <label className="block">Order Number </label>
-              <input
-                onChange={(e) => setOrderNo(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Order Number"
-                defaultValue={specificInvoice.job_no}
-                className="orderNumber"
-              />
-            </div>
-            <div>
-              <label className="block">Customer Name </label>
-              <input
-                onChange={(e) => setCustomerName(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Customer Name "
-                defaultValue={specificInvoice.customer_name}
-              />
-            </div>
+        <div className="mb-10 jobCardFieldWraps">
+  
+<div className='jobCardFieldLeftSide'>
+<h3 className="text-3xl font-bold">Customer Info</h3>
+<div className="mt-3">
+<TextField
+className="addJobInputField"
+  label="Customer Id" 
+/>
+</div>
+<div className="mt-3">
+<TextField
+className="addJobInputField"
+  label="Serial No"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Company"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Customer"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Phone"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Address"
+/>
+</div>
+</div>
 
-            <div>
-              <label className="block">Car Number </label>
-              <input
-                onChange={(e) => setCarNumber(e.target.value)}
-                defaultValue={specificInvoice.car_registration_no}
-                autoComplete="off"
-                type="text"
-                placeholder="Car Number"
-              />
-            </div>
-            <div>
-              <label className="block">Mobile Number </label>
-              <input
-                onChange={(e) => setMobileNumber(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Mobile Number "
-                defaultValue={specificInvoice.contact_number}
-              />
-            </div>
-            <div>
-              <label className="block">Date</label>
-              <input
-                onChange={(e) => setDate(e.target.value)}
-                defaultValue={specificInvoice.date}
-                autoComplete="off"
-                type="date"
-                placeholder="Date"
-                className="orderNumber"
-              />
-            </div>
-          </div>
+<div className='jobCardFieldRightSide'>
+<h3 className="text-3xl font-bold">Vehicle Info</h3>
 
-          <div className="vehicleCard">Update Invoice </div>
+
+
+
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Registration No"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Chassis No"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Engine & CC"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Vehicle Name"
+/>
+</div>
+<div className="mt-3">
+<TextField
+  className="addJobInputField"
+  label="Mileage"
+/>
+</div>
+</div>
+</div>
+
+<div className="vehicleCard">Update Invoice </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
@@ -492,7 +524,7 @@ const UpdateInvoice = () => {
               <div>
                 <b> Discount: </b>
                 <input
-                  className="text-center py-1"
+                  className="py-1 text-center"
                   onChange={(e) => handleDiscountChange(e.target.value)}
                   autoComplete="off"
                   type="text"
@@ -535,7 +567,7 @@ const UpdateInvoice = () => {
             <div>
               <b> Discount: </b>
               <input
-                className="text-center py-1"
+                className="py-1 text-center"
                 onChange={(e) => handleDiscountChange(e.target.value)}
                 autoComplete="off"
                 type="text"
@@ -570,13 +602,13 @@ const UpdateInvoice = () => {
             </div>
           </div> */}
 
-          <div className="buttonGroup updateJobCardBtn mt-8">
-            <div onClick={handleUpdateInvoice} className="submitQutationBtn">
-              <button className="">Update Invoice </button>
+        
+            <div onClick={handleUpdateInvoice} className="mb-12">
+              <button className="addJobBtn">Update Invoice </button>
             </div>
-          </div>
+        
           {error && (
-            <div className="pt-6 text-red-400 text-center">{error}</div>
+            <div className="pt-6 text-center text-red-400">{error}</div>
           )}
         </div>
       </div>

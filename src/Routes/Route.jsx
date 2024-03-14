@@ -51,6 +51,7 @@ import AddShowRoom from "../pages/Home/ShowRoom/AddShowRoom";
 import ShowRoomList from "../pages/Home/ShowRoom/ShowRoomList";
 import UpdateCompany from "../pages/Home/Company/UpdateCompany";
 import UpdateShowRoom from "../pages/Home/ShowRoom/UpdateShowRoom";
+import ShowRoomProfile from "../pages/Home/ShowRoom/ShowRoomProfile";
 
 
 export const router = createBrowserRouter([
@@ -158,6 +159,10 @@ export const router = createBrowserRouter([
       {
         path: "show-room-list",
         element: <ShowRoomList/>,
+      },
+      {
+        path: "show-room-profile",
+        element: <ShowRoomProfile/>,
       },
       {
         path: "expense",

@@ -15,6 +15,14 @@
 .vehicleReportLeftSide textarea {
 	outline: none;
 }
+.addJobCardHeads{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	margin-top:20px;
+	margin-bottom:8px;
+}
 
 
 .trustAuto {
@@ -149,7 +157,7 @@
 	margin-bottom: 10px;
 }
 .qutationForm input {
-	border: 1px solid #42A1DA;
+	border: 1px solid #ddd;
 	border-radius: 5px;
 	padding: 10px 5px;
 }
@@ -234,6 +242,22 @@ width:50%;
 	height: 20px !important;
 }
 
+.addJobLogoImg{
+width:210px;
+}
+
+.addJobBtn{
+	width: 400px;
+    background: #42A1DA;
+    height: 60px;
+    color: #fff;
+    text-align: center;
+    margin: 0px auto;
+	display: grid;
+	place-content: center;
+	border-radius: 5px;
+	font-size: 20px;
+}
 
 @media only screen and (max-width: 1024px) {
 	.jobCardSingleForm input {
@@ -250,8 +274,19 @@ width:50%;
 	.vehicleCard {
 		font-size: 23px;
 	}
+	.addJobLogoImg{
+		width:152px;
+		}
+
+
+
 }
 @media only screen and (max-width: 768px) {
+	.addJobLogoImg{
+		width:130px;
+		}
+
+
 	.trustAuto {
 		font-size: 30px;
 		margin-left: 0px;
@@ -264,9 +299,7 @@ width:50%;
 		font-size: 19px;
 		width: 12rem;
 	}
-	.jobCardFormWrap input {
-		/* width: 105px; */
-	}
+
 	.buttonGroup button {
 		margin-bottom: 8px;
 	}
@@ -280,4 +313,111 @@ width:50%;
 	.jobCardSingleForm label {
 		font-size: 11px;
 	}
+
+	.jobCardFieldWraps{
+		flex-wrap:wrap;
+	}
+	.jobCardFieldLeftSide, .jobCardFieldRightSide {
+		width: 100%;
+	}
+	.addJobCardWraps {
+		width: 100%;
+		padding: 0px 0px;
+	}
+	.jobCardFieldLeftSide {
+		margin-right: 0px;
+	}
+	.vehicleReport {
+		flex-wrap: wrap;
+	}
+	.vehicleReportLeftSide, .vehicleReportRightSide {
+		width: 100%;
+		padding-right: 0px;
+	}
+
 }
+
+@media only screen and (max-width:500px){
+	.jobCardContactInfo {
+		margin-left: 20px;
+		margin-top: 10px;
+	}
+	.trustAutoTitle {
+		font-size: 22px;
+	}
+	.addJobLogoImg {
+		width: 112px;
+	}
+	.vehicleCard {
+		font-size: 15px;
+		width: 11rem;
+		margin-right: 10px;
+	}
+	.ownerInput{
+		width:400px !important;
+		margin-bottom:10px !important;
+		margin:0 auto;
+	}
+	.addJobBtn{
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width:375px){
+	.ownerInput{
+		width:350px !important;
+	}
+}
+@media only screen and (max-width:300px){
+	.ownerInput{
+		width:280px !important;
+	}
+}
+
+
+
+
+
+
+
+/* CSS for responsive table */
+.table {
+	width: 100%;
+	border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+	padding: 8px;
+	border: 1px solid #ddd;
+  }
+  
+
+  /* Responsive styles */
+  @media only screen and (max-width: 600px) {
+	.tableWrap {
+	  display: block;
+	  overflow-x: auto;
+	  white-space: nowrap;
+	}
+	.table thead,
+	.table tbody,
+	.table tr,
+	.table th,
+	.table td {
+	  display: block;
+	}
+	.table tr {
+	  border-bottom: none;
+	}
+	.table td {
+	  border-top: none;
+	}
+	.table th {
+	  border-top: none;
+	  position: sticky;
+	  top: 0;
+	
+	}
+  }
+  

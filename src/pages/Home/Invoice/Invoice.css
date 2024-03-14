@@ -27,7 +27,7 @@
 }
 
 .secondInputField {
-	width: 580px;
+	width: 1059px;
 }
 
 .SearchBtn {
@@ -54,7 +54,7 @@
 
 .discountFieldWrap input,
 .discountFieldWrap span {
-	border: 1px solid #42a1da;
+	border: 1px solid #ddd;
 	margin-bottom: 7px;
 	height: 45px;
 	border-radius: 5px;
@@ -78,23 +78,23 @@
 }
 
 .labelWrap label:nth-child(1) {
-	left: 5px !important;
+    left: -40px !important;
 }
 
 .labelWrap label:nth-child(2) {
-	left: -117px !important;
+    left: -255px !important;
 }
 
 .labelWrap label:nth-child(3) {
-	left: 201px !important;
+	left: 442px !important;
 }
 
 .labelWrap label:nth-child(4) {
-	left: 52px !important;
+	left: 196px !important;
 }
 
 .labelWrap label:nth-child(5) {
-	left: -2px !important;
+	left: 50px !important;
 }
 
 .buttonGroup {
@@ -118,17 +118,17 @@
 	background-color: #42A1DA;
 }
 
-.submitQutationBtn {
+/* .submitQutationBtn {
 	width: 200px;
 	text-align: center;
-}
+} */
 
 .submitQutationBtn button {
 	background: #42a1da;
-	color: white;
-	width: 200px;
-	height: 40px;
-	border-radius: 20px;
+    color: white;
+    width: 150px;
+    height: 46px;
+    border-radius: 4px;
 }
 
 .invoiceCard {
@@ -232,7 +232,7 @@
 	}
 
 	.secondInputField {
-		width: 345px;
+		width: 487px;
 	}
 
 	.labelWrap label {
@@ -282,6 +282,12 @@
 	.labelWrap label {
 		display: none;
 	}
+
+	.secondInputField {
+		width: 253px;
+	}
+
+
 }
 
 @media only screen and (max-width: 500px) {
@@ -300,6 +306,19 @@
 	.invoicForm input {
 		width: 300px;
 	}
+	.removeBtn {
+		position: relative;
+		top: 262px;
+	}
+	.addQuotationBtns{
+		position: relative;
+		top: 144px;
+
+	}
+	.vehicleCard {
+		margin-right: 0px;
+	}
+
 }
 
 @media print {

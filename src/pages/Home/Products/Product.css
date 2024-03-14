@@ -4,7 +4,7 @@
 }
 .addProductWrap {
 	padding: 30px;
-	width: 1100px;
+	width: 1300px;
 	margin: 0 auto;
 	background: #fff;
 }
@@ -28,7 +28,7 @@
 	padding: 10px 75px;
 }
 .productField {
-	width: 500px !important;
+	width: 600px !important;
 	margin: 5px !important;
 }
 .productFieldWrap {
@@ -102,6 +102,7 @@
 .invoicIcon {
 	color: #42A1DA !important;
 	font-size: 45px;
+	display: none;
 }
 .productHome {
 	border: 1px solid #ddd;
@@ -149,7 +150,7 @@
 }
 
 .topProductBtn button {
-	border: 1px solid #42A1DA;
+	border: 1px solid #ddd;
 	margin-right: 11px;
 	padding: 5px 15px;
 	border-radius: 2px;
@@ -172,5 +173,35 @@
 	}
 	.productHeadWrap {
 		padding: 10px 35px;
+	}
+	
+}
+@media only screen and (max-width: 500px) {
+	.productHome {
+		border: 1px solid #ddd;
+		padding: 5px 11px;
+		border-radius: 3px;
+		font-size: 12px;
+		cursor: pointer;
+	}
+	.topProductBtn button {
+		display: none;
+	}
+	.productField {
+		width: 390px !important;
+	}
+}
+
+@media only screen and (max-width: 375px) {
+
+	.productField {
+		width: 350px !important;
+	}
+}
+
+@media only screen and (max-width: 300px) {
+
+	.productField {
+		width: 280px !important;
 	}
 }

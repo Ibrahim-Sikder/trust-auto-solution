@@ -1,40 +1,23 @@
 /* eslint-disable no-unused-vars */
-import axios from "axios";
-import { useEffect, useState } from "react";
-import {
-  FaTrashAlt,
-  FaEdit,
-  FaArrowRight,
-  FaArrowLeft,
-  FaEye,
-  FaFileInvoice,
-} from "react-icons/fa";
+/* eslint-disable react/prop-types */
+import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { HiOutlineSearch } from "react-icons/hi";
+import { useEffect, useState } from "react";
 import swal from "sweetalert";
-import Loading from "../../../components/Loading/Loading";
-import { NotificationAdd } from "@mui/icons-material";
-import { FaUserGear } from "react-icons/fa6";
-const JobCardList = () => {
-  const [select, setSelect] = useState(null);
-  const [allJobCard, setAllJobCard] = useState([]);
+import axios from "axios";
+
+const ShowRoomJobCardList = ({ jobCardData, setJobCardData, id }) => {
+  
   const [noMatching, setNoMatching] = useState(null);
   const [filterType, setFilterType] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const username = "683231669175";
-  useEffect(() => {
-    setLoading(true);
-    fetch(`http://localhost:5000/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setAllJobCard(data);
-      });
-  }, [username]);
 
+  const navigate = useNavigate();
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };
+
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(
     Number(sessionStorage.getItem("job")) || 1
@@ -62,7 +45,7 @@ const JobCardList = () => {
         const data = await res.json();
 
         if (data.message == "Job card delete successful") {
-          setAllJobCard(allJobCard?.filter((pkg) => pkg._id !== id));
+          setJobCardData(jobCardData?.filter((pkg) => pkg._id !== id));
         }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
@@ -95,7 +78,7 @@ const JobCardList = () => {
     sessionStorage.setItem("job", pageNumber.toString());
   };
   const pages = [];
-  for (let i = 1; i <= Math.ceil(allJobCard?.length / limit); i++) {
+  for (let i = 1; i <= Math.ceil(jobCardData?.length / limit); i++) {
     pages.push(i);
   }
 
@@ -124,15 +107,15 @@ const JobCardList = () => {
   const startIndex = lastIndex - limit;
 
   let currentItems;
-  if (Array.isArray(allJobCard)) {
-    currentItems = allJobCard.slice(startIndex, lastIndex);
+  if (Array.isArray(jobCardData)) {
+    currentItems = jobCardData.slice(startIndex, lastIndex);
   } else {
     currentItems = [];
   }
 
   // ...
 
-  const renderData = (allJobCard) => {
+  const renderData = (jobCardData) => {
     return (
       <table className="table">
         <thead className="tableWrap">
@@ -147,7 +130,7 @@ const JobCardList = () => {
           </tr>
         </thead>
         <tbody>
-          {allJobCard?.map((card, index) => (
+          {jobCardData?.map((card, index) => (
             <tr key={card._id}>
               <td>{index + 1}</td>
               <td>{card.customer_name}</td>
@@ -231,11 +214,9 @@ const JobCardList = () => {
       </li>
     );
   }
-
   const handleFilterType = async () => {
     try {
       const data = {
-        select,
         filterType,
       };
       setLoading(true);
@@ -245,7 +226,7 @@ const JobCardList = () => {
       );
 
       if (response.data.message === "Filter successful") {
-        setAllJobCard(response.data.result);
+        setJobCardData(response.data.result);
         setNoMatching(null);
         setLoading(false);
       }
@@ -256,53 +237,37 @@ const JobCardList = () => {
       setLoading(false);
     }
   };
-  const handleAllAddToJobCard = () => {
-    fetch(`http://localhost:5000/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllJobCard(data);
-        setNoMatching(null);
-      });
-  };
-  return (
-    <div>
-      <div className="mt-5 overflow-x-auto">
-        <div className="flex justify-between pb-3 border-b-2">
-          <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-            <Link to="/dashboard/addjob">
-              <button> Add Job </button>
-            </Link>
-            <Link to="/dashboard/qutation">
-              <button>Quotation </button>
-            </Link>
-            <Link to="/dashboard/invoice">
-              <button>Invoice </button>
-            </Link>
-          </div>
-          <div className="flex items-end justify-end">
-            <NotificationAdd size={30} className="mr-2" />
-            <FaUserGear size={30} />
-          </div>
-        </div>
-        <div className="flex items-center justify-between my-3 mb-8">
-          <div className="flex flex-wrap items-center justify-center ">
-            <FaFileInvoice className="invoicIcon" />
-            <div className="ml-2">
-              <h3 className="text-sm font-bold md:text-2xl"> Job Card </h3>
-              <span className="text-sm">Manage Job Card </span>
-            </div>
-          </div>
-          <div className="productHome">
-            <span>Home / </span>
-            <span>Product / </span>
-            <span>New Product </span>
-          </div>
-        </div>
 
-        <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-          <h3 className="mb-3 text-3xl font-bold">All Job Card List:</h3>
+  const handleAllAddToJobCard = () => {
+    if (id) {
+      fetch(`http://localhost:5000/api/v1/jobCard/${id}`, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "success") {
+            setJobCardData(data.jobCard);
+            setNoMatching(null);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Handle errors
+        });
+    }
+  };
+
+  return (
+    <div className="w-full mt-10 mb-24 ">
+      {jobCardData.length > 0 && (
+        <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+          <Link to="/dashboard/addjob">
+            <button className="bg-[#42A1DA] text-white px-2 py-3 rounded-sm ">
+              Add Job Card
+            </button>
+          </Link>
           <div className="flex items-center searcList">
-          <div
+            <div
               onClick={handleAllAddToJobCard}
               className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
             >
@@ -313,7 +278,7 @@ const JobCardList = () => {
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
                 type="text"
-                placeholder={select}
+                placeholder="Search"
               />
             </div>
             <button onClick={handleFilterType} className="SearchBtn ">
@@ -321,71 +286,56 @@ const JobCardList = () => {
             </button>
           </div>
         </div>
-        {loading ? (
-          <div className="flex items-center justify-center text-xl">
-            <Loading />
+      )}
+
+      <div className="overflow-x-auto ">
+        {jobCardData.length === 0 || noMatching ? (
+          <div className="flex items-center justify-center h-full text-xl text-center">
+            No matching card found.
           </div>
         ) : (
-          <div>
-            {allJobCard?.length === 0 ||
-            currentItems.length === 0 ||
-            noMatching ? (
-              <div className="flex items-center justify-center h-full text-xl text-center">
-                No matching card found.
-              </div>
-            ) : (
-              <>
-                <section>
-                  {renderData(currentItems)}
-                  <ul
-                    className={
-                      minPageNumberLimit < 5
-                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
-                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
-                    }
-                  >
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentPage === pages[0] ? true : false}
-                      className={
-                        currentPage === pages[0]
-                          ? "text-gray-600"
-                          : "text-gray-300"
-                      }
-                    >
-                      Previous
-                    </button>
-                    <span
-                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
-                    >
-                      {pageDecrementBtn}
-                    </span>
-                    {renderPagesNumber}
-                    {pageIncrementBtn}
-                    <button
-                      onClick={handleNext}
-                      disabled={
-                        currentPage === pages[pages?.length - 1] ? true : false
-                      }
-                      className={
-                        currentPage === pages[pages?.length - 1]
-                          ? "text-gray-700"
-                          : "text-gray-300 pl-1"
-                      }
-                    >
-                      Next
-                    </button>
-                  </ul>
-                </section>
-              </>
-            )}
-          </div>
+          <section>
+            {renderData(currentItems)}
+            <ul
+              className={
+                minPageNumberLimit < 5
+                  ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
+                  : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
+              }
+            >
+              <button
+                onClick={handlePrevious}
+                disabled={currentPage === pages[0] ? true : false}
+                className={
+                  currentPage === pages[0] ? "text-gray-600" : "text-gray-300"
+                }
+              >
+                Previous
+              </button>
+              <span className={minPageNumberLimit < 5 ? "hidden" : "inline"}>
+                {pageDecrementBtn}
+              </span>
+              {renderPagesNumber}
+              {pageIncrementBtn}
+              <button
+                onClick={handleNext}
+                disabled={
+                  currentPage === pages[pages?.length - 1] ? true : false
+                }
+                className={
+                  currentPage === pages[pages?.length - 1]
+                    ? "text-gray-700"
+                    : "text-gray-300 pl-1"
+                }
+              >
+                Next
+              </button>
+            </ul>
+          </section>
         )}
       </div>
-
-       
     </div>
   );
 };
 
-export default JobCardList;
+export default ShowRoomJobCardList;

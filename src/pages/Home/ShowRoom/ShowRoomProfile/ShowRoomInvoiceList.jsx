@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
-import { HiOutlineSearch } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { HiOutlineSearch } from "react-icons/hi";
+import { useEffect, useState } from "react";
 import swal from "sweetalert";
+import axios from "axios";
+import { toast } from "react-toastify";
 import Loading from "../../../../components/Loading/Loading";
-const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
-
+const ShowRoomInvoiceList = ({ invoiceData, setInvoiceData, id }) => {
+  // const jobData = [
   //   {
   //     id: 1,
   //     customerName: "Rahim Ullah",
@@ -45,11 +45,10 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
 
   const handleIconPreview = async (e) => {
-    navigate(`/dashboard/quotation-view?id=${e}`);
+    navigate(`/dashboard/detail?id=${e}`);
   };
 
   // pagination
@@ -73,15 +72,15 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/quotation/one/${id}`,
+          `http://localhost:5000/api/v1/invoice/one/${id}`,
           {
             method: "DELETE",
           }
         );
         const data = await res.json();
 
-        if (data.message == "Quotation card delete successful") {
-          setQuotationData(quotationData?.filter((pkg) => pkg._id !== id));
+        if (data.message == "Invoice card delete successful") {
+          setInvoiceData(invoiceData?.filter((pkg) => pkg._id !== id));
         }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
@@ -114,7 +113,7 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
     sessionStorage.setItem("q_n", pageNumber.toString());
   };
   const pages = [];
-  for (let i = 1; i <= Math.ceil(quotationData?.length / limit); i++) {
+  for (let i = 1; i <= Math.ceil(invoiceData?.length / limit); i++) {
     pages.push(i);
   }
 
@@ -143,15 +142,15 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
   const startIndex = lastIndex - limit;
 
   let currentItems;
-  if (Array.isArray(quotationData)) {
-    currentItems = quotationData.slice(startIndex, lastIndex);
+  if (Array.isArray(invoiceData)) {
+    currentItems = invoiceData?.slice(startIndex, lastIndex);
   } else {
     currentItems = [];
   }
 
-  const renderData = (quotationData) => {
+  const renderData = (invoiceData) => {
     return (
-      <div className="px-5 py-10 bg-[#F1F3F6]">
+      <div className="px-5 py-14 bg-[#F1F3F6] ">
         <table className="table bg-[#fff]">
           <thead className="tableWrap">
             <tr>
@@ -165,7 +164,7 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
             </tr>
           </thead>
           <tbody>
-            {quotationData?.map((card, index) => (
+            {invoiceData?.map((card, index) => (
               <tr key={card._id}>
                 <td>{index + 1}</td>
                 <td>{card.customer_name}</td>
@@ -185,7 +184,7 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
                 </td>
                 <td>
                   <div className="editIconWrap edit">
-                    <Link to={`/dashboard/update-quotation?id=${card._id}`}>
+                    <Link to={`/dashboard/update-invoice?id=${card._id}`}>
                       <FaEdit className="editIcon" />
                     </Link>
                   </div>
@@ -256,62 +255,57 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
       const data = {
         filterType,
       };
+      setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/quotation/all`,
+        `http://localhost:5000/api/v1/invoice/all`,
         data
       );
 
       if (response.data.message === "Filter successful") {
-        setQuotationData(response.data.result);
+        setInvoiceData(response.data.result);
         setNoMatching(null);
+        setLoading(false);
       }
       if (response.data.message === "No matching found") {
-        setQuotationData([]);
         setNoMatching(response.data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      setLoading(false);
     }
   };
 
-  const handleAllQuotation = () => {
+  const handleAllInvoice = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/quotation/${id}`, {
+      fetch(`http://localhost:5000/api/v1/invoice/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())
         .then((data) => {
           if (data.message === "success") {
-            setQuotationData(data.jobCard);
+            setInvoiceData(data.jobCard);
           }
         })
         .catch((error) => {
-          toast.error("Something went wrong.");
+          console.error("Error:", error);
+          // Handle errors
         });
     } catch (error) {
-      toast.error("Something went wrong.");
+      toast.error("Something went wrong");
     }
   };
 
   return (
     <div className="w-full mt-10 mb-24 ">
-      {quotationData.length > 0 && (
+      {invoiceData.length > 0 && (
         <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-          <Link to="/dashboard/qutation">
+          <Link to="/dashboard/invoice">
             <button className="bg-[#42A1DA] text-white px-2 py-3 rounded-sm ">
-              Add Quotation
+              Add Invoice
             </button>
           </Link>
           <div className="flex items-center searcList">
-            {/* <select onChange={(e) => setSelect(e.target.value)}>
-            <option value="SL No"> SL No</option>
-            <option value="Customer Name"> Customer Name</option>
-            <option value="Order Number"> Order Number</option>
-            <option value="Car Number"> Car Number</option>
-            <option value="Mobile Number"> Mobile Number</option>
-          </select> */}
             <div
-              onClick={handleAllQuotation}
+              onClick={handleAllInvoice}
               className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
             >
               All
@@ -336,7 +330,7 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
         </div>
       ) : (
         <div>
-          {quotationData?.length === 0 || currentItems.length === 0 ? (
+          {invoiceData?.length === 0 || currentItems.length === 0 ? (
             <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
@@ -392,4 +386,4 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
   );
 };
 
-export default CompanyQuotationList;
+export default ShowRoomInvoiceList;

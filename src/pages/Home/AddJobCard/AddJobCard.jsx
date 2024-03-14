@@ -513,7 +513,7 @@ const AddJobCard = () => {
 
   const renderData = (allJobCard) => {
     return (
-      <table className="table">
+      <table className="table overflow-scroll " >
         <thead className="tableWrap">
           <tr>
             <th>SL No</th>
@@ -593,7 +593,7 @@ const AddJobCard = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -605,7 +605,7 @@ const AddJobCard = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -698,15 +698,15 @@ const AddJobCard = () => {
   return (
     <div className="addJobCardWraps">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-        <div className="w-full flex justify-between items-center mb-2 mt-5">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+        <div className=" addJobCardHeads">
+          <img src={logo} alt="logo" className=" addJobLogoImg" />
           <div>
-            <h2 className="  trustAutoTitle trustAutoTitleQutation ">
+            <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}
             </h2>
-            <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+            <span className="text-[12px] lg:text-xl">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
           </div>
-          <div className="text-left">
+          <div className="space-y-1 text-justify jobCardContactInfo">
             <span className="block">
               <span className="font-bold">Mobile:</span> 345689789666
             </span>
@@ -720,7 +720,7 @@ const AddJobCard = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div>
-          <div className=" flex  justify-between items-center my-5">
+          <div className="flex flex-wrap items-center justify-between my-5 ">
             <div>
               <div>
                 <b>
@@ -732,24 +732,7 @@ const AddJobCard = () => {
                 <span>
                   <b>Customer ID:</b> TAS000
                 </span>
-                <div className="flex items-center topSearchBa">
-                  <Autocomplete
-                    onChange={(event, value) => setCustomerId(value)}
-                    className="jobCardSelect"
-                    id="free-solo-demo"
-                    Customer
-                    ID
-                    options={customerDetails?.map(
-                      (option) =>
-                        option?.customerId ||
-                        option?.companyId ||
-                        option?.showRoomId
-                    )}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Select ID" />
-                    )}
-                  />
-                </div>
+              
               </div>
             </div>
             <div>
@@ -787,22 +770,15 @@ const AddJobCard = () => {
                   </button>
                 </Link>
               )}
-              {customer_type === "show_room" && (
-                <Link to="/dashboard/add-show-room">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Show Room
-                  </button>
-                </Link>
-              )}
+              
             </div>
           </div>
 
           <div className="jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl mb-5 font-bold">Vehicle Information </h3>
+              <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="mt-3 flex items-center ">
+              <div className="flex items-center mt-3 ">
                 <Autocomplete
                   className="jobCardSelect"
                   id="free-solo-demo"
@@ -1029,7 +1005,7 @@ const AddJobCard = () => {
             </div>
 
             <div className="jobCardFieldRightSide">
-              <h3 className="text-xl mb-5 font-bold ">Customer Information </h3>
+              <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -1187,7 +1163,7 @@ const AddJobCard = () => {
             </div>
           </div>
 
-          <div className="vehicleReport mt-10">
+          <div className="mt-10 vehicleReport">
             <div className="vehicleReportLeftSide">
               <div className=" vehicleTextField">
                 <b className="block mb-3">
@@ -1265,7 +1241,7 @@ const AddJobCard = () => {
                 {" "}
                 Vehicle Body Report (Mark with X where damage )
               </b>
-              <div className="imgWrap mt-2">
+              <div className="mt-2 imgWrap">
                 <img src={car} alt="car" />
               </div>
               <div className="mt-3">
@@ -1297,10 +1273,10 @@ const AddJobCard = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center justify-between mt-3">
+          <div className="flex flex-wrap items-center justify-between mt-5">
             <div>
               <TextField
-                className=" "
+                className="ownerInput"
                 {...register("technician_name", { required: true })}
                 label="Technician Name (T) "
               />
@@ -1313,7 +1289,8 @@ const AddJobCard = () => {
             </div>
             <div>
               <TextField
-                className=" "
+              disabled
+              className="ownerInput"
                 o
                 {...register("technician_signature", { required: true })}
                 label="Technician Signature (T) "
@@ -1333,7 +1310,7 @@ const AddJobCard = () => {
                 type="date"
                 placeholder="Date"
                 min={currentDate}
-                className="border-2 p-3"
+                className="p-3 border-2 ownerInput"
               />
               {errors.technician_date && (
                 <span className="text-sm text-red-400">
@@ -1343,7 +1320,8 @@ const AddJobCard = () => {
             </div>
             <div>
               <TextField
-                className=" "
+              disabled
+                className="ownerInput"
                 {...register("vehicle_owner", { required: true })}
                 label="Vehicle Owner (T) "
               />
@@ -1359,7 +1337,7 @@ const AddJobCard = () => {
             <b>This is not an invoice, all estimates are valid for 30 days </b>
           </div>
 
-          <div className="buttonGroup mt-5">
+          <div className="mt-5 buttonGroup">
             <div>
               {/* <Link to={`/dashboard/preview?${id}`}> */}
               <button
@@ -1401,12 +1379,12 @@ const AddJobCard = () => {
               </button>
             </div>
           </div>
-          <div className="pt-6 text-red-400 text-center">{error}</div>
+          <div className="pt-6 text-center text-red-400">{error}</div>
         </div>
       </form>
-      <div className="overflow-x-auto mt-20">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-sm lg:text-3xl font-bold mb-3">Job Card List:</h3>
+      <div className="mt-20 overflow-x-auto">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="mb-3 text-sm font-bold lg:text-3xl">Job Card List:</h3>
           <div className="flex items-center searcList">
             <div
               onClick={handleAllAddToJobCard}
@@ -1430,7 +1408,7 @@ const AddJobCard = () => {
       </div>
 
       {searchLoading ? (
-        <div className="flex justify-center items-center text-xl">
+        <div className="flex items-center justify-center text-xl">
           <Loading />
         </div>
       ) : (
@@ -1438,7 +1416,7 @@ const AddJobCard = () => {
           {allJobCard?.length === 0 ||
           currentItems.length === 0 ||
           noMatching ? (
-            <div className="text-xl text-center flex justify-center items-center h-full">
+            <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
           ) : (

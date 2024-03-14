@@ -4,9 +4,6 @@
 import TextField from "@mui/material/TextField";
 import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import { Autocomplete } from "@mui/material";
 import {
   carBrands,
@@ -27,47 +24,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const AddCustomer = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
   const [filterType, setFilterType] = useState("");
   const [customerData, setCustomerData] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
@@ -318,7 +276,7 @@ const AddCustomer = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -330,7 +288,7 @@ const AddCustomer = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -387,10 +345,10 @@ const AddCustomer = () => {
           </Link>
         </div>
         <div className="productHeadWrap">
-          <div className="flex items-center justify-center ">
+          <div className="flex flex-wrap items-center justify-center">
             <HiOutlineUserGroup className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Customer </h3>
+              <h3 className="text-sm font-bold md:text-2xl"> New Customer </h3>
               <span>Add New Customer </span>
             </div>
           </div>
@@ -403,9 +361,9 @@ const AddCustomer = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center">
               <div>
-                <h3 className="text-xl  font-bold mb-1">
+                <h3 className="mb-1 text-xl font-bold">
                   Customer Information{" "}
                 </h3>
                 <div>
@@ -507,8 +465,8 @@ const AddCustomer = () => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-xl font-bold mb-2">Vehicle Information </h3>
+              <div className="mt-5 lg:mt-0">
+                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -644,15 +602,15 @@ const AddCustomer = () => {
               </div>
             </div>
 
-            <div className="savebtn mt-2 ml-3">
+            <div className="mt-2 ml-3 savebtn">
               <button disabled={loading}>Add Customer </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
-          <h3 className="text-3xl font-bold text-center "> Customer List: </h3>
+      <div className="w-full mt-5 mb-24">
+        <div className="flex flex-wrap items-center justify-between mb-5 ">
+          <h3 className="ml-3 text-sm text-center sm:ml-0 ont-bold md:text-3xl"> Customer List: </h3>
           <div className="flex items-center">
             <button
               onClick={handleAllCustomer}
@@ -660,18 +618,7 @@ const AddCustomer = () => {
             >
               All
             </button>
-            {/**  
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon className="searchIcon" />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-                onChange={(e) => setFilterType(e.target.value)}
-              />
-            </Search>
-            */}
+            
             <input
               onChange={(e) => setFilterType(e.target.value)}
               type="text"
@@ -688,7 +635,7 @@ const AddCustomer = () => {
           </div>
         </div>
         {searchLoading ? (
-          <div className="flex justify-center items-center text-xl">
+          <div className="flex items-center justify-center text-xl">
             <Loading />
           </div>
         ) : (
@@ -696,7 +643,7 @@ const AddCustomer = () => {
             {customerData?.length === 0 ||
             currentItems.length === 0 ||
             noMatching ? (
-              <div className="text-xl text-center flex justify-center items-center h-full">
+              <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
             ) : (

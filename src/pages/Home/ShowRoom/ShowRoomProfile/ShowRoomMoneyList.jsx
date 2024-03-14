@@ -1,22 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { NotificationAdd } from "@mui/icons-material";
+/* eslint-disable react/prop-types */
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {
-  FaTrashAlt,
-  FaEdit,
-  FaArrowRight,
-  FaArrowLeft,
-  FaEye,
-  FaFileInvoice,
-} from "react-icons/fa";
-import { FaUserGear } from "react-icons/fa6";
+import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
+
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
-const MoneyReceiptList = () => {
- 
-  const [getMoneyReceipt, setGetMoneyReceipt] = useState([]);
+const ShowRoomMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const navigate = useNavigate();
@@ -24,14 +15,6 @@ const MoneyReceiptList = () => {
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/money-receipt-view?id=${e}`);
   };
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/v1/money_receipt`)
-      .then((res) => res.json())
-      .then((data) => {
-        setGetMoneyReceipt(data.moneyReceipt);
-      });
-  }, []);
 
   // pagination
 
@@ -62,7 +45,9 @@ const MoneyReceiptList = () => {
         const data = await res.json();
 
         if (data.message == "MoneyReceipt delete successful") {
-          setGetMoneyReceipt(getMoneyReceipt?.filter((pkg) => pkg._id !== id));
+          setMoneyReceiptData(
+            moneyReceiptData?.filter((pkg) => pkg._id !== id)
+          );
         }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
@@ -95,7 +80,7 @@ const MoneyReceiptList = () => {
     sessionStorage.setItem("q_n", pageNumber.toString());
   };
   const pages = [];
-  for (let i = 1; i <= Math.ceil(getMoneyReceipt?.length / limit); i++) {
+  for (let i = 1; i <= Math.ceil(moneyReceiptData?.length / limit); i++) {
     pages.push(i);
   }
 
@@ -124,13 +109,13 @@ const MoneyReceiptList = () => {
   const startIndex = lastIndex - limit;
 
   let currentItems;
-  if (Array.isArray(getMoneyReceipt)) {
-    currentItems = getMoneyReceipt?.slice(startIndex, lastIndex);
+  if (Array.isArray(moneyReceiptData)) {
+    currentItems = moneyReceiptData?.slice(startIndex, lastIndex);
   } else {
     currentItems = [];
   }
 
-  const renderData = (getMoneyReceipt) => {
+  const renderData = (moneyReceiptData) => {
     return (
       <table className="table">
         <thead className="tableWrap">
@@ -146,7 +131,7 @@ const MoneyReceiptList = () => {
           </tr>
         </thead>
         <tbody>
-          {getMoneyReceipt?.map((card, index) => (
+          {moneyReceiptData?.map((card, index) => (
             <tr key={card._id}>
               <td>{index + 1}</td>
               <td>{card.thanks_from}</td>
@@ -233,7 +218,6 @@ const MoneyReceiptList = () => {
   }
 
   const handleFilterType = async () => {
-    
     try {
       const data = {
         filterType,
@@ -242,89 +226,64 @@ const MoneyReceiptList = () => {
         `http://localhost:5000/api/v1/money_receipt/all`,
         data
       );
-    
+
       if (response.data.message === "Filter successful") {
-        setGetMoneyReceipt(response.data.result);
+        setMoneyReceiptData(response.data.result);
         setNoMatching(null);
       }
       if (response.data.message === "No matching found") {
-        setGetMoneyReceipt([])
+        setMoneyReceiptData([]);
         setNoMatching(response.data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   };
 
   const handleAllMoneyReceipt = () => {
-    fetch(`http://localhost:5000/api/v1/money_receipt`)
+    fetch(`http://localhost:5000/api/v1/money_receipt/${id}`, {
+      method: "POST",
+    })
       .then((res) => res.json())
       .then((data) => {
-        setGetMoneyReceipt(data.moneyReceipt);
-        setNoMatching(null);
+        if (data.message === "success") {
+          setMoneyReceiptData(data.card);
+        }
       });
   };
-
   return (
-    <div className="mt-5 overflow-x-auto">
-      <div className="flex flex-wrap justify-between pb-3 border-b-2">
-        <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
+    <div className="w-full mt-10 mb-24 ">
+      {moneyReceiptData.length > 0 && (
+        <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+          <Link to="/dashboard/money-receive">
+            <button className="bg-[#42A1DA] text-white px-2 py-3 rounded-sm ">
+              Add Money
+            </button>
           </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
-        </div>
-        <div className="flex items-end justify-end">
-          <NotificationAdd size={30} className="mr-2" />
-          <FaUserGear size={30} />
-        </div>
-      </div>
-      <div className="flex items-center justify-between mt-5 mb-8">
-        <div className="flex flex-wrap items-center justify-center">
-          <FaFileInvoice className="invoicIcon" />
-          <div className="ml-2">
-            <h3 className="text-sm font-bold md:text-2xl"> Money Receipt </h3>
-            <span>Manage Money Receipt </span>
-          </div>
-        </div>
-        <div className="productHome">
-          <span>Home / </span>
-          <span>Product / </span>
-          <span>New Product </span>
-        </div>
-      </div>
+          <div className="flex items-center searcList">
+            <div
+              onClick={handleAllMoneyReceipt}
+              className="mx-6 font-semibold cursor-pointer"
+            >
+              All
+            </div>
 
-      <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-        <h3 className="mb-3 text-xl font-bold md:text-3xl">Money Receipt List:</h3>
-        <div className="flex items-center searcList">
-          <div
-            onClick={handleAllMoneyReceipt}
-            className="mx-6 font-semibold cursor-pointer"
-          >
-            All
+            <div className="searchGroup">
+              <input
+                onChange={(e) => setFilterType(e.target.value)}
+                autoComplete="off"
+                type="text"
+              />
+            </div>
+            <button onClick={handleFilterType} className="SearchBtn ">
+              Search{" "}
+            </button>
           </div>
-           
-          <div className="searchGroup">
-            <input
-              onChange={(e) => setFilterType(e.target.value)}
-              autoComplete="off"
-              type="text"
-             
-            />
-          </div>
-          <button onClick={handleFilterType} className="SearchBtn ">
-            Search{" "}
-          </button>
         </div>
-      </div>
+      )}
 
       <div>
-        {getMoneyReceipt?.length === 0 || currentItems.length === 0 ? (
+        {moneyReceiptData?.length === 0 || currentItems.length === 0 ? (
           <div className="flex items-center justify-center h-full text-xl text-center">
             No matching card found.
           </div>
@@ -375,4 +334,4 @@ const MoneyReceiptList = () => {
   );
 };
 
-export default MoneyReceiptList;
+export default ShowRoomMoneyList;

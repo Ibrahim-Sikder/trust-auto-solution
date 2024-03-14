@@ -109,3 +109,20 @@
 .customerSignatureWrap2{
 	padding:0 8px;
 }
+
+
+@media only screen and (max-width:1024px){
+	.trustAutoTitle {
+		font-size: 41px;
+	}
+	.jobCardContactInfo{
+		font-size: 12px;
+	}
+}
+
+@media only screen and (max-width: 768px){
+	.trustAutoTitle {
+		font-size: 29px;
+	}
+}
+

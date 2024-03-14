@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import Loading from "../../../../components/Loading/Loading";
-const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
+const ShowRoomQuotationList = ({ quotationData, setQuotationData, id }) => {
 
   //   {
   //     id: 1,
@@ -392,4 +392,4 @@ const CompanyQuotationList = ({ quotationData, setQuotationData, id }) => {
   );
 };
 
-export default CompanyQuotationList;
+export default ShowRoomQuotationList;

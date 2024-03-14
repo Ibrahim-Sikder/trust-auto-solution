@@ -9,12 +9,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import { HiOutlinePlus, HiOutlineSearch } from "react-icons/hi";
-import CompanyAddVehicleModal from "./CompanyAddVehicleModal";
-import CompanyVehicleDetailsModal from "./CompanyVehicleDetailsModal";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import { useLocation } from "react-router-dom";
+import ShowRoomVehicleDetailsModal from "./ShowRoomVehicleDetailsModal";
+import ShowRoomAddVehicleModal from "./ShowRoomAddVehicleModal";
 
 const CompanyVehicleDetails = () => {
   const Search = styled("div")(({ theme }) => ({
@@ -59,13 +59,7 @@ const CompanyVehicleDetails = () => {
     },
   }));
 
-//   const [age, setAge] = useState(null);
 
-//  console.log(age)
-
-//   const handleChange = (event) => {
-//     setAge(event.target.value);
-//   };
 const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -434,10 +428,9 @@ const location = useLocation();
           )}
         </div>
       )}
-      
-      {open && <CompanyAddVehicleModal open={open} onClose={handleClose} />}
+      {open && <ShowRoomAddVehicleModal open={open} onClose={handleClose} />}
       {vehicleDetails && (
-        <CompanyVehicleDetailsModal
+        <ShowRoomVehicleDetailsModal
           handVehicleDetailsOpen={handVehicleDetailsOpen}
           handleVehicleDetailsClose={handleVehicleDetailsClose}
           getId={getId}

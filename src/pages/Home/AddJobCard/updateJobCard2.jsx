@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import "./AddJobCard.css";
 import car from "../../../../public/assets/car2.jpeg";
 import logo from "../../../../public/assets/logo.png";
@@ -7,6 +8,7 @@ import "react-quill/dist/quill.snow.css";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FormControl, InputLabel, Select, TextField } from "@mui/material";
 const UpdateJobCard = () => {
   const [carRegNo, setCarRegNo] = useState(null);
   const [vehicleCategory, setVehicleCategory] = useState(null);
@@ -99,10 +101,10 @@ const UpdateJobCard = () => {
         <div className="flex items-center justify-center">
           <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div className="invoiceHead">
-            <h2 className=" font-bold text-center trustAuto word-sp">
+            <h2 className="font-bold text-center  trustAuto word-sp">
               Trust Auto Solution{" "}
             </h2>
-            <p className=" text-sm">
+            <p className="text-sm ">
               It is trusted computerized Ogranizetion for all the kinds of
               vehicle check up & maintenance such as computerized Engine
               Analysis Engine tune up, Denting, Painting, Engine, AC, Electrical
@@ -113,36 +115,27 @@ const UpdateJobCard = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <div className=" jobCardFormWrap">
+          <div className="flex items-center justify-between my-5 ">
             <div>
-              <label>
+              <b>
                 Job No: <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder="Job No"
-                defaultValue={singleCard.job_no}
-                readOnly
-              />
+              </b>
+              <span>{singleCard.job_no}</span>
             </div>
+            <div className="vehicleCard">Update Job Card </div>
             <div>
-              <div className="vehicleCard">Update Job Card </div>
-            </div>
-            <div>
-              <label>
+              <b>
                 Date <span className="requiredStart">*</span>{" "}
-              </label>
+              </b>
 
               {!dateSelect && (
                 <>
                   <div
                     onClick={() => setDateSelect(true)}
-                    className=" cursor-pointer"
+                    className="cursor-pointer "
                   >
                     {singleCard.date}{" "}
                   </div>
-                  <div>Calender icon</div>
                 </>
               )}
 
@@ -158,226 +151,174 @@ const UpdateJobCard = () => {
               )}
             </div>
           </div>
-          <div className="jobCardSingleForm jobCardSingleForm2 mt-8">
-            <div>
-              <label>
-                Chassis No <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                {...register("chassis_no")}
-                autoComplete="off"
-                type="text"
-                placeholder="Chassis No"
-                defaultValue={singleCard.chassis_no}
-              />
-            </div>
-            <div>
-              <label>
-                Car Registration No <span className="requiredStart">*</span>{" "}
-              </label>
-
-              <div className="flex items-center inputSelectWrap">
+          <div className="jobCardFieldWraps">
+            <div className="jobCardFieldLeftSide">
+              <h3 className="mb-5 text-xl font-bold">Company Information </h3>
+              <div>
+                <TextField
+                  {...register("chassis_no")}
+                  className="addJobInputField"
+                  label={singleCard.chassis_no}
+                  defaultValue={singleCard.chassis_no}
+                />
+              </div>
+              {/* <div className="flex items-center mt-3">
                 {!select && !carRegNo && (
-                  <div onClick={handleSelectReg} className="px-7 text-sm">
+                  <div onClick={handleSelectReg} className="text-sm px-7">
                     {singleCard.carReg_no}
                   </div>
                 )}
                 {select && (
-                  <select value={singleCard.carReg_no} onChange={(e) => setCarRegNo(e.target.value)}>
-                    <option value="Reg">Select </option>
+                  <FormControl className="productField">
+							<InputLabel htmlFor="grouped-native-select">Car Registration No</InputLabel>
+							<Select value={singleCard.carReg_no} onChange={(e) => setCarRegNo(e.target.value)}   id="grouped-native-select" label="Car Registration No  ">
+              <option value="Reg">Car Registration No </option>
                     <option value="Reg">DM KHA</option>
                     <option value="Reg">DM KHA</option>
                     <option value="Reg">DM KHA</option>
-                  </select>
+							</Select>
+             
+						</FormControl>
                 )}
-
-                <input
-                  className="registrationForm"
-                  autoComplete="off"
-                  type="text"
-                  placeholder="Car Registration"
-                  defaultValue={singleCard.car_registration_no}
+            <TextField  label={singleCard.car_registration_no} />
+              </div> */}
+              <div className="flex items-center">
+                <FormControl className="productField">
+                  <InputLabel htmlFor="grouped-native-select">
+                    Car Registration No
+                  </InputLabel>
+                  <Select
+                    onChange={(e) => setCarRegNo(e.target.value)}
+                    native
+                    id="grouped-native-select"
+                    label="Car Registration No"
+                    value={singleCard.carReg_no}
+                  >
+                    <option value="select">Select Reg </option>
+                    <option value="DM KHA">DM KHA</option>
+                    <option value="DM KHA">DM KHA</option>
+                    <option value="DM KHA">DM KHA</option>
+                  </Select>
+                </FormControl>
+                <TextField label="Car R (T&N)" />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("car_model")}
+                  className="addJobInputField"
+                  label={singleCard.car_registration_no}
                 />
               </div>
-            </div>
-            <div>
-              <label>
-                Vehicle Model <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                {...register("car_model")}
-                // name="carmodel"
-                autoComplete="off"
-                type="text"
-                placeholder="Vehicle Model"
-                defaultValue={singleCard.vehicle_model}
-              />
-            </div>
-
-            <div>
-              <label>
-                Vehicle Brand <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                {...register("car_make")}
-                // name="carmake"
-                autoComplete="off"
-                type="text"
-                placeholder="Cehicle Brand"
-                defaultValue={singleCard.vehicle_brand}
-              />
-            </div>
-            <div>
-              <label>
-                Mileage <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                {...register("mileage")}
-                // name="meleage"
-                autoComplete="off"
-                type="text"
-                placeholder="Mileage"
-                defaultValue={singleCard.mileage}
-              />
-            </div>
-          </div>
-          <div className="jobCardSingleForm jobCardSingleForm2">
-            <div>
-              <label>
-                Color & Code <span className="requiredStart">*</span>{" "}
-              </label>
-              <input
-                {...register("color")}
-                // name="color"
-                autoComplete="off"
-                type="text"
-                placeholder="Color & Code "
-                defaultValue={singleCard.color}
-              />
-            </div>
-            <div>
-              <label>Engine No & CC </label>
-              <input
-                {...register("engine_no")}
-                // name="engine"
-                className="registrationForm"
-                autoComplete="off"
-                type="text"
-                placeholder="Engine No & CC"
-                defaultValue={singleCard.engine_no}
-              />
-            </div>
-            <div>
-              <label>Reference Name </label>
-              <input
-                {...register("reference_name")}
-                // name="reference"
-                autoComplete="off"
-                type="text"
-                placeholder="Reference Name "
-                defaultValue={singleCard.reference_name}
-              />
-            </div>
-            <div>
-              <label>Company Name </label>
-              <input
-                {...register("company_name")}
-                // name="reference"
-                autoComplete="off"
-                type="text"
-                placeholder="Company Name "
-                defaultValue={singleCard.company_name}
-              />
-            </div>
-            <div>
-              <label>
-                Vehicle Category <span className="requiredStart">*</span>{" "}
-              </label>
-              {/* <input
-                {...register("company_name")}
-                // name="cname"
-                autoComplete="off"
-                type="text"
-                placeholder="Company Name"
-                defaultValue={singleCard.company_name}
-              /> */}
-              <select
-                value={
+              <div className="mt-3">
+                <TextField
+                  {...register("car_make")}
+                  className="addJobInputField"
+                  label={singleCard.vehicle_brand}
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("mileage")}
+                  className="addJobInputField"
+                  label={singleCard.mileage}
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("engine_no")}
+                  className="addJobInputField"
+                  label={singleCard.engine_no}
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("color")}
+                  className="addJobInputField"
+                  label={singleCard.color}
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("company_name")}
+                  label={singleCard.company_name}
+                  className="addJobInputField"
+                />
+              </div>
+              <div className="mt-3">
+                <FormControl className="addJobInputField">
+                  <InputLabel htmlFor="grouped-native-select">
+                    {" "}
+                    Select Vehicle Category
+                  </InputLabel>
+                  {/* vvalue={
                   vehicleCategory
                     ? vehicleCategory
                     : singleCard.vehicle_category
-                }
-                onChange={(e) => setVehicleCategory(e.target.value)}
-                autoComplete="off"
-              >
-                <option value="Select Vehicle Category ">
-                  Select Vehicle Category{" "}
-                </option>
-                <option value="Sedans">Sedans</option>
-                <option value="Crossovers">Crossovers</option>
-                <option value="Sports">Sports</option>
-                <option value="Trucks">Trucks</option>
-                <option value="Coupes">Coupes</option>
-                <option value="Convertibles">Convertibles</option>
-                <option value="Diesels">Diesels</option>
-                <option value="SUVs">SUVs</option>
-                <option value="Hybrid/Electric">Hybrid/Electric</option>
-                <option value="Vans/Minivans">Vans/Minivans</option>
-                <option value="Wagons">Wagons</option>
-                <option value="Small Cars ">Small Cars </option>
-                <option value="CPO ">CPO </option>
-              </select>
+                } */}
+                  <Select
+                    onChange={(e) => setVehicleCategory(e.target.value)}
+                    id="grouped-native-select"
+                    native
+                    label=" Select Vehicle Category "
+                  >
+                    <option>Select Vehicle Category </option>
+                    <option value="Sedans">Sedans</option>
+                    <option value="Crossovers">Crossovers</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Trucks">Trucks</option>
+                    <option value="Coupes">Coupes</option>
+                    <option value="Convertibles">Convertibles</option>
+                    <option value="Diesels">Diesels</option>
+                    <option value="SUVs">SUVs</option>
+                    <option value="Hybrid/Electric">Hybrid/Electric</option>
+                    <option value="Vans/Minivans">Vans/Minivans</option>
+                    <option value="Wagons">Wagons</option>
+                    <option value="Small Cars ">Small Cars </option>
+                    <option value="CPO ">CPO </option>
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
+            <div className="jobCardFieldRightSide">
+              <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
+              <div>
+                <TextField
+                  {...register("reference_name")}
+                  label={singleCard.reference_name}
+                  className="addJobInputField"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("customer_name")}
+                  label={singleCard.customer_name}
+                  className="addJobInputField"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("contact_number")}
+                  label={singleCard.contact_number}
+                  className="addJobInputField"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("driver_name")}
+                  label={singleCard.driver_name}
+                  className="addJobInputField"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  {...register("phone_number")}
+                  label={singleCard.phone_number}
+                  className="addJobInputField"
+                />
+              </div>
             </div>
           </div>
-          <div className="jobCardSingleForm">
-            <div>
-              <label>Customer name </label>
-              <input
-                {...register("customer_name")}
-                // name="username"
-                autoComplete="off"
-                type="text"
-                placeholder="Customer name "
-                defaultValue={singleCard.customer_name}
-              />
-            </div>
-            <div>
-              <label>Contact No </label>
-              <input
-                {...register("contact_number")}
-                // name="contact"
-                className="registrationForm"
-                autoComplete="off"
-                type="text"
-                placeholder="Contact No "
-                defaultValue={singleCard.contact_number}
-              />
-            </div>
-            <div>
-              <label>Driver Name </label>
-              <input
-                {...register("driver_name")}
-                // name="driver"
-                autoComplete="off"
-                type="text"
-                placeholder="Driver Name  "
-                defaultValue={singleCard.driver_name}
-              />
-            </div>
-            <div>
-              <label>Phone No </label>
-              <input
-                {...register("phone_number")}
-                // name="Phone"
-                autoComplete="off"
-                type="text"
-                placeholder="Contact No"
-                defaultValue={singleCard.phone_number}
-              />
-            </div>
-          </div>
-
-          <div className="vehicleReport mt-10">
+          <div className="mt-10 vehicleReport">
             <div className="vehicleReportLeftSide">
               <div className=" vehicleTextField">
                 <b className="block mb-3">
@@ -455,7 +396,7 @@ const UpdateJobCard = () => {
                 {" "}
                 Vehicle Body Report (Mark with X where damage )
               </b>
-              <div className="imgWrap mt-2">
+              <div className="mt-2 imgWrap">
                 <img src={car} alt="car" />
               </div>
               <div className="mt-3">
@@ -543,7 +484,7 @@ const UpdateJobCard = () => {
           </div>
 
           <div className="buttonGroup updateJobCardBtn">
-            <div className="submitQutationBtn flex items-center justify-center">
+            <div className="flex items-center justify-center submitQutationBtn">
               <button disabled={loading} type="submit" className="">
                 Update Job Card{" "}
               </button>
