@@ -198,7 +198,7 @@ const CustomerList = () => {
               <td>{card.date}</td>
               <td>
                 <div
-                  onClick={() => handleIconPreview(card._id)}
+                  onClick={() => handleIconPreview(card.customerId)}
                   className="editIconWrap edit2"
                 >
                   <FaUserTie className="invoicIcon" />

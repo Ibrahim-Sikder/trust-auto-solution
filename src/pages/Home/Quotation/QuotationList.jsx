@@ -16,7 +16,7 @@ import Loading from "../../../components/Loading/Loading";
 import { NotificationAdd } from "@mui/icons-material";
 import { toast } from "react-toastify";
 const QuotationList = () => {
-  const [select, setSelect] = useState(null);
+ 
   const [getAllQuotation, setGetAllQuotation] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
@@ -361,7 +361,7 @@ const QuotationList = () => {
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
                 type="text"
-                placeholder={select}
+                
               />
             </div>
             <button onClick={handleFilterType} className="SearchBtn ">

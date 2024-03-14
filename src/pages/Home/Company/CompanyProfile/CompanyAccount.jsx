@@ -1,32 +1,38 @@
-import { FaCarSide, FaInfo, FaRegEdit } from "react-icons/fa"
-import Card from "../../../../components/Card/Card"
-import invoice from "../../../../../public/assets/invoice.png"
-const CompanyAccount = () => {
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+import { FaCarSide, FaInfo, FaRegEdit } from "react-icons/fa";
+import Card from "../../../../components/Card/Card";
+import invoice from "../../../../../public/assets/invoice.png";
+const CompanyAccount = ({
+  profileData,
+  jobCardData,
+  quotationData,
+  moneyReceiptData,
+}) => {
   return (
     <div className="customerProfileWrap">
-  
       <div className="block md:flex justify-between mt-5">
-      <Card>
-      <h3 className="text-xl font-semibold mb-2"> Contact Info </h3>
-      <div className="flex items-center justify-between">
-        <div>
-          <div>
-          Supplier Name: <b>Mr. Rahat </b>
+        <Card>
+          <h3 className="text-xl font-semibold mb-2"> Contact Info </h3>
+          <div className="flex items-center justify-between">
+            <div>
+              <div>
+                Supplier Name: <b>Mr. Rahat </b>
+              </div>
+              <div>
+                Phone Number: <b>0657899444</b>
+              </div>
+            </div>
+            <div>
+              <div>
+                Shop Name: <b>Auto Solution </b>
+              </div>
+              <span>
+                Email Address: <b>supplier@gmail.com</b>
+              </span>
+            </div>
           </div>
-          <div>
-            Phone Number: <b>0657899444</b>
-          </div>
-        </div>
-        <div>
-          <div>
-           Shop Name: <b>Auto Solution </b>
-          </div>
-          <span>
-            Email Address: <b>supplier@gmail.com</b>
-          </span>
-        </div>
-      </div>
-    </Card>
+        </Card>
         <Card>
           <h3 className="text-xl font-semibold">Address Details </h3>
           <span>
@@ -149,7 +155,7 @@ const CompanyAccount = () => {
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CompanyAccount
+export default CompanyAccount;

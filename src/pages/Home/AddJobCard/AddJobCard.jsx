@@ -4,15 +4,7 @@ import car from "../../../../public/assets/car2.jpeg";
 import logo from "../../../../public/assets/logo.png";
 import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import {
-  Autocomplete,
-  FormControl,
-  InputLabel,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
@@ -28,98 +20,115 @@ import {
   totalYear,
   vehicleTypes,
 } from "../../../constant";
+import Cookies from "js-cookie";
 
 const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
   const [allJobCard, setAllJobCard] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
-  const [chassisNo, setChassisNo] = useState(null);
-  const [registration, setRegistration] = useState(null);
-  const [carRegNo, setCarReg] = useState(null);
-  const [vehicleModel, setCarModel] = useState(null);
-  const [vehicleBrand, setVehicleBrand] = useState(null);
-  const [mileage, setMileage] = useState(null);
-  const [color, setColor] = useState(null);
-  const [engineNo, setEngineNo] = useState(null);
-  const [reference, setReference] = useState(null);
-  const [companyName, setCompanyName] = useState(null);
-  const [vehicleCategory, setVehicleCategory] = useState(null);
-  const [customerName, setCustomerName] = useState(null);
-  const [contactNo, setContactNo] = useState(null);
-  const [driverName, setDriverName] = useState(null);
-  const [phoneNo, setPhoneNo] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+
+  const [customerDetails, setCustomerDetails] = useState([]);
+  const [showCustomerData, setShowCustomerData] = useState({});
+
+  const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("");
+  const [getFuelType, setGetFuelType] = useState("");
+
   const [vehicleBody, setVehicleBody] = useState(null);
-  const [technicianName, setTechnicianName] = useState(null);
-  const [technicianSignature, setTechnicianSignature] = useState(null);
-  const [technicianDate, setTechnicianDate] = useState(null);
-  const [owner, setOwner] = useState(null);
+  const [clickControl, setClickControl] = useState(null);
+
   const [error, setError] = useState(null);
   const [select, setSelect] = useState("SL No");
   const [value, setValue] = useState("");
   const [value2, setValue2] = useState("");
   const [value3, setValue3] = useState("");
   const [reload, setReload] = useState(false);
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [formattedDate, setFormattedDate] = useState("");
   const [filterType, setFilterType] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const formRef = useRef();
-  const username = "683231669175";
+  const navigate = useNavigate();
 
-  const handleAddToCard = async (e) => {
-    e.preventDefault();
+  const customer_type = Cookies.get("customer_type");
+
+  const onSubmit = async (data) => {
     try {
+      if (!customerId) {
+        return toast.error("Please add your Id.");
+      }
       const values = {
-        // username: username,
+        customerId: customerId,
+        companyId: customerId,
+        showRoomId: customerId,
         job_no: jobNo,
         date: formattedDate,
-        chassis_no: chassisNo,
-        carReg_no: carRegNo,
-        car_registration_no: registration,
-        vehicle_model: vehicleModel,
-        vehicle_brand: vehicleBrand,
-        mileage: mileage,
-        color: color,
-        engine_no: engineNo,
-        reference_name: reference,
-        company_name: companyName,
-        vehicle_category: vehicleCategory,
-        customer_name: customerName,
-        contact_number: contactNo,
-        driver_name: driverName,
-        phone_number: phoneNo,
+        company_name: data.company_name,
+        username: data.username,
+        company_address: data.company_address,
+        customer_name: data.customer_name,
+        customer_contact: data.customer_contact,
+        customer_email: data.customer_email,
+        customer_address: data.customer_address,
+        driver_name: data.driver_name,
+        driver_contact: data.driver_contact,
+        reference_name: data.reference_name,
+        carReg_no: data.carReg_no,
+        car_registration_no: data.car_registration_no,
+        chassis_no: data.chassis_no,
+        engine_no: data.engine_no,
+        vehicle_brand: data.vehicle_brand,
+        vehicle_name: data.vehicle_name,
+        vehicle_model: data.vehicle_model,
+        vehicle_category: data.vehicle_category,
+        color_code: data.color_code,
+        mileage: data.mileage,
+        fuel_type: data.fuel_type,
         vehicle_interior_parts: value,
         reported_defect: value2,
         reported_action: value3,
         vehicle_body_report: vehicleBody,
-        technician_name: technicianName,
-        technician_signature: technicianSignature,
-        technician_date: technicianDate,
-        vehicle_owner: owner,
+        technician_name: data.technician_name,
+        technician_signature: data.technician_signature,
+        technician_date: data.technician_date,
+        vehicle_owner: data.vehicle_owner,
       };
-      const hasQuotationNullValues = Object.values(values).some(
-        (val) => val === null
-      );
 
-      if (hasQuotationNullValues) {
-        setError("Please fill in all the required fields.");
-        return;
-      }
       setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/api/v1/jobCard",
         values
       );
 
-      console.log(response);
       if (response.data.message === "Successfully add to card post") {
         setLoading(false);
         const newJobNo = jobNo + 1;
         setJobNo(newJobNo);
         setReload(!reload);
+        if (clickControl === "preview") {
+          fetch("http://localhost:5000/api/v1/jobCard/recent")
+            .then((res) => res.json())
+            .then((data) => {
+              if (data) {
+                navigate(`/dashboard/preview?id=${data._id}`);
+              }
+            });
+        }
+        if (clickControl === "quotation") {
+          navigate(`/dashboard/qutation?order_no=${jobNo}`);
+        }
+        if (clickControl === "invoice") {
+          navigate(`/dashboard/invoice?order_no=${jobNo}`);
+        }
         toast.success("Add to job card successful.");
         formRef.current.reset();
         setError(null);
@@ -130,187 +139,239 @@ const AddJobCard = () => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const handlePreview = async (e) => {
-    e.preventDefault();
-    try {
-      const values = {
-        username: username,
-        job_no: jobNo,
-        date: formattedDate,
-        chassis_no: chassisNo,
-        carReg_no: carRegNo,
-        car_registration_no: registration,
-        vehicle_model: vehicleModel,
-        vehicle_brand: vehicleBrand,
-        mileage: mileage,
-        color: color,
-        engine_no: engineNo,
-        reference_name: reference,
-        company_name: companyName,
-        vehicle_category: vehicleCategory,
-        customer_name: customerName,
-        contact_number: contactNo,
-        driver_name: driverName,
-        phone_number: phoneNo,
-        vehicle_interior_parts: value,
-        reported_defect: value2,
-        reported_action: value3,
-        vehicle_body_report: vehicleBody,
-        technician_name: technicianName,
-        technician_signature: technicianSignature,
-        technician_date: technicianDate,
-        vehicle_owner: owner,
-      };
-      const hasPreviewNullValues = Object.values(values).some(
-        (val) => val === null
-      );
-
-      if (hasPreviewNullValues) {
-        setError("Please fill in all the required fields.");
-        return;
-      }
-
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/jobCard",
-        values
-      );
-      if (response.data.message === "Successfully add to card post") {
-        const newJobNo = jobNo + 1;
-        setJobNo(newJobNo);
-        setReload(!reload);
-        fetch("http://localhost:5000/api/v1/jobCard/recent")
-          .then((res) => res.json())
-          .then((data) => {
-            if (data) {
-              navigate(`/dashboard/preview?id=${data._id}`);
-            }
-          });
-
-        // formRef.current.reset()
-        reset();
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
+  const handleBrandChange = (_, newInputValue) => {
+    setBrand(newInputValue);
   };
-  const handleQuotation = async (e) => {
-    e.preventDefault();
-    try {
-      const values = {
-        username: username,
-        job_no: jobNo,
-        date: formattedDate,
-        chassis_no: chassisNo,
-        carReg_no: carRegNo,
-        car_registration_no: registration,
-        vehicle_model: vehicleModel,
-        vehicle_brand: vehicleBrand,
-        mileage: mileage,
-        color: color,
-        engine_no: engineNo,
-        reference_name: reference,
-        company_name: companyName,
-        vehicle_category: vehicleCategory,
-        customer_name: customerName,
-        contact_number: contactNo,
-        driver_name: driverName,
-        phone_number: phoneNo,
-        vehicle_interior_parts: value,
-        reported_defect: value2,
-        reported_action: value3,
-        vehicle_body_report: vehicleBody,
-        technician_name: technicianName,
-        technician_signature: technicianSignature,
-        technician_date: technicianDate,
-        vehicle_owner: owner,
-      };
-
-      const hasQuotationNullValues = Object.values(values).some(
-        (val) => val === null
-      );
-
-      if (hasQuotationNullValues) {
-        setError("Please fill in all the required fields.");
-        return;
-      }
-      setLoading(true);
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/jobCard",
-        values
-      );
-      if (response.data.message === "Successfully add to card post") {
-        const newJobNo = jobNo + 1;
-        setJobNo(newJobNo);
-        setReload(!reload);
-        navigate(`/dashboard/qutation?order_no=${jobNo}`);
-        // formRef.current.reset()
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      toast.error("Something went wrong.");
-    }
+  const handleCategoryChange = (_, newInputValue) => {
+    setCategory(newInputValue);
   };
-  const handleInvoice = async (e) => {
-    e.preventDefault();
-    try {
-      const values = {
-        username: username,
-        job_no: jobNo,
-        date: formattedDate,
-        chassis_no: chassisNo,
-        carReg_no: carRegNo,
-        car_registration_no: registration,
-        vehicle_model: vehicleModel,
-        vehicle_brand: vehicleBrand,
-        mileage: mileage,
-        color: color,
-        engine_no: engineNo,
-        reference_name: reference,
-        company_name: companyName,
-        vehicle_category: vehicleCategory,
-        customer_name: customerName,
-        contact_number: contactNo,
-        driver_name: driverName,
-        phone_number: phoneNo,
-        vehicle_interior_parts: value,
-        reported_defect: value2,
-        reported_action: value3,
-        vehicle_body_report: vehicleBody,
-        technician_name: technicianName,
-        technician_signature: technicianSignature,
-        technician_date: technicianDate,
-        vehicle_owner: owner,
-      };
-
-      const hasQuotationNullValues = Object.values(values).some(
-        (val) => val === null
-      );
-
-      if (hasQuotationNullValues) {
-        setError("Please fill in all the required fields.");
-        return;
-      }
-      setLoading(true);
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/jobCard",
-        values
-      );
-      if (response.data.message === "Successfully add to card post") {
-        const newJobNo = jobNo + 1;
-        setJobNo(newJobNo);
-        setReload(!reload);
-        setLoading(false);
-        navigate(`/dashboard/invoice?order_no=${jobNo}`);
-        // formRef.current.reset()
-      }
-    } catch (error) {
-      setLoading(false);
-      toast.error("Something went wrong.");
-    }
+  const handleFuelChange = (_, newInputValue) => {
+    setGetFuelType(newInputValue);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let apiUrl = "";
+        switch (customer_type) {
+          case "customer":
+            apiUrl = "http://localhost:5000/api/v1/customer";
+            break;
+          case "company":
+            apiUrl = "http://localhost:5000/api/v1/company";
+            break;
+          case "show_room":
+            apiUrl = "http://localhost:5000/api/v1/showRoom";
+            break;
+          default:
+            throw new Error("Invalid customer type");
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCustomerDetails(data);
+
+        const selectedCustomer = data.find((customer) => {
+          switch (customer_type) {
+            case "customer":
+              return customer.customerId === customerId;
+            case "company":
+              return customer.companyId === customerId;
+            case "show_room":
+              return customer.showRoomId === customerId;
+            default:
+              return false;
+          }
+        });
+        setShowCustomerData(selectedCustomer);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, [customerId, customer_type]);
+
+
+  // const handlePreview = async (e) => {
+  //   e.preventDefault();
+  // try {
+  //   const values = {
+  //     customerId: id,
+  //     job_no: jobNo,
+  //     date: formattedDate,
+  //     chassis_no: chassisNo,
+  //     carReg_no: carRegNo,
+  //     car_registration_no: registration,
+  //     vehicle_model: vehicleModel,
+  //     vehicle_brand: vehicleBrand,
+  //     mileage: mileage,
+  //     color: color,
+  //     engine_no: engineNo,
+  //     reference_name: reference,
+  //     company_name: companyName,
+  //     vehicle_category: vehicleCategory,
+  //     customer_name: customerName,
+  //     contact_number: contactNo,
+  //     driver_name: driverName,
+  //     phone_number: phoneNo,
+  //     vehicle_interior_parts: value,
+  //     reported_defect: value2,
+  //     reported_action: value3,
+  //     vehicle_body_report: vehicleBody,
+  //     technician_name: technicianName,
+  //     technician_signature: technicianSignature,
+  //     technician_date: technicianDate,
+  //     vehicle_owner: owner,
+  //   };
+  //   const hasPreviewNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
+
+  //   if (hasPreviewNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/jobCard",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully add to card post") {
+  //     const newJobNo = jobNo + 1;
+  //     setJobNo(newJobNo);
+  //     setReload(!reload);
+  //     fetch("http://localhost:5000/api/v1/jobCard/recent")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         if (data) {
+  //           navigate(`/dashboard/preview?id=${data._id}`);
+  //         }
+  //       });
+
+  //     // formRef.current.reset()
+  //     reset();
+  //   }
+  // } catch (error) {
+  //   toast.error(error.message);
+  // }
+  // };
+  // const handleQuotation = async (e) => {
+  // e.preventDefault();
+  // try {
+  //   const values = {
+  //     customerId: id,
+  //     job_no: jobNo,
+  //     date: formattedDate,
+  //     chassis_no: chassisNo,
+  //     carReg_no: carRegNo,
+  //     car_registration_no: registration,
+  //     vehicle_model: vehicleModel,
+  //     vehicle_brand: vehicleBrand,
+  //     mileage: mileage,
+  //     color: color,
+  //     engine_no: engineNo,
+  //     reference_name: reference,
+  //     company_name: companyName,
+  //     vehicle_category: vehicleCategory,
+  //     customer_name: customerName,
+  //     contact_number: contactNo,
+  //     driver_name: driverName,
+  //     phone_number: phoneNo,
+  //     vehicle_interior_parts: value,
+  //     reported_defect: value2,
+  //     reported_action: value3,
+  //     vehicle_body_report: vehicleBody,
+  //     technician_name: technicianName,
+  //     technician_signature: technicianSignature,
+  //     technician_date: technicianDate,
+  //     vehicle_owner: owner,
+  //   };
+  //   const hasQuotationNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
+  //   if (hasQuotationNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/jobCard",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully add to card post") {
+  //     const newJobNo = jobNo + 1;
+  //     setJobNo(newJobNo);
+  //     setReload(!reload);
+  //     navigate(`/dashboard/qutation?order_no=${jobNo}`);
+  //     // formRef.current.reset()
+  //     setLoading(false);
+  //   }
+  // } catch (error) {
+  //   setLoading(false);
+  //   toast.error("Something went wrong.");
+  // }
+  // };
+  // const handleInvoice = async (e) => {
+  // e.preventDefault();
+  // try {
+  //   const values = {
+  //     customerId: id,
+  //     job_no: jobNo,
+  //     date: formattedDate,
+  //     chassis_no: chassisNo,
+  //     carReg_no: carRegNo,
+  //     car_registration_no: registration,
+  //     vehicle_model: vehicleModel,
+  //     vehicle_brand: vehicleBrand,
+  //     mileage: mileage,
+  //     color: color,
+  //     engine_no: engineNo,
+  //     reference_name: reference,
+  //     company_name: companyName,
+  //     vehicle_category: vehicleCategory,
+  //     customer_name: customerName,
+  //     contact_number: contactNo,
+  //     driver_name: driverName,
+  //     phone_number: phoneNo,
+  //     vehicle_interior_parts: value,
+  //     reported_defect: value2,
+  //     reported_action: value3,
+  //     vehicle_body_report: vehicleBody,
+  //     technician_name: technicianName,
+  //     technician_signature: technicianSignature,
+  //     technician_date: technicianDate,
+  //     vehicle_owner: owner,
+  //   };
+  //   const hasQuotationNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
+  //   if (hasQuotationNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/jobCard",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully add to card post") {
+  //     const newJobNo = jobNo + 1;
+  //     setJobNo(newJobNo);
+  //     setReload(!reload);
+  //     setLoading(false);
+  //     navigate(`/dashboard/invoice?order_no=${jobNo}`);
+  //     // formRef.current.reset()
+  //   }
+  // } catch (error) {
+  //   setLoading(false);
+  //   toast.error("Something went wrong.");
+  // }
+  // };
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };
@@ -325,7 +386,6 @@ const AddJobCard = () => {
       });
   }, [jobNo, reload]);
 
-  
   useEffect(() => {
     if (previousPostData.job_no && !jobNo) {
       setJobNo(previousPostData.job_no + 1);
@@ -340,7 +400,7 @@ const AddJobCard = () => {
         setLoading(false);
         setAllJobCard(data);
       });
-  }, [username, reload]);
+  }, [reload]);
 
   const handleDateChange = (event) => {
     const rawDate = event.target.value;
@@ -593,47 +653,47 @@ const AddJobCard = () => {
     setFormattedDate(currentDate);
   }, []);
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
+  // const Search = styled("div")(({ theme }) => ({
+  //   position: "relative",
+  //   borderRadius: theme.shape.borderRadius,
+  //   backgroundColor: alpha(theme.palette.common.white, 0.15),
+  //   "&:hover": {
+  //     backgroundColor: alpha(theme.palette.common.white, 0.25),
+  //   },
+  //   marginLeft: 0,
+  //   width: "100%",
+  //   [theme.breakpoints.up("sm")]: {
+  //     marginLeft: theme.spacing(1),
+  //     width: "auto",
+  //   },
+  // }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
+  // const SearchIconWrapper = styled("div")(({ theme }) => ({
+  //   padding: theme.spacing(0, 2),
+  //   height: "100%",
+  //   position: "absolute",
+  //   pointerEvents: "none",
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // }));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+  // const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  //   color: "inherit",
+  //   width: "100%",
+  //   "& .MuiInputBase-input": {
+  //     padding: theme.spacing(1, 1, 1, 0),
+  //     // vertical padding + font size from searchIcon
+  //     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+  //     transition: theme.transitions.create("width"),
+  //     [theme.breakpoints.up("sm")]: {
+  //       width: "12ch",
+  //       "&:focus": {
+  //         width: "20ch",
+  //       },
+  //     },
+  //   },
+  // }));
 
   return (
     <div className="addJobCardWraps">
@@ -658,7 +718,7 @@ const AddJobCard = () => {
           </div>
         </div>
       </div>
-      <form ref={formRef}>
+      <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div>
           <div className=" flex  justify-between items-center my-5">
             <div>
@@ -674,14 +734,19 @@ const AddJobCard = () => {
                 </span>
                 <div className="flex items-center topSearchBa">
                   <Autocomplete
+                    onChange={(event, value) => setCustomerId(value)}
                     className="jobCardSelect"
-                    onChange={(e) => setCarReg(e.target.value)}
                     id="free-solo-demo"
                     Customer
                     ID
-                    options={cmDmOptions.map((option) => option.label)}
+                    options={customerDetails?.map(
+                      (option) =>
+                        option?.customerId ||
+                        option?.companyId ||
+                        option?.showRoomId
+                    )}
                     renderInput={(params) => (
-                      <TextField {...params} label="Customer ID " />
+                      <TextField {...params} label="Select ID" />
                     )}
                   />
                 </div>
@@ -705,12 +770,31 @@ const AddJobCard = () => {
                   defaultValue={formattedDate}
                 />
               </div>
-              <Link to='/dashboard/add-customer'>
-                {" "}
-                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                  Add Customer
-                </button>
-              </Link>
+              {customer_type === "customer" && (
+                <Link to="/dashboard/add-customer">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Customer
+                  </button>
+                </Link>
+              )}
+              
+              {customer_type === "company" && (
+                <Link to="/dashboard/add-company">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Company
+                  </button>
+                </Link>
+              )}
+              {customer_type === "show_room" && (
+                <Link to="/dashboard/add-show-room">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Show Room
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -721,57 +805,102 @@ const AddJobCard = () => {
               <div className="mt-3 flex items-center ">
                 <Autocomplete
                   className="jobCardSelect"
-                  onChange={(e) => setCarReg(e.target.value)}
                   id="free-solo-demo"
                   Car
                   Registration
                   No
                   options={cmDmOptions.map((option) => option.label)}
                   renderInput={(params) => (
-                    <TextField {...params} label="Car Reg No" />
+                    <TextField
+                      {...params}
+                      label="Car Reg No"
+                      {...register("carReg_no", { required: true })}
+                      value={showCustomerData?.carReg_no}
+                      focused={showCustomerData?.carReg_no}
+                    />
                   )}
                 />
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setRegistration(e.target.value)}
                   label="Car R (T&N)"
+                  {...register("car_registration_no", { required: true })}
+                  value={showCustomerData?.car_registration_no}
+                  focused={showCustomerData?.car_registration_no}
                 />
               </div>
+
+              {errors.car_registration_no && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setChassisNo(e.target.value)}
+                  {...register("chassis_no", { required: true })}
                   label="Chassis No (T&N)"
+                  value={showCustomerData?.chassis_no}
+                  focused={showCustomerData?.chassis_no}
                 />
+                {errors.chassis_no && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setEngineNo(e.target.value)}
+                  {...register("engine_no", { required: true })}
                   label="ENGINE NO & CC (T&N) "
+                  value={showCustomerData?.engine_no}
+                  focused={showCustomerData?.engine_no}
                 />
+                {errors.engine_no && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
 
               <div className="mt-3">
                 <Autocomplete
-                  onChange={(e) => setCarReg(e.target.value)}
                   id="free-solo-demo"
                   Vehicle
                   Brand
+                  onInputChange={handleBrandChange}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
-                    <TextField {...params} label="Vehicle Brand" />
+                    <TextField
+                      {...params}
+                      label="Vehicle Brand"
+                      {...register("vehicle_brand", { required: true })}
+                      value={showCustomerData?.vehicle_brand}
+                      focused={showCustomerData?.vehicle_brand}
+                    />
                   )}
                 />
+                {errors.vehicle_brand && !brand && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setMileage(e.target.value)}
+                  {...register("vehicle_name", { required: true })}
                   label="Vehicle Name "
+                  value={showCustomerData?.vehicle_name}
+                  focused={showCustomerData?.vehicle_name}
                 />
+                {errors.vehicle_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               {/** 
               <div className="mt-3">
@@ -784,7 +913,7 @@ const AddJobCard = () => {
               */}
 
               <div className="mt-3">
-                <Autocomplete
+                {/* <Autocomplete
                   onChange={(e) => setCarModel(e.target.value)}
                   id="free-solo-demo"
                   Vehicle
@@ -793,46 +922,109 @@ const AddJobCard = () => {
                   renderInput={(params) => (
                     <TextField {...params} label=" Vehicle Model" />
                   )}
+                /> */}
+                <TextField
+                  className="addJobInputField"
+                  label="Vehicle Model (N)"
+                  {...register("vehicle_model", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "Please enter a valid model number.",
+                    },
+                  })}
+                  value={showCustomerData?.vehicle_model}
+                  focused={showCustomerData?.vehicle_model}
                 />
+
+                {errors.vehicle_model && (
+                  <span className="text-sm text-red-400">
+                    {errors.vehicle_model.message}
+                  </span>
+                )}
               </div>
 
               <div className="mt-3">
                 <Autocomplete
-                  onChange={(e) => setVehicleCategory(e.target.value)}
                   id="free-solo-demo"
                   Vehicle
                   Types
+                  onInputChange={handleCategoryChange}
                   options={vehicleTypes.map((option) => option.label)}
                   renderInput={(params) => (
-                    <TextField {...params} label=" Vehicle Categories " />
+                    <TextField
+                      {...params}
+                      label=" Vehicle Categories "
+                      {...register("vehicle_category", { required: true })}
+                      value={showCustomerData?.vehicle_category}
+                      focused={showCustomerData?.vehicle_category}
+                    />
                   )}
                 />
+                {errors.vehicle_category && !category && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setColor(e.target.value)}
+                  {...register("color_code", { required: true })}
                   label="Color & Code (T&N) "
+                  value={showCustomerData?.color_code}
+                  focused={showCustomerData?.color_code}
                 />
+                {errors.color_code && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setMileage(e.target.value)}
                   label="Mileage (N) "
+                  {...register("mileage", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d+$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.mileage}
+                  focused={showCustomerData?.mileage}
                 />
+                {errors.mileage && (
+                  <span className="text-sm text-red-400">
+                    {errors.mileage.message}
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <Autocomplete
-                  onChange={(e) => setColor(e.target.value)}
+                  value={showCustomerData?.fuel_type}
+                  focused={showCustomerData?.fuel_type}
                   id="free-solo-demo"
                   Fuel
                   Type
+                  onInputChange={handleFuelChange}
                   options={fuelType.map((option) => option.label)}
                   renderInput={(params) => (
-                    <TextField {...params} label=" Fuel Type" />
+                    <TextField
+                      {...params}
+                      label=" Fuel Type"
+                      {...register("fuel_type", { required: true })}
+                      value={showCustomerData?.fuel_type}
+                      focused={showCustomerData?.fuel_type}
+                    />
                   )}
                 />
+                {errors.fuel_type && !getFuelType && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
             </div>
 
@@ -841,72 +1033,156 @@ const AddJobCard = () => {
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setCompanyName(e.target.value)}
                   label="Company Name (T)"
+                  {...register("company_name", { required: true })}
+                  value={showCustomerData?.company_name}
+                  focused={showCustomerData?.company_name}
                 />
+                {errors.company_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setCustomerName(e.target.value)}
                   label="Vehicle User Name (T)"
+                  {...register("username", { required: true })}
+                  value={showCustomerData?.username}
+                  focused={showCustomerData?.username}
                 />
+                {errors.username && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setCompanyName(e.target.value)}
                   label="Company Address (T)"
+                  {...register("company_address", { required: true })}
+                  value={showCustomerData?.company_address}
+                  focused={showCustomerData?.company_address}
                 />
+                {errors.company_address && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setCustomerName(e.target.value)}
                   label="Customer Name (T)"
+                  {...register("customer_name", { required: true })}
+                  value={showCustomerData?.customer_name}
+                  focused={showCustomerData?.customer_name}
                 />
+                {errors.customer_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setContactNo(e.target.value)}
                   label="Customer Contact No (N)"
+                  {...register("customer_contact", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d{11}$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.customer_contact}
+                  focused={showCustomerData?.customer_contact}
                 />
+                {errors.customer_contact && (
+                  <span className="text-sm text-red-400">
+                    {errors.customer_contact.message}
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setContactNo(e.target.value)}
-                  label="Customer Email Address (N)"
+                  label="Customer Email Address (T)"
+                  {...register("customer_email", { required: true })}
+                  type="email"
+                  value={showCustomerData?.customer_email}
+                  focused={showCustomerData?.customer_email}
                 />
+                {errors.customer_email && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Customer Address (T) "
+                  {...register("customer_address", { required: true })}
+                  value={showCustomerData?.customer_address}
+                  focused={showCustomerData?.customer_address}
                 />
+                {errors.customer_address && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setDriverName(e.target.value)}
                   label="Driver Name (T)"
+                  {...register("driver_name", { required: true })}
+                  value={showCustomerData?.driver_name}
+                  focused={showCustomerData?.driver_name}
                 />
+                {errors.driver_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setPhoneNo(e.target.value)}
                   label="Driver Contact No (N)"
+                  {...register("driver_contact", {
+                    required: "This field is required.",
+                    pattern: {
+                      value: /^\d{11}$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.driver_contact}
+                  focused={showCustomerData?.driver_contact}
                 />
+                {errors.driver_contact && (
+                  <span className="text-sm text-red-400">
+                    {errors.driver_contact.message}
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  onChange={(e) => setReference(e.target.value)}
                   label="Reference Name (T) "
+                  {...register("reference_name", { required: true })}
+                  value={showCustomerData?.reference_name}
+                  focused={showCustomerData?.reference_name}
                 />
+                {errors.reference_name && (
+                  <span className="text-sm text-red-400">
+                    This field is required.
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -1025,21 +1301,33 @@ const AddJobCard = () => {
             <div>
               <TextField
                 className=" "
-                onChange={(e) => setTechnicianName(e.target.value)}
+                {...register("technician_name", { required: true })}
                 label="Technician Name (T) "
               />
+              <br />
+              {errors.technician_name && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
             <div>
               <TextField
                 className=" "
                 o
-                onChange={(e) => setTechnicianSignature(e.target.value)}
+                {...register("technician_signature", { required: true })}
                 label="Technician Signature (T) "
               />
+              <br />
+              {errors.technician_signature && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
             <div>
               <input
-                onChange={(e) => setTechnicianDate(e.target.value)}
+                {...register("technician_date", { required: true })}
                 required
                 autoComplete="off"
                 type="date"
@@ -1047,13 +1335,24 @@ const AddJobCard = () => {
                 min={currentDate}
                 className="border-2 p-3"
               />
+              {errors.technician_date && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
             <div>
               <TextField
                 className=" "
-                onChange={(e) => setOwner(e.target.value)}
+                {...register("vehicle_owner", { required: true })}
                 label="Vehicle Owner (T) "
               />
+              <br />
+              {errors.vehicle_owner && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )}
             </div>
           </div>
           <div className="mt-3">
@@ -1063,7 +1362,10 @@ const AddJobCard = () => {
           <div className="buttonGroup mt-5">
             <div>
               {/* <Link to={`/dashboard/preview?${id}`}> */}
-              <button disabled={loading} onClick={handlePreview}>
+              <button
+                disabled={loading}
+                onClick={() => setClickControl("preview")}
+              >
                 Preview
               </button>
               {/* </Link> */}
@@ -1072,12 +1374,18 @@ const AddJobCard = () => {
               <Link to="/dashboard/preview"> */}
               {/* </Link> */}
               {/* <Link to={`/dashboard/qutation?order_no=${jobNo}`}> */}{" "}
-              <button disabled={loading} onClick={handleQuotation}>
+              <button
+                disabled={loading}
+                onClick={() => setClickControl("quotation")}
+              >
                 Quotation
               </button>
               {/* </Link> */}
               {/* <Link to="/dashboard/invoice"> */}{" "}
-              <button disabled={loading} onClick={handleInvoice}>
+              <button
+                disabled={loading}
+                onClick={() => setClickControl("invoice")}
+              >
                 Invoice
               </button>
               {/* </Link> */}
@@ -1085,7 +1393,7 @@ const AddJobCard = () => {
             <div className="submitQutationBtn">
               <button
                 disabled={loading}
-                onClick={handleAddToCard}
+                // onClick={handleAddToCard}
                 type="submit"
                 className=""
               >

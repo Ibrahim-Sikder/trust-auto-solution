@@ -21,6 +21,7 @@ import swal from "sweetalert";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import Loading from "../../../components/Loading/Loading";
+import Cookies from "js-cookie";
 
 const AddCompany = () => {
   const [filterType, setFilterType] = useState("");
@@ -45,16 +46,19 @@ const AddCompany = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
+    data.companyId = uniqueId;
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/company",
         data
       );
-      console.log(response);
       if (response.data.message === "Successfully add to company post") {
         setReload(!reload);
-        navigate("/dashboard/company-list");
         toast.success("Successfully add to company post");
+        Cookies.set("trust_auto_id", response.data.result.companyId);
+        Cookies.set("customer_type", "company")
+        navigate("/dashboard/company-list");
         setLoading(false);
         reset();
       }
@@ -211,7 +215,7 @@ const AddCompany = () => {
               <td>{card.date}</td>
               <td>
                 <div
-                  onClick={() => handleIconPreview(card._id)}
+                  onClick={() => handleIconPreview(card.companyId)}
                   className="editIconWrap edit2"
                 >
                   <FaUserTie className="invoicIcon" />
@@ -596,8 +600,9 @@ const AddCompany = () => {
               type="text"
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
+              onChange={(e)=> setFilterType(e.target.value)}
             />
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+            <button onClick={handleFilterType} className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
               {" "}
               <HiOutlineSearch size={22} />
             </button>

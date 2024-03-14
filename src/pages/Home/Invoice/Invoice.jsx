@@ -13,6 +13,8 @@ import "./Invoice.css";
 import axios from "axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { Autocomplete, TextField } from "@mui/material";
 const Invoice = () => {
   const [select, setSelect] = useState(null);
 
@@ -28,6 +30,10 @@ const Invoice = () => {
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [customerDetails, setCustomerDetails] = useState([]);
+  const [showCustomerData, setShowCustomerData] = useState({});
+  const [customerId, setCustomerId] = useState(null);
 
   useEffect(() => {
     if (job_no) {
@@ -81,10 +87,10 @@ const Invoice = () => {
 
   useEffect(() => {
     const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
-  
+
     // Limiting totalSum to two decimal places
     const roundedTotalSum = parseFloat(totalSum.toFixed(2));
-  
+
     setGrandTotal(roundedTotalSum);
   }, [items]);
 
@@ -100,9 +106,9 @@ const Invoice = () => {
     newItems[index].quantity = roundedValue;
     // newItems[index].quantity = value;
     // Convert quantity to a number and calculate total
-  
+
     newItems[index].total = roundedValue * newItems[index].rate;
-  
+
     setItems(newItems);
     // newItems[index].total = Number(value) * newItems[index].rate;
     // setItems(newItems);
@@ -110,13 +116,13 @@ const Invoice = () => {
 
   // const handleQuantityChange = (index, value) => {
   //   const newItems = [...items];
-  
+
   //   // Round the value to the nearest integer
   //   const roundedValue = Math.round(value);
-  
+
   //   newItems[index].quantity = roundedValue;
   //   newItems[index].total = roundedValue * newItems[index].rate;
-  
+
   //   setItems(newItems);
   // };
 
@@ -130,16 +136,16 @@ const Invoice = () => {
 
   const handleRateChange = (index, value) => {
     const newItems = [...items];
-  
+
     // Convert rate to a number
     newItems[index].rate = parseFloat(value);
-  
+
     // Calculate total with the updated rate
     newItems[index].total = newItems[index].quantity * newItems[index].rate;
-  
+
     // Round total to two decimal places
     newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-  
+
     setItems(newItems);
   };
 
@@ -205,22 +211,27 @@ const Invoice = () => {
     const totalAfterDiscount = grandTotal - discountAsPercentage;
 
     const vatAsPercentage = vat / 100;
-    let finalTotal =
-      totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
-      finalTotal = parseFloat(finalTotal.toFixed(2));
+    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    finalTotal = parseFloat(finalTotal.toFixed(2));
 
     return finalTotal;
   };
 
-   
+  const trust_auto_id = Cookies.get("trust_auto_id");
+  const customer_type = Cookies.get("customer_type");
 
   const handleAddToInvoice = async (e) => {
     e.preventDefault();
-
+    if (!trust_auto_id) {
+      return toast.error("No account found.");
+    }
     try {
       const values = {
         username: jobCardData?.username,
         // serial_no: formattedSerialNo,
+        customerId: customerId,
+        companyId: customerId,
+        showRoomId: customerId,
         job_no: job_no,
         date: jobCardData.date,
         car_registration_no: jobCardData.car_registration_no,
@@ -265,9 +276,17 @@ const Invoice = () => {
 
   const handlePreview = async (e) => {
     e.preventDefault();
+
+    if (!trust_auto_id) {
+      return toast.error("No account found.");
+    }
+
     const values = {
       username: jobCardData?.username,
       // serial_no: formattedSerialNo,
+      customerId: customerId,
+      companyId: customerId,
+      showRoomId: customerId,
       job_no: job_no,
       date: jobCardData.date,
       car_registration_no: jobCardData.car_registration_no,
@@ -306,6 +325,53 @@ const Invoice = () => {
         });
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let apiUrl = "";
+        switch (customer_type) {
+          case "customer":
+            apiUrl = "http://localhost:5000/api/v1/customer";
+            break;
+          case "company":
+            apiUrl = "http://localhost:5000/api/v1/company";
+            break;
+          case "show_room":
+            apiUrl = "http://localhost:5000/api/v1/showRoom";
+            break;
+          default:
+            throw new Error("Invalid customer type");
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCustomerDetails(data);
+
+        const selectedCustomer = data.find((customer) => {
+          switch (customer_type) {
+            case "customer":
+              return customer.customerId === customerId;
+            case "company":
+              return customer.companyId === customerId;
+            case "show_room":
+              return customer.showRoomId === customerId;
+            default:
+              return false;
+          }
+        });
+        setShowCustomerData(selectedCustomer);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, [customerId, customer_type]);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
@@ -542,17 +608,16 @@ const Invoice = () => {
     }
   };
 
-
   const handleAllInvoice = () => {
     try {
       fetch(`http://localhost:5000/api/v1/invoice/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setGetAllInvoice(data);
-        setNoMatching(null);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          setGetAllInvoice(data);
+          setNoMatching(null);
+        });
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   };
   return (
@@ -572,10 +637,10 @@ const Invoice = () => {
             </p>
           </div>
         </div> */}
-         <div className="w-full flex justify-between items-center mb-2 mt-5">
-        <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+        <div className="w-full flex justify-between items-center mb-2 mt-5">
+          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div>
-          <h2 className="  trustAutoTitle trustAutoTitleQutation ">
+            <h2 className="  trustAutoTitle trustAutoTitleQutation ">
               Trust Auto Solution{" "}
             </h2>
             <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
@@ -647,6 +712,51 @@ const Invoice = () => {
           </div>
 
           <div className="vehicleCard">Invoice Card </div>
+          <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center topSearchBa">
+              <Autocomplete
+                onChange={(event, value) => setCustomerId(value)}
+                className="jobCardSelect"
+                id="free-solo-demo"
+                Customer
+                ID
+                options={customerDetails?.map(
+                  (option) =>
+                    option?.customerId ||
+                    option?.companyId ||
+                    option?.showRoomId
+                )}
+                renderInput={(params) => (
+                  <TextField {...params} label="Select ID" />
+                )}
+              />
+            </div>
+            {customer_type === "customer" && (
+              <Link to="/dashboard/add-customer">
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Customer
+                </button>
+              </Link>
+            )}
+
+            {customer_type === "company" && (
+              <Link to="/dashboard/add-company">
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Company
+                </button>
+              </Link>
+            )}
+            {customer_type === "show_room" && (
+              <Link to="/dashboard/add-show-room">
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Show Room
+                </button>
+              </Link>
+            )}
+          </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
@@ -738,11 +848,11 @@ const Invoice = () => {
           })}
           <div className="discountFieldWrap">
             <div className="flex items-center">
-              <b className='mr-2'> Total Amount: </b>
+              <b className="mr-2"> Total Amount: </b>
               <span>{grandTotal}</span>
             </div>
             <div>
-              <b className='mr-2'> Discount: </b>
+              <b className="mr-2"> Discount: </b>
               <input
                 className="text-center py-1"
                 onChange={(e) => handleDiscountChange(e.target.value)}
@@ -752,7 +862,7 @@ const Invoice = () => {
               />
             </div>
             <div>
-              <b className='mr-2'>Vat: </b>
+              <b className="mr-2">Vat: </b>
               <input
                 className="text-center"
                 onChange={(e) => handleVATChange(e.target.value)}
@@ -763,23 +873,23 @@ const Invoice = () => {
             </div>
             <div>
               <div className="ml-3 flex items-center ">
-                <b className='mr-2'>Final Total:</b>
+                <b className="mr-2">Final Total:</b>
                 <span>{calculateFinalTotal()}</span>
               </div>
             </div>
             <div>
-            <b className='mr-2'>Advance: </b>
-            <input
-              className="text-center"
-              onChange={(e) => handleVATChange(e.target.value)}
-              autoComplete="off"
-              type="text"
-              placeholder="Advance"
-            />
-          </div>
-          <div>
+              <b className="mr-2">Advance: </b>
+              <input
+                className="text-center"
+                onChange={(e) => handleVATChange(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Advance"
+              />
+            </div>
+            <div>
               <div className="ml-3 flex items-center ">
-                <b className='mr-2'>Due:</b>
+                <b className="mr-2">Due:</b>
                 <span>{calculateFinalTotal()}</span>
               </div>
             </div>
@@ -811,12 +921,12 @@ const Invoice = () => {
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold mb-3">Invoice List:</h3>
           <div className="flex items-center searcList">
-          <div
-            onClick={handleAllInvoice}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </div>
+            <div
+              onClick={handleAllInvoice}
+              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            >
+              All
+            </div>
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

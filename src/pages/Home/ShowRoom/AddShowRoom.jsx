@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
 import { HiOfficeBuilding, HiOutlineSearch } from "react-icons/hi";
+import Cookies from "js-cookie";
 
 const AddShowRoom = () => {
 
@@ -48,6 +49,8 @@ const AddShowRoom = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
+    data.showRoomId = uniqueId;
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/showRoom",
@@ -56,8 +59,9 @@ const AddShowRoom = () => {
 
       if (response.data.message === "Successfully add to show room post") {
         setReload(!reload);
-        navigate("/dashboard/show-room-list");
         toast.success("Successfully add to show room post");
+        Cookies.set("customer_type", "show_room")
+        navigate("/dashboard/show-room-list");
         setLoading(false);
         reset();
       }

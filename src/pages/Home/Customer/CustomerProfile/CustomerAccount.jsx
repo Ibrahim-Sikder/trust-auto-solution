@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { FaCarSide, FaInfo, FaRegEdit } from "react-icons/fa"
 import Card from "../../../../components/Card/Card"
-const CustomerAccount = ({profileData}) => {
-  console.log(profileData)
+const CustomerAccount = ({profileData, jobCardData, quotationData, moneyReceiptData}) => {
+  console.log(quotationData)
   return (
     <div className="customerProfileWrap">
   

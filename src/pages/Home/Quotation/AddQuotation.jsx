@@ -1,70 +1,76 @@
 /* eslint-disable no-unused-vars */
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import logo from "../../../../public/assets/logo.png"
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import logo from "../../../../public/assets/logo.png";
 import {
   FaTrashAlt,
   FaEdit,
   FaArrowRight,
   FaArrowLeft,
   FaEye,
-} from "react-icons/fa"
-import { useEffect, useState } from "react"
-import axios from "axios"
-import swal from "sweetalert"
-import { toast } from "react-toastify"
-import Loading from "../../../components/Loading/Loading"
-import { styled, alpha } from "@mui/material/styles"
-import InputBase from "@mui/material/InputBase"
-import SearchIcon from "@mui/icons-material/Search"
+} from "react-icons/fa";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import swal from "sweetalert";
+import { toast } from "react-toastify";
+import Loading from "../../../components/Loading/Loading";
+import { styled, alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
+import SearchIcon from "@mui/icons-material/Search";
+import Cookies from "js-cookie";
+import { Autocomplete, TextField } from "@mui/material";
 
 const AddQuotation = () => {
-  const [select, setSelect] = useState(null)
+  const [select, setSelect] = useState(null);
 
   const [inputList, setInputList] = useState([
     { flyingFrom: "", flyingTo: "", date: "" },
-  ])
+  ]);
 
-  const location = useLocation()
-  const orderNo = new URLSearchParams(location.search).get("order_no")
-  const navigate = useNavigate()
-  const [job_no, setJob_no] = useState(orderNo)
-  const [jobCardData, setJobCardData] = useState({})
-  const [error, setError] = useState("")
-  const [postError, setPostError] = useState("")
-  const [getAllQuotation, setGetAllQuotation] = useState([])
-  const [filterType, setFilterType] = useState("")
-  const [noMatching, setNoMatching] = useState(null)
-  const [reload, setReload] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [jobLoading, setJobLoading] = useState(false)
+  const location = useLocation();
+  const orderNo = new URLSearchParams(location.search).get("order_no");
+  const navigate = useNavigate();
+  const [job_no, setJob_no] = useState(orderNo);
+  const [jobCardData, setJobCardData] = useState({});
+  const [error, setError] = useState("");
+  const [postError, setPostError] = useState("");
+  const [getAllQuotation, setGetAllQuotation] = useState([]);
+  const [filterType, setFilterType] = useState("");
+  const [noMatching, setNoMatching] = useState(null);
+  const [reload, setReload] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [jobLoading, setJobLoading] = useState(false);
+
+  const [customerDetails, setCustomerDetails] = useState([]);
+  const [showCustomerData, setShowCustomerData] = useState({});
+  const [customerId, setCustomerId] = useState(null);
 
   useEffect(() => {
     if (job_no) {
-      setJobLoading(true)
+      setJobLoading(true);
       fetch(`http://localhost:5000/api/v1/jobCard/invoice/${job_no}`)
         .then((res) => res.json())
         .then((data) => {
-          setJobCardData(data)
-          setJobLoading(false)
-        })
+          setJobCardData(data);
+          setJobLoading(false);
+        });
     }
-  }, [job_no])
+  }, [job_no]);
 
   const handleRemove = (index) => {
     if (!index) {
-      const list = [...items]
+      const list = [...items];
 
-      setItems(list)
+      setItems(list);
     } else {
-      const list = [...items]
-      list.splice(index, 1)
-      setItems(list)
+      const list = [...items];
+      list.splice(index, 1);
+      setItems(list);
     }
-  }
+  };
 
   const handleAddClick = () => {
-    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }])
-  }
+    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
+  };
 
   //  add to quotation
 
@@ -77,188 +83,102 @@ const AddQuotation = () => {
   // const [quantity, setQuantity] = useState([]);
   // const [rate, setRate] = useState([]);
   // const [total, setTotal] = useState([]);
-  const [grandTotal, setGrandTotal] = useState(0)
-  const [discount, setDiscount] = useState(0)
-  const [vat, setVAT] = useState(0)
-
-  // const handleDescriptionChange = (index, value) => {
-  //   if (value === "") {
-  //     const newDescriptions = [...descriptions];
-  //     newDescriptions[index] = "";
-  //     setDescriptions(newDescriptions);
-  //   } else {
-  //     const newDescriptions = [...descriptions];
-  //     newDescriptions[index] = value;
-  //     setDescriptions(newDescriptions);
-  //   }
-  // };
-  // const handleQuantityChange = (index, value) => {
-  //   const parsedValue = value === "" ? "" : parseFloat(value);
-
-  //   if (!isNaN(parsedValue)) {
-  //     const newQuantity = [...quantity];
-  //     newQuantity[index] = parsedValue;
-  //     setQuantity(newQuantity);
-  //     updateTotal(index, parsedValue, rate[index]);
-  //   }
-  // };
-  // const handleRateChange = (index, value) => {
-  //   const parsedValue = value === "" ? "" : parseFloat(value);
-
-  //   if (!isNaN(parsedValue)) {
-  //     const newRate = [...rate];
-  //     newRate[index] = parsedValue;
-  //     setRate(newRate);
-  //     updateTotal(index, quantity[index], parsedValue);
-  //   }
-  // };
-
-  // const updateTotal = (index, quantityValue, rateValue) => {
-  //   const newTotal = [...total];
-  //   newTotal[index] = quantityValue * rateValue;
-  //   setTotal(newTotal);
-  //   const newGrandTotal = newTotal.reduce((sum, value) => sum + value, 0);
-  //   setGrandTotal(newGrandTotal);
-  // };
-  // const updateTotal = (index, quantityValue, rateValue) => {
-  //   const newTotal = [...total];
-  //   const calculatedTotal = quantityValue * rateValue;
-
-  //   if (isNaN(calculatedTotal) && !rateValue) {
-  //     setTotal(quantityValue);
-  //   }
-  //   if (isNaN(calculatedTotal) && !quantityValue) {
-  //     setTotal(rateValue);
-  //   }
-  //   if (isNaN(calculatedTotal) ) {
-  //     setTotal("");
-  //   }
-
-  //   if (!isNaN(calculatedTotal)) {
-  //     // Check if the calculatedTotal is a valid number
-  //     newTotal[index] = calculatedTotal;
-  //     setTotal(newTotal);
-  //   }
-
-  //   const newGrandTotal = newTotal.reduce((sum, value) => sum + value, 0);
-  //   setGrandTotal(newGrandTotal);
-  // };
-
-  // const updateTotal = (index, quantityValue, rateValue, amountValue) => {
-  //   const newTotal = [...total];
-  //   const calculatedTotal = quantityValue * rateValue;
-
-  //   if (isNaN(calculatedTotal) && !rateValue) {
-  //     setTotal(quantityValue);
-  //   }
-
-  //   if (isNaN(calculatedTotal) && !quantityValue) {
-  //     setTotal(rateValue);
-  //   }
-  //   if (isNaN(calculatedTotal)) {
-  //     setTotal("");
-  //   }
-
-  //   if (!isNaN(calculatedTotal)) {
-  //     // Check if the calculatedTotal is a valid number
-  //     newTotal[index] = calculatedTotal;
-  //     setTotal(newTotal);
-  //   }
-
-  //   // Check if amountValue is a valid number
-  //   const parsedAmount = parseFloat(amountValue);
-  //   if (!isNaN(parsedAmount)) {
-  //     newTotal[index] = parsedAmount;
-  //     setTotal(newTotal);
-  //   }
-
-  //   const newGrandTotal = newTotal.reduce((sum, value) => sum + value, 0);
-  //   setGrandTotal(newGrandTotal);
-  // };
+  const [grandTotal, setGrandTotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [vat, setVAT] = useState(0);
 
   const handleDiscountChange = (value) => {
-    const parsedValue = value === "" ? 0 : parseFloat(value)
+    const parsedValue = value === "" ? 0 : parseFloat(value);
 
     if (!isNaN(parsedValue)) {
-      setDiscount(parsedValue)
+      setDiscount(parsedValue);
     }
-  }
+  };
 
   const handleVATChange = (value) => {
-    const parsedValue = value === "" ? 0 : parseFloat(value)
+    const parsedValue = value === "" ? 0 : parseFloat(value);
 
     if (!isNaN(parsedValue)) {
-      setVAT(parsedValue)
+      setVAT(parsedValue);
     }
-  }
+  };
 
   const calculateFinalTotal = () => {
-    const discountAsPercentage = discount
-    const totalAfterDiscount = grandTotal - discountAsPercentage
+    const discountAsPercentage = discount;
+    const totalAfterDiscount = grandTotal - discountAsPercentage;
 
-    const vatAsPercentage = vat / 100
-    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage
-    finalTotal = parseFloat(finalTotal.toFixed(2))
-    return finalTotal
-  }
+    const vatAsPercentage = vat / 100;
+    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    finalTotal = parseFloat(finalTotal.toFixed(2));
+    return finalTotal;
+  };
+
+  const trust_auto_id = Cookies.get("trust_auto_id");
+  const customer_type = Cookies.get("customer_type");
 
   const handleAddToQuotation = async (e) => {
-    e.preventDefault()
-
+    e.preventDefault();
+    if (!trust_auto_id) {
+      return toast.error("No account found.");
+    }
     try {
       const values = {
         username: jobCardData.username,
+        customerId: customerId,
+        companyId: customerId,
+        showRoomId: customerId,
         job_no: job_no,
         date: jobCardData.date,
         car_registration_no: jobCardData.car_registration_no,
         customer_name: jobCardData?.customer_name,
         contact_number: jobCardData?.contact_number,
         mileage: jobCardData?.mileage,
-        // descriptions: descriptions,
-        // quantity: quantity,
-        // rate: rate,
-        // amount: total,
         total_amount: grandTotal,
         discount: discount,
         vat: vat,
         net_total: calculateFinalTotal(),
         input_data: items,
-      }
+      };
       const hasPreviewNullValues = Object.values(values).some(
         (val) => val === null
-      )
+      );
 
       if (hasPreviewNullValues) {
-        setError("Please fill in all the required fields.")
-        setPostError("")
-        return
+        setError("Please fill in all the required fields.");
+        setPostError("");
+        return;
       }
-      setLoading(true)
+      setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/api/v1/quotation",
         values
-      )
+      );
 
-      console.log(response)
       if (response.data.message === "Successfully quotation post") {
-        setPostError("")
-        setError("")
-        toast.success("Quotation added successful.")
-        setReload(!reload)
-        setLoading(false)
+        setPostError("");
+        setError("");
+        toast.success("Quotation added successful.");
+        setReload(!reload);
+        setLoading(false);
       }
     } catch (error) {
       if (error.response) {
-        setPostError(error.response.data.message)
-        setError("")
+        setPostError(error.response.data.message);
+        setError("");
       }
     }
-  }
+  };
 
   const handlePreview = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (!trust_auto_id) {
+      return toast.error("No account found.");
+    }
     const values = {
       username: jobCardData?.username,
+      customerId: customerId,
+      companyId: customerId,
+      showRoomId: customerId,
       // serial_no: formattedSerialNo,
       job_no: job_no,
       date: jobCardData.date,
@@ -266,62 +186,105 @@ const AddQuotation = () => {
       customer_name: jobCardData.customer_name,
       contact_number: jobCardData.contact_number,
       mileage: jobCardData.mileage,
-      // descriptions: descriptions,
-      // quantity: quantity,
-      // rate: rate,
-      // amount: total,
       total_amount: grandTotal,
       discount: discount,
       vat: vat,
       net_total: calculateFinalTotal(),
       input_data: items,
-    }
+    };
     const hasPreviewNullValues = Object.values(values).some(
       (val) => val === null
-    )
+    );
 
     if (hasPreviewNullValues) {
-      setError("Please fill in all the required fields.")
-      return
+      setError("Please fill in all the required fields.");
+      return;
     }
     const response = await axios.post(
       "http://localhost:5000/api/v1/quotation",
       values
-    )
+    );
     if (response.data.message === "Successfully quotation post") {
       fetch("http://localhost:5000/api/v1/quotation")
         .then((res) => res.json())
         .then((data) => {
           if (data) {
-            navigate(`/dashboard/quotation-view?id=${data._id}`)
+            navigate(`/dashboard/quotation-view?id=${data._id}`);
           }
-        })
+        });
     }
-  }
+  };
 
   const handleIconPreview = async (e) => {
-    navigate(`/dashboard/quotation-view?id=${e}`)
-  }
+    navigate(`/dashboard/quotation-view?id=${e}`);
+  };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetch(`http://localhost:5000/api/v1/quotation/all`)
       .then((res) => res.json())
       .then((data) => {
-        setGetAllQuotation(data)
-        setLoading(false)
-      })
-  }, [reload])
+        setGetAllQuotation(data);
+        setLoading(false);
+      });
+  }, [reload]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let apiUrl = "";
+        switch (customer_type) {
+          case "customer":
+            apiUrl = "http://localhost:5000/api/v1/customer";
+            break;
+          case "company":
+            apiUrl = "http://localhost:5000/api/v1/company";
+            break;
+          case "show_room":
+            apiUrl = "http://localhost:5000/api/v1/showRoom";
+            break;
+          default:
+            throw new Error("Invalid customer type");
+        }
+
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setCustomerDetails(data);
+
+        const selectedCustomer = data.find((customer) => {
+          switch (customer_type) {
+            case "customer":
+              return customer.customerId === customerId;
+            case "company":
+              return customer.companyId === customerId;
+            case "show_room":
+              return customer.showRoomId === customerId;
+            default:
+              return false;
+          }
+        });
+        setShowCustomerData(selectedCustomer);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, [customerId, customer_type]);
 
   // pagination
 
-  const [limit, setLimit] = useState(10)
+  const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(
     Number(sessionStorage.getItem("q_n")) || 1
-  )
-  const [pageNumberLimit, setPageNumberLimit] = useState(5)
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5)
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0)
+  );
+  const [pageNumberLimit, setPageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -329,7 +292,7 @@ const AddQuotation = () => {
       text: "Are you sure that you want to delete this card?",
       icon: "warning",
       dangerMode: true,
-    })
+    });
 
     if (willDelete) {
       try {
@@ -338,46 +301,46 @@ const AddQuotation = () => {
           {
             method: "DELETE",
           }
-        )
-        const data = await res.json()
+        );
+        const data = await res.json();
 
         if (data.message == "Quotation card delete successful") {
-          setGetAllQuotation(getAllQuotation?.filter((pkg) => pkg._id !== id))
-          setReload(!reload)
+          setGetAllQuotation(getAllQuotation?.filter((pkg) => pkg._id !== id));
+          setReload(!reload);
         }
-        swal("Deleted!", "Card delete successful.", "success")
+        swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
-        swal("Error", "An error occurred while deleting the card.", "error")
+        swal("Error", "An error occurred while deleting the card.", "error");
       }
     }
-  }
+  };
 
   useEffect(() => {
-    sessionStorage.setItem("q_n", currentPage.toString())
-  }, [currentPage])
+    sessionStorage.setItem("q_n", currentPage.toString());
+  }, [currentPage]);
   // ...
 
   useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("q_n")) || 1
-    setCurrentPage(storedPage)
+    const storedPage = Number(sessionStorage.getItem("q_n")) || 1;
+    setCurrentPage(storedPage);
     setMaxPageNumberLimit(
       Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    )
+    );
     setMinPageNumberLimit(
       Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    )
-  }, [pageNumberLimit])
+    );
+  }, [pageNumberLimit]);
 
   // ...
 
   const handleClick = (e) => {
-    const pageNumber = Number(e.target.id)
-    setCurrentPage(pageNumber)
-    sessionStorage.setItem("q_n", pageNumber.toString())
-  }
-  const pages = []
+    const pageNumber = Number(e.target.id);
+    setCurrentPage(pageNumber);
+    sessionStorage.setItem("q_n", pageNumber.toString());
+  };
+  const pages = [];
   for (let i = 1; i <= Math.ceil(getAllQuotation?.length / limit); i++) {
-    pages.push(i)
+    pages.push(i);
   }
 
   const renderPagesNumber = pages?.map((number) => {
@@ -395,20 +358,20 @@ const AddQuotation = () => {
         >
           {number}
         </li>
-      )
+      );
     } else {
-      return null
+      return null;
     }
-  })
+  });
 
-  const lastIndex = currentPage * limit
-  const startIndex = lastIndex - limit
+  const lastIndex = currentPage * limit;
+  const startIndex = lastIndex - limit;
 
-  let currentItems
+  let currentItems;
   if (Array.isArray(getAllQuotation)) {
-    currentItems = getAllQuotation.slice(startIndex, lastIndex)
+    currentItems = getAllQuotation.slice(startIndex, lastIndex);
   } else {
-    currentItems = []
+    currentItems = [];
   }
 
   const renderData = (getAllQuotation) => {
@@ -463,31 +426,31 @@ const AddQuotation = () => {
           ))}
         </tbody>
       </table>
-    )
-  }
+    );
+  };
 
   const handlePrevious = () => {
-    const newPage = currentPage - 1
-    setCurrentPage(newPage)
-    sessionStorage.setItem("q_n", newPage.toString())
+    const newPage = currentPage - 1;
+    setCurrentPage(newPage);
+    sessionStorage.setItem("q_n", newPage.toString());
 
     if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit)
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit)
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
-  }
+  };
   const handleNext = () => {
-    const newPage = currentPage + 1
-    setCurrentPage(newPage)
-    sessionStorage.setItem("q_n", newPage.toString())
+    const newPage = currentPage + 1;
+    setCurrentPage(newPage);
+    sessionStorage.setItem("q_n", newPage.toString());
 
     if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit)
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     }
-  }
+  };
 
-  let pageIncrementBtn = null
+  let pageIncrementBtn = null;
   if (pages?.length > maxPageNumberLimit) {
     pageIncrementBtn = (
       <li
@@ -496,10 +459,10 @@ const AddQuotation = () => {
       >
         &hellip;
       </li>
-    )
+    );
   }
 
-  let pageDecrementBtn = null
+  let pageDecrementBtn = null;
   if (currentPage > pageNumberLimit) {
     pageDecrementBtn = (
       <li
@@ -508,71 +471,71 @@ const AddQuotation = () => {
       >
         &hellip;
       </li>
-    )
+    );
   }
 
   const handleFilterType = async () => {
     try {
       const data = {
         filterType,
-      }
+      };
       const response = await axios.post(
         `http://localhost:5000/api/v1/quotation/all`,
         data
-      )
+      );
 
       if (response.data.message === "Filter successful") {
-        setGetAllQuotation(response.data.result)
-        setNoMatching(null)
+        setGetAllQuotation(response.data.result);
+        setNoMatching(null);
       }
       if (response.data.message === "No matching found") {
-        setGetAllQuotation([])
-        setNoMatching(response.data.message)
+        setGetAllQuotation([]);
+        setNoMatching(response.data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
-  }
+  };
 
   const handleAllQuotation = () => {
     fetch(`http://localhost:5000/api/v1/quotation/all`)
       .then((res) => res.json())
       .then((data) => {
-        setGetAllQuotation(data)
-        setNoMatching(null)
-      })
-  }
+        setGetAllQuotation(data);
+        setNoMatching(null);
+      });
+  };
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
-  ])
+  ]);
 
   useEffect(() => {
-    const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0)
+    const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
 
     // Limiting totalSum to two decimal places
-    const roundedTotalSum = parseFloat(totalSum.toFixed(2))
+    const roundedTotalSum = parseFloat(totalSum.toFixed(2));
 
-    setGrandTotal(roundedTotalSum)
-  }, [items])
+    setGrandTotal(roundedTotalSum);
+  }, [items]);
 
   const handleDescriptionChange = (index, value) => {
-    const newItems = [...items]
-    newItems[index].description = value
-    setItems(newItems)
-  }
+    const newItems = [...items];
+    newItems[index].description = value;
+    setItems(newItems);
+  };
 
   const handleQuantityChange = (index, value) => {
-    const newItems = [...items]
+    const newItems = [...items];
 
     // Round the value to the nearest integer
-    const roundedValue = Math.round(value)
+    const roundedValue = Math.round(value);
 
-    newItems[index].quantity = roundedValue
-    newItems[index].total = roundedValue * newItems[index].rate
+    newItems[index].quantity = roundedValue;
+    newItems[index].total = roundedValue * newItems[index].rate;
 
-    setItems(newItems)
-  }
+    setItems(newItems);
+  };
 
   // const handleRateChange = (index, value) => {
   //   const newItems = [...items];
@@ -583,19 +546,19 @@ const AddQuotation = () => {
   // };
 
   const handleRateChange = (index, value) => {
-    const newItems = [...items]
+    const newItems = [...items];
 
     // Convert rate to a number
-    newItems[index].rate = parseFloat(value)
+    newItems[index].rate = parseFloat(value);
 
     // Calculate total with the updated rate
-    newItems[index].total = newItems[index].quantity * newItems[index].rate
+    newItems[index].total = newItems[index].quantity * newItems[index].rate;
 
     // Round total to two decimal places
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2))
+    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
 
-    setItems(newItems)
-  }
+    setItems(newItems);
+  };
 
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -610,7 +573,7 @@ const AddQuotation = () => {
       marginLeft: theme.spacing(1),
       width: "auto",
     },
-  }))
+  }));
 
   const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
@@ -620,7 +583,7 @@ const AddQuotation = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-  }))
+  }));
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
@@ -637,29 +600,15 @@ const AddQuotation = () => {
         },
       },
     },
-  }))
+  }));
 
   return (
     <div className="py-10 px-5">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-        {/* <div className="flex items-center justify-center">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
-          <div className="invoiceHead">
-            <h2 className="  trustAutoTitle trustAutoTitleQutation ">
-              Trust Auto Solution{" "}
-            </h2>
-            <p className="-mt-3 text-sm">
-              It is trusted computerized Ogranizetion for all the kinds of
-              vehicle check up & maintenance such as computerized Engine
-              Analysis Engine tune up, Denting, Painting, Engine, AC, Electrical
-              Works & Car Wash.
-            </p>
-          </div>
-        </div> */}
         <div className="w-full flex justify-between items-center mb-2 mt-5">
-        <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div>
-          <h2 className="  trustAutoTitle trustAutoTitleQutation ">
+            <h2 className="  trustAutoTitle trustAutoTitleQutation ">
               Trust Auto Solution{" "}
             </h2>
             <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
@@ -740,21 +689,52 @@ const AddQuotation = () => {
           <div className="mb-5">
             <span>
               {" "}
-              <b>Customer ID:</b> TAS000
+              <b>ID:</b> TAS000
             </span>
-            <div className="flex items-center">
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon className="searchIcon" />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Search…"
-                  inputProps={{ "aria-label": "search" }}
+            <div className="flex justify-between items-center mt-2">
+              <div className="flex items-center topSearchBa">
+                <Autocomplete
+                  onChange={(event, value) => setCustomerId(value)}
+                  className="jobCardSelect"
+                  id="free-solo-demo"
+                  Customer
+                  ID
+                  options={customerDetails?.map(
+                    (option) =>
+                      option?.customerId ||
+                      option?.companyId ||
+                      option?.showRoomId
+                  )}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select ID" />
+                  )}
                 />
-              </Search>
-              <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                Add Customer
-              </button>
+              </div>
+              {customer_type === "customer" && (
+                <Link to="/dashboard/add-customer">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Customer
+                  </button>
+                </Link>
+              )}
+
+              {customer_type === "company" && (
+                <Link to="/dashboard/add-company">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Company
+                  </button>
+                </Link>
+              )}
+              {customer_type === "show_room" && (
+                <Link to="/dashboard/add-show-room">
+                  {" "}
+                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                    Add Show Room
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
           <div className="flex items-center justify-around labelWrap">
@@ -845,7 +825,7 @@ const AddQuotation = () => {
                   )}
                 </div>
               </div>
-            )
+            );
           })}
           <div className="discountFieldWrap">
             <div className="flex items-center ">
@@ -1008,7 +988,7 @@ const AddQuotation = () => {
         </div>
       </div> */}
     </div>
-  )
-}
+  );
+};
 
-export default AddQuotation
+export default AddQuotation;
