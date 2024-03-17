@@ -26,6 +26,7 @@
 	background: #fff;
 	margin: 20px 0;
 	padding: 10px 75px;
+	flex-wrap:wrap;
 }
 .productField {
 	width: 600px !important;
@@ -174,8 +175,18 @@
 	.productHeadWrap {
 		padding: 10px 35px;
 	}
+	.productField {
+		width: 450px !important;
+	}
 	
 }
+@media only screen and (max-width: 768px) {
+
+	.productField {
+		width: 100% !important;
+	}
+}
+
 @media only screen and (max-width: 500px) {
 	.productHome {
 		border: 1px solid #ddd;
@@ -187,9 +198,10 @@
 	.topProductBtn button {
 		display: none;
 	}
-	.productField {
-		width: 390px !important;
+	.addProductWrap {
+		padding: 30px 0px;
 	}
+
 }
 
 @media only screen and (max-width: 375px) {

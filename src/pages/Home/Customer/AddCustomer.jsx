@@ -361,7 +361,7 @@ const AddCustomer = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-wrap justify-center">
+            <div className="addCustomerInputFieldWrap">
               <div>
                 <h3 className="mb-1 text-xl font-bold">
                   Customer Information{" "}
@@ -384,6 +384,7 @@ const AddCustomer = () => {
                 </div>
                 <div>
                   <TextField
+                  
                     className="productField"
                     on
                     label="Company Address (T)"
@@ -609,15 +610,10 @@ const AddCustomer = () => {
         </div>
       </div>
       <div className="w-full mt-5 mb-24">
-        <div className="flex flex-wrap items-center justify-between mb-5 ">
-          <h3 className="ml-3 text-sm text-center sm:ml-0 ont-bold md:text-3xl"> Customer List: </h3>
-          <div className="flex items-center">
-            <button
-              onClick={handleAllCustomer}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </button>
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl"> Customer List: </h3>
+          <div className="flex flex-wrap items-center">
+            
             
             <input
               onChange={(e) => setFilterType(e.target.value)}

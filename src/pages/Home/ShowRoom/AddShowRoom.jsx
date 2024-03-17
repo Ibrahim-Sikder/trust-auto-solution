@@ -329,10 +329,10 @@ const AddShowRoom = () => {
           </Link>
         </div>
         <div className="productHeadWrap">
-          <div className="flex items-center justify-center ">
+          <div className="flex flex-wrap items-center justify-center">
             <HiOfficeBuilding className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Show Room </h3>
+              <h3 className="text-xl font-bold md:text-2xl"> New Show Room </h3>
               <span>Add New Show Room </span>
             </div>
           </div>
@@ -345,9 +345,9 @@ const AddShowRoom = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center">
               <div>
-                <h3 className="mb-1 text-xl font-bold">
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
                   Show Room Information{" "}
                 </h3>
                 <div>
@@ -449,8 +449,8 @@ const AddShowRoom = () => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
+              <div className="mt-5 md:mt-0">
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"

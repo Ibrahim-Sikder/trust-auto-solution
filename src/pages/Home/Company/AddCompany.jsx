@@ -358,7 +358,7 @@ const AddCompany = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-wrap justify-center">
               <div>
-                <h3 className="mb-1 text-xl font-bold">
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
                   Company Information{" "}
                 </h3>
                 <div>
@@ -445,7 +445,7 @@ const AddCompany = () => {
               </div>
 
               <div className="mt-5 lg:mt-0">
-                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -591,12 +591,7 @@ const AddCompany = () => {
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="ml-2 font-bold text-center md:ml-0 tex2t-sm md:text-3xl"> Company List: </h3>
           <div className="flex items-center">
-            <button
-              onClick={handleAllCustomer}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </button>
+          
             <input
               type="text"
               placeholder="Search"

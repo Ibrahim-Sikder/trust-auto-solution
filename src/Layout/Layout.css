@@ -192,5 +192,8 @@
 	.navActive, .activeToggle {
 		width: 32px;
 	}
+	.activeDrawer {
+		width: 95%;
+	}
 	
 }
