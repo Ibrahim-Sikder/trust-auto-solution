@@ -17,55 +17,10 @@ import Loading from "../../../../components/Loading/Loading";
 import { useLocation } from "react-router-dom";
 
 const CompanyVehicleDetails = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
 
-//   const [age, setAge] = useState(null);
 
-//  console.log(age)
-
-//   const handleChange = (event) => {
-//     setAge(event.target.value);
-//   };
 const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -323,7 +278,7 @@ const location = useLocation();
 
   return (
     <div className="w-full mt-10 mb-24 ">
-      <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+      <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <div className="flex items-center">
           <FormControl className="selectForm">
             <InputLabel  id="demo-simple-select-label">
@@ -351,10 +306,10 @@ const location = useLocation();
             </button>
           </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center mt-2 md:mt-0 ">
           <button
             onClick={handleAllCustomer}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white hidden md:block "
           >
             All
           </button>

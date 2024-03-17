@@ -114,10 +114,10 @@ const CustomerProfile = () => {
   return (
     <div>
       <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
-        <div className="flex justify-between w-full 000000000">
+        <div className="flex justify-between w-full ">
           <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
-            <div className='flex flex-wrap ml-5'>
-              <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
+            <div className='flex-wrap ml-5 b'>
+              <div className="md:w-24 md:h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
                 <ImUserTie size="80" className="text-white" />
               </div>
               <div>

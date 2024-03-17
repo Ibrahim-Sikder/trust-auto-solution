@@ -116,16 +116,16 @@ const CompanyProfile = () => {
   console.log(profileData);
   return (
     <div>
-      <div className="w-full h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
-        <div className="flex justify-between w-full 000000000">
+      <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
+        <div className="flex justify-between w-full">
           <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
-            <div className="flex  ml-5">
+            <div className="flex flex-wrap ml-5 ">
               <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
                 <ImUserTie size="80" className="text-white" />
               </div>
               <div>
                 <h3 className="text-2xl">Trust Auto Solution </h3>
-                <div className="space-y-2 mt-3">
+                <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
                     <span>45996-0789777</span>
@@ -142,7 +142,7 @@ const CompanyProfile = () => {
               </div>
             </div>
           </div>
-          <div className="bg-[#F77F00] border h-14 rounded-md p-3 relative top-32 right-5 ">
+          <div className="bg-[#F77F00] border h-14 rounded-md p-3 relative top-32 md:right-5  right-20 ">
             <div className="flex items-center">
               <b>Due</b> /<b>Paid</b>
             </div>
@@ -224,7 +224,7 @@ const CompanyProfile = () => {
         </Tabs>
 
         <div>
-          <p className="text-center my-5">
+          <p className="my-5 text-center">
             © Copyright 2024 | Trust Auto Solution | All Rights Reserved
           </p>
         </div>

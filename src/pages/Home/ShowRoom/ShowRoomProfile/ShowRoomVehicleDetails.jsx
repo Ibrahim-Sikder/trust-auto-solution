@@ -317,7 +317,7 @@ const location = useLocation();
 
   return (
     <div className="w-full mt-10 mb-24 ">
-      <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+      <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3 ">
         <div className="flex items-center">
           <FormControl className="selectForm">
             <InputLabel  id="demo-simple-select-label">
@@ -345,10 +345,10 @@ const location = useLocation();
             </button>
           </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center mt-3 md:mt-0">
           <button
             onClick={handleAllCustomer}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white md:block hidden   "
           >
             All
           </button>
