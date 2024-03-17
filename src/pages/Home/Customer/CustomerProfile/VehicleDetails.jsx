@@ -214,7 +214,7 @@ const VehicleDetails = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -226,7 +226,7 @@ const VehicleDetails = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -268,8 +268,8 @@ const VehicleDetails = () => {
   };
 
   return (
-    <div className=" mb-24 mt-10 w-full">
-      <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+    <div className="w-full mt-10 mb-24 ">
+      <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <div className="flex items-center">
           <FormControl className="selectForm">
             <InputLabel id="demo-simple-select-label">
@@ -296,10 +296,10 @@ const VehicleDetails = () => {
             </button>
           </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center mt-3 md:mt-0">
           <button
             onClick={handleAllCustomer}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            className="hidden md:block none mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
           >
             All
           </button>
@@ -320,7 +320,7 @@ const VehicleDetails = () => {
       </div>
 
       {searchLoading ? (
-        <div className="flex justify-center items-center text-xl">
+        <div className="flex items-center justify-center text-xl">
           <Loading />
         </div>
       ) : (
@@ -328,7 +328,7 @@ const VehicleDetails = () => {
           {vehicleList?.length === 0 ||
           currentItems.length === 0 ||
           noMatching ? (
-            <div className="text-xl text-center flex justify-center items-center h-full">
+            <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
           ) : (

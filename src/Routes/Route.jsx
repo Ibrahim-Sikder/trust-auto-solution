@@ -151,7 +151,7 @@ export const router = createBrowserRouter([
       {
         path: "add-show-room",
         element: <AddShowRoom/>,
-      },
+    },
       {
         path: "update-show-room",
         element: <UpdateShowRoom/>,

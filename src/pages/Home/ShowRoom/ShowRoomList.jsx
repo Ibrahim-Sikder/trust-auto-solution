@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
+import { HiOutlineSearch } from "react-icons/hi";
 const ShowRoomList = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -71,6 +72,7 @@ const ShowRoomList = () => {
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
+        
         console.log(data);
         setLoading(false);
       });
@@ -253,7 +255,7 @@ const ShowRoomList = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -265,7 +267,7 @@ const ShowRoomList = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -308,8 +310,8 @@ const ShowRoomList = () => {
   };
 
   return (
-    <div className="mt-5 mb-24 w-full">
-      <div className="flex justify-between border-b-2 pb-3">
+    <div className="w-full mt-5 mb-24">
+      <div className="flex justify-between pb-3 border-b-2">
         <div className="flex items-center mr-[80px]  justify-center topProductBtn">
           <Link to="/dashboard/addjob">
             <button> Add Job </button>
@@ -321,12 +323,12 @@ const ShowRoomList = () => {
             <button>Invoice </button>
           </Link>
         </div>
-        <div className="flex  justify-end items-end">
+        <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />
         </div>
       </div>
-      <div className="flex items-center justify-between my-3 mb-8">
+      <div className="flex flex-wrap items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <FaUserTie className="invoicIcon" />
           <div className="ml-2">
@@ -340,36 +342,35 @@ const ShowRoomList = () => {
           <span>New Customer </span>
         </div>
       </div>
-      <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-        <h3 className="text-3xl font-bold mb-3"> Customer List:</h3>
+      <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3 ">
+        <h3 className="mb-3 text-3xl font-bold"> Show Room List:</h3>
         <div className="flex items-center">
+        {/**
           <button
             onClick={handleAllCustomer}
             className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
           >
             All
           </button>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon className="searchIcon" />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => setFilterType(e.target.value)}
-            />
-          </Search>
-          <button
-            onClick={handleFilterType}
-            className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2"
-          >
-            Search
-          </button>
+          */}
+          <input
+          onChange={(e) => setFilterType(e.target.value)}
+          type="text"
+          placeholder="Search"
+          className="border py-2 px-3 rounded-md border-[#ddd]"
+        />
+        <button
+        onClick={handleFilterType}
+        className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
+      >
+        {" "}
+        <HiOutlineSearch size={25} />
+      </button>
         </div>
       </div>
 
       {searchLoading ? (
-        <div className="flex justify-center items-center text-xl">
+        <div className="flex items-center justify-center text-xl">
           <Loading />
         </div>
       ) : (
@@ -377,7 +378,7 @@ const ShowRoomList = () => {
           {showRoomData?.length === 0 ||
           currentItems.length === 0 ||
           noMatching ? (
-            <div className="text-xl text-center flex justify-center items-center h-full">
+            <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
           ) : (

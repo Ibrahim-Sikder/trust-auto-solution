@@ -7,9 +7,9 @@ const CustomerAccount = ({profileData, jobCardData, quotationData, moneyReceiptD
   return (
     <div className="customerProfileWrap">
   
-      <div className="block md:flex justify-between mt-5">
+      <div className="justify-between block mt-5 md:flex">
       <Card>
-      <h3 className="text-xl font-semibold mb-2"> Contact Info </h3>
+      <h3 className="mb-2 text-xl font-semibold"> Contact Info </h3>
       <div className="flex items-center justify-between">
         <div>
           <div>
@@ -19,6 +19,7 @@ const CustomerAccount = ({profileData, jobCardData, quotationData, moneyReceiptD
             Phone Number: <b>0657899444</b>
           </div>
         </div>
+        
         <div>
           <div>
            Shop Name: <b>Auto Solution </b>
@@ -39,7 +40,7 @@ const CustomerAccount = ({profileData, jobCardData, quotationData, moneyReceiptD
           </span>
         </Card>
       </div>
-      <div className="block md:flex justify-between mt-5">
+      <div className="justify-between block mt-5 md:flex">
         <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Vehicles </h3>
@@ -97,13 +98,13 @@ const CustomerAccount = ({profileData, jobCardData, quotationData, moneyReceiptD
           </div>
         </Card>
       </div>
-      <div className="block md:flex justify-between  mt-5">
+      <div className="justify-between block mt-5 md:flex">
         <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Invoice </h3>
             <FaRegEdit size={30} />
           </div>
-          <div className=" mt-10 flex items-center justify-between">
+          <div className="flex items-center justify-between mt-10 ">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#03045E] ">
                 <b className="block">Feb</b>
@@ -147,7 +148,7 @@ const CustomerAccount = ({profileData, jobCardData, quotationData, moneyReceiptD
           <h3 className="text-xl font-semibold">Recent Quotation </h3>
           <FaRegEdit size={30} />
         </div>
-        <div className=" mt-10 flex items-center justify-between">
+        <div className="flex items-center justify-between mt-10 ">
           <div className="flex items-center my-3">
             <div className="cardIcon bg-[#03045E] ">
               <b className="block">Feb</b>

@@ -255,7 +255,7 @@ const UpdateShowRoom = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -267,7 +267,7 @@ const UpdateShowRoom = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -327,7 +327,7 @@ const UpdateShowRoom = () => {
           <div className="flex items-center justify-center ">
             <HiOfficeBuilding className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> Update Show Room </h3>
+              <h3 className="text-xl font-bold md:text-2xl"> Update Show Room </h3>
               <span>Update New Show Room </span>
             </div>
           </div>
@@ -340,9 +340,9 @@ const UpdateShowRoom = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-center">
+            <div className="flex flex-wrap justify-center">
               <div>
-                <h3 className="text-xl  font-bold mb-1">
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
                   Show Room Information{" "}
                 </h3>
                 <div>
@@ -444,8 +444,8 @@ const UpdateShowRoom = () => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-xl font-bold mb-2">Vehicle Information </h3>
+              <div className='mt-5 md:mt-0'>
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -581,7 +581,7 @@ const UpdateShowRoom = () => {
               </div>
             </div>
 
-            <div className="savebtn mt-2 ml-3">
+            <div className="mt-2 ml-3 savebtn">
               <button>Update Show Room </button>
             </div>
           </form>

@@ -70,7 +70,7 @@ const DashboardLayout = () => {
 
   return (
     <main>
-      <div className=" ">
+      <div className="">
         <div
           ref={containerRef}
           onClick={handleToggleCloseBtn}
@@ -88,8 +88,8 @@ const DashboardLayout = () => {
             }`}
           >
             <div className="mb-5">
-              <NavLink to="/" className="shadow-md z-10">
-                <h3 className="text-2xl font-bold mt-3 ml-3">T A Solutions </h3>
+              <NavLink to="/" className="z-10 shadow-md">
+                <h3 className="mt-3 ml-3 text-2xl font-bold">T A Solutions </h3>
               </NavLink>
             </div>
 
@@ -378,7 +378,7 @@ const DashboardLayout = () => {
               <Typography className="accordionTypoGrapy">
                 <span className="flex items-center">
                   <FaThLarge className="mr-2" />
-                  <NavLink to="/dashboard/company-list">
+                  <NavLink to="/dashboard/show-room-list">
                   Show Room List 
                   </NavLink>
                 </span>
