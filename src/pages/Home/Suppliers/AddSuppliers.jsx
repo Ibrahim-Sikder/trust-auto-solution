@@ -4,52 +4,10 @@
 import TextField from "@mui/material/TextField";
 import {  FaTrashAlt, FaEdit, FaUsers, FaUserTie, FaCloudUploadAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
 import { FormControl, InputLabel, Select } from "@mui/material";
+import { HiOutlineSearch } from "react-icons/hi";
 const AddSuppliers = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
 
   return (
     <section>
@@ -82,7 +40,7 @@ const AddSuppliers = () => {
 
         <div className="addProductWrap">
           <form>
-            <div className="flex">
+            <div className="block md:flex">
               <div>
                 <h3 className="text-xl font-bold">Personal Info </h3>
                
@@ -165,29 +123,38 @@ const AddSuppliers = () => {
               </div>
               </div>
             </div>
-            <div className="savebtn mt-2">
+            <div className="mt-2 savebtn">
               <button>Add Supplier </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
+      <div className="w-full mt-5 mb-24">
+        <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="text-3xl font-bold text-center "> Supplier List: </h3>
-          <div className="flex items-center">
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon className="searchIcon" />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-              Search
-            </button>
-          </div>
+          <div className="flex items-center mt-2 md:mt-0 ">
+        {/**
+          <button
+            onClick={handleAllCustomer}
+            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+          >
+            All
+          </button>
+          */}
+          <input
+    
+          type="text"
+          placeholder="Search"
+          className="border py-2 px-3 rounded-md border-[#ddd]"
+        />
+        <button
+     
+        className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1"
+      >
+        {" "}
+        <HiOutlineSearch size={25} />
+      </button>
+        </div>
         </div>
         <div className="overflow-x-auto ">
           <table className="table ">

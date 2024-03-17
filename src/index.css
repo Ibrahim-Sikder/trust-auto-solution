@@ -27,7 +27,7 @@ body {
 }
 .drawwerLeftSide,
 .activeSideBar {
-	width: 20% !important;
+	width: 15% !important;
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .sideBarActive {

@@ -45,8 +45,8 @@
 }
 
 .activeToggle {
-	position: fixed;
-    left: 320px;
+    position: fixed;
+    left: 270px;
     transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeRightSideBarWrap {
@@ -87,9 +87,9 @@
 }
 .dashboardAccordion {
 	background: #2c3136 !important;
-	width: 365px !important;
-	color: #fff !important;
-	transition: all 500s ease-in-out;
+    width: 265px !important;
+    color: #fff !important;
+    transition: all 500s ease-in-out;
 }
 .dashboardAccordion:hover {
 	background: #fff !important;
@@ -179,6 +179,20 @@
 	.activeDrawer {
 		width: 98%;
 	}
+	.dashboardAccordion {
+		width: 100% !important;
+		background: #2C3136;
+	}
+}
+@media only screen and (max-width:768px){
+
+	.drawwerLeftSide, .activeSideBar {
+		background: #2C3136;
+
+	}
+	.activeToggle {
+		left: 245px;
+	}
 }
 
 @media only screen and (max-width: 500px){
@@ -194,6 +208,18 @@
 	}
 	.activeDrawer {
 		width: 95%;
+	}
+	.drawwerLeftSide, .activeSideBar {
+		width: 47% !important;
+		background: #2C3136;
+		z-index: 99999999;
+	}
+	.activeToggle {
+		left: 199px;
+	}
+
+	.activeToggle .bar:nth-child(3) {
+		margin-top: 7px;
 	}
 	
 }

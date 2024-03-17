@@ -67,6 +67,7 @@ const DashboardLayout = () => {
     window.scrollTo(0, 0);
     scroll.scrollToTop({ smooth: true });
   }
+  
 
   return (
     <main>
