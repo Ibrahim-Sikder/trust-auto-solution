@@ -762,14 +762,7 @@ const AddJobCard = () => {
                 </Link>
               )}
               
-              {customer_type === "company" && (
-                <Link to="/dashboard/add-company">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Company
-                  </button>
-                </Link>
-              )}
+              
               
             </div>
           </div>

@@ -41,7 +41,7 @@ body {
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeDrawer {
-	width: 90%;
+	width: 92%;
 	position: absolute !important;
 	right: 31px !important;
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
@@ -149,6 +149,11 @@ input:focus {
 
 .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
     height: 16.2px !important;
+}
+@media only screen and (min-width:1024px) {
+	.activeDrawer {
+		width: 92%;
+}
 }
 
 @media only screen and (max-width: 1024px) {

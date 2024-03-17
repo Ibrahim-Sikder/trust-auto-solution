@@ -174,25 +174,30 @@
 		left: 0px;
 	}
 	.activeDrawer {
-		width: 92%;
+		width: 97%;
 	}
-	.activeDrawer {
+	/* .activeDrawer {
 		width: 98%;
+	} */
+	.drawwerLeftSide, .activeSideBar {
+		width: 20% !important;
 	}
 	.dashboardAccordion {
 		width: 100% !important;
-		background: #2C3136;
+		background: black;
 	}
 }
 @media only screen and (max-width:768px){
 
 	.drawwerLeftSide, .activeSideBar {
-		background: #2C3136;
-
+		background: black;
+		width: 30% !important;
 	}
 	.activeToggle {
-		left: 245px;
+		left: 230px;
+	
 	}
+	
 }
 
 @media only screen and (max-width: 500px){
@@ -210,12 +215,12 @@
 		width: 95%;
 	}
 	.drawwerLeftSide, .activeSideBar {
-		width: 47% !important;
+		width: 50% !important;
 		background: #2C3136;
 		z-index: 99999999;
 	}
 	.activeToggle {
-		left: 199px;
+		left: 213px;
 	}
 
 	.activeToggle .bar:nth-child(3) {
