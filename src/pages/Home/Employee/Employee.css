@@ -1,0 +1,56 @@
+.employeeCard{
+    width:330px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    padding:10px;
+    text-align: center;
+}
+.employeeCardImg{
+    width:100px;
+    height:100px;
+    border-radius: 100%;
+    object-fit: cover;
+    margin:0 auto;
+}
+
+
+
+/* Employee.css */
+table {
+    width: 100%;
+    max-width: 1200px; /* Set maximum width for the table */
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Apply box shadow to the table */
+    overflow-x: auto; /* Enable horizontal scrolling for small screens */
+    margin: 0 auto; 
+/* Center the table */
+}
+
+th, td {
+    padding: 20px;
+    text-align: center;
+    white-space: nowrap; /* Prevent text wrapping in cells */
+}
+
+.even-row {
+    background-color: #f2f2f2;
+}
+
+.odd-row {
+    background-color: #fff;
+}
+/* Employee.css */
+.table-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-width: 100%; /* Ensure the table container is responsive */
+}
+
+
+@media screen and (max-width: 1200px) {
+    /* Adjust table width for smaller screens */
+    table {
+        max-width: 100%; /* Set maximum width to 100% for smaller screens */
+    }
+}

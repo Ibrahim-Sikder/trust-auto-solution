@@ -4,9 +4,10 @@ import logo from "../../../../public/assets/logo.png";
 import { Email, Home, WhatsApp, LocalPhone } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -14,9 +15,8 @@ const MoneyReceiptView = () => {
   const trust_auto_id = Cookies.get("trust_auto_id");
 
   const onSubmit = async (data) => {
-
-    if(!trust_auto_id){
-      return toast.error("No customer id found.")
+    if (!trust_auto_id) {
+      return toast.error("No customer id found.");
     }
 
     const values = {
@@ -52,174 +52,227 @@ const MoneyReceiptView = () => {
       console.log(error);
     }
   };
-  
 
   return (
-    <div className="moneyReceptWrap ">
-      <div className="moneyRecieved ">
-        <div className="logoWrap ">
-          <img className="" src={logo} alt="logo" />
-        </div>
-        <div className="moneyHead ">
-          <h2 className="receivedTitle ">Trust Auto Solution </h2>
-          <small>
-            It's trusted computerized Organization for all kinds of vehicle
-            check up & maintenance such as computerized Engine Analysis, Engine
-            tune up, Denting, Painting, Engine, AC, Electrical Works & Car Wash.{" "}
-          </small>
-        </div>
-        <div>
-          <div className="flex items-center mt-1">
-            <LocalPhone className="hotlineIcon" />
-            <b className="ml-1">+880 1821-216465</b>
+    <>
+      <div className="moneyReceptWrap ">
+        <div className="moneyRecieved ">
+          <div className="logoWrap ">
+            <img className="" src={logo} alt="logo" />
           </div>
-          <div className="flex items-center mt-1">
-            <Email className="hotlineIcon" />
-            <small className="ml-1">trustautosolution@gmail.com</small>
-          </div>
-          <div className="flex items-center mt-1">
-            <Home className="hotlineIcon"> </Home>
-            <small className="ml-1">
-              Ka-93/4/C Kuril Bishawroad, <br /> Dhaka-1212
+          <div className="moneyHead ">
+            <h2 className="receivedTitle ">Trust Auto Solution </h2>
+            <small>
+              It's trusted computerized Organization for all kinds of vehicle
+              check up & maintenance such as computerized Engine Analysis,
+              Engine tune up, Denting, Painting, Engine, AC, Electrical Works &
+              Car Wash.{" "}
             </small>
           </div>
-          <div className="flex items-center mt-1">
-            <WhatsApp className="hotlineIcon" />
-            <small className="ml-1">+88 1972-216465</small>
+          <div>
+            <div className="flex items-center mt-1">
+              <LocalPhone className="hotlineIcon" />
+              <b className="ml-1">+880 1821-216465</b>
+            </div>
+            <div className="flex items-center mt-1">
+              <Email className="hotlineIcon" />
+              <small className="ml-1">trustautosolution@gmail.com</small>
+            </div>
+            <div className="flex items-center mt-1">
+              <Home className="hotlineIcon"> </Home>
+              <small className="ml-1">
+                Ka-93/4/C Kuril Bishawroad, <br /> Dhaka-1212
+              </small>
+            </div>
+            <div className="flex items-center mt-1">
+              <WhatsApp className="hotlineIcon" />
+              <small className="ml-1">+88 1972-216465</small>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="receivedBtn">
-        <button>Receipt</button>
-      </div>
-      <div className="flex justify-between mt-5 lg:mt-0 ">
-        <b>Serial No: 01</b>
-        <b>Date: 12-12-21</b>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex mt-3 receivedField">
-          <label className="receivedMoneyText">
-            Received with thanks from{" "}
-          </label>
-          <input
-            {...register("thanks_from", { required: true })}
-            className="moneyViewInputField"
-            type="text"
-            autoComplete="off"
-          />
+        <div className="receivedBtn">
+          <button>Receipt</button>
         </div>
-        <div className="mt-5 payAdvance">
-          <div className="flex receivedField">
-            <label className="advance">
-              <input type="checkbox" /> Advance <input type="checkbox" /> Final
-              Payment / against bill no:{" "}
+        <div className="flex justify-between mt-5 lg:mt-0 ">
+          <b>Serial No: 01</b>
+          <input type="date" />
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex mt-3 receivedField">
+            <label className="receivedMoneyText">
+              Received with thanks from{" "}
             </label>
             <input
-              {...register("against_bill_no", { required: true })}
-              className=" moneyViewInputField"
+              {...register("thanks_from", { required: true })}
+              className="moneyViewInputField"
               type="text"
               autoComplete="off"
             />
           </div>
-          <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
-            <label className="vehicleText">Vehicle No: </label>
-            <input
-              {...register("vehicle_no", { required: true })}
-              className=" moneyViewInputField"
-              type="text"
-              autoComplete="off"
-            />
+          <div className="mt-5 payAdvance">
+            <div className="flex receivedField">
+              <label className="advance">
+                <input type="checkbox" /> Advance <input type="checkbox" />{" "}
+                Final Payment / against bill no:{" "}
+              </label>
+              <input
+                {...register("against_bill_no", { required: true })}
+                className=" moneyViewInputField"
+                type="text"
+                autoComplete="off"
+              />
+            </div>
+            <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
+              <label className="vehicleText">Vehicle No: </label>
+              <input
+                {...register("vehicle_no", { required: true })}
+                className=" moneyViewInputField"
+                type="text"
+                autoComplete="off"
+              />
+            </div>
           </div>
-        </div>
-        <div className="mt-5 payAdvance">
-          <div className="flex receivedField">
-            <label className="checqueText">
-              {" "}
-              <input type="checkbox" /> Cash <input type="checkbox" />
-              Cheque No:{" "}
-            </label>
-            <input
-              {...register("cheque_no", { required: true })}
-              className="cashInput moneyViewInputField"
-              type="text"
-              autoComplete="off"
-            />
+          <div className="mt-5 payAdvance">
+            <div className="flex receivedField">
+              <label className="checqueText">
+                {" "}
+                <input type="checkbox" /> Cash <input type="checkbox" />
+                Cheque No:{" "}
+              </label>
+              <input
+                {...register("cheque_no", { required: true })}
+                className="cashInput moneyViewInputField"
+                type="text"
+                autoComplete="off"
+              />
+            </div>
+            <div className="flex mt-6 receivedField md:mt-0">
+              <b className="mr-2 date2">Date: </b>
+              <input
+                {...register("date_one", { required: true })}
+                className="dateInput moneyViewInputField"
+                type="date"
+                autoComplete="off"
+              />
+            </div>
           </div>
-          <div className="flex mt-6 receivedField md:mt-0">
-            <b className="mr-2 date2">Date: </b>
-            <input
-              {...register("date_one", { required: true })}
-              className="dateInput moneyViewInputField"
-              type="date"
-              autoComplete="off"
-            />
+          <div className="mt-5 payAdvance">
+            <div className="flex receivedField">
+              <label className="backText">Bank: </label>
+              <input
+                {...register("bank", { required: true })}
+                className=" moneyViewInputField"
+                type="text"
+                autoComplete="off"
+              />
+            </div>
+            <div className="flex receivedField">
+              <label className="date2 "> Date:</label>
+              <input
+                {...register("date_two", { required: true })}
+                className=" moneyViewInputField"
+                type="date"
+                autoComplete="off"
+              />
+            </div>
           </div>
-        </div>
-        <div className="mt-5 payAdvance">
-          <div className="flex receivedField">
-            <label className="backText">Bank: </label>
-            <input
-              {...register("bank", { required: true })}
-              className=" moneyViewInputField"
-              type="text"
-              autoComplete="off"
-            />
+          <div className="mt-5 amount2">
+            <div className="flex ">
+              <label className="totalAmountText2">Total Amount Tk:</label>
+              <input
+                {...register("total_amount", { required: true })}
+                className="moneyViewInputField"
+                type="text"
+              />
+            </div>
+            <div className="flex ">
+              <label>Advance:</label>
+              <input
+                {...register("advance", { required: true })}
+                className="moneyViewInputField"
+                type="text"
+              />
+            </div>
+            <div className="flex">
+              <label>Remaining:</label>
+              <input
+                {...register("remaining", { required: true })}
+                className="moneyViewInputField"
+                type="text"
+              />
+            </div>
           </div>
-          <div className="flex receivedField">
-            <label className="date2 "> Date:</label>
+          <div className="mt-5 wordTaka">
+            <label>in word (taka) </label>
             <input
-              {...register("date_two", { required: true })}
-              className=" moneyViewInputField"
-              type="date"
-              autoComplete="off"
-            />
-          </div>
-        </div>
-        <div className="mt-5 amount2">
-          <div className="flex ">
-            <label className="totalAmountText2">Total Amount Tk:</label>
-            <input
-              {...register("total_amount", { required: true })}
+              {...register("taka_in_word", { required: true })}
               className="moneyViewInputField"
               type="text"
             />
           </div>
-          <div className="flex ">
-            <label>Advance:</label>
-            <input
-              {...register("advance", { required: true })}
-              className="moneyViewInputField"
-              type="text"
-            />
+          {/* <div className="flex justify-end my-10">
+        <button className="w-full btn btn-primary">submit</button>
+      </div> */}
+          <div className="my-5 receivedBtn">
+            <button type="submit">Submit</button>
           </div>
-          <div className="flex">
-            <label>Remaining:</label>
-            <input
-              {...register("remaining", { required: true })}
-              className="moneyViewInputField"
-              type="text"
-            />
-          </div>
+        </form>
+        <div>
+          <small className="signature">Authorized Signature</small>
         </div>
-        <div className="mt-5 wordTaka">
-          <label>in word (taka) </label>
-          <input
-            {...register("taka_in_word", { required: true })}
-            className="moneyViewInputField"
-            type="text"
-          />
-        </div>
-        {/* <div className="flex justify-end my-10">
-          <button className="w-full btn btn-primary">submit</button>
-        </div> */}
-        <div className="my-5 receivedBtn">
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-      <div>
-        <small className="signature">Authorized Signature</small>
       </div>
-    </div>
+
+      <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+        <h3 className="mb-3 text-3xl font-bold"> Money Receipt List:</h3>
+        <div className="flex items-center">
+          <div className="searchGroup">
+            <input autoComplete="off" type="text" />
+          </div>
+          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+            Search
+          </button>
+        </div>
+      </div>
+
+      <div className="mb-10 overflow-x-auto">
+        <table className="table ">
+          <thead className="tableWrap">
+            <tr>
+              <th>SL</th>
+              <th>Received with thanks from </th>
+              <th>Final Payment against bill no </th>
+              <th>Vehicle No</th>
+              <th> Check Number</th>
+              <th> Bank Total Amount</th>
+              <th colSpan={3}>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>Mamun</td>
+              <td>445</td>
+              <td>677</td>
+              <td>677</td>
+              <td>677</td>
+              <td>677</td>
+              <td>
+                <div className="editIconWrap edit">
+                  <Link to="/dashboard/update-purchase">
+                    <FaEdit className="editIcon" />
+                  </Link>
+                </div>
+              </td>
+              <td>
+                <div className="editIconWrap">
+                  <FaTrashAlt className="deleteIcon" />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 };
 

@@ -75,7 +75,7 @@ const DashboardLayout = () => {
         <div
           ref={containerRef}
           onClick={handleToggleCloseBtn}
-          className={`${toggle ? `drawer-content` : `activeDrawer`}`}
+          className={`${toggle ? `drawer-content` : `activeDrawer`}  `}
         >
           <Outlet />
         </div>
@@ -456,6 +456,14 @@ const DashboardLayout = () => {
                     </NavLink>
                   </span>
                 </Typography>
+                <Typography className="accordionTypoGrapy">
+                <span className="flex items-center">
+                  <FaThLarge className="mr-2" />
+                  <NavLink to="/dashboard/employee-list">
+                    Leave
+                  </NavLink>
+                </span>
+              </Typography>
               </AccordionDetails>
             </Accordion>
 

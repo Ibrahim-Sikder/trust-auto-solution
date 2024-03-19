@@ -20,55 +20,56 @@ const EmployeeAccount = () => {
             <b>Male</b>
           </div>
         </div>
-        <div className="block md:flex justify-between mt-5">
+        <div className="justify-between block mt-5 md:flex">
           <Card>
-            <h3 className="text-xl font-semibold">More Info </h3>
+            <h3 className="text-xl font-semibold">Personal Info </h3>
             <div className="flex items-center justify-between">
               <div>
                 <div>
-                  Landine No: <b>Not Added </b>
+                  <b>Name</b>: <small>Ariful Islam </small>
                 </div>
                 <div>
-                  Left Date: <b>05/01/2024</b>
-                </div>
+                <b>Phone No</b>: <small>076543567876 </small>
+              </div>
               </div>
               <div>
                 <div>
-                  Join Date: <b>05/01/2024</b>
+                <b>Email No</b>: <small>example@gamil.com </small>
                 </div>
                 <span>
-                  Designation: <b>Supporter</b>
+                <b>Designation</b>: <small>Job Designation </small>
                 </span>
               </div>
             </div>
           </Card>
           <Card>
-            <h3 className="text-xl font-semibold">Address Details </h3>
-            <div className="flex items-center justify-between">
+          <h3 className="text-xl font-semibold">Family Address </h3>
+          <div className="flex items-center justify-between">
+            <div>
               <div>
-                <div>
-                 country: <b>Bangladesh</b>
-                </div>
-                <div>
-                  City: <b>Dhaka</b>
-                </div>
+                <b>Country</b>: <small>Bangladesh</small>
               </div>
               <div>
-                <div>
-                 State: <b>Dhaka</b>
-                </div>
-              </div>
+              <b>City</b>: <small>Dhaka </small>
             </div>
-          </Card>
+            </div>
+            <div>
+              <div>
+              <b>State</b>: <small>Rangpur </small>
+              </div>
+             
+            </div>
+          </div>
+        </Card>
         </div>
      
-        <div className="block md:flex justify-between  mt-5">
+        <div className="justify-between block mt-5 md:flex">
           <Card>
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-semibold">Paid Service Details </h3>
               <Link to='/dashboard/addjob'><FaRegEdit size={30} /></Link>
             </div>
-            <div className=" mt-10 flex items-center justify-between">
+            <div className="flex items-center justify-between mt-10 ">
               <div className="flex items-center my-3">
                 <div className="cardIcon bg-[#03045E] ">
                   <b className="block">Feb</b>

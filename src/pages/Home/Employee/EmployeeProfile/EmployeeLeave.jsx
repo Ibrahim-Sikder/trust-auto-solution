@@ -1,103 +1,39 @@
 import { FaUsers } from "react-icons/fa";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
-import "./Employee.css";
-import avatar from "../../../../public/assets/avatar.jpg";
-import { HiOutlineArrowNarrowRight } from "react-icons/hi";
+import "../Employee.css";
+import EmployeeLeaveTable from "./EmployeeLeaveTable";
 
-
-const EmployeeList = () => {
-  const employeeData = [
+const EmployeeLeave = () => {
+ const leaveData = [
     {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
+        id:1,
+        title: 'Today Present',
+        day: '15 / 50'
     },
     {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
+        id:1,
+        title: 'Today Leave',
+        day: '5'
     },
     {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
+        id:1,
+        title: 'Unplanned Leaves',
+        day: '6'
     },
     {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
+        id:1,
+        title: 'Pending Request' ,
+        day: '10'
     },
     {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
+        id:1,
+        title: 'Accept Request' ,
+        day: '4'
     },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-  ];
+    
+    
+ ]
   return (
     <div className="w-full mt-5 mb-24">
       <div className="flex justify-end pb-3 border-b-2">
@@ -121,6 +57,16 @@ const EmployeeList = () => {
         </div>{" "}
       </div>
       <div className="employeeCardWraps">
+      <div className="grid grid-cols-5 gap-5">
+           {
+            leaveData.map((leave)=>(
+                <div key={leave.id} className="employeeCard">
+                <h3 className="text-xl">{leave.title}</h3>
+                <span className="text-xl font-bold">{leave.day}</span>
+             </div>
+            ))
+           }
+        </div>
         <div className="grid grid-cols-5 gap-5 my-8">
           <div className="relative rounded-sm w-max">
             <input
@@ -170,25 +116,11 @@ const EmployeeList = () => {
           <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Employee </button>
         </div>
         </div>
-        <div className="grid grid-cols-5 gap-5">
-        {employeeData.map((employee) => (
-          <div key={employee.id} className="employeeCard">
-            <div>
-              <img className="employeeCardImg" src={employee.image} alt="" />
-              <h3 className="text-xl font-semibold">{employee.name} </h3>
-              <p>{employee.designation}</p> 
-              <div className="flex items-center justify-center">
-              
-              <span>See More  </span>
-              <HiOutlineArrowNarrowRight className="ml-1 "/>
-              </div>
-            </div>
-          </div>
-        ))}
-        </div>
+        
+        <EmployeeLeaveTable/>
       </div>
     </div>
   );
 };
 
-export default EmployeeList;
+export default EmployeeLeave;

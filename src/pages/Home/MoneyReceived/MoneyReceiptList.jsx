@@ -267,18 +267,8 @@ const MoneyReceiptList = () => {
 
   return (
     <div className="mt-5 overflow-x-auto">
-      <div className="flex flex-wrap justify-between pb-3 border-b-2">
-        <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
-        </div>
+      <div className="flex flex-wrap justify-end pb-3 border-b-2">
+       
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />
@@ -294,8 +284,8 @@ const MoneyReceiptList = () => {
         </div>
         <div className="productHome">
           <span>Home / </span>
-          <span>Product / </span>
-          <span>New Product </span>
+          <span>Money / </span>
+          <span> Money receipt </span>
         </div>
       </div>
 

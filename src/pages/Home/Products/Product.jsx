@@ -7,14 +7,14 @@ import { FaUserGear } from "react-icons/fa6";
 
 const Product = () => {
   return (
-    <div className="mt-5 mb-24 w-full">
-       <div className="flex justify-between border-b-2 pb-3">
+    <div className="w-full mt-5 mb-24">
+       <div className="flex justify-between pb-3 border-b-2">
     <div className="flex items-center mr-[80px]  justify-center topProductBtn">
 				<Link to='/dashboard/addjob'><button> Add Job </button></Link>
-				<Link to='/dashboard/qutation'><button>Qutation </button></Link>
+				<Link to='/dashboard/qutation'><button>Quotation </button></Link>
 				<Link to='/dashboard/invoice'><button>Invoice </button></Link>
 			</div>
-      <div className="flex  justify-end items-end">
+      <div className="flex items-end justify-end">
         <NotificationAdd size={30} className="mr-2"/>
         <FaUserGear size={30} />
       </div>
@@ -34,7 +34,7 @@ const Product = () => {
 				</div>
 			</div>
       <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-          <h3 className="text-3xl font-bold mb-3">All Product List:</h3>
+          <h3 className="mb-3 text-3xl font-bold">All Product List:</h3>
           <div className="flex items-center searcList">
             <select >
               <option value="SL No"> SL No</option>
@@ -77,7 +77,7 @@ const Product = () => {
               <td>
                 <div className="mask   h-[100px] w-[100px] mx-auto ">
                   <img
-                    className=" h-full w-full object-cover text-center"
+                    className="object-cover w-full h-full text-center "
                     src={img}
                     alt="img"
                   />

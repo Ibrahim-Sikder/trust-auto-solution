@@ -52,6 +52,8 @@ import ShowRoomList from "../pages/Home/ShowRoom/ShowRoomList";
 import UpdateCompany from "../pages/Home/Company/UpdateCompany";
 import UpdateShowRoom from "../pages/Home/ShowRoom/UpdateShowRoom";
 import ShowRoomProfile from "../pages/Home/ShowRoom/ShowRoomProfile";
+import EmployeeLeave from "../pages/Home/Employee/EmployeeProfile/EmployeeLeave";
+import Attendance from "../pages/Home/Employee/EmployeeProfile/Attendance";
 
 
 export const router = createBrowserRouter([
@@ -189,6 +191,16 @@ export const router = createBrowserRouter([
       {
         path: "employee-profile",
         element: <EmployeeProfile/>
+
+      },
+      {
+        path: "employee-leave",
+        element: <EmployeeLeave/>
+
+      },
+      {
+        path: "employee-attendance",
+        element: <Attendance/>
 
       },
       {

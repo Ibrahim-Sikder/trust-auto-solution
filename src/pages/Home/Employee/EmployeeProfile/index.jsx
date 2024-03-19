@@ -4,16 +4,17 @@ import { ImUserTie } from "react-icons/im";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import "react-tabs/style/react-tabs.css"
 import EmployeeAccount from "./EmployeeAccount";
+import EmployeeList from "../EmployeeList";
 
 const CustomerProfile = () => {
 
   return (
     <div>
       <div className="w-full h-52 p-5 mt-5 bg-[#03045E] text-white flex items-center  relative">
-      <div className="border p-5 rounded-md flex item-end  ">
+      <div className="flex p-5 border rounded-md item-end ">
       <div>
       <h3 className="text-2xl">Ariful Islam</h3>
-      <div className="space-y-2 mt-3">
+      <div className="mt-3 space-y-2">
         <div className="flex items-center">
           <HiMiniPhone size="20" className="mr-2" />
           <span>45996-0789777</span>
@@ -31,8 +32,8 @@ const CustomerProfile = () => {
     </div>
         <div>
           <div className="bg-[#3A0CA3] border  rounded-md py-5 px-3 absolute top-16 right-5 ">
-            <div className="flex  ml-5">
-              <div className="w-32 h-44 flex items-center justify-center">
+            <div className="flex ml-5">
+              <div className="flex items-center justify-center w-32 h-44">
                 <ImUserTie size="130" className="text-white" />
               </div>
              
@@ -41,20 +42,28 @@ const CustomerProfile = () => {
         </div>
       </div>
 
-      <div className="mt-14 text-black">
+      <div className="text-black mt-14">
         <Tabs className="tabList">
           <TabList>
             <Tab>Account</Tab>
+            <Tab>All Employee</Tab>
+            <Tab>Present</Tab>
+            <Tab>Leave </Tab>
+            <Tab>All Employee</Tab>
+            <Tab>All Employee</Tab>
           </TabList>
-
+        
           <TabPanel>
             <EmployeeAccount />
           </TabPanel>
-         
+          <TabPanel>
+          <EmployeeList/>
+        </TabPanel>
+       
         </Tabs>
 
         <div>
-          <p className="text-center my-5">
+          <p className="my-5 text-center">
             © Copyright 2024 | Trust Auto Solution | All Rights Reserved
           </p>
         </div>

@@ -55,17 +55,7 @@ const AddEmployee = () => {
   return (
     <section>
       <div className=" addProductWraps">
-        <div className="flex items-center mr-[80px]  justify-end topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
-        </div>
+        
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
             <FaUsers size={70} className="invoicIcon" />
@@ -89,15 +79,34 @@ const AddEmployee = () => {
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Given Name "
-                  id="Give Name "
+                  label="Full Name "
+                  id="Full Name "
                 />
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Sur Name "
-                  id="Sur Name "
+                  label="Father Name "
                 />
+                <TextField
+                className="productField"
+                fullWidth
+                label="Mother Name "
+              />
+              <TextField
+              className="productField"
+              fullWidth
+              label="Date of Birth"
+            />
+            <TextField
+            className="productField"
+            fullWidth
+            label="NID Number"
+          />
+          <TextField
+          className="productField"
+          fullWidth
+          label="Blood Group "
+        />
                 <TextField
                   className="productField"
                   fullWidth
@@ -115,11 +124,11 @@ const AddEmployee = () => {
                   Gender
                 </InputLabel>
                 <Select
-                  className="addJobInputField"
+                  className=""
                   
                   native
                   id="grouped-native-select"
-                  label="Car Registration No  "
+                  label="Gender"
                 >
               
                 <option value="Acura">Male</option>
@@ -166,7 +175,7 @@ const AddEmployee = () => {
               </div>
 
               <div>
-                <h3 className="text-xl font-bold">Address </h3>
+                <h3 className="text-xl font-bold">Family Address </h3>
 
                 <TextField
                   className="productField"
@@ -194,14 +203,23 @@ const AddEmployee = () => {
               </div>
               </div>
             </div>
-            <div className="savebtn mt-2">
-              <button>Add Employee </button>
-            </div>
+           <div className="flex justify-end">
+           <div className="submitQutationBtn">
+           <button
+            
+             // onClick={handleAddToCard}
+             type="submit"
+             className=""
+           >
+             Add Employee
+           </button>
+         </div>
+           </div>
           </form>
         </div>
       </div>
-      <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
+      <div className="w-full mt-5 mb-24">
+        <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold text-center "> Employee List: </h3>
           <div className="flex items-center">
             <Search>
@@ -238,7 +256,7 @@ const AddEmployee = () => {
               <td >
                 <div className='flex items-center justify-center '>
                   <Link to='/dashboard/employee-profile'>
-                  <FaUserTie className="invoicIcon" />
+                  <FaUserTie size={25} className="" />
                   </Link>
                 </div>
               </td>
