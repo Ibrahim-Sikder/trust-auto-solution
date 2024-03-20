@@ -18,14 +18,14 @@
 
 
 /* Employee.css */
-table {
+.table {
     width: 100%;
-    max-width: 1200px; /* Set maximum width for the table */
+   /* Set maximum width for the table */
     border-collapse: collapse;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Apply box shadow to the table */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Apply box 
     overflow-x: auto; /* Enable horizontal scrolling for small screens */
     margin: 0 auto; 
-/* Center the table */
+
 }
 
 th, td {
@@ -34,6 +34,7 @@ th, td {
     white-space: nowrap; /* Prevent text wrapping in cells */
 }
 
+
 .even-row {
     background-color: #f2f2f2;
 }
@@ -41,12 +42,33 @@ th, td {
 .odd-row {
     background-color: #fff;
 }
+
+
 /* Employee.css */
 .table-container {
     overflow-x: auto; /* Enable horizontal scrolling */
     max-width: 100%; /* Ensure the table container is responsive */
 }
 
+/* Add styles for odd and even rows */
+.leaveTable tbody tr:nth-child(odd) {
+    background-color: #f0f0f0; /* Set odd row background color */
+}
+
+.leaveTable tbody tr:nth-child(even) {
+    background-color: #ffffff; /* Set even row background color */
+}
+
+/* Center align content */
+.leaveTable td .leaveTable th {
+    text-align: center;
+}
+
+  /* Hide default mm/dd/yyyy text */
+
+
+  /* Add custom icon */
+ 
 
 @media screen and (max-width: 1200px) {
     /* Adjust table width for smaller screens */

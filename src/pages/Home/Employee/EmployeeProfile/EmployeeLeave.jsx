@@ -3,8 +3,15 @@ import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import "../Employee.css";
 import EmployeeLeaveTable from "./EmployeeLeaveTable";
+import LeaveModal from "./LeaveModal";
+import { useState } from "react";
 
 const EmployeeLeave = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  
  const leaveData = [
     {
         id:1,
@@ -47,17 +54,17 @@ const EmployeeLeave = () => {
         <div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />
           <div className="ml-2">
-            <h3 className="text-2xl font-bold"> Employee </h3>{" "}
-            <span> Manage Customer </span>{" "}
+            <h3 className="text-2xl font-bold"> Leave </h3>{" "}
+            <span> Dashboard / Leaves </span>{" "}
           </div>{" "}
         </div>{" "}
-        <div className="productHome">
-          <span> Home / </span> <span> Customer / </span>{" "}
-          <span> New Customer </span>{" "}
-        </div>{" "}
+        <div onClick={handleOpen} className="relative rounded-sm w-max">
+      
+        <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Leave </button>
+      </div>
       </div>
       <div className="employeeCardWraps">
-      <div className="grid grid-cols-5 gap-5">
+      <div className="grid grid-cols-5 gap-5 mb-8">
            {
             leaveData.map((leave)=>(
                 <div key={leave.id} className="employeeCard">
@@ -67,56 +74,8 @@ const EmployeeLeave = () => {
             ))
            }
         </div>
-        <div className="grid grid-cols-5 gap-5 my-8">
-          <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput"
-              type="text"
-              placeholder=""
-            />
-            <label
-              className="employeeLavel"
-              htmlFor=""
-            >
-            Employee ID
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput"
-              type="text"
-              placeholder=""
-            />
-            <label
-              className="employeeLavel"
-              htmlFor=""
-            >
-            Employee Name
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput"
-              type="text"
-              placeholder=""
-            />
-            <label
-              className="employeeLavel"
-              htmlFor=""
-            >
-              Designation 
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-      
-            <button className="employeeBtn employeeInput">Search</button>
-          </div>
-          <div className="relative rounded-sm w-max">
-      
-          <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Employee </button>
-        </div>
-        </div>
-        
+       
+        {open && <LeaveModal onClose={handleClose} />}
         <EmployeeLeaveTable/>
       </div>
     </div>

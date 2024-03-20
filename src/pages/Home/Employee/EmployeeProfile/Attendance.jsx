@@ -30,8 +30,8 @@ for (let year = 2024; year <= 2030; year++) {
 }
 
 
-const initialSelectedOption = months[0]; // Set the initial selected option to January
-const initialSelectedOption2 = years[0]; // Set the initial selected option to January
+const initialSelectedOption = months[0]; 
+const initialSelectedOption2 = years[0]; 
 
 const Attendance = () => {
   const [selectedOption, setSelectedOption] = useState(initialSelectedOption);

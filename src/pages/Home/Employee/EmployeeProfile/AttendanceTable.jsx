@@ -22,7 +22,7 @@ const AttendanceTable = () => {
 
     return (
         <div className="table-container"> {/* Add a class to the table container */}
-            <table>
+            <table className="attendanceTable">
                 <thead>
                     <tr>
                         <th>Employee</th> 
