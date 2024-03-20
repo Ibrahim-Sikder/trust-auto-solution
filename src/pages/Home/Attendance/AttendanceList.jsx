@@ -1,11 +1,9 @@
 import { FaUsers } from "react-icons/fa";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
-import "../Employee.css";
-import AttendanceTable from "./AttendanceTable";
 import { useState } from 'react';
 import Select from 'react-select';
-import AttendanceModal from "./AttendanceModal";
+import AttendanceTable from "../Employee/EmployeeProfile/AttendanceTable";
 
 const months = [
   { value: 'Select Month', label: 'Select Month' },
@@ -34,7 +32,7 @@ for (let year = 2024; year <= 2030; year++) {
 const initialSelectedOption = months[0]; // Set the initial selected option to January
 const initialSelectedOption2 = years[0]; // Set the initial selected option to January
 
-const Attendance = () => {
+const AttendanceList = () => {
   const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
   const [selectedOption2, setSelectedOption2] = useState(initialSelectedOption2);
 
@@ -47,10 +45,7 @@ const Attendance = () => {
     
   };
   
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
- 
+
   return (
     <div className="w-full mt-5 mb-24">
       <div className="flex justify-end pb-3 border-b-2">
@@ -67,7 +62,7 @@ const Attendance = () => {
             <span> Dashboard / Attendance </span>{" "}
           </div>{" "}
         </div>{" "}
-        <div onClick={handleOpen} className="relative rounded-sm w-max">
+        <div  className="relative rounded-sm w-max">
       
         <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Attendance </button>
       </div>
@@ -100,12 +95,10 @@ const Attendance = () => {
         </div>
       </div>
       
-      {
-        open && <AttendanceModal onClose={handleClose} />
-      }
+     
       <AttendanceTable />
     </div>
   );
 };
 
-export default Attendance;
+export default AttendanceList;

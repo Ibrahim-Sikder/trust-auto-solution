@@ -464,9 +464,68 @@ const DashboardLayout = () => {
                   </NavLink>
                 </span>
               </Typography>
+              <Typography className="accordionTypoGrapy">
+              <span className="flex items-center">
+                <FaThLarge className="mr-2" />
+                <NavLink to="/dashboard/employee-list">
+                  Holiday 
+                </NavLink>
+              </span>
+            </Typography>
+            <Typography className="accordionTypoGrapy">
+              <span className="flex items-center">
+                <FaThLarge className="mr-2" />
+                <NavLink to="/dashboard/employee-list">
+                  Overtime 
+                </NavLink>
+              </span>
+            </Typography>
+            <Typography className="accordionTypoGrapy">
+            <span className="flex items-center">
+              <FaThLarge className="mr-2" />
+              <NavLink to="/dashboard/employee-list">
+                Shift & Schedule 
+              </NavLink>
+            </span>
+          </Typography>
               </AccordionDetails>
             </Accordion>
-
+            <Accordion
+            className="dashboardAccordion"
+            expanded={expanded === "panel9"}
+            onChange={handleChange("panel9")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
+              aria-controls="panel6a-content"
+              id="panel6a-header"
+            >
+              <Typography>
+                <span className="flex items-center justify-center">
+                  <ShoppingBag />
+                  <span className="ml-2"> Attendance </span>
+                </span>
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography className="accordionTypoGrapy">
+                <div className="flex items-center">
+                  <FaPlus className="mr-2" />
+                  <NavLink to="/dashboard/add-attendance">
+                    Add Attendance
+                  </NavLink>
+                </div>
+              </Typography>
+              <Typography className="accordionTypoGrapy">
+                <div className="flex items-center">
+                  <FaThLarge className="mr-2" />
+                  <NavLink to='/dashboard/attendance-list'>
+                   Attendance List
+                  </NavLink>
+                </div>
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
             <NavLink to="/dashboard/expense">
               <div className="flex items-center dashboardItems">
                 <FaCriticalRole className="dashboardIcon" />

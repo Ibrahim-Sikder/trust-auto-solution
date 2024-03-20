@@ -3,7 +3,7 @@ import avatar from "../../../../../public/assets/avatar.jpg";
 import "../Employee.css";
 import { FaRegTrashAlt, FaUserEdit } from "react-icons/fa";
 
-const EmployeeLeaveTable = () => {
+const EmployeeLeaveTable = ({open}) => {
   return (
     <div className="table-container">
       {" "}
@@ -41,7 +41,9 @@ const EmployeeLeaveTable = () => {
             <td> Approved </td>
             <td>
               {" "}
-              <FaUserEdit className='text-[#60BF6B] cursor-pointer' size={25}/>{" "}
+              <FaUserEdit
+              onClick={open}
+               className='text-[#60BF6B] cursor-pointer' size={25}/>{" "}
             </td>
             <td>
               {" "}
@@ -66,8 +68,10 @@ const EmployeeLeaveTable = () => {
             <td> Going to Hospital </td>
             <td> Approved </td>
             <td>
-              {" "}
-              <FaUserEdit className='text-[#60BF6B] cursor-pointer' size={25}/>{" "}
+           
+              <FaUserEdit
+              onClick={open}
+               className='text-[#60BF6B] cursor-pointer' size={25}/>{" "}
             </td>
             <td>
               {" "}

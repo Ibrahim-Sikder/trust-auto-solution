@@ -30,6 +30,9 @@
     .employeeBtn{
         @apply relative origin-top transform text-sky-500 before:absolute before:top-0 before:block before:h-0 before:w-full before:duration-500 hover:text-white hover:before:absolute hover:before:left-0 hover:before:-z-10 hover:before:h-full hover:before:bg-sky-500
     }
+    .attendanceInput{
+        @apply w-full  border p-2 rounded-md
+    }
     
 
     @media only screen and (max-width:1024px){

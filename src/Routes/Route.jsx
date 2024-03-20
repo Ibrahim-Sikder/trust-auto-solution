@@ -54,7 +54,8 @@ import UpdateShowRoom from "../pages/Home/ShowRoom/UpdateShowRoom";
 import ShowRoomProfile from "../pages/Home/ShowRoom/ShowRoomProfile";
 import EmployeeLeave from "../pages/Home/Employee/EmployeeProfile/EmployeeLeave";
 import Attendance from "../pages/Home/Employee/EmployeeProfile/Attendance";
-
+import AddAttendance from "../pages/Home/Attendance/AddAttendance";
+import AttendanceList from "../pages/Home/Attendance/AttendanceList";
 
 export const router = createBrowserRouter([
   {
@@ -295,6 +296,24 @@ export const router = createBrowserRouter([
       {
         path: "money-receipt-update",
         element: <UpdateMoneyReceipt/>,
+      },
+      {
+        path: "add-expanse",
+        element: <AddExpense/>,
+      },
+      {
+        path: "expanse-list",
+        element: <AddExpense/>,
+      },
+      {
+        path: "add-attendance",
+        element: <AddAttendance/>,
+
+      },
+      {
+        path: "attendance-list",
+        element: <AttendanceList/>,
+        
       },
     
     ],

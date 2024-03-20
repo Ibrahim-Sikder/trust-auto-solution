@@ -15,24 +15,32 @@
     margin:0 auto;
 }
 
+.employeeCard2{
+    padding:20px 0;
+}
 
 
 /* Employee.css */
 .table {
     width: 100%;
-   /* Set maximum width for the table */
     border-collapse: collapse;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Apply box 
-    overflow-x: auto; /* Enable horizontal scrolling for small screens */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
     margin: 0 auto; 
 
 }
 
+
 th, td {
     padding: 20px;
     text-align: center;
-    white-space: nowrap; /* Prevent text wrapping in cells */
+    white-space: nowrap;
 }
+th {
+    padding: 30px; 
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+}
+
 
 
 .even-row {
@@ -44,19 +52,20 @@ th, td {
 }
 
 
-/* Employee.css */
+
 .table-container {
-    overflow-x: auto; /* Enable horizontal scrolling */
-    max-width: 100%; /* Ensure the table container is responsive */
+    overflow-x: auto;
+    max-width: 100%;
+    text-align: center; 
 }
 
-/* Add styles for odd and even rows */
+
 .leaveTable tbody tr:nth-child(odd) {
-    background-color: #f0f0f0; /* Set odd row background color */
+    background-color: #f0f0f0; 
 }
 
 .leaveTable tbody tr:nth-child(even) {
-    background-color: #ffffff; /* Set even row background color */
+    background-color: #ffffff;
 }
 
 /* Center align content */
@@ -64,12 +73,17 @@ th, td {
     text-align: center;
 }
 
-  /* Hide default mm/dd/yyyy text */
+.employeeProfileCard{
+    width:570px !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; 
+    padding:20px;
+    border-radius: 4px;
+}
 
-
-  /* Add custom icon */
- 
-
+.attendanceIcon{
+    margin: 0 auto;
+    width:50px;
+}
 @media screen and (max-width: 1200px) {
     /* Adjust table width for smaller screens */
     table {

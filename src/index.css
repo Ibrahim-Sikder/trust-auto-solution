@@ -150,6 +150,22 @@ input:focus {
 .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
     height: 16.2px !important;
 }
+
+
+.css-w9q2zk-Input2 {
+    height: 35px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
 @media only screen and (min-width:1024px) {
 	.activeDrawer {
 		width: 92%;

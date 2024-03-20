@@ -4,6 +4,7 @@ import { FaUserGear } from "react-icons/fa6";
 import "./Employee.css";
 import avatar from "../../../../public/assets/avatar.jpg";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 
 const EmployeeList = () => {
@@ -179,7 +180,7 @@ const EmployeeList = () => {
               <p>{employee.designation}</p> 
               <div className="flex items-center justify-center">
               
-              <span>See More  </span>
+          <Link to='/dashboard/employee-profile'>    <span>See More  </span></Link>
               <HiOutlineArrowNarrowRight className="ml-1 "/>
               </div>
             </div>

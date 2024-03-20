@@ -5,11 +5,15 @@ import "../Employee.css";
 import EmployeeLeaveTable from "./EmployeeLeaveTable";
 import LeaveModal from "./LeaveModal";
 import { useState } from "react";
+import UpdateLeaveModal from "./UpdateLeaveModal";
 
 const EmployeeLeave = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [open2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
 
   
  const leaveData = [
@@ -67,8 +71,8 @@ const EmployeeLeave = () => {
       <div className="grid grid-cols-5 gap-5 mb-8">
            {
             leaveData.map((leave)=>(
-                <div key={leave.id} className="employeeCard">
-                <h3 className="text-xl">{leave.title}</h3>
+                <div key={leave.id} className="employeeCard employeeCard2">
+                <h3 className="mb-2 font-semibold">{leave.title}</h3>
                 <span className="text-xl font-bold">{leave.day}</span>
              </div>
             ))
@@ -76,7 +80,10 @@ const EmployeeLeave = () => {
         </div>
        
         {open && <LeaveModal onClose={handleClose} />}
-        <EmployeeLeaveTable/>
+     
+        {open2 && <UpdateLeaveModal onClose={handleClose2} />}
+        
+        <EmployeeLeaveTable open={handleOpen2}/>
       </div>
     </div>
   );
