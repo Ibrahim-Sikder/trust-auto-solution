@@ -1407,7 +1407,6 @@ const AddJobCard = () => {
                 disabled={loading}
                 // onClick={handleAddToCard}
                 type="submit"
-                className=""
               >
                 Add To Job Card{" "}
               </button>
