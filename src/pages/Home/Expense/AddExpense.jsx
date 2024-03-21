@@ -8,15 +8,11 @@ import Select from "@mui/material/Select";
 import {
   FaFileInvoice,
   FaEye,
-  FaReddit,
   FaTrashAlt,
-  FaArrowRight,
-  FaArrowLeft,
   FaCloudUploadAlt,
 } from "react-icons/fa";
-
+import { TiEdit } from "react-icons/ti";
 import { Link } from "react-router-dom";
-import img from "../../../../public/assets/service2.png";
 import { useState } from "react";
 const AddExpense = () => {
   const [payment, setPayment] = useState("");
@@ -140,7 +136,7 @@ const AddExpense = () => {
               </div>
             </div>
 
-            <h3 className="mt-10 text-xl font-semibold">Add payment </h3>
+            <h3 className="mt-10 text-xl font-semibold">Add Payment </h3>
             <div>
               <div className="productFieldWrap">
                 <TextField
@@ -301,9 +297,27 @@ const AddExpense = () => {
         </div>
       </div>
       <div className="w-full mt-5 mb-24">
+        <div className="flex items-center justify-between">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="text-3xl font-bold text-center "> Expense List: </h3>
+        <h3 className="text-3xl font-bold text-center "> Expense List: </h3>
+      </div>
+      
+      <div className="flex items-center">
+      <div className="searchGroup">
+      <input
+   
+        autoComplete="off"
+        type="text"
+        
+      />
+    </div>
+    <button  className="SearchBtn ">
+      Search{" "}
+    </button>
+
+      </div>
         </div>
+        
         <div className="overflow-x-auto ">
           <table className="table ">
             <thead className="tableWrap">
@@ -333,7 +347,7 @@ const AddExpense = () => {
                 <td>
                   <div className="editIconWrap edit">
                     <Link to="/dashboard/update-expense">
-                      <FaReddit className="editIcon" />
+                      <TiEdit className="editIcon" />
                     </Link>
                   </div>
                 </td>

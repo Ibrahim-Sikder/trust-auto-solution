@@ -7,13 +7,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import {
   FaFileInvoice,
-  FaEye,
-  FaReddit,
-  FaTrashAlt,
   FaCloudUploadAlt,
 } from "react-icons/fa";
 
-import { Link } from "react-router-dom";
 import { useState } from "react";
 const UpdateExpense = () => {
   const [payment, setPayment] = useState("");
@@ -257,12 +253,7 @@ const UpdateExpense = () => {
                       </div>
 
                       <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Month "
-                          id="Tax"
-                        />
+                        
                         <TextField
                           className="productField"
                           fullWidth
