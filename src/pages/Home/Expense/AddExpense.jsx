@@ -19,12 +19,12 @@ import { Link } from "react-router-dom";
 import img from "../../../../public/assets/service2.png";
 import { useState } from "react";
 const AddExpense = () => {
-  const [payment, setPayment] = useState(''); 
+  const [payment, setPayment] = useState("");
 
   const handlePaymentChange = (e) => {
     setPayment(e.target.value);
   };
-  console.log(payment)
+  console.log(payment);
   return (
     <section>
       <div className="addProductWraps">
@@ -163,23 +163,22 @@ const AddExpense = () => {
                   fullWidth
                   label=" Individual Markup  "
                 />
-                <FormControl 
-             
-                className="productField">
+                <FormControl className="productField">
                   <InputLabel htmlFor="grouped-native-select">
                     Payment Method
                   </InputLabel>
                   <Select
-                  onChange={handlePaymentChange}
+                    onChange={handlePaymentChange}
                     native
                     id="grouped-native-select"
                     label="Payment Account "
                   >
                     <option aria-label="None" value="" />
                     <option value="Cash"> Cash </option>
+                    <option value="Check"> Check </option>
                     <option value="Card"> Card </option>
                     <option value="Bank Transfer ">Bank Transfer </option>
-                    <option value="Other ">Other </option>
+                    <option value="Other">Other </option>
                   </Select>
                 </FormControl>
               </div>
@@ -189,7 +188,6 @@ const AddExpense = () => {
                     Payment Account
                   </InputLabel>
                   <Select
-                 
                     native
                     id="grouped-native-select"
                     label="Payment Account "
@@ -200,12 +198,101 @@ const AddExpense = () => {
                   </Select>
                 </FormControl>
               </div>
-             {
-         
-              payment &&
-              payment  == 'check' ? <p>Hello</p> : <p>hello2</p>
-                
-             }
+              <div className="mt-10">
+                {payment &&
+                  (payment === "Check" ? (
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label=" Check No  "
+                    />
+                  ) : payment === "Bank Transfer" ? (
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label=" Bank Account No "
+                    />
+                  ) : payment === "Card" ? (
+                    <div>
+                      <div className="productFieldWrap">
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Card Number"
+                          id="Tax"
+                        />
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Card holder name"
+                          id="Tax"
+                        />
+                      </div>
+
+                      <div className="productFieldWrap">
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Card Transaction No."
+                          id="Tax"
+                        />
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Card Type "
+                          id="Tax"
+                        />
+                      </div>
+
+                      <div className="productFieldWrap">
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Month "
+                          id="Tax"
+                        />
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Year"
+                          id="Tax"
+                        />
+                      </div>
+
+                      <div className="productFieldWrap">
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Month "
+                          id="Tax"
+                        />
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Security Code "
+                          id="Tax"
+                        />
+                      </div>
+
+                      <div className="mt-4 productDetailWrap">
+                        <textarea
+                          placeholder="Expense Note "
+                          className="productDetail"
+                          name=""
+                        />
+                      </div>
+                    </div>
+                  ) :  payment === "Other" ? (
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Transition No "
+                    />
+                  ) 
+                  
+                  
+                 : null)}
+              </div>
             </div>
             <div className="mt-2 savebtn">
               <button>Add Expense </button>

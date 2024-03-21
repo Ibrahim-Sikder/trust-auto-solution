@@ -459,7 +459,7 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                 <span className="flex items-center">
                   <FaThLarge className="mr-2" />
-                  <NavLink to="/dashboard/employee-list">
+                  <NavLink to="/dashboard/employee-leave">
                     Leave
                   </NavLink>
                 </span>
@@ -526,12 +526,51 @@ const DashboardLayout = () => {
               </Typography>
             </AccordionDetails>
           </Accordion>
-            <NavLink to="/dashboard/expense">
-              <div className="flex items-center dashboardItems">
-                <FaCriticalRole className="dashboardIcon" />
-                <span> Expense </span>
+          
+          
+          <Accordion
+          className="dashboardAccordion"
+          expanded={expanded === "panel9"}
+          onChange={handleChange("panel9")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
+            aria-controls="panel6a-content"
+            id="panel6a-header"
+          >
+            <Typography>
+              <span className="flex items-center justify-center">
+                <ShoppingBag />
+                <span className="ml-2"> Expense </span>
+              </span>
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography className="accordionTypoGrapy">
+              <div className="flex items-center">
+                <FaPlus className="mr-2" />
+                <NavLink to="/dashboard/add-expense">
+                  Add Expense
+                </NavLink>
               </div>
-            </NavLink>
+            </Typography>
+            <Typography className="accordionTypoGrapy">
+              <div className="flex items-center">
+                <FaThLarge className="mr-2" />
+                <NavLink to="/dashboard/expense">
+                Expense List 
+                </NavLink>
+              </div>
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        
+        
+        
+        
+        
+        
+            
             <Accordion
               className="dashboardAccordion"
               expanded={expanded === "panel7"}

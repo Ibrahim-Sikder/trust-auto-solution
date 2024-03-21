@@ -401,7 +401,7 @@ const AddAttendance = () => {
               {[...Array(31).keys()].map((day) => (
                 <th key={day}>
                   <div>
-                    <span>March</span>
+                    <span>March </span>
                     {day + 1}
                   </div>
                  
