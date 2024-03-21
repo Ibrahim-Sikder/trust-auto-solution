@@ -57,18 +57,18 @@ import Attendance from "../pages/Home/Employee/EmployeeProfile/Attendance";
 import AddAttendance from "../pages/Home/Attendance/AddAttendance";
 import AttendanceList from "../pages/Home/Attendance/AttendanceList";
 import UpdateExpense from "../pages/Home/Expense/UpdateExpense";
+import ViewExpense from "../pages/Home/Expense/ViewExpense";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Main></Main>,
     children: [
       {
-        path: '/',
-        element: <Login></Login>
-      }
-    ]
-
+        path: "/",
+        element: <Login></Login>,
+      },
+    ],
   },
   {
     path: "dashboard",
@@ -76,7 +76,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/dashboard",
-        element: <Home/>,
+        element: <Home />,
       },
       {
         path: "services",
@@ -88,7 +88,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "preview",
-        element: <PreviewJobCard />
+        element: <PreviewJobCard />,
       },
       {
         path: "update-jobcard",
@@ -133,40 +133,40 @@ export const router = createBrowserRouter([
       },
       {
         path: "customer-profile",
-        element: <CustomerProfile/>,
+        element: <CustomerProfile />,
       },
       {
         path: "company-profile",
-        element: <CompanyProfile/>,
+        element: <CompanyProfile />,
       },
       {
         path: "add-company",
-        element: <AddCompany/>,
+        element: <AddCompany />,
       },
       {
         path: "update-company",
-        element: <UpdateCompany/>,
+        element: <UpdateCompany />,
       },
 
       {
         path: "company-list",
-        element: <CompanyList/>,
+        element: <CompanyList />,
       },
       {
         path: "add-show-room",
-        element: <AddShowRoom/>,
-    },
+        element: <AddShowRoom />,
+      },
       {
         path: "update-show-room",
-        element: <UpdateShowRoom/>,
+        element: <UpdateShowRoom />,
       },
       {
         path: "show-room-list",
-        element: <ShowRoomList/>,
+        element: <ShowRoomList />,
       },
       {
         path: "show-room-profile",
-        element: <ShowRoomProfile/>,
+        element: <ShowRoomProfile />,
       },
       {
         path: "expense",
@@ -183,55 +183,50 @@ export const router = createBrowserRouter([
       {
         path: "employee-list",
         element: <EmployeeList />,
-
       },
       {
         path: "update-employee",
         element: <UpdateEmployee />,
-
       },
       {
         path: "employee-profile",
-        element: <EmployeeProfile/>
-
+        element: <EmployeeProfile />,
       },
       {
         path: "employee-leave",
-        element: <EmployeeLeave/>
-
+        element: <EmployeeLeave />,
       },
       {
         path: "employee-attendance",
-        element: <Attendance/>
-
+        element: <Attendance />,
       },
       {
         path: "add-supplier",
-        element: <AddSuppliers/>
+        element: <AddSuppliers />,
       },
       {
         path: "supplier-list",
-        element: <SupplierList/>
+        element: <SupplierList />,
       },
       {
         path: "supplier-profile",
-        element: <SupplierProfile/>
+        element: <SupplierProfile />,
       },
       {
         path: "update-supplier",
-        element: <UpdateSupplier/>
+        element: <UpdateSupplier />,
       },
       {
         path: "purchase-list",
-        element: <PurchaseList/>
+        element: <PurchaseList />,
       },
       {
         path: "add-purchase",
-        element: <AddPurchase/>
+        element: <AddPurchase />,
       },
       {
         path: "update-purchase",
-        element: <UpdatePurchase/>
+        element: <UpdatePurchase />,
       },
       {
         path: "role",
@@ -247,15 +242,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "qutation",
-        element: <AddQuotation/>,
+        element: <AddQuotation />,
       },
       {
         path: "update-quotation",
-        element: <UpdateQuotation/>,
+        element: <UpdateQuotation />,
       },
       {
         path: "quotation-view",
-        element: <QuotationView/>,
+        element: <QuotationView />,
       },
       {
         path: "quotaiton-list",
@@ -277,50 +272,51 @@ export const router = createBrowserRouter([
         path: "invoice-view",
         element: <ViewInvoice />,
       },
-     
+
       {
         path: "jobcard-list",
         element: <JobCardList />,
       },
       {
         path: "money-receive",
-        element: <MoneyReceived/>,
+        element: <MoneyReceived />,
       },
       {
         path: "money-receipt-list",
-        element: <MoneyReceiptList/>,
+        element: <MoneyReceiptList />,
       },
       {
         path: "money-receipt-view",
-        element: <MoneyReceiptView/>,
+        element: <MoneyReceiptView />,
       },
       {
         path: "money-receipt-update",
-        element: <UpdateMoneyReceipt/>,
+        element: <UpdateMoneyReceipt />,
       },
       {
         path: "add-expanse",
-        element: <AddExpense/>,
+        element: <AddExpense />,
       },
       {
         path: "expanse-list",
-        element: <AddExpense/>,
+        element: <AddExpense />,
       },
       {
         path: "update-expense",
-        element: <UpdateExpense/>,
+        element: <UpdateExpense />,
+      },
+      {
+        path: "view-expense",
+        element: <ViewExpense />,
       },
       {
         path: "add-attendance",
-        element: <AddAttendance/>,
-
+        element: <AddAttendance />,
       },
       {
         path: "attendance-list",
-        element: <AttendanceList/>,
-        
+        element: <AttendanceList />,
       },
-    
     ],
   },
 ]);

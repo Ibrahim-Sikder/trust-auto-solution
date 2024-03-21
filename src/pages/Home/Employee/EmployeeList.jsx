@@ -168,7 +168,9 @@ const EmployeeList = () => {
           </div>
           <div className="relative rounded-sm w-max">
       
-          <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Employee </button>
+         <Link to='/dashboard/add-employee'>
+         <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Employee </button>
+         </Link>
         </div>
         </div>
         <div className="grid grid-cols-5 gap-5">

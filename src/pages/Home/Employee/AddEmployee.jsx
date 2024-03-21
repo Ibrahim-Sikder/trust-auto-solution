@@ -2,7 +2,13 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import {  FaTrashAlt, FaEdit, FaUsers, FaUserTie, FaCloudUploadAlt } from "react-icons/fa";
+import {
+  FaTrashAlt,
+  FaEdit,
+  FaUsers,
+  FaUserTie,
+  FaCloudUploadAlt,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
@@ -55,7 +61,6 @@ const AddEmployee = () => {
   return (
     <section>
       <div className=" addProductWraps">
-        
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
             <FaUsers size={70} className="invoicIcon" />
@@ -82,31 +87,22 @@ const AddEmployee = () => {
                   label="Full Name "
                   id="Full Name "
                 />
+
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Father Name "
+                  label="Date of Birth"
                 />
                 <TextField
-                className="productField"
-                fullWidth
-                label="Mother Name "
-              />
-              <TextField
-              className="productField"
-              fullWidth
-              label="Date of Birth"
-            />
-            <TextField
-            className="productField"
-            fullWidth
-            label="NID Number"
-          />
-          <TextField
-          className="productField"
-          fullWidth
-          label="Blood Group "
-        />
+                  className="productField"
+                  fullWidth
+                  label="NID Number"
+                />
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="Blood Group "
+                />
                 <TextField
                   className="productField"
                   fullWidth
@@ -119,22 +115,20 @@ const AddEmployee = () => {
                   label="Email Address "
                   id="Email Address "
                 />
-                <FormControl  className="productField">
-                <InputLabel htmlFor="grouped-native-select">
-                  Gender
-                </InputLabel>
-                <Select
-                  className=""
-                  
-                  native
-                  id="grouped-native-select"
-                  label="Gender"
-                >
-              
-                <option value="Acura">Male</option>
-                <option value="Acura">Female</option>
-                </Select>
-              </FormControl>
+                <FormControl className="productField">
+                  <InputLabel htmlFor="grouped-native-select">
+                    Gender
+                  </InputLabel>
+                  <Select
+                    className=""
+                    native
+                    id="grouped-native-select"
+                    label="Gender"
+                  >
+                    <option value="Acura">Male</option>
+                    <option value="Acura">Female</option>
+                  </Select>
+                </FormControl>
                 <TextField
                   className="productField"
                   fullWidth
@@ -153,12 +147,7 @@ const AddEmployee = () => {
                   label="Join Date  "
                   id="Join Date  "
                 />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Left Date"
-                  id="Left Date"
-                />
+
                 <TextField
                   className="productField"
                   fullWidth
@@ -170,13 +159,33 @@ const AddEmployee = () => {
                   fullWidth
                   label="Date of Birth "
                 />
-            
-                
+               
               </div>
 
               <div>
                 <h3 className="text-xl font-bold">Family Address </h3>
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="Father Name "
+                />
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="Mother Name "
+                />
+                 <TextField
+                  className="productField"
+                  fullWidth
+                  label="Nationality"
+                />
 
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="Religion"
+                />
+                
                 <TextField
                   className="productField"
                   fullWidth
@@ -193,28 +202,30 @@ const AddEmployee = () => {
                   label="Address "
                 />
                 <div className="productField">
-                <input type="file" id="files" className="hidden" />
-                <label for="files" className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md ">
-                  <span >
-                    <FaCloudUploadAlt size={30} className="mr-2"  />
-                  </span>
-                  Upload Image
-                </label>
-              </div>
+                  <input type="file" id="files" className="hidden" />
+                  <label
+                    for="files"
+                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                  >
+                    <span>
+                      <FaCloudUploadAlt size={30} className="mr-2" />
+                    </span>
+                    Upload Image
+                  </label>
+                </div>
               </div>
             </div>
-           <div className="flex justify-end">
-           <div className="submitQutationBtn">
-           <button
-            
-             // onClick={handleAddToCard}
-             type="submit"
-             className=""
-           >
-             Add Employee
-           </button>
-         </div>
-           </div>
+            <div className="flex justify-end">
+              <div className="submitQutationBtn">
+                <button
+                  // onClick={handleAddToCard}
+                  type="submit"
+                  className=""
+                >
+                  Add Employee
+                </button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -248,34 +259,32 @@ const AddEmployee = () => {
               </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>01</td>
-              <td>Car  </td>
-              <td>BMW2343</td>
-              <td>BDT1005</td>
-              <td >
-                <div className='flex items-center justify-center '>
-                  <Link to='/dashboard/employee-profile'>
-                  <FaUserTie size={25} className="" />
-                  </Link>
-                </div>
-              </td>
-              <td >
-                <div className='editIconWrap edit'>
-                  <Link to='/dashboard/update-employee'>
-                    <FaEdit className='editIcon' />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div className='editIconWrap'>
-                  <FaTrashAlt className='deleteIcon' />
-                </div>
-
-              </td>
-            </tr>
-
-          </tbody>
+              <tr>
+                <td>01</td>
+                <td>Car </td>
+                <td>BMW2343</td>
+                <td>BDT1005</td>
+                <td>
+                  <div className="flex items-center justify-center ">
+                    <Link to="/dashboard/employee-profile">
+                      <FaUserTie size={25} className="" />
+                    </Link>
+                  </div>
+                </td>
+                <td>
+                  <div className="editIconWrap edit">
+                    <Link to="/dashboard/update-employee">
+                      <FaEdit className="editIcon" />
+                    </Link>
+                  </div>
+                </td>
+                <td>
+                  <div className="editIconWrap">
+                    <FaTrashAlt className="deleteIcon" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
