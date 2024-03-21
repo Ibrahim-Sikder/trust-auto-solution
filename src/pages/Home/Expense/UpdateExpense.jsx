@@ -10,15 +10,12 @@ import {
   FaEye,
   FaReddit,
   FaTrashAlt,
-  FaArrowRight,
-  FaArrowLeft,
   FaCloudUploadAlt,
 } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
-import img from "../../../../public/assets/service2.png";
 import { useState } from "react";
-const AddExpense = () => {
+const UpdateExpense = () => {
   const [payment, setPayment] = useState("");
 
   const handlePaymentChange = (e) => {
@@ -294,62 +291,15 @@ const AddExpense = () => {
                  : null)}
               </div>
             </div>
-            <div className="mt-2 savebtn">
-              <button>Add Expense </button>
+            <div className="flex justify-end mt-2 savebtn">
+              <button>Update Expense </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="w-full mt-5 mb-24">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-3xl font-bold text-center "> Expense List: </h3>
-        </div>
-        <div className="overflow-x-auto ">
-          <table className="table ">
-            <thead className="tableWrap">
-              <tr>
-                <th>SL</th>
-                <th>Expense Category </th>
-                <th>Sub Category </th>
-                <th>Expense For </th>
-                <th>Total Amount  </th>
-                <th>Payment Method </th>
-                <th colSpan={3}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>01</td>
-                <td>Month  </td>
-                <td>Salary </td>
-                <td>Electricity </td>
-                <td>595995</td>
-                <td>Card</td>
-                <td>
-                  <div className="editIconWrap edit">
-                    <FaEye className="editIcon" />
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap edit">
-                    <Link to="/dashboard/update-expense">
-                      <FaReddit className="editIcon" />
-                    </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap">
-                    <FaTrashAlt className="deleteIcon" />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-     
-      </div>
+      
     </section>
   );
 };
 
-export default AddExpense;
+export default UpdateExpense;

@@ -56,6 +56,7 @@ import EmployeeLeave from "../pages/Home/Employee/EmployeeProfile/EmployeeLeave"
 import Attendance from "../pages/Home/Employee/EmployeeProfile/Attendance";
 import AddAttendance from "../pages/Home/Attendance/AddAttendance";
 import AttendanceList from "../pages/Home/Attendance/AttendanceList";
+import UpdateExpense from "../pages/Home/Expense/UpdateExpense";
 
 export const router = createBrowserRouter([
   {
@@ -304,6 +305,10 @@ export const router = createBrowserRouter([
       {
         path: "expanse-list",
         element: <AddExpense/>,
+      },
+      {
+        path: "update-expense",
+        element: <UpdateExpense/>,
       },
       {
         path: "add-attendance",
