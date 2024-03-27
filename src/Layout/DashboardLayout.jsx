@@ -262,10 +262,10 @@ const DashboardLayout = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Typography className="accordionTypoGrapy">
-                  <NavLink to="/dashboard/addjob">Running Project</NavLink>
+                  <NavLink to="/dashboard/running-project">Running Project</NavLink>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
-                  Completed Project
+                  <NavLink to="/dashboard/complete-project">Complete Project</NavLink>
                 </Typography>
               </AccordionDetails>
             </Accordion>
