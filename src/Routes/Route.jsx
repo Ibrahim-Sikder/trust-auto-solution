@@ -58,6 +58,8 @@ import AddAttendance from "../pages/Home/Attendance/AddAttendance";
 import AttendanceList from "../pages/Home/Attendance/AttendanceList";
 import UpdateExpense from "../pages/Home/Expense/UpdateExpense";
 import ViewExpense from "../pages/Home/Expense/ViewExpense";
+import UpdateAttendance from "../pages/Home/Attendance/UpdateAttendance";
+import EmployeeSalary from "../pages/Home/Employee/EmployeeSalary";
 
 export const router = createBrowserRouter([
   {
@@ -316,6 +318,14 @@ export const router = createBrowserRouter([
       {
         path: "attendance-list",
         element: <AttendanceList />,
+      },
+      {
+        path: "update-attendance",
+        element: <UpdateAttendance />,
+      },
+      {
+        path: "employee-salary",
+        element: <EmployeeSalary />,
       },
     ],
   },

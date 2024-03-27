@@ -447,7 +447,7 @@ const DashboardLayout = () => {
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
                     <NavLink to="/dashboard/employee-list">
-                      All Employee
+                       Employee
                     </NavLink>
                   </span>
                 </Typography>
@@ -463,6 +463,12 @@ const DashboardLayout = () => {
                     <NavLink to="/dashboard/employee-list">Holiday</NavLink>
                   </span>
                 </Typography>
+                <Typography className="accordionTypoGrapy">
+                <span className="flex items-center">
+                  <FaThLarge className="mr-2" />
+                  <NavLink to="/dashboard/employee-salary">Salary</NavLink>
+                </span>
+              </Typography>
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />

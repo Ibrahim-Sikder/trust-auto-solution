@@ -7,6 +7,7 @@ import avatar from "../../../../../public/assets/avatar.jpg";
 import "../Employee.css";
 import EmployeeSalary from "./EmployeeSalary";
 import EmployeeOvertime from "./EmployeeOvertime";
+import EmployeeHoliday from "./EmployeeHoliday";
 const CustomerProfile = () => {
   return (
     <div>
@@ -101,7 +102,7 @@ const CustomerProfile = () => {
             <SingleEmployeeLeaveList />
           </TabPanel>
           <TabPanel>
-            <h3 className="text-3xl font-bold">Employee Holiday</h3>
+            <EmployeeHoliday />
           </TabPanel>
           <TabPanel>
             <h3 className="text-3xl font-bold">Employee Holiday</h3>
@@ -110,7 +111,7 @@ const CustomerProfile = () => {
             <EmployeeSalary />
           </TabPanel>
           <TabPanel>
-         <EmployeeOvertime/>
+            <EmployeeOvertime />
           </TabPanel>
         </Tabs>
 
