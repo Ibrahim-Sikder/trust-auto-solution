@@ -208,6 +208,7 @@ const AddAttendance = () => {
               </td>
               <td>10.00</td>
               <td>
+              
                 <input type="number" className="border" />
               </td>
               <td>

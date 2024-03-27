@@ -64,7 +64,7 @@ const AttendanceList = () => {
         </div>{" "}
         <div  className="relative rounded-sm w-max">
       
-        <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Attendance </button>
+       
       </div>
       </div>
       <div className="employeeCardWraps">

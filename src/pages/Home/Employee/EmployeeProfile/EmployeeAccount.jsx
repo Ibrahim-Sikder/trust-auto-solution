@@ -38,8 +38,8 @@ const EmployeeAccount = () => {
               <div className="flex items-center">
                 <div style={{ width: 80, height: 80 }}>
                   <CircularProgressbar
-                    value={66}
-                    text={`${66}%`}
+                    value={96}
+                    text={`${96}%`}
                     styles={{
                       // Customize the root element (outer circle)
                       path: {
@@ -66,8 +66,8 @@ const EmployeeAccount = () => {
               <div className="flex items-center">
                 <div style={{ width: 80, height: 80 }}>
                   <CircularProgressbar
-                    value={66}
-                    text={`${66}%`}
+                    value={10}
+                    text={`${10}%`}
                     styles={{
                       // Customize the root element (outer circle)
                       path: {
@@ -94,8 +94,8 @@ const EmployeeAccount = () => {
               <div className="flex items-center">
                 <div style={{ width: 80, height: 80 }}>
                   <CircularProgressbar
-                    value={66}
-                    text={`${66}%`}
+                    value={20}
+                    text={`${20}%`}
                     styles={{
                       // Customize the root element (outer circle)
                       path: {
@@ -122,8 +122,8 @@ const EmployeeAccount = () => {
               <div className="flex items-center">
                 <div style={{ width: 80, height: 80 }}>
                   <CircularProgressbar
-                    value={66}
-                    text={`${66}%`}
+                    value={5}
+                    text={`${5}%`}
                     styles={{
                       // Customize the root element (outer circle)
                       path: {
@@ -140,7 +140,7 @@ const EmployeeAccount = () => {
                     }}
                   />
                 </div>
-                <h4 className="ml-2 text-sm font-semibold">Vacation </h4>
+                <h4 className="ml-2 text-sm font-semibold">Late </h4>
               </div>
               <b>20</b>
             </div>
@@ -149,22 +149,22 @@ const EmployeeAccount = () => {
         <div className="justify-between block mt-10 md:flex">
           <div className="employeeProfileCard">
             <h3 className="text-xl font-semibold">Personal Information </h3>
-            
-            <div className="flex items-center justify-between mt-5">
-            <div className="space-y-3">
-              <b className="block">Father Name </b>
-              <b className="block">Mother Name   </b>
-              <b className="block">Nationality  </b>
-              <b className="block">Blood Group  </b>
-              <b className="block">Gender  </b>
-            </div>
-            <div className="space-y-3">
-              <span className="block">: Akbor Ali  </span>
-              <span className="block">: Halima Khatun  </span>
-              <span className="block">: Bangladesh  </span>
-              <span className="block">: Male  </span>
-            </div>
-          </div>
+            <div className="flex items-center justify-between mt-5 w-[400px]">
+                <div className="space-y-3">
+                  <b className="block">Name</b>
+                  <b className="block">Email </b>
+                  <b className="block">Phone </b>
+                  <b className="block">Birth Day </b>
+                  <b className="block">Address </b>
+                </div>
+                <div className="space-y-3">
+                  <span className="block"> : Akbor Ali </span>
+                  <span className="block">: ali@gmail.com </span>
+                  <span className="block">: 0484848445 </span>
+                  <span className="block">: 10-05-2024 </span>
+                  <span className="block">: Kuril Bishawroad, Dhaka-1212 </span>
+                </div>
+              </div>
           
           
           </div>

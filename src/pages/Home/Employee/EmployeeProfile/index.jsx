@@ -1,12 +1,10 @@
-import { HiLocationMarker } from "react-icons/hi";
-import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import EmployeeAccount from "./EmployeeAccount";
-import EmployeeList from "../EmployeeList";
 import Attendance from "./Attendance";
 import SingleEmployeeLeaveList from "./SingleEmployeeLeaveList";
 import avatar from "../../../../../public/assets/avatar.jpg";
+import '../Employee.css'
 const CustomerProfile = () => {
   return (
     <div>
@@ -27,41 +25,44 @@ const CustomerProfile = () => {
                 <div>
                   <h3 className="text-2xl">Ariful Islam</h3>
                   <span>Staff </span>
-  
 
                   <div className="space-y- mt-">
                     <div className="flex items-center">
-                     <b className="block mr-3 text-sm">Employee ID</b>
+                      <b className="block mr-3 text-sm">Employee ID</b>
                       <span>: 45996-0789777</span>
                     </div>
                     <div className="flex items-center">
-                    <b className="block mr-3 text-sm">Date of Join</b>
-                     
-                     <span>: 1st Jan 2024 </span>
-                   </div>
-                   <button className="px-3 py-1 mt-3 text-white bg-[#42A1DA] rounded-sm">Send Message </button>
+                      <b className="block mr-3 text-sm">Date of Join</b>
+
+                      <span>: 1st Jan 2024 </span>
+                    </div>
+                    <button className="px-3 py-1 mt-3 text-white bg-[#42A1DA] rounded-sm">
+                      Send Message{" "}
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div
-              className="w-[1px] h-[200px] border border-dashed mr-3 "
-            ></div>
-            <div className="w-[50%]">
-              <div className="flex items-center justify-between mt-5 w-[400px]">
-                <div className="space-y-3">
-                  <b className="block">Name</b>
-                  <b className="block">Email </b>
-                  <b className="block">Phone </b>
-                  <b className="block">Birth Day </b>
-                  <b className="block">Address </b>
+            <div className="h-[200px] border border-dashed  "></div>
+            <div className="w-[30%] max-auto mr-10 ">
+              <div className="flex items-center justify-between ">
+                <div className="overTimeCard employeeCard ">
+                  <div className="flex items-center">
+                    <div className="">
+                      <h4 className="text-xl font-semibold ">Overtime </h4>
+                      
+                      <p><b>March <b>: 5h 30m</b></b></p>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-3">
-                  <span className="block"> : Akbor Ali </span>
-                  <span className="block">: ali@gmail.com </span>
-                  <span className="block">: 0484848445 </span>
-                  <span className="block">: 10-05-2024 </span>
-                  <span className="block">: Kuril Bishawroad, Dhaka-1212 </span>
+                <div className="overTimeCard employeeCard">
+                  <div className="flex items-center">
+                    <div className="">
+                      <h4 className="text-xl font-semibold ">Total Salary </h4>
+                      <span className="block my-2 ">৳20000</span>
+                      <p className="">March Paid : <b className='text-[#F62D51]'>৳20000</b></p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,10 +92,10 @@ const CustomerProfile = () => {
             <SingleEmployeeLeaveList />
           </TabPanel>
           <TabPanel>
-            <EmployeeList />
+            <h3 className="text-3xl font-bold">Employee Holiday</h3>
           </TabPanel>
           <TabPanel>
-            <EmployeeList />
+            <h3 className="text-3xl font-bold">Employee Holiday</h3>
           </TabPanel>
         </Tabs>
 

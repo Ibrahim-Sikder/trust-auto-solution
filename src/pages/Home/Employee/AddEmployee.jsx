@@ -10,54 +10,19 @@ import {
   FaCloudUploadAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import { FormControl, InputLabel, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useState } from "react";
 
 const AddEmployee = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
+  const [active, setActive] = useState("");
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
+  const handleChange = (event) => {
+    setActive(event.target.value);
+  };
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+  
 
+  
   return (
     <section>
       <div className=" addProductWraps">
@@ -129,18 +94,7 @@ const AddEmployee = () => {
                     <option value="Acura">Female</option>
                   </Select>
                 </FormControl>
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Password"
-                  id="Password"
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Confirm Password "
-                  id="Confirm Password  "
-                />
+
                 <TextField
                   className="productField"
                   fullWidth
@@ -154,12 +108,36 @@ const AddEmployee = () => {
                   label="Designation  "
                   id="Designation  "
                 />
+
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Select Status
+                  </InputLabel>
+                  <Select
+                    className="productField"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={active}
+                    label="Select Status"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="Active">Active</MenuItem>
+                    <MenuItem value="Inactive">Inactive</MenuItem>
+                  </Select>
+                </FormControl>
+
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Date of Birth "
+                  label="Password"
+                  id="Password"
                 />
-               
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="Confirm Password "
+                  id="Confirm Password  "
+                />
               </div>
 
               <div>
@@ -174,7 +152,7 @@ const AddEmployee = () => {
                   fullWidth
                   label="Mother Name "
                 />
-                 <TextField
+                <TextField
                   className="productField"
                   fullWidth
                   label="Nationality"
@@ -185,7 +163,7 @@ const AddEmployee = () => {
                   fullWidth
                   label="Religion"
                 />
-                
+
                 <TextField
                   className="productField"
                   fullWidth
@@ -199,7 +177,7 @@ const AddEmployee = () => {
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Address "
+                  label="Local Address "
                 />
                 <div className="productField">
                   <input type="file" id="files" className="hidden" />
@@ -232,20 +210,34 @@ const AddEmployee = () => {
       <div className="w-full mt-5 mb-24">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold text-center "> Employee List: </h3>
-          <div className="flex items-center">
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon className="searchIcon" />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-              Search
-            </button>
+        </div>
+
+        <div className="grid grid-cols-5 gap-5 my-8">
+          <div className="relative rounded-sm w-max">
+            <input className="peer employeeInput" type="text" placeholder="" />
+            <label className="employeeLavel" htmlFor="">
+              Employee ID
+            </label>
           </div>
+          <div className="relative rounded-sm w-max">
+            <input className="peer employeeInput" type="text" placeholder="" />
+            <label className="employeeLavel" htmlFor="">
+              Employee Name
+            </label>
+          </div>
+          <div className="relative rounded-sm w-max">
+            <input className="peer employeeInput" type="text" placeholder="" />
+            <label className="employeeLavel" htmlFor="">
+              Designation
+            </label>
+          </div>
+          <div className="relative rounded-sm w-max">
+            <button className="employeeBtn employeeInput">Search</button>
+          </div>
+
+       
+    
+         
         </div>
         <div className="overflow-x-auto ">
           <table className="table ">
@@ -261,7 +253,7 @@ const AddEmployee = () => {
             <tbody>
               <tr>
                 <td>01</td>
-                <td>Car </td>
+                <td>Mr Khan</td>
                 <td>BMW2343</td>
                 <td>BDT1005</td>
                 <td>

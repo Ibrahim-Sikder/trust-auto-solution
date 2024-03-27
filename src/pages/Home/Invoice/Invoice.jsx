@@ -659,8 +659,7 @@ const Invoice = () => {
       </div>
       <div className="mt-5">
         <form>
-
-        {/** 
+          {/** 
           <div className="qutationForm invoicForm">
             <div>
               <label className="block">Order Number </label>
@@ -713,98 +712,57 @@ const Invoice = () => {
             </div>
           </div>
          */}
+         <div className="vehicleCard">Create Invoice </div>
 
-
-
-
-
-<div className="mb-10 jobCardFieldWraps">
-  
-<div className='jobCardFieldLeftSide'>
-<h3 className="text-3xl font-bold">Customer Info</h3>
-<div className="mt-3">
-<TextField
-className="addJobInputField"
-  label="Customer Id" 
-/>
-</div>
-<div className="mt-3">
-<TextField
-className="addJobInputField"
-  label="Serial No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Company"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Customer"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Phone"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Address"
-/>
-</div>
-</div>
-
-<div className='jobCardFieldRightSide'>
-<h3 className="text-3xl font-bold">Vehicle Info</h3>
-
-
-
-
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Registration No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Chassis No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Engine & CC"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Vehicle Name"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Mileage"
-/>
-</div>
-</div>
-</div>
-
-          <div className="vehicleCard">Invoice Card </div>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center topSearchBa">
-             
-              
+          <div className="mb-10 jobCardFieldWraps">
+            <div className="jobCardFieldLeftSide">
+              <h3 className="text-3xl font-bold">Customer Info</h3>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Customer Id" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Serial No" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Company" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Customer" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Phone" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Address" />
+              </div>
             </div>
+
+            <div className="jobCardFieldRightSide">
+              <h3 className="text-3xl font-bold">Vehicle Info</h3>
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Registration No"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Chassis No" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Engine & CC" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Vehicle Name" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Mileage" />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center topSearchBa"></div>
             {customer_type === "customer" && (
               <Link to="/dashboard/add-customer">
                 {" "}
@@ -813,8 +771,6 @@ className="addJobInputField"
                 </button>
               </Link>
             )}
-
-           
           </div>
           <div className="flex items-center justify-around mb-3 labelWrap">
             <label>SL No </label>

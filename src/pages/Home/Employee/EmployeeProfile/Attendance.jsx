@@ -5,7 +5,7 @@ import "../Employee.css";
 import AttendanceTable from "./AttendanceTable";
 import { useState } from 'react';
 import Select from 'react-select';
-import AttendanceModal from "./AttendanceModal";
+
 
 const months = [
   { value: 'Select Month', label: 'Select Month' },
@@ -100,9 +100,7 @@ const Attendance = () => {
         </div>
       </div>
       
-      {
-        open && <AttendanceModal onClose={handleClose} />
-      }
+      
       <AttendanceTable />
     </div>
   );

@@ -7,7 +7,7 @@ import { usePDF } from "react-to-pdf";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
-const Detail = () => {
+const ViewExpense = () => {
   const componentRef = useRef();
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
@@ -429,7 +429,7 @@ const Detail = () => {
 
                 <Link to="/dashboard/qutation">
                   {" "}
-                  <button> Quotation </button>
+                  <button> Qutation </button>
                 </Link>
               </div>
             )}
@@ -439,4 +439,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default ViewExpense;

@@ -6,7 +6,6 @@ import avatar from "../../../../public/assets/avatar.jpg";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
-
 const EmployeeList = () => {
   const employeeData = [
     {
@@ -102,7 +101,6 @@ const EmployeeList = () => {
   return (
     <div className="w-full mt-5 mb-24">
       <div className="flex justify-end pb-3 border-b-2">
-        
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />{" "}
@@ -124,70 +122,51 @@ const EmployeeList = () => {
       <div className="employeeCardWraps">
         <div className="grid grid-cols-5 gap-5 my-8">
           <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput"
-              type="text"
-              placeholder=""
-            />
-            <label
-              className="employeeLavel"
-              htmlFor=""
-            >
-            Employee ID
+            <input className="peer employeeInput" type="text" placeholder="" />
+            <label className="employeeLavel" htmlFor="">
+              Employee ID
             </label>
           </div>
           <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput"
-              type="text"
-              placeholder=""
-            />
-            <label
-              className="employeeLavel"
-              htmlFor=""
-            >
-            Employee Name
+            <input className="peer employeeInput" type="text" placeholder="" />
+            <label className="employeeLavel" htmlFor="">
+              Employee Name
             </label>
           </div>
           <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput"
-              type="text"
-              placeholder=""
-            />
-            <label
-              className="employeeLavel"
-              htmlFor=""
-            >
-              Designation 
+            <input className="peer employeeInput" type="text" placeholder="" />
+            <label className="employeeLavel" htmlFor="">
+              Designation
             </label>
           </div>
           <div className="relative rounded-sm w-max">
-      
             <button className="employeeBtn employeeInput">Search</button>
           </div>
           <div className="relative rounded-sm w-max">
-      
-         <Link to='/dashboard/add-employee'>
-         <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95"> + Add Employee </button>
-         </Link>
-        </div>
+            <Link to="/dashboard/add-employee">
+              <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95">
+                {" "}
+                + Add Employee{" "}
+              </button>
+            </Link>
+          </div>
         </div>
         <div className="grid grid-cols-5 gap-5">
-        {employeeData.map((employee) => (
-          <div key={employee.id} className="employeeCard">
-            <div>
-              <img className="employeeCardImg" src={employee.image} alt="" />
-              <h3 className="text-xl font-semibold">{employee.name} </h3>
-              <p>{employee.designation}</p> 
-              <div className="flex items-center justify-center">
-              
-          <Link to='/dashboard/employee-profile'>    <span>See More  </span></Link>
-              <HiOutlineArrowNarrowRight className="ml-1 "/>
+          {employeeData.map((employee) => (
+            <div key={employee.id} className="employeeCard">
+              <div>
+                <img className="employeeCardImg" src={employee.image} alt="" />
+                <h3 className="text-xl font-semibold">{employee.name} </h3>
+                <p>{employee.designation}</p>
+                <Link to="/dashboard/employee-profile">
+                  <div className="flex items-center justify-center">
+                    <span>See More </span>
+                    <HiOutlineArrowNarrowRight className="ml-1 " />
+                  </div>
+                </Link>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
         </div>
       </div>
     </div>

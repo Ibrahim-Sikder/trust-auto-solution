@@ -604,30 +604,32 @@ const AddQuotation = () => {
 
   return (
     <div className="px-5 py-10">
-    <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-    <div className=" addJobCardHeads">
-      <img src={logo} alt="logo" className=" addJobLogoImg" />
-      <div>
-        <h2 className=" trustAutoTitle trustAutoTitleQutation">
-          Trust Auto Solution{" "}
-        </h2>
-        <span className="text-[12px] lg:text-xl">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+      <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
+        <div className=" addJobCardHeads">
+          <img src={logo} alt="logo" className=" addJobLogoImg" />
+          <div>
+            <h2 className=" trustAutoTitle trustAutoTitleQutation">
+              Trust Auto Solution{" "}
+            </h2>
+            <span className="text-[12px] lg:text-xl">
+              Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
+            </span>
+          </div>
+          <div className="space-y-1 text-justify jobCardContactInfo">
+            <span className="block">
+              <span className="font-bold">Mobile:</span> 345689789666
+            </span>
+            <span className="block">
+              <small className="font-bold">Email:</small>{" "}
+              trustautosolution@gmail.com
+            </span>
+            <span className="block font-bold ">trustautosolution.com</span>
+          </div>
+        </div>
       </div>
-      <div className="space-y-1 text-justify jobCardContactInfo">
-        <span className="block">
-          <span className="font-bold">Mobile:</span> 345689789666
-        </span>
-        <span className="block">
-          <small className="font-bold">Email:</small>{" "}
-          trustautosolution@gmail.com
-        </span>
-        <span className="block font-bold ">trustautosolution.com</span>
-      </div>
-    </div>
-  </div>
       <div className="mt-5">
         <form>
-        {/** 
+          {/** 
           <div className="lg:flex gap-x-2">
             <div>
               <label className="block">Order Number </label>
@@ -686,90 +688,56 @@ const AddQuotation = () => {
             )}
           </div>
           */}
-          
-<div className="mb-10 jobCardFieldWraps">
-  
-<div className='jobCardFieldLeftSide'>
-<h3 className="text-3xl font-bold">Customer Info</h3>
-<div className="mt-3">
-<TextField
-className="addJobInputField"
-  label="Customer Id" 
-/>
-</div>
-<div className="mt-3">
-<TextField
-className="addJobInputField"
-  label="Serial No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Company"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Customer"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Phone"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Address"
-/>
-</div>
-</div>
+          <div className="vehicleCard">Create Quotation </div>
 
-<div className='mt-3 md:mt-0 jobCardFieldRightSide'>
-<h3 className="text-3xl font-bold">Vehicle Info</h3>
+          <div className="mb-10 jobCardFieldWraps">
+            <div className="jobCardFieldLeftSide">
+              <h3 className="text-3xl font-bold">Customer Info</h3>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Customer Id" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Serial No" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Company" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Customer" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Phone" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Address" />
+              </div>
+            </div>
 
+            <div className="mt-3 md:mt-0 jobCardFieldRightSide">
+              <h3 className="text-3xl font-bold">Vehicle Info</h3>
 
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Registration No"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Chassis No" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Engine & CC" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Vehicle Name" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Mileage" />
+              </div>
+            </div>
+          </div>
 
-
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Registration No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Chassis No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Engine & CC"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Vehicle Name"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Mileage"
-/>
-</div>
-</div>
-</div>
-
-
-          <div className="vehicleCard">Quotation Card </div>
+         
           {/**
           <div className="mb-5">
           
@@ -826,7 +794,7 @@ className="addJobInputField"
            
           </div>
           */}
-          
+
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
@@ -848,7 +816,7 @@ className="addJobInputField"
                       </button>
                     )}
                   </div>
-                  <div >
+                  <div>
                     <input
                       className="firstInputField"
                       autoComplete="off"

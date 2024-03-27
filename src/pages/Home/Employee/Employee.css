@@ -91,6 +91,17 @@ th {
     margin: 0 auto;
     width:50px;
 }
+
+.overTimeCard{
+    width: 244px !important;
+    height: 130px;
+    border-radius: 11px;
+}
+
+
+
+
+
 @media screen and (max-width: 1200px) {
     /* Adjust table width for smaller screens */
     table {
