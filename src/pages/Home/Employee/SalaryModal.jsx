@@ -1,20 +1,11 @@
-import React, { useState } from "react";
+/* eslint-disable react/prop-types */
+
 import { IoCloseSharp } from "react-icons/io5";
 
-const leaves = [
-  { value: "Select Leave ", label: "Select Leave " },
-  { value: "Casual Leave", label: "Casual Leave " },
-  { value: "Annual Leave ", label: "Annual Leave " },
-];
 
-const initialSelectedOption = leaves[0];
+
 const SalaryModal = ({ onClose }) => {
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
 
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
-  };
 
   return (
     <div className="fixed top-0 left-0 z-50 w-screen h-screen bg-black/60 backdrop-blur-sm ">
@@ -100,7 +91,6 @@ const SalaryModal = ({ onClose }) => {
             <div className="mt-4">
               <div>
                 <label className="block mb-1">Bonus </label>
-               
               </div>
 
               <input

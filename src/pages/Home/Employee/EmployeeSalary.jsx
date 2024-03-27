@@ -2,27 +2,12 @@ import { FaRegTrashAlt, FaUserEdit, FaUsers } from "react-icons/fa";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import { useState } from 'react';
-import Select from 'react-select';
 import avatar from '../../../../public/assets/avatar.jpg';
 import { Link } from "react-router-dom";
 import { HiOutlinePlus } from "react-icons/hi";
 import SalaryModal from "./SalaryModal";
 
-const months = [
-  { value: 'Select Month', label: 'Select Month' },
-  { value: 'January', label: 'January' },
-  { value: 'February', label: 'February' },
-  { value: 'March', label: 'March' },
-  { value: 'April', label: 'April' },
-  { value: 'May', label: 'May' },
-  { value: 'June', label: 'June' },
-  { value: 'July', label: 'July' },
-  { value: 'August', label: 'August' },
-  { value: 'September', label: 'September' },
-  { value: 'October', label: 'October' },
-  { value: 'November', label: 'November' },
-  { value: 'December', label: 'December' }
-];
+
 
 const years = [{ value: 'Select Year', label: 'Select Year' }];
 
@@ -32,26 +17,39 @@ for (let year = 2024; year <= 2030; year++) {
 }
 
 
-const initialSelectedOption = months[0]; 
-const initialSelectedOption2 = years[0]; 
 
-const EmployeeSalary = () => {
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
-  const [selectedOption2, setSelectedOption2] = useState(initialSelectedOption2);
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
-  };
-  const handleChange2 = (selectedOption2) => {
-    setSelectedOption2(selectedOption2);
-    
-  };
-  
+const EmployeeSalary = () => {  
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   
+  const employeeData =[
+    {
+        id:1, 
+        name: 'Mr John',
+        salary: 25000,
+    },
+    {
+        id:1, 
+        name: 'Mr John',
+        salary: 25000,
+    },
+    {
+        id:1, 
+        name: 'Mr John',
+        salary: 25000,
+    },
+    {
+        id:1, 
+        name: 'Mr John',
+        salary: 25000,
+    },
+    {
+        id:1, 
+        name: 'Mr John',
+        salary: 25000,
+    },
+  ]
 
   return (
     <div className="w-full mt-5 mb-24">
@@ -82,20 +80,8 @@ const EmployeeSalary = () => {
               Employee ID
             </label>
           </div>
-          <div>
-            <Select
-              value={selectedOption}
-              onChange={handleChange}
-              options={months}
-            />
-          </div>
-          <div>
-            <Select
-              value={selectedOption2}
-              onChange={handleChange2}
-              options={years}
-            />
-          </div>
+          
+         
           <div className="relative rounded-sm w-max">
             <button className="employeeBtn employeeInput">Search</button>
           </div>
@@ -117,48 +103,53 @@ const EmployeeSalary = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <div className="flex items-center">
-              <img
-                src={avatar}
-                className="object-cover w-8 h-8 mr-2 rounded-full"
-                alt=""
-              />
-              <span>Mr John</span>
-            </div>
+       {
+        employeeData.map((data,i)=>(
+            <tr key={data.id} className={ i % 2 == 0 ? 'odd-row' : 'even-row'}>
+            <td>
+              <div className="flex items-center">
+                <img
+                  src={avatar}
+                  className="object-cover w-8 h-8 mr-2 rounded-full"
+                  alt=""
+                />
+                <span>Mr John</span>
+              </div>
+            </td>
+            <td>0000966774</td>
+            <td>৳200000</td>
+            <td>৳5000</td>
+            <td>৳6000 </td>
+            <td>৳15000</td>
+            <td>৳25000</td>
+            <td>
+            {" "}
+            <HiOutlinePlus
+              onClick={handleOpen}
+              className="text-[#FF851A] cursor-pointer mx-auto"
+              size={30}
+            />{" "}
           </td>
-          <td>0000966774</td>
-          <td>৳200000</td>
-          <td>৳5000</td>
-          <td>৳6000 </td>
-          <td>৳15000</td>
-          <td>৳25000</td>
-          <td>
-          <Link to="/dashboard/update-attendance">
+            <td>
+            <Link to="/dashboard/update-attendance">
+           
+              <FaUserEdit
+                className="text-[#60BF6B] cursor-pointer mx-auto"
+                size={30}
+              />
+            </Link>
+          </td>
          
-            <FaUserEdit
-              className="text-[#60BF6B] cursor-pointer mx-auto"
+          <td>
+            {" "}
+            <FaRegTrashAlt
+              className="text-[#F62F52] cursor-pointer mx-auto"
               size={30}
             />
-          </Link>
-        </td>
-        <td>
-          {" "}
-          <HiOutlinePlus
-            onClick={handleOpen}
-            className="text-[#42A1DA] cursor-pointer mx-auto"
-            size={30}
-          />{" "}
-        </td>
-        <td>
-          {" "}
-          <FaRegTrashAlt
-            className="text-[#F62F52] cursor-pointer mx-auto"
-            size={30}
-          />
-        </td>
-        </tr>
+          </td>
+          </tr>
+        ))
+       }
       </tbody>
     </table>
     
