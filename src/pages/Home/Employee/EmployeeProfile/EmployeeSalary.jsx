@@ -7,8 +7,7 @@ import "../Employee.css";
 const EmployeeSalary = ({ open }) => {
   return (
     <div className="table-container">
-      {" "}
-      {/* Add a class to the table container */}
+    
       <table className="leaveTable">
         <thead>
           <tr>

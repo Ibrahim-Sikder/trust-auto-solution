@@ -1,16 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import "../Employee.css";
-import avatar from "../../../../../public/assets/avatar.jpg";
+
 import "../Employee.css";
-import { useState } from "react";
-import OvertimeModal from "./OvertimeModal";
 
 const EmployeeOvertime = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+ 
   return (
     <div className="table-container">
       {" "}
@@ -39,19 +34,11 @@ const EmployeeOvertime = () => {
                 </div>
               </div>
             </td>
-            <td>
-              <button
-                onClick={handleOpen}
-                className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-[#FF851A] active:scale-95"
-              >
-                {" "}
-                + Add Overtime{" "}
-              </button>
-            </td>
+           
           </tr>
         </tbody>
       </table>
-      {open && <OvertimeModal onClose={handleClose} />}
+     
     </div>
   );
 };

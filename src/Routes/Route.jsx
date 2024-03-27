@@ -60,6 +60,7 @@ import UpdateExpense from "../pages/Home/Expense/UpdateExpense";
 import ViewExpense from "../pages/Home/Expense/ViewExpense";
 import UpdateAttendance from "../pages/Home/Attendance/UpdateAttendance";
 import EmployeeSalary from "../pages/Home/Employee/EmployeeSalary";
+import EmployeeOvertime from "../pages/Home/Employee/EmployeeOvertime";
 
 export const router = createBrowserRouter([
   {
@@ -326,6 +327,10 @@ export const router = createBrowserRouter([
       {
         path: "employee-salary",
         element: <EmployeeSalary />,
+      },
+      {
+        path: "employee-overtime",
+        element: <EmployeeOvertime />,
       },
     ],
   },

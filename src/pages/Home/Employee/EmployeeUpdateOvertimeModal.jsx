@@ -3,7 +3,7 @@
 import { IoCloseSharp } from "react-icons/io5";
 
 
-const OvertimeModal = ({ onClose }) => {
+const EmployeeUpdateOvertimeModal = ({ onClose }) => {
 
 
   return (
@@ -19,9 +19,42 @@ const OvertimeModal = ({ onClose }) => {
               className="text-white rounded-full cursor-pointer top-10 right-10 bg-[#A0A0A0] p-1"
             />
           </div>
-          <h2 className="text-xl font-semibold text-center ">Add Overtime </h2>
+          <h2 className="text-xl font-semibold text-center ">Update Overtime </h2>
           <div>
-           
+          <div className="mt-4">
+          <div className="flex">
+            <label className="block mb-1">Employee ID </label>
+            <span className="ml-1 text-red-600">*</span>
+          </div>
+
+          <input
+            type="text"
+            className="w-full border-2-[#ddd] border p-2 rounded-sm"
+          />
+        </div>
+       
+      <div className="mt-4">
+        <div className="flex">
+          <label className="block mb-1">Employee Name </label>
+          <span className="ml-1 text-red-600">*</span>
+        </div>
+
+        <input
+          type="text"
+          className="w-full border-2-[#ddd] border p-2 rounded-sm"
+        />
+      </div>
+      <div className="mt-4">
+      <div className="flex">
+        <label className="block mb-1">Hours </label>
+        <span className="ml-1 text-red-600">*</span>
+      </div>
+
+      <input
+        type="text"
+        className="w-full border-2-[#ddd] border p-2 rounded-sm"
+      />
+    </div>
             <div className="mt-4">
             <div className="flex">
               <label className="block mb-1">Date </label>
@@ -33,20 +66,10 @@ const OvertimeModal = ({ onClose }) => {
               className="w-full border-2-[#ddd] border p-2 rounded-sm bg-[#E9ECEF]"
             />
           </div>
+           
             <div className="mt-4">
               <div className="flex">
-                <label className="block mb-1">Hours </label>
-                <span className="ml-1 text-red-600">*</span>
-              </div>
-
-              <input
-                type="text"
-                className="w-full border-2-[#ddd] border p-2 rounded-sm bg-[#E9ECEF]"
-              />
-            </div>
-            <div className="mt-4">
-              <div className="flex">
-                <label className="block mb-1"> Reason </label>
+                <label className="block mb-1"> Note </label>
                
               </div>
 
@@ -71,4 +94,4 @@ const OvertimeModal = ({ onClose }) => {
   );
 };
 
-export default OvertimeModal;
+export default EmployeeUpdateOvertimeModal;
