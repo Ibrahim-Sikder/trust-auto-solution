@@ -32,6 +32,7 @@ const initialSelectedOption2 = years[0];
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { FaRegTrashAlt, FaUserEdit } from "react-icons/fa";
+import AttendanceTimePicker from "./AttendanceTimePicker";
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -81,8 +82,8 @@ const AddAttendance = () => {
           <div className="ml-2">
             <h3 className="text-2xl font-bold"> Attendance </h3>{" "}
             <span> Dashboard / Attendance </span>{" "}
-          </div>{" "}
-        </div>{" "}
+          </div>
+        </div>
       </div>
       <form className=" attendanceWraps">
         <table className="attendanceInputTable">
@@ -116,17 +117,26 @@ const AddAttendance = () => {
               </td>
               <td>10.00</td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-                <input disabled type="number" className="bg-white border" />
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
               </td>
             </tr>
             <tr className="odd-row">
-              <td>02</td>
+              <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
               <td>Staff</td>
@@ -139,17 +149,26 @@ const AddAttendance = () => {
               </td>
               <td>10.00</td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-              <input disabled type="number" className="bg-white border" />
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
               </td>
             </tr>
-            <tr className='even-row'>
-              <td>03</td>
+            <tr className="even-row">
+              <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
               <td>Staff</td>
@@ -162,17 +181,26 @@ const AddAttendance = () => {
               </td>
               <td>10.00</td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-              <input disabled type="number" className="bg-white border" />
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
               </td>
             </tr>
-            <tr className='odd-row'>
-              <td>04</td>
+            <tr className="odd-row">
+              <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
               <td>Staff</td>
@@ -185,17 +213,26 @@ const AddAttendance = () => {
               </td>
               <td>10.00</td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-              <input disabled type="number" className="bg-white border" />
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
               </td>
             </tr>
-            <tr className='even-row'>
-              <td>05</td>
+            <tr className="even-row">
+              <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
               <td>Staff</td>
@@ -208,16 +245,185 @@ const AddAttendance = () => {
               </td>
               <td>10.00</td>
               <td>
-              
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-                <input type="number" className="border" />
+                <AttendanceTimePicker />
               </td>
               <td>
-              <input disabled type="number" className="bg-white border" />
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
               </td>
             </tr>
+            <tr className="odd-row">
+              <td>01</td>
+              <td>Rakib</td>
+              <td>04785</td>
+              <td>Staff</td>
+              <td>10-05-2024</td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>10.00</td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr className="even-row">
+              <td>01</td>
+              <td>Rakib</td>
+              <td>04785</td>
+              <td>Staff</td>
+              <td>10-05-2024</td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>10.00</td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr className="odd-row">
+              <td>01</td>
+              <td>Rakib</td>
+              <td>04785</td>
+              <td>Staff</td>
+              <td>10-05-2024</td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>10.00</td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr className="even-row">
+              <td>01</td>
+              <td>Rakib</td>
+              <td>04785</td>
+              <td>Staff</td>
+              <td>10-05-2024</td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>10.00</td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr className="odd-row">
+              <td>01</td>
+              <td>Rakib</td>
+              <td>04785</td>
+              <td>Staff</td>
+              <td>10-05-2024</td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>
+                <input type="checkbox" className="border" />
+              </td>
+              <td>10.00</td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <AttendanceTimePicker />
+              </td>
+              <td>
+                <div className="flex items-center justify-center cursor-pointer ">
+                  <HiOutlineX
+                    size={20}
+                    className="text-[#F62D51] attendanceIcon"
+                  />
+                  <HiCheck
+                    className="text-[#4AB657] attendanceIcon "
+                    size={20}
+                  />
+                </div>
+              </td>
+            </tr>
+            
           </tbody>
         </table>
         <div className="flex justify-end mt-3">
@@ -225,177 +431,177 @@ const AddAttendance = () => {
           <button
             className="bg-[#42A1DA] text-white px-3 py-2 rounded-sm"
             type="submit"
-          >Submit Attendance 
+          >
+            Submit Attendance
           </button>
         </div>
       </form>
-      
-      <div className="mt-14 table-container">
-      <h3 className="mt-5 mb-8 text-2xl font-semibold">
-        Today Attendance
-      </h3>
-      <table className="attendanceTable">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Present</th>
-            <th>Absent</th>
-            <th>Late</th>
-            <th colSpan={3}>Action </th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td> 10-02-2024</td>
-            <td>
-            <div className="presentCard employeeCard">
-            <div className="flex items-center justify-center w-full px-5 py-3">
-              <div className="flex items-center">
-                <div style={{ width: 60, height: 60 }}>
-                  <CircularProgressbar
-                    value={90}
-                    text={`${90}%`}
-                    styles={{
-                      // Customize the root element (outer circle)
-                      path: {
-                        stroke: `#60BE6B`, // Set the color of the progress bar
-                      },
-                      // Customize the text
-                      text: {
-                        fill: "#3e98c7", // Set the color of the text
-                      },
-                      // Customize the trail (background)
-                      trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-              <b className="ml-3 text-3xl">20</b>
-            </div>
-          </div>
-            </td>
-            <td>
-            <div className="employeeCard presentCard">
-            <div className="flex items-center justify-center w-full px-5 py-3">
-              <div className="flex items-center">
-                <div style={{ width: 60, height: 60 }}>
-                  <CircularProgressbar
-                    value={10}
-                    text={`${10}%`}
-                    styles={{
-                      // Customize the root element (outer circle)
-                      path: {
-                        stroke: `#F62D51`, // Set the color of the progress bar
-                      },
-                      // Customize the text
-                      text: {
-                        fill: "#3e98c7", // Set the color of the text
-                      },
-                      // Customize the trail (background)
-                      trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
-                      },
-                    }}
-                  />
-                </div>
-             
-              </div>
-              <b className="ml-3 text-3xl">10</b>
-            </div>
-          </div>
-            </td>
-            <td>
-            <div className="presentCard employeeCard">
-            <div className="flex items-center justify-center w-full py-3 pxe-5">
-              <div className="flex items-center">
-                <div style={{ width: 60, height: 60 }}>
-                  <CircularProgressbar
-                    value={5}
-                    text={`${5}%`}
-                    styles={{
-                      // Customize the root element (outer circle)
-                      path: {
-                        stroke: `#FF851A`, // Set the color of the progress bar
-                      },
-                      // Customize the text
-                      text: {
-                        fill: "#3e98c7", // Set the color of the text
-                      },
-                      // Customize the trail (background)
-                      trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
-                      },
-                    }}
-                  />
-                </div>
-                
-              </div>
-              <b className="ml-3 text-3xl">5</b>
-            </div>
-          </div>
-            </td>
-            <td>
-            {" "}
-            <FaUserEdit
-            onClick={open}
-             className='text-[#60BF6B] cursor-pointer mx-auto' size={30}/>{" "}
-          </td>
-          <td>
-          {" "}
-          <HiOutlineEye
-          onClick={open}
-           className='text-[#42A1DA] cursor-pointer mx-auto' size={30}/>{" "}
-        </td>
-          <td>
-            {" "}
-            <FaRegTrashAlt className='text-[#F62F52] cursor-pointer mx-auto' size={30} />
-          </td>
-          </tr>
-         
-        </tbody>
-      </table>
-    </div>
 
-   
-      
+      <div className="mt-14 table-container">
+        <h3 className="mt-5 mb-8 text-2xl font-semibold">Today Attendance</h3>
+        <table className="attendanceTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Late</th>
+              <th colSpan={3}>Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> 10-02-2024</td>
+              <td>
+                <div className="presentCard employeeCard">
+                  <div className="flex items-center justify-center w-full px-5 py-3">
+                    <div className="flex items-center">
+                      <div style={{ width: 60, height: 60 }}>
+                        <CircularProgressbar
+                          value={90}
+                          text={`${90}%`}
+                          styles={{
+                            // Customize the root element (outer circle)
+                            path: {
+                              stroke: `#60BE6B`, // Set the color of the progress bar
+                            },
+                            // Customize the text
+                            text: {
+                              fill: "#3e98c7", // Set the color of the text
+                            },
+                            // Customize the trail (background)
+                            trail: {
+                              stroke: "#f4f4f4", // Set the color of the background
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <b className="ml-3 text-3xl">20</b>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div className="employeeCard presentCard">
+                  <div className="flex items-center justify-center w-full px-5 py-3">
+                    <div className="flex items-center">
+                      <div style={{ width: 60, height: 60 }}>
+                        <CircularProgressbar
+                          value={10}
+                          text={`${10}%`}
+                          styles={{
+                            // Customize the root element (outer circle)
+                            path: {
+                              stroke: `#F62D51`, // Set the color of the progress bar
+                            },
+                            // Customize the text
+                            text: {
+                              fill: "#3e98c7", // Set the color of the text
+                            },
+                            // Customize the trail (background)
+                            trail: {
+                              stroke: "#f4f4f4", // Set the color of the background
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <b className="ml-3 text-3xl">10</b>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div className="presentCard employeeCard">
+                  <div className="flex items-center justify-center w-full py-3 pxe-5">
+                    <div className="flex items-center">
+                      <div style={{ width: 60, height: 60 }}>
+                        <CircularProgressbar
+                          value={5}
+                          text={`${5}%`}
+                          styles={{
+                            // Customize the root element (outer circle)
+                            path: {
+                              stroke: `#FF851A`, // Set the color of the progress bar
+                            },
+                            // Customize the text
+                            text: {
+                              fill: "#3e98c7", // Set the color of the text
+                            },
+                            // Customize the trail (background)
+                            trail: {
+                              stroke: "#f4f4f4", // Set the color of the background
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <b className="ml-3 text-3xl">5</b>
+                  </div>
+                </div>
+              </td>
+              <td>
+                {" "}
+                <FaUserEdit
+                  onClick={open}
+                  className="text-[#60BF6B] cursor-pointer mx-auto"
+                  size={30}
+                />{" "}
+              </td>
+              <td>
+                {" "}
+                <HiOutlineEye
+                  onClick={open}
+                  className="text-[#42A1DA] cursor-pointer mx-auto"
+                  size={30}
+                />{" "}
+              </td>
+              <td>
+                {" "}
+                <FaRegTrashAlt
+                  className="text-[#F62F52] cursor-pointer mx-auto"
+                  size={30}
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div className="mt-10 table-container">
         <h3 className="mt-5 mb-8 text-2xl font-semibold">
           Today Attendance Sheet : March 2024
         </h3>
         <div className="grid grid-cols-5 gap-5 mt-5 mb-8">
-        <div className="relative rounded-sm w-max">
-          <input
-            className="peer employeeInput w-[300px h-[60px]]"
-            type="text"
-            placeholder=""
-          />
-          <label className="employeeLavel" htmlFor="">
-            Employee ID
-          </label>
+          <div className="relative rounded-sm w-max">
+            <input
+              className="peer employeeInput w-[300px h-[60px]]"
+              type="text"
+              placeholder=""
+            />
+            <label className="employeeLavel" htmlFor="">
+              Employee ID
+            </label>
+          </div>
+          <div>
+            <Select
+              value={selectedOption}
+              onChange={handleChange}
+              options={months}
+            />
+          </div>
+          <div>
+            <Select
+              value={selectedOption2}
+              onChange={handleChange2}
+              options={years}
+            />
+          </div>
+          <div className="relative rounded-sm w-max">
+            <button className="employeeBtn employeeInput">Search</button>
+          </div>
         </div>
-        <div>
-          <Select
-            value={selectedOption}
-            onChange={handleChange}
-            options={months}
-          />
-        </div>
-        <div>
-          <Select
-            value={selectedOption2}
-            onChange={handleChange2}
-            options={years}
-          />
-        </div>
-        <div className="relative rounded-sm w-max">
-          <button className="employeeBtn employeeInput">Search</button>
-        </div>
-      </div>
         <table className="attendanceTable">
-          <thead >
+          <thead>
             <tr className="bg-[#42A1DA] text-white ">
               <th>Employee </th>
               <th>Employee ID </th>
@@ -405,7 +611,6 @@ const AddAttendance = () => {
                     <span>March </span>
                     {day + 1}
                   </div>
-                 
                 </th>
               ))}
             </tr>

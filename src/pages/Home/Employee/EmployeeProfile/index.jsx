@@ -4,7 +4,9 @@ import EmployeeAccount from "./EmployeeAccount";
 import Attendance from "./Attendance";
 import SingleEmployeeLeaveList from "./SingleEmployeeLeaveList";
 import avatar from "../../../../../public/assets/avatar.jpg";
-import '../Employee.css'
+import "../Employee.css";
+import EmployeeSalary from "./EmployeeSalary";
+import EmployeeOvertime from "./EmployeeOvertime";
 const CustomerProfile = () => {
   return (
     <div>
@@ -50,8 +52,12 @@ const CustomerProfile = () => {
                   <div className="flex items-center">
                     <div className="">
                       <h4 className="text-xl font-semibold ">Overtime </h4>
-                      
-                      <p><b>March <b>: 5h 30m</b></b></p>
+
+                      <p>
+                        <b>
+                          March <b>: 5h 30m</b>
+                        </b>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -60,7 +66,9 @@ const CustomerProfile = () => {
                     <div className="">
                       <h4 className="text-xl font-semibold ">Total Salary </h4>
                       <span className="block my-2 ">৳20000</span>
-                      <p className="">March Paid : <b className='text-[#F62D51]'>৳20000</b></p>
+                      <p className="">
+                        March Paid : <b className="text-[#F62D51]">৳20000</b>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -78,6 +86,7 @@ const CustomerProfile = () => {
             <Tab>Leave </Tab>
             <Tab>Holiday</Tab>
             <Tab>Shift & Schedule</Tab>
+            <Tab>Salary</Tab>
             <Tab>Overtime</Tab>
           </TabList>
 
@@ -96,6 +105,12 @@ const CustomerProfile = () => {
           </TabPanel>
           <TabPanel>
             <h3 className="text-3xl font-bold">Employee Holiday</h3>
+          </TabPanel>
+          <TabPanel>
+            <EmployeeSalary />
+          </TabPanel>
+          <TabPanel>
+         <EmployeeOvertime/>
           </TabPanel>
         </Tabs>
 

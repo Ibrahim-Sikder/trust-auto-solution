@@ -34,6 +34,7 @@
         @apply w-full  border p-2 rounded-md
     }
     
+    
 
     @media only screen and (max-width:1024px){
        .card{

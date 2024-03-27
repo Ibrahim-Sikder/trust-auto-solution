@@ -158,9 +158,27 @@ input:focus {
 
 
 
+/* time picker css */
 
+.css-oucraa-MuiStack-root>.MuiTextField-root, .css-oucraa-MuiStack-root>.MuiPickersTextField-root {
+    min-width: 100px !important ;
+}
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+    height: 35px;
+    width: 130px;
+    margin: 0 auto;
+}
+.css-oucraa-MuiStack-root>.MuiTextField-root, .css-oucraa-MuiStack-root>.MuiPickersTextField-root {
+    min-width: 130px;
+}
 
-
+.css-oucraa-MuiStack-root>.MuiTextField-root, .css-oucraa-MuiStack-root>.MuiPickersTextField-root {
+    min-width: 50px;
+}
+.css-v0pjtz-MuiStack-root {
+     overflow: hidden !important;
+    padding-top: 3px !important; 
+}
 
 
 
