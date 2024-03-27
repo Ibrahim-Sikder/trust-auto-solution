@@ -154,15 +154,15 @@ const EmployeeAccount = () => {
                   <b className="block">Name</b>
                   <b className="block">Email </b>
                   <b className="block">Phone </b>
-                  <b className="block">Birth Day </b>
-                  <b className="block">Address </b>
+                  <b className="block">Birth Date </b>
+                  <b className="block">NID </b>
                 </div>
                 <div className="space-y-3">
-                  <span className="block"> : Akbor Ali </span>
+                  <span className="block"> : Ariful Islam </span>
                   <span className="block">: ali@gmail.com </span>
                   <span className="block">: 0484848445 </span>
                   <span className="block">: 10-05-2024 </span>
-                  <span className="block">: Kuril Bishawroad, Dhaka-1212 </span>
+                  <span className="block">: 478987645678 </span>
                 </div>
               </div>
           
@@ -176,15 +176,15 @@ const EmployeeAccount = () => {
             <b className="block">Name</b>
             <b className="block">Relationship </b>
             <b className="block">Phone </b>
-            <b className="block">Religion </b>
-            <b className="block">Nationality  </b>
+            <b className="block">Occupation </b>
+           
           </div>
           <div className="space-y-3">
             <span className="block"> : Akbor Ali  </span>
             <span className="block">: Father </span>
             <span className="block">: 0484848445 </span>
-            <span className="block">: Islam </span>
-            <span className="block">: Bangladesh  </span>
+            <span className="block">: Farmar </span>
+                
           </div>
         </div>
         
@@ -197,14 +197,13 @@ const EmployeeAccount = () => {
             <div className="space-y-3">
               <b className="block">Country</b>
               <b className="block">Town / City </b>
-              <b className="block">Phone </b>
               <b className="block">Address </b>
             </div>
             <div className="space-y-3">
               <span className="block"> : Bangladesh </span>
               <span className="block">: Dhaka </span>
               <span className="block">:  Kuril Bishawroad, Dhaka-1212 </span>
-              <span className="block">: Islam </span>
+         
             </div>
           </div>
           

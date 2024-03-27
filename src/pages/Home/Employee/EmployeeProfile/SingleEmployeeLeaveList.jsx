@@ -12,7 +12,6 @@ const SingleEmployeeLeaveList = ({ open }) => {
       <table className="leaveTable">
         <thead>
           <tr>
-            <th> Employee Name </th>
             <th>Leave Type</th>
             <th>From</th>
             <th>To</th>
@@ -22,16 +21,7 @@ const SingleEmployeeLeaveList = ({ open }) => {
         </thead>
         <tbody>
           <tr>
-            <td>
-              <div className="flex items-center">
-                <img
-                  src={avatar}
-                  className="object-cover w-8 h-8 mr-2 rounded-full"
-                  alt=""
-                />
-                <span>Mr John</span>
-              </div>
-            </td>
+            
             <td>Casual Leave</td>
             <td>24 Feb 2019</td>
             <td>24 Feb 2019</td>

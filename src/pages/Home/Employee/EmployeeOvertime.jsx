@@ -1,14 +1,7 @@
-import { FaRegTrashAlt, FaUserEdit, FaUsers } from "react-icons/fa";
+import { FaRegTrashAlt, FaUsers } from "react-icons/fa";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
-import { useState } from 'react';
 import avatar from '../../../../public/assets/avatar.jpg';
-import { HiOutlinePlus } from "react-icons/hi";
-import EmployeeSalaryModal from "./EmployeeSalaryModal";
-import EmployeeUpdateSalaryModal from "./EmployeeUpdateSalaryModal";
-import EmployeeOvertimeModal from "./EmployeeOvertimeModal";
-import EmployeeUpdateOvertimeModal from "./EmployeeUpdateOvertimeModal";
-
 
 
 const years = [{ value: 'Select Year', label: 'Select Year' }];
@@ -21,14 +14,7 @@ for (let year = 2024; year <= 2030; year++) {
 
 
 const EmployeeOvertime = () => {  
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  
-  const [open2, setOpen2] = useState(false);
-  const handleOpen2 = () => setOpen2(true);
-  const handleClose2 = () => setOpen2(false);
-  
+ 
   const employeeData =[
     {
         id:1, 
@@ -112,7 +98,7 @@ const EmployeeOvertime = () => {
           <th> Employee ID </th>
           <th>Date</th>
           <th>Hours </th>
-          <th colSpan={3}>Action</th>
+          <th >Action</th>
         </tr>
       </thead>
       <tbody>
@@ -132,21 +118,7 @@ const EmployeeOvertime = () => {
             <td>10-04-2024</td>
             <td>05h</td>
             <td>5</td>
-            <td>
-            {" "}
-            <HiOutlinePlus
-              onClick={handleOpen}
-              className="text-[#FF851A] cursor-pointer mx-auto"
-              size={30}
-            />{" "}
-          </td>
-            <td>
-            <FaUserEdit
-            onClick={handleOpen2}
-              className="text-[#60BF6B] cursor-pointer mx-auto"
-              size={30}
-            />
-          </td>
+            
          
           <td>
             {" "}
@@ -161,12 +133,7 @@ const EmployeeOvertime = () => {
       </tbody>
     </table>
     
-    {
-        open && <EmployeeOvertimeModal onClose={handleClose}/>
-    }
-    {
-      open2 && <EmployeeUpdateOvertimeModal onClose={handleClose2}/>
-  }
+ 
     </div>
   );
 };

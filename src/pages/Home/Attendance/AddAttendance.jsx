@@ -100,11 +100,12 @@ const AddAttendance = () => {
               <th>Office Time</th>
               <th>In Time</th>
               <th>Out Time</th>
+              <th>Overtime</th>
               <th>Late</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="even-row">
+            <tr className='even-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -122,6 +123,9 @@ const AddAttendance = () => {
               </td>
               <td>
                 <AttendanceTimePicker />
+              </td>
+              <td>
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
@@ -136,7 +140,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className="odd-row">
+             <tr className='odd-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -154,6 +158,9 @@ const AddAttendance = () => {
               </td>
               <td>
                 <AttendanceTimePicker />
+              </td>
+              <td>
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
@@ -168,7 +175,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className="even-row">
+            <tr className='even-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -186,6 +193,9 @@ const AddAttendance = () => {
               </td>
               <td>
                 <AttendanceTimePicker />
+              </td>
+              <td>
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
@@ -200,7 +210,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className="odd-row">
+             <tr className='odd-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -218,6 +228,9 @@ const AddAttendance = () => {
               </td>
               <td>
                 <AttendanceTimePicker />
+              </td>
+              <td>
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
@@ -232,7 +245,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className="even-row">
+            <tr className='even-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -250,6 +263,9 @@ const AddAttendance = () => {
               </td>
               <td>
                 <AttendanceTimePicker />
+              </td>
+              <td>
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
@@ -264,7 +280,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className="odd-row">
+             <tr className='odd-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -282,6 +298,9 @@ const AddAttendance = () => {
               </td>
               <td>
                 <AttendanceTimePicker />
+              </td>
+              <td>
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
@@ -296,7 +315,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className="even-row">
+            <tr className='even-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -314,6 +333,9 @@ const AddAttendance = () => {
               </td>
               <td>
                 <AttendanceTimePicker />
+              </td>
+              <td>
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
@@ -328,7 +350,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className="odd-row">
+             <tr className='odd-row'>
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -348,68 +370,7 @@ const AddAttendance = () => {
                 <AttendanceTimePicker />
               </td>
               <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
+                <input type="number" className="border overTimeInput" />
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">

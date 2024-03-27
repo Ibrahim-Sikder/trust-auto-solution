@@ -11,8 +11,6 @@ const EmployeeSalary = ({ open }) => {
       <table className="leaveTable">
         <thead>
           <tr>
-            <th> Employee </th>
-            <th> Employee ID </th>
             <th>Month of Salary</th>
             <th>Bonus </th>
             <th>Overtime Salary </th>
@@ -22,17 +20,6 @@ const EmployeeSalary = ({ open }) => {
         </thead>
         <tbody>
           <tr>
-            <td>
-              <div className="flex items-center">
-                <img
-                  src={avatar}
-                  className="object-cover w-8 h-8 mr-2 rounded-full"
-                  alt=""
-                />
-                <span>Mr John</span>
-              </div>
-            </td>
-            <td>0000966774</td>
             <td>৳200000</td>
             <td>৳5000</td>
             <td>৳6000 </td>
