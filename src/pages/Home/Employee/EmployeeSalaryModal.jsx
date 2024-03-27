@@ -4,7 +4,7 @@ import { IoCloseSharp } from "react-icons/io5";
 
 
 
-const SalaryModal = ({ onClose }) => {
+const EmployeeSalaryModal = ({ onClose }) => {
 
 
   return (
@@ -124,4 +124,4 @@ const SalaryModal = ({ onClose }) => {
   );
 };
 
-export default SalaryModal;
+export default EmployeeSalaryModal;

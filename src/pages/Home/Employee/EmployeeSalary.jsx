@@ -3,9 +3,9 @@ import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import { useState } from 'react';
 import avatar from '../../../../public/assets/avatar.jpg';
-import { Link } from "react-router-dom";
 import { HiOutlinePlus } from "react-icons/hi";
-import SalaryModal from "./SalaryModal";
+import EmployeeSalaryModal from "./EmployeeSalaryModal";
+import EmployeeUpdateSalaryModal from "./EmployeeUpdateSalaryModal";
 
 
 
@@ -22,6 +22,10 @@ const EmployeeSalary = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
+  const [open2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
   
   const employeeData =[
     {
@@ -131,13 +135,11 @@ const EmployeeSalary = () => {
             />{" "}
           </td>
             <td>
-            <Link to="/dashboard/update-attendance">
-           
-              <FaUserEdit
-                className="text-[#60BF6B] cursor-pointer mx-auto"
-                size={30}
-              />
-            </Link>
+            <FaUserEdit
+            onClick={handleOpen2}
+              className="text-[#60BF6B] cursor-pointer mx-auto"
+              size={30}
+            />
           </td>
          
           <td>
@@ -154,8 +156,11 @@ const EmployeeSalary = () => {
     </table>
     
     {
-        open && <SalaryModal onClose={handleClose}/>
+        open && <EmployeeSalaryModal onClose={handleClose}/>
     }
+    {
+      open2 && <EmployeeUpdateSalaryModal onClose={handleClose2}/>
+  }
     </div>
   );
 };
