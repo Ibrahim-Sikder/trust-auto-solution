@@ -211,7 +211,7 @@ const Detail = () => {
               <div className="pb-5 px-14 invoicePrint">
                 <div>
                 <div className=" mb-2 mx-auto text-center border-b-2 border-[#351E98] pb-2">
-                <div className="w-full flex justify-between items-center mb-2 mt-5">
+                <div className="flex items-center justify-between w-full mt-5 mb-2">
                   <img className="w-[120px] " src={logo} alt="logo" />
                   <div>
                   <h2 className="trustAutoTitle qoutationTitle">Trust Auto Solution </h2>
@@ -230,11 +230,11 @@ const Detail = () => {
                     <div className="px-10">
                     <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
                       <span>  <b>Customer ID:</b> TSA001</span>
-                      <b className="uppercase mr-5">Quotation</b>
+                      <b className="mr-5 uppercase">Quotation</b>
                       <b>Date: {invoicePreview?.date} </b>
                     </div>
                    
-                    <div className="flex invoiceInformaiton mx-auto  items-center justify-between mt-2">
+                    <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
                     <div className="flex justify-between w-[40%]">
                       <div className="invoiceCustomerInfo">
                         <b>SL NO</b>
@@ -275,7 +275,7 @@ const Detail = () => {
                   </div>
                   )}
 
-                  <table className=" invoiceTable2 qutationTables mt-5">
+                  <table className="mt-5 invoiceTable2 qutationTables">
                     <thead className="tableWrap">                    
                       <tr>
                         <th className="serialNo">SL No</th>
@@ -381,7 +381,7 @@ const Detail = () => {
                   </table>
                   <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
                   <div className="mt-5 text-[12px]">
-                       <b className=" ">In words:</b>{" "}
+                       <b className="">In words:</b>{" "}
                        {totalAmountInWords}
                      </div>
                      <div className="flex netTotalAmounts">
@@ -395,8 +395,8 @@ const Detail = () => {
                        </div>
                        <div>
                          <small> : 57896</small>
+                         <small> : 5</small>
                          <small> : 5%</small>
-                         <small> : 56</small>
                          <small> : 57896</small>
                          <small> : 57896</small>
                          <small> : 57896</small>
@@ -409,10 +409,10 @@ const Detail = () => {
                   <div>
                     {page === lastValue && (
                       <div className="customerSignatureWrap">
-                        <b className="customerSignatur text-sm">
+                        <b className="text-sm customerSignatur">
                           Customer Signature :{" "}
                         </b>
-                        <b className="customerSignatur text-sm">Trust Auto Solution</b>
+                        <b className="text-sm customerSignatur">Trust Auto Solution</b>
                       </div>
                     )}
                     

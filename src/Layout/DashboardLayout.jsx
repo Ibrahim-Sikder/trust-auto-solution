@@ -35,6 +35,9 @@ import {
 import { animateScroll as scroll } from "react-scroll";
 import { HiOutlineUserAdd, HiOutlineUserGroup } from "react-icons/hi";
 
+
+
+
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
   const navRef = useRef();
@@ -69,6 +72,14 @@ const DashboardLayout = () => {
     window.scrollTo(0, 0);
     scroll.scrollToTop({ smooth: true });
   }
+  
+  
+  
+  
+
+  
+  
+  
 
   return (
     <main>

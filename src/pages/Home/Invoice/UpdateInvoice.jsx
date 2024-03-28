@@ -516,13 +516,13 @@ className="addJobInputField"
             )}
             <div className="discountFieldWrap">
               <div className="flex items-center">
-                <b> Total Amount: </b>
+                <b className="mr-2"> Total Amount: </b>
                 <span>
                   {grandTotal ? grandTotal : specificInvoice.total_amount}
                 </span>
               </div>
               <div>
-                <b> Discount: </b>
+                <b className="mr-2"> Discount: </b>
                 <input
                   className="py-1 text-center"
                   onChange={(e) => handleDiscountChange(e.target.value)}
@@ -533,7 +533,7 @@ className="addJobInputField"
                 />
               </div>
               <div>
-                <b>Vat: </b>
+                <b className="mr-2">Vat: </b>
                 <input
                   className="text-center"
                   onChange={(e) => handleVATChange(e.target.value)}
@@ -543,19 +543,30 @@ className="addJobInputField"
                   defaultValue={specificInvoice.vat}
                 />
               </div>
+              <div className='flex items-center '>
+              <b className='mr-3' >
+                Final Total:{" "}
+               
+              </b>
+               <span>
+                  {calculateFinalTotal()
+                    ? calculateFinalTotal()
+                    : specificInvoice.net_total}
+                </span>
+              {/* <b>Net Total: </b> */}
+            
+            </div>
+              
               <div>
-                <div className="ml-3">
-                  <strong>
-                    Final Total:{" "}
-                    <span>
-                      {calculateFinalTotal()
-                        ? calculateFinalTotal()
-                        : specificInvoice.net_total}
-                    </span>
-                  </strong>
-                  {/* <b>Net Total: </b> */}
-                  {/* <input autoComplete="off" type="text" placeholder="Net" /> */}
-                </div>
+                <b className="mr-2">Due: </b>
+                <input
+                  className="text-center"
+                  onChange={(e) => handleVATChange(e.target.value)}
+                  autoComplete="off"
+                  type="text"
+                  placeholder="Vat"
+                  defaultValue={specificInvoice.vat}
+                />
               </div>
             </div>
           </div>

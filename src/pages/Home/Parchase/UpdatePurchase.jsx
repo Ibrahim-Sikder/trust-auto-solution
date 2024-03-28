@@ -2,7 +2,13 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import {  FaTrashAlt, FaEdit, FaUsers, FaUserTie, FaCloudUploadAlt } from "react-icons/fa";
+import {
+  FaTrashAlt,
+  FaEdit,
+  FaUsers,
+  FaUserTie,
+  FaCloudUploadAlt,
+} from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
@@ -93,6 +99,11 @@ const UpdatePurchase = () => {
                 <TextField
                   className="productField"
                   fullWidth
+                  label="Product Name"
+                />
+                <TextField
+                  className="productField"
+                  fullWidth
                   label="Purchase Date"
                 />
                 <TextField
@@ -105,109 +116,83 @@ const UpdatePurchase = () => {
                   fullWidth
                   label="Mobile Number "
                 />
-                
+
+                <TextField className="productField" fullWidth label="Email" />
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Email"
+                  label="Billing Address"
                 />
-                <TextField
-                className="productField"
-                fullWidth
-                label="Billing Address"
-              />
-              <FormControl  className="productField">
+                <FormControl className="productField">
                   <InputLabel htmlFor="grouped-native-select">
-                    Branch
+                    Select Branch
                   </InputLabel>
                   <Select
                     className="addJobInputField"
-                    
+                    native
+                    id="grouped-native-select"
+                    label="Select Branch"
+                  >
+                    <option value="Acura">Main Branch </option>
+                    <option value="Acura">Sub Branch </option>
+                  </Select>
+                </FormControl>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold">Purchase Details </h3>
+                <FormControl className="productField">
+                  <InputLabel htmlFor="grouped-native-select">
+                  Select Manufacturer
+                  </InputLabel>
+                  <Select
+                    className="addJobInputField"
                     native
                     id="grouped-native-select"
                     label="Car Registration No  "
                   >
-                
-                  <option value="Acura">Main Branch </option>
-                  <option value="Acura">Sub Branch </option>
+                    <option value="Acura"> Manufacturer </option>
+                    <option value="Acura"> Vendor </option>
+                    <option value="Acura"> Supplier </option>
                   </Select>
                 </FormControl>
                 
-              </div>
-
-              <div>
-                <h3 className="text-xl font-bold">Purchase Details  </h3>
-                <FormControl  className="productField">
-                <InputLabel htmlFor="grouped-native-select">
-                Manufacturer Name
-                </InputLabel>
-                <Select
-                  className="addJobInputField"
-                  
-                  native
-                  id="grouped-native-select"
-                  label="Car Registration No  "
-                >
-              
-                <option value="Acura">Select Manufacturer </option>
-                <option value="Acura"> Manufacturer </option>
-                </Select>
-              </FormControl>
-              <FormControl  className="productField">
-              <InputLabel htmlFor="grouped-native-select">
-            Product Name
-              </InputLabel>
-              <Select
-                className="addJobInputField"
-                
-                native
-                id="grouped-native-select"
-                label="Car Registration No  "
-              >
-            
-              <option value="Acura">Select Select </option>
-              <option value="Acura"> Manufacturer </option>
-              </Select>
-            </FormControl>
                 <TextField
                   className="productField"
                   fullWidth
                   label="Quantity"
                 />
+                <TextField className="productField" fullWidth label="Price " />
+                <TextField className="productField" fullWidth label="Amount " />
+                <TextField className="productField" fullWidth label="Stock In " />
+                <TextField className="productField" fullWidth label="Stock Out" />
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Price "
+                  label="Supplier ID "
                 />
-                <TextField
-                className="productField"
-                fullWidth
-                label="Amount "
-              />
-              <TextField
-              className="productField"
-              fullWidth
-              label="Job Number"
-            />
                 <div className="productField">
-                <input type="file" id="files" className="hidden" />
-                <label for="files" className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md ">
-                  <span >
-                    <FaCloudUploadAlt size={30} className="mr-2"  />
-                  </span>
-                  Upload Image
-                </label>
-              </div>
+                  <input type="file" id="files" className="hidden" />
+                  <label
+                    for="files"
+                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                  >
+                    <span>
+                      <FaCloudUploadAlt size={30} className="mr-2" />
+                    </span>
+                    Upload Image
+                  </label>
+                </div>
               </div>
             </div>
-            <div className="savebtn mt-2">
-              <button>Add Purchase  </button>
+            <div className="mt-2 savebtn">
+              <button>Add Purchase </button>
             </div>
           </form>
         </div>
       </div>
-      <div className="mt-5 mb-24 w-full">
-        <div className="flex items-center justify-between  mb-5">
+      <div className="w-full mt-5 mb-24">
+        <div className="flex items-center justify-between mb-5">
           <h3 className="text-3xl font-bold text-center "> Purchase List: </h3>
           <div className="flex items-center">
             <Search>
@@ -236,34 +221,32 @@ const UpdatePurchase = () => {
               </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>01</td>
-              <td>Car  </td>
-              <td>BMW2343</td>
-              <td>BDT1005</td>
-              <td >
-                <div className='flex items-center justify-center '>
-                  <Link to='/dashboard/Purchase-profile'>
-                  <FaUserTie className="invoicIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td >
-                <div className='editIconWrap edit'>
-                  <Link to='/dashboard/update-Purchase'>
-                    <FaEdit className='editIcon' />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div className='editIconWrap'>
-                  <FaTrashAlt className='deleteIcon' />
-                </div>
-
-              </td>
-            </tr>
-
-          </tbody>
+              <tr>
+                <td>01</td>
+                <td>Car </td>
+                <td>BMW2343</td>
+                <td>BDT1005</td>
+                <td>
+                  <div className="flex items-center justify-center ">
+                    <Link to="/dashboard/Purchase-profile">
+                      <FaUserTie className="invoicIcon" />
+                    </Link>
+                  </div>
+                </td>
+                <td>
+                  <div className="editIconWrap edit">
+                    <Link to="/dashboard/update-Purchase">
+                      <FaEdit className="editIcon" />
+                    </Link>
+                  </div>
+                </td>
+                <td>
+                  <div className="editIconWrap">
+                    <FaTrashAlt className="deleteIcon" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

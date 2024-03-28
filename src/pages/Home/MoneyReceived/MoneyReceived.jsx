@@ -4,10 +4,10 @@ import logo from "../../../../public/assets/logo.png";
 import { Email, Home, WhatsApp, LocalPhone } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import AddMoneyReceiptList from "./AddMoneyReceiptList";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -222,56 +222,9 @@ const MoneyReceiptView = () => {
         </div>
       </div>
 
-      <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-        <h3 className="mb-3 text-3xl font-bold"> Money Receipt List:</h3>
-        <div className="flex items-center">
-          <div className="searchGroup">
-            <input autoComplete="off" type="text" />
-          </div>
-          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-            Search
-          </button>
-        </div>
-      </div>
+      
 
-      <div className="mb-10 overflow-x-auto">
-        <table className="table ">
-          <thead className="tableWrap">
-            <tr>
-              <th>SL</th>
-              <th>Received with thanks from </th>
-              <th>Final Payment against bill no </th>
-              <th>Vehicle No</th>
-              <th> Check Number</th>
-              <th> Bank Total Amount</th>
-              <th colSpan={3}>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>01</td>
-              <td>Mamun</td>
-              <td>445</td>
-              <td>677</td>
-              <td>677</td>
-              <td>677</td>
-              <td>677</td>
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to="/dashboard/update-purchase">
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div className="editIconWrap">
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <AddMoneyReceiptList/>
     </>
   );
 };

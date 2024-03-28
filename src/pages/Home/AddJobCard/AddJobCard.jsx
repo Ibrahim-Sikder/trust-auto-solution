@@ -802,6 +802,7 @@ const AddJobCard = () => {
             <TextField
               className="addJobInputField"
               label="Company Name (T)"
+              placeholder="Company Name"
               {...register("company_name", { required: true })}
               value={showCustomerData?.company_name}
               focused={showCustomerData?.company_name}
@@ -967,7 +968,7 @@ const AddJobCard = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Car Reg No"
+                      label="Vehicle Reg No"
                       {...register("carReg_no", { required: true })}
                       value={showCustomerData?.carReg_no}
                       focused={showCustomerData?.carReg_no}
@@ -975,7 +976,7 @@ const AddJobCard = () => {
                   )}
                 />
                 <TextField
-                  className="addJobInputField"
+                  className="jobCardSelect2"
                   label="Car R (T&N)"
                   {...register("car_registration_no", { required: true })}
                   value={showCustomerData?.car_registration_no}
@@ -1020,6 +1021,7 @@ const AddJobCard = () => {
 
               <div className="mt-3">
                 <Autocomplete
+                className="addJobInputField"
                   id="free-solo-demo"
                   Vehicle
                   Brand
@@ -1046,6 +1048,7 @@ const AddJobCard = () => {
               
               <div className="mt-3">
               <Autocomplete
+              className="addJobInputField"
                 id="free-solo-demo"
                 Vehicle
                 Brand
@@ -1080,6 +1083,7 @@ const AddJobCard = () => {
 
               <div className="mt-3">
                 {/* <Autocomplete
+                className="addJobInputField"
                   onChange={(e) => setCarModel(e.target.value)}
                   id="free-solo-demo"
                   Vehicle
@@ -1112,6 +1116,7 @@ const AddJobCard = () => {
 
               <div className="mt-3">
                 <Autocomplete
+                className="addJobInputField"
                   id="free-solo-demo"
                   Vehicle
                   Types
@@ -1169,6 +1174,7 @@ const AddJobCard = () => {
               </div>
               <div className="mt-3">
                 <Autocomplete
+                className="addJobInputField"
                   value={showCustomerData?.fuel_type}
                   focused={showCustomerData?.fuel_type}
                   id="free-solo-demo"
