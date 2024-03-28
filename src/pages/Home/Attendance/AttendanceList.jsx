@@ -4,22 +4,9 @@ import { FaUserGear } from "react-icons/fa6";
 import { useState } from 'react';
 import Select from 'react-select';
 import AttendanceTable from "../Employee/EmployeeProfile/AttendanceTable";
+import { months } from "../../../constant/Vehicle.constant";
 
-const months = [
-  { value: 'Select Month', label: 'Select Month' },
-  { value: 'January', label: 'January' },
-  { value: 'February', label: 'February' },
-  { value: 'March', label: 'March' },
-  { value: 'April', label: 'April' },
-  { value: 'May', label: 'May' },
-  { value: 'June', label: 'June' },
-  { value: 'July', label: 'July' },
-  { value: 'August', label: 'August' },
-  { value: 'September', label: 'September' },
-  { value: 'October', label: 'October' },
-  { value: 'November', label: 'November' },
-  { value: 'December', label: 'December' }
-];
+
 
 const years = [{ value: 'Select Year', label: 'Select Year' }];
 

@@ -2,7 +2,6 @@ import { HiCheck, HiOutlineX } from "react-icons/hi";
 import "../Employee.css";
 import avatar from "../../../../../public/assets/avatar.jpg";
 const AttendanceTable = () => {
-  // Function to generate an array with icons alternating between check and close, with specified close icon positions
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
     let closeCounter = 0;

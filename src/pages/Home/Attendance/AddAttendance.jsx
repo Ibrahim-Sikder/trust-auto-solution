@@ -4,21 +4,6 @@ import "./Attendance.css";
 import { useState } from "react";
 import Select from "react-select";
 
-const months = [
-  { value: "Select Month", label: "Select Month" },
-  { value: "January", label: "January" },
-  { value: "February", label: "February" },
-  { value: "March", label: "March" },
-  { value: "April", label: "April" },
-  { value: "May", label: "May" },
-  { value: "June", label: "June" },
-  { value: "July", label: "July" },
-  { value: "August", label: "August" },
-  { value: "September", label: "September" },
-  { value: "October", label: "October" },
-  { value: "November", label: "November" },
-  { value: "December", label: "December" },
-];
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 // Start from 2024 and go up to 2030
@@ -34,6 +19,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { FaRegTrashAlt, FaUserEdit } from "react-icons/fa";
 import AttendanceTimePicker from "./AttendanceTimePicker";
 import { Link } from "react-router-dom";
+import { months } from "../../../constant/Vehicle.constant";
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -105,7 +91,7 @@ const AddAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className='even-row'>
+            <tr className="even-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -140,7 +126,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-             <tr className='odd-row'>
+            <tr className="odd-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -175,7 +161,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className='even-row'>
+            <tr className="even-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -210,7 +196,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-             <tr className='odd-row'>
+            <tr className="odd-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -245,7 +231,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className='even-row'>
+            <tr className="even-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -280,7 +266,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-             <tr className='odd-row'>
+            <tr className="odd-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -315,7 +301,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-            <tr className='even-row'>
+            <tr className="even-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -350,7 +336,7 @@ const AddAttendance = () => {
                 </div>
               </td>
             </tr>
-             <tr className='odd-row'>
+            <tr className="odd-row">
               <td>01</td>
               <td>Rakib</td>
               <td>04785</td>
@@ -397,7 +383,6 @@ const AddAttendance = () => {
           </button>
         </div>
       </form>
-
       <div className="mt-14 table-container">
         <h3 className="mt-5 mb-8 text-2xl font-semibold">Today Attendance</h3>
         <table className="attendanceTable">
@@ -502,7 +487,6 @@ const AddAttendance = () => {
               </td>
               <td>
                 <Link to="/dashboard/update-attendance">
-               
                   <FaUserEdit
                     className="text-[#60BF6B] cursor-pointer mx-auto"
                     size={30}
@@ -512,7 +496,6 @@ const AddAttendance = () => {
               <td>
                 {" "}
                 <HiOutlineEye
-               
                   className="text-[#42A1DA] cursor-pointer mx-auto"
                   size={30}
                 />{" "}
@@ -600,17 +583,14 @@ const AddAttendance = () => {
                   </td>
                 ))}
               </tr>
-              
             ))}
             <div className="flex my-5 ml-5">
-           
-            <Link to="/dashboard/update-attendance">
-               
-            <FaUserEdit
-              className="text-[#60BF6B] cursor-pointer mx-auto"
-              size={50}
-            />
-          </Link>
+              <Link to="/dashboard/update-attendance">
+                <FaUserEdit
+                  className="text-[#60BF6B] cursor-pointer mx-auto"
+                  size={50}
+                />
+              </Link>
             </div>
           </tbody>
         </table>
