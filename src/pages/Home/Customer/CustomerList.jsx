@@ -197,12 +197,14 @@ const CustomerList = () => {
               <td> {card.contact_number} </td>
               <td>{card.date}</td>
               <td>
-                <div
-                  onClick={() => handleIconPreview(card.customerId)}
-                  className="editIconWrap edit2"
-                >
-                  <FaUserTie className="invoicIcon" />
-                </div>
+              <div 
+              onClick={() => handleIconPreview(card.customerId)}
+              className="flex items-center justify-center ">
+              <Link to="/dashboard/employee-profile">
+                <FaUserTie size={25} className="" />
+              </Link>
+            </div>
+                
               </td>
 
               <td>

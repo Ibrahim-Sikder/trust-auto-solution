@@ -713,6 +713,12 @@ const DashboardLayout = () => {
                 </div>
               </div>
               <div className="mt-[14px]">
+              <div className="toolTipWrap">
+                <FaRegListAlt className="tooltipIcon" />
+                <b className="toolTip">Attendance </b>
+              </div>
+            </div>
+              <div className="mt-[14px]">
                 <div className="toolTipWrap">
                   <FaUsersCog className="tooltipIcon" />
                   <b className="toolTip">Profile </b>

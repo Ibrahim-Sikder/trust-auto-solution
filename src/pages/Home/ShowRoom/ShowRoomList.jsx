@@ -72,7 +72,7 @@ const ShowRoomList = () => {
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
-        
+
         console.log(data);
         setLoading(false);
       });
@@ -201,9 +201,11 @@ const ShowRoomList = () => {
               <td>
                 <div
                   onClick={() => handleIconPreview(card._id)}
-                  className="editIconWrap edit2"
+                  className="flex items-center justify-center "
                 >
-                  <FaUserTie className="invoicIcon" />
+                  <Link to="/dashboard/employee-profile">
+                    <FaUserTie size={25} className="" />
+                  </Link>
                 </div>
               </td>
 
@@ -345,7 +347,7 @@ const ShowRoomList = () => {
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3 ">
         <h3 className="mb-3 text-3xl font-bold"> Show Room List:</h3>
         <div className="flex items-center">
-        {/**
+          {/**
           <button
             onClick={handleAllCustomer}
             className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
@@ -354,18 +356,18 @@ const ShowRoomList = () => {
           </button>
           */}
           <input
-          onChange={(e) => setFilterType(e.target.value)}
-          type="text"
-          placeholder="Search"
-          className="border py-2 px-3 rounded-md border-[#ddd]"
-        />
-        <button
-        onClick={handleFilterType}
-        className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
-      >
-        {" "}
-        <HiOutlineSearch size={25} />
-      </button>
+            onChange={(e) => setFilterType(e.target.value)}
+            type="text"
+            placeholder="Search"
+            className="border py-2 px-3 rounded-md border-[#ddd]"
+          />
+          <button
+            onClick={handleFilterType}
+            className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
+          >
+            {" "}
+            <HiOutlineSearch size={25} />
+          </button>
         </div>
       </div>
 

@@ -3,7 +3,7 @@
 import { FaCarSide, FaInfo, FaRegEdit } from "react-icons/fa"
 import Card from "../../../../components/Card/Card"
 const CustomerAccount = ({profileData, jobCardData, quotationData, moneyReceiptData}) => {
-  console.log(quotationData)
+  console.log(quotationData,jobCardData, quotationData, moneyReceiptData)
   return (
     <div className="customerProfileWrap">
   

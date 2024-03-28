@@ -2,17 +2,12 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import {
-  FaTrashAlt,
-  FaEdit,
-  FaUserTie,
-} from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { Autocomplete } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
-  
   fuelType,
   vehicleTypes,
 } from "../../../constant";
@@ -26,8 +21,6 @@ import { HiOfficeBuilding, HiOutlineSearch } from "react-icons/hi";
 import Cookies from "js-cookie";
 
 const AddShowRoom = () => {
-
-
   const [filterType, setFilterType] = useState("");
   const [showRoomData, setShowRoomData] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
@@ -61,7 +54,7 @@ const AddShowRoom = () => {
       if (response.data.message === "Successfully add to show room post") {
         setReload(!reload);
         toast.success("Successfully add to show room post");
-        Cookies.set("customer_type", "show_room")
+        Cookies.set("customer_type", "show_room");
         navigate("/dashboard/show-room-list");
         setLoading(false);
         reset();
@@ -206,9 +199,11 @@ const AddShowRoom = () => {
               <td>
                 <div
                   onClick={() => handleIconPreview(card._id)}
-                  className="editIconWrap edit2"
+                  className="flex items-center justify-center "
                 >
-                  <FaUserTie className="invoicIcon" />
+                  <Link to="/dashboard/employee-profile">
+                    <FaUserTie size={25} className="" />
+                  </Link>
                 </div>
               </td>
 
@@ -450,7 +445,9 @@ const AddShowRoom = () => {
               </div>
 
               <div className="mt-5 md:mt-0">
-                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">Vehicle Information </h3>
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
+                  Vehicle Information{" "}
+                </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"

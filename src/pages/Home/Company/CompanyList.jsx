@@ -149,12 +149,15 @@ const CompanyList = () => {
               <td> {card.company_contact} </td>
               <td>{card.date}</td>
               <td>
-                <div
-                  onClick={() => handleIconPreview(card.companyId)}
-                  className="editIconWrap edit2"
-                >
-                  <FaUserTie className="invoicIcon" />
-                </div>
+              <div 
+              onClick={() => handleIconPreview(card.companyId)}
+              className="flex items-center justify-center ">
+              <Link to="/dashboard/employee-profile">
+                <FaUserTie size={25} className="" />
+              </Link>
+            </div>
+              
+               
               </td>
 
               <td>

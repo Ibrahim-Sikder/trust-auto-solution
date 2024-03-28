@@ -12,6 +12,8 @@ const ShowRoomAccount = ({
   quotationData,
   moneyReceiptData,
 }) => {
+  
+  console.log(profileData)
   return (
     <div className="customerProfileWrap">
       <div className="justify-between block mt-5 md:flex">
