@@ -18,12 +18,22 @@ const EmployeeOvertime = () => {
               <div className="overTimeCard employeeCard max-auto ">
                 <div className="flex items-center">
                   <div className="">
-                    <h4 className="text-xl font-semibold ">Date </h4>
-                    <b>10-05-2024</b>
+                    <h4 className="text-xl font-semibold ">Day </h4>
+                    <b>Saturday</b>
                   </div>
                 </div>
               </div>
             </td>
+            <td>
+            <div className="overTimeCard employeeCard max-auto ">
+              <div className="flex items-center">
+                <div className="">
+                  <h4 className="text-xl font-semibold ">Date </h4>
+                  <b>10-05-2024</b>
+                </div>
+              </div>
+            </div>
+          </td>
             <td>
               <div className="overTimeCard employeeCard">
                 <div className="flex items-center ">
