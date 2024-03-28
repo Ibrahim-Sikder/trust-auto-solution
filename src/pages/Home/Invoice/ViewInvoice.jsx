@@ -218,7 +218,7 @@ const ViewInvoice = () => {
     pageIncrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="cursor-pointer text-black pl-1"
+        className="pl-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -230,7 +230,7 @@ const ViewInvoice = () => {
     pageDecrementBtn = (
       <li
         onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="cursor-pointer text-black pr-1"
+        className="pr-1 text-black cursor-pointer"
       >
         &hellip;
       </li>
@@ -274,8 +274,8 @@ const ViewInvoice = () => {
     }
   };
   return (
-    <div className="overflow-x-auto mt-5">
-      <div className="flex justify-between border-b-2 pb-3">
+    <div className="mt-5 overflow-x-auto">
+      <div className="flex justify-between pb-3 border-b-2">
         <div className="flex items-center mr-[80px]  justify-center topProductBtn">
           <Link to="/dashboard/addjob">
             <button> Add Job </button>
@@ -287,11 +287,12 @@ const ViewInvoice = () => {
             <button>Invoice </button>
           </Link>
         </div>
-        <div className="flex  justify-end items-end">
+        <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />
         </div>
       </div>
+      
       <div className="flex items-center justify-between mt-5 mb-8">
         <div className="flex items-center justify-center ">
           <FaFileInvoice className="invoicIcon" />
@@ -307,7 +308,7 @@ const ViewInvoice = () => {
         </div>
       </div>
       <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-        <h3 className="text-3xl font-bold mb-3">Invoice List:</h3>
+        <h3 className="mb-3 text-3xl font-bold">Invoice List:</h3>
         <div className="flex items-center searcList">
           <div
             onClick={handleAllInvoice}
@@ -330,13 +331,13 @@ const ViewInvoice = () => {
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center text-xl">
+        <div className="flex items-center justify-center text-xl">
           <Loading />
         </div>
       ) : (
         <div>
           {getAllInvoice?.length === 0 || currentItems.length === 0 ? (
-            <div className="text-xl text-center flex justify-center items-center h-full">
+            <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
           ) : (
