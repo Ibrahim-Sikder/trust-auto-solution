@@ -48,7 +48,8 @@ const AddAttendance = () => {
               <th>Total Payment </th>
               <th>Advance </th>
               <th>Pay </th>
-              <th>Due / Paid</th>
+              <th>Due </th>
+              <th>Paid </th>
             </tr>
           </thead>
           <tbody>
@@ -124,17 +125,19 @@ const AddAttendance = () => {
                 />
               </td>
               <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
               </td>
+              <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
             </tr>
             <tr className="odd-row">
             <td>Rakib</td>
@@ -208,17 +211,19 @@ const AddAttendance = () => {
               />
             </td>
             <td>
-              <div className="flex items-center justify-center cursor-pointer ">
-                <HiOutlineX
-                  size={20}
-                  className="text-[#F62D51] attendanceIcon"
-                />
-                <HiCheck
-                  className="text-[#4AB657] attendanceIcon "
-                  size={20}
-                />
-              </div>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
             </td>
+            <td>
+            <input
+              type="number"
+              className="border overTimeInput"
+              placeholder="Pay"
+            />
+          </td>
           </tr>
             <tr className="even-row">
               <td>Rakib</td>
@@ -292,17 +297,19 @@ const AddAttendance = () => {
                 />
               </td>
               <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
               </td>
+              <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
             </tr>
             <tr className="odd-row">
             <td>Rakib</td>
@@ -376,17 +383,19 @@ const AddAttendance = () => {
               />
             </td>
             <td>
-              <div className="flex items-center justify-center cursor-pointer ">
-                <HiOutlineX
-                  size={20}
-                  className="text-[#F62D51] attendanceIcon"
-                />
-                <HiCheck
-                  className="text-[#4AB657] attendanceIcon "
-                  size={20}
-                />
-              </div>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
             </td>
+            <td>
+            <input
+              type="number"
+              className="border overTimeInput"
+              placeholder="Pay"
+            />
+          </td>
           </tr>
             <tr className="even-row">
               <td>Rakib</td>
@@ -460,17 +469,19 @@ const AddAttendance = () => {
                 />
               </td>
               <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
               </td>
+              <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
             </tr>
             <tr className="odd-row">
             <td>Rakib</td>
@@ -544,17 +555,19 @@ const AddAttendance = () => {
               />
             </td>
             <td>
-              <div className="flex items-center justify-center cursor-pointer ">
-                <HiOutlineX
-                  size={20}
-                  className="text-[#F62D51] attendanceIcon"
-                />
-                <HiCheck
-                  className="text-[#4AB657] attendanceIcon "
-                  size={20}
-                />
-              </div>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
             </td>
+            <td>
+            <input
+              type="number"
+              className="border overTimeInput"
+              placeholder="Pay"
+            />
+          </td>
           </tr>
             <tr className="even-row">
               <td>Rakib</td>
@@ -628,17 +641,19 @@ const AddAttendance = () => {
                 />
               </td>
               <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
               </td>
+              <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
             </tr>
             <tr className="odd-row">
             <td>Rakib</td>
@@ -712,17 +727,535 @@ const AddAttendance = () => {
               />
             </td>
             <td>
-              <div className="flex items-center justify-center cursor-pointer ">
-                <HiOutlineX
-                  size={20}
-                  className="text-[#F62D51] attendanceIcon"
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            <td>
+            <input
+              type="number"
+              className="border overTimeInput"
+              placeholder="Pay"
+            />
+          </td>
+          </tr>
+            <tr className="even-row">
+              <td>Rakib</td>
+              <td>016556</td>
+              <td>
+                <div>
+                  <Select
+                    value={selectedOption}
+                    onChange={handleChange}
+                    options={months}
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Bonus"
                 />
-                <HiCheck
-                  className="text-[#4AB657] attendanceIcon "
-                  size={20}
+              </td>
+              <td>
+                <b>05h</b>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" O Amount"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" A of Salary "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Previous A"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" Cut Salary "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" T Payment "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Advance"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
+              </td>
+              <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            </tr>
+            <tr className="odd-row">
+            <td>Rakib</td>
+            <td>016556</td>
+            <td>
+              <div>
+                <Select
+                  value={selectedOption}
+                  onChange={handleChange}
+                  options={months}
                 />
               </div>
             </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Bonus"
+              />
+            </td>
+            <td>
+              <b>05h</b>
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" O Amount"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" A of Salary "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Previous A"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" Cut Salary "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" T Payment "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Advance"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            <td>
+            <input
+              type="number"
+              className="border overTimeInput"
+              placeholder="Pay"
+            />
+          </td>
+          </tr>
+            <tr className="even-row">
+              <td>Rakib</td>
+              <td>016556</td>
+              <td>
+                <div>
+                  <Select
+                    value={selectedOption}
+                    onChange={handleChange}
+                    options={months}
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Bonus"
+                />
+              </td>
+              <td>
+                <b>05h</b>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" O Amount"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" A of Salary "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Previous A"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" Cut Salary "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" T Payment "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Advance"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
+              </td>
+              <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            </tr>
+            <tr className="odd-row">
+            <td>Rakib</td>
+            <td>016556</td>
+            <td>
+              <div>
+                <Select
+                  value={selectedOption}
+                  onChange={handleChange}
+                  options={months}
+                />
+              </div>
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Bonus"
+              />
+            </td>
+            <td>
+              <b>05h</b>
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" O Amount"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" A of Salary "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Previous A"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" Cut Salary "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" T Payment "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Advance"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            <td>
+            <input
+              type="number"
+              className="border overTimeInput"
+              placeholder="Pay"
+            />
+          </td>
+          </tr>
+            <tr className="even-row">
+              <td>Rakib</td>
+              <td>016556</td>
+              <td>
+                <div>
+                  <Select
+                    value={selectedOption}
+                    onChange={handleChange}
+                    options={months}
+                  />
+                </div>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Bonus"
+                />
+              </td>
+              <td>
+                <b>05h</b>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" O Amount"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" A of Salary "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Previous A"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" Cut Salary "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder=" T Payment "
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Advance"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  className="border overTimeInput"
+                  placeholder="Pay"
+                />
+              </td>
+              <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            </tr>
+            <tr className="odd-row">
+            <td>Rakib</td>
+            <td>016556</td>
+            <td>
+              <div>
+                <Select
+                  value={selectedOption}
+                  onChange={handleChange}
+                  options={months}
+                />
+              </div>
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Bonus"
+              />
+            </td>
+            <td>
+              <b>05h</b>
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" O Amount"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" A of Salary "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Previous A"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" Cut Salary "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder=" T Payment "
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Advance"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                className="border overTimeInput"
+                placeholder="Pay"
+              />
+            </td>
+            <td>
+            <input
+              type="number"
+              className="border overTimeInput"
+              placeholder="Pay"
+            />
+          </td>
           </tr>
           </tbody>
         </table>

@@ -149,7 +149,7 @@ const RunningProject = () => {
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th>Date</th>
-            <th colSpan={3}>Action</th>
+            <th colSpan={2}>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -171,13 +171,7 @@ const RunningProject = () => {
                   {/* </Link> */}
                 </div>
               </td>
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-quotation?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
+              
               <td>
                 <div
                   onClick={() => deletePackage(card._id)}
