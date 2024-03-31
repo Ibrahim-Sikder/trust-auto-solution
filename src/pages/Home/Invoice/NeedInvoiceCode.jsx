@@ -637,7 +637,7 @@ const Invoice = () => {
             </p>
           </div>
         </div> */}
-        <div className="flex items-center justify-between w-full mt-5 mb-2 flex-wrap ">
+        <div className="flex items-center justify-between w-full mt-5 mb-2">
           <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
           <div>
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
@@ -712,20 +712,16 @@ const Invoice = () => {
             </div>
           </div>
          */}
-          <div className="vehicleCard">Create Invoice </div>
+         <div className="vehicleCard">Create Invoice </div>
 
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
+              <h3 className="text-3xl font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField className="addJobInputField" label="Customer Id" />
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Serial No"
-                  onChange={(e) => setJob_no(e.target.value)}
-                />
+                <TextField className="addJobInputField" label="Serial No" />
               </div>
               <div className="mt-3">
                 <TextField className="addJobInputField" label="Company" />
@@ -741,8 +737,8 @@ const Invoice = () => {
               </div>
             </div>
 
-            <div className="jobCardFieldRightSide lg:mt-0 mt-5 ">
-              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
+            <div className="jobCardFieldRightSide">
+              <h3 className="text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
                 <TextField
@@ -765,7 +761,18 @@ const Invoice = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-around labelWrap">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center topSearchBa"></div>
+            {customer_type === "customer" && (
+              <Link to="/dashboard/add-customer">
+                {" "}
+                <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
+                  Add Customer
+                </button>
+              </Link>
+            )}
+          </div>
+          <div className="flex items-center justify-around mb-3 labelWrap">
             <label>SL No </label>
             <label>Description </label>
             <label>Quantity </label>
@@ -776,7 +783,7 @@ const Invoice = () => {
             return (
               <div key={i}>
                 <div className="qutationForm">
-                  <div className="removeBtn">
+                  <div>
                     {items.length !== 0 && (
                       <button
                         onClick={() => handleRemove(i)}
@@ -812,8 +819,8 @@ const Invoice = () => {
                     <input
                       className="firstInputField"
                       autoComplete="off"
-                      type="number"
-                      placeholder="Quantity"
+                      type="text"
+                      placeholder="Quantity "
                       onChange={(e) => handleQuantityChange(i, e.target.value)}
                       required
                     />
@@ -822,8 +829,8 @@ const Invoice = () => {
                     <input
                       className="thirdInputField"
                       autoComplete="off"
-                      type="number"
-                      placeholder="Rate"
+                      type="text"
+                      placeholder="Rate "
                       onChange={(e) => handleRateChange(i, e.target.value)}
                       required
                     />
@@ -835,18 +842,17 @@ const Invoice = () => {
                       type="text"
                       placeholder="Amount"
                       value={item.total}
-                      readOnly
                     />
                   </div>
                 </div>
 
                 <div className="addInvoiceItem">
-                  {items.length - 1 === i && (
+                  {inputList.length - 1 === i && (
                     <div
                       onClick={handleAddClick}
-                      className="flex justify-end mt-2 addQuotationBtns "
+                      className="flex justify-end mt-2"
                     >
-                      <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white p-2 rounded-md">
+                      <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white">
                         Add
                       </button>
                     </div>

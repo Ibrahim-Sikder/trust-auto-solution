@@ -158,10 +158,6 @@ const UpdateInvoice = () => {
       .catch((error) => {});
   };
 
-
- 
-
-
   const handleUpdateInvoice = async (e) => {
     e.preventDefault();
     if (specificInvoice.customerId !== trust_auto_id) {
@@ -214,112 +210,76 @@ const UpdateInvoice = () => {
   };
   return (
     <div className="px-5 py-10">
-  
       <div className="flex items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
-      <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
-      <div>
-        <h2 className=" trustAutoTitle trustAutoTitleQutation">
-          Trust Auto Solution{" "}
-        </h2>
-        <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+        <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+        <div>
+          <h2 className=" trustAutoTitle trustAutoTitleQutation">
+            Trust Auto Solution{" "}
+          </h2>
+          <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+        </div>
+        <div className="space-y-1 text-justify">
+          <span className="block">
+            <span className="font-bold">Mobile:</span> 345689789666
+          </span>
+          <span className="block">
+            <small className="font-bold">Email:</small>{" "}
+            trustautosolution@gmail.com
+          </span>
+          <span className="block font-bold ">trustautosolution.com</span>
+        </div>
       </div>
-      <div className="space-y-1 text-justify">
-        <span className="block">
-          <span className="font-bold">Mobile:</span> 345689789666
-        </span>
-        <span className="block">
-          <small className="font-bold">Email:</small>{" "}
-          trustautosolution@gmail.com
-        </span>
-        <span className="block font-bold ">trustautosolution.com</span>
-      </div>
-    </div>
-      
-      
+
       <div className="mt-5">
         <div>
-        <div className="mb-10 jobCardFieldWraps">
-  
-<div className='jobCardFieldLeftSide'>
-<h3 className="text-3xl font-bold">Customer Info</h3>
-<div className="mt-3">
-<TextField
-className="addJobInputField"
-  label="Customer Id" 
-/>
-</div>
-<div className="mt-3">
-<TextField
-className="addJobInputField"
-  label="Serial No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Company"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Customer"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Phone"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Address"
-/>
-</div>
-</div>
+          <div className="mb-10 jobCardFieldWraps">
+            <div className="jobCardFieldLeftSide">
+              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Customer Id" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Serial No" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Company" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Customer" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Phone" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Address" />
+              </div>
+            </div>
 
-<div className='jobCardFieldRightSide'>
-<h3 className="text-3xl font-bold">Vehicle Info</h3>
+            <div className="jobCardFieldRightSide mt-5 lg:mt-0">
+              <h3 className="text-xl lg:text-3xl  font-bold">Vehicle Info</h3>
 
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Registration No"
+                />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Chassis No" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Engine & CC" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Vehicle Name" />
+              </div>
+              <div className="mt-3">
+                <TextField className="addJobInputField" label="Mileage" />
+              </div>
+            </div>
+          </div>
 
-
-
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Registration No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Chassis No"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Engine & CC"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Vehicle Name"
-/>
-</div>
-<div className="mt-3">
-<TextField
-  className="addJobInputField"
-  label="Mileage"
-/>
-</div>
-</div>
-</div>
-
-<div className="vehicleCard">Update Invoice </div>
+          <div className="vehicleCard">Update Invoice </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
@@ -543,20 +503,16 @@ className="addJobInputField"
                   defaultValue={specificInvoice.vat}
                 />
               </div>
-              <div className='flex items-center '>
-              <b className='mr-3' >
-                Final Total:{" "}
-               
-              </b>
-               <span>
+              <div className="flex items-center ">
+                <b className="mr-3">Final Total: </b>
+                <span>
                   {calculateFinalTotal()
                     ? calculateFinalTotal()
                     : specificInvoice.net_total}
                 </span>
-              {/* <b>Net Total: </b> */}
-            
-            </div>
-              
+                {/* <b>Net Total: </b> */}
+              </div>
+
               <div>
                 <b className="mr-2">Due: </b>
                 <input
@@ -613,11 +569,10 @@ className="addJobInputField"
             </div>
           </div> */}
 
-        
-            <div onClick={handleUpdateInvoice} className="mb-12">
-              <button className="addJobBtn">Update Invoice </button>
-            </div>
-        
+          <div onClick={handleUpdateInvoice} className="mb-12">
+            <button className="addJobBtn">Update Invoice </button>
+          </div>
+
           {error && (
             <div className="pt-6 text-center text-red-400">{error}</div>
           )}

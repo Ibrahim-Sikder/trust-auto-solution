@@ -19,15 +19,12 @@ import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
 import { HiOutlineSearch, HiOutlineUserGroup } from "react-icons/hi";
 import Cookies from "js-cookie";
-import { v4 as uuidv4 } from 'uuid';
-
-
+import { v4 as uuidv4 } from "uuid";
 
 const AddCustomer = () => {
-
-
   const [filterType, setFilterType] = useState("");
   const [customerData, setCustomerData] = useState([]);
+  console.log(customerData);
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -48,18 +45,24 @@ const AddCustomer = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const uniqueId = 'Id_' + Math.random().toString(36).substr(2, 9);
+    // const uniqueId = 'Id_' + Math.random().toString(36).substr(2, 9);
+    const customerNamePrefix = data.customer_name.substring(0, 4);
+    const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
+    const paddedNumber = randomNumber.toString().padStart(4, "0"); // Ensures the number is 3 digits long
+
+    // Concatenate the name and the number to form the unique ID
+    const uniqueId = `${customerNamePrefix}${paddedNumber}`;
     data.customerId = uniqueId;
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/customer",
         data
       );
- 
+
       if (response.data.message === "Successfully add to customer post") {
         setReload(!reload);
         Cookies.set("trust_auto_id", response.data.result.customerId);
-        Cookies.set("customer_type", "customer")
+        Cookies.set("customer_type", "customer");
         navigate("/dashboard/customer-list");
         toast.success("Successfully add to customer post");
         setLoading(false);
@@ -92,11 +95,8 @@ const AddCustomer = () => {
       });
   }, [reload]);
 
-
-
-
   const handleIconPreview = async (e) => {
-    console.log(e)
+    console.log(e);
     navigate(`/dashboard/customer-profile?id=${e}`);
   };
 
@@ -385,7 +385,6 @@ const AddCustomer = () => {
                 </div>
                 <div>
                   <TextField
-                  
                     className="productField"
                     on
                     label="Company Address (T)"
@@ -612,10 +611,11 @@ const AddCustomer = () => {
       </div>
       <div className="w-full mt-5 mb-24">
         <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl"> Customer List: </h3>
+          <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl">
+            {" "}
+            Customer List:{" "}
+          </h3>
           <div className="flex flex-wrap items-center">
-            
-            
             <input
               onChange={(e) => setFilterType(e.target.value)}
               type="text"

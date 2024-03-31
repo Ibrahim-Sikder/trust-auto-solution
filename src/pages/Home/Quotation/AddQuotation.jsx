@@ -18,6 +18,7 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Cookies from "js-cookie";
 import { Autocomplete, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
 
 const AddQuotation = () => {
   const [select, setSelect] = useState(null);
@@ -27,9 +28,9 @@ const AddQuotation = () => {
   ]);
 
   const location = useLocation();
-  const orderNo = new URLSearchParams(location.search).get("order_no");
+  const serial_no = new URLSearchParams(location.search).get("serial_no");
   const navigate = useNavigate();
-  const [job_no, setJob_no] = useState(orderNo);
+  const [job_no, setJob_no] = useState(serial_no);
   const [jobCardData, setJobCardData] = useState({});
   const [error, setError] = useState("");
   const [postError, setPostError] = useState("");
@@ -40,9 +41,19 @@ const AddQuotation = () => {
   const [loading, setLoading] = useState(false);
   const [jobLoading, setJobLoading] = useState(false);
 
-  const [customerDetails, setCustomerDetails] = useState([]);
-  const [showCustomerData, setShowCustomerData] = useState({});
+  // const [customerDetails, setCustomerDetails] = useState([]);
+  // const [showCustomerData, setShowCustomerData] = useState({});
   const [customerId, setCustomerId] = useState(null);
+  const [preview, setPreview] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+
 
   useEffect(() => {
     if (job_no) {
@@ -56,7 +67,6 @@ const AddQuotation = () => {
     }
   }, [job_no]);
 
-  console.log(jobCardData);
 
   const handleRemove = (index) => {
     if (!index) {
@@ -74,17 +84,6 @@ const AddQuotation = () => {
     setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
   };
 
-  //  add to quotation
-
-  // const [serialNo, setSerialNo] = useState([]);
-  // const formattedSerialNo = serialNo.toLocaleString("en-US", {
-  //   minimumIntegerDigits: 2,
-  //   useGrouping: false,
-  // });
-  // const [descriptions, setDescriptions] = useState([]);
-  // const [quantity, setQuantity] = useState([]);
-  // const [rate, setRate] = useState([]);
-  // const [total, setTotal] = useState([]);
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
@@ -115,41 +114,41 @@ const AddQuotation = () => {
     return finalTotal;
   };
 
-  const trust_auto_id = Cookies.get("trust_auto_id");
-  const customer_type = Cookies.get("customer_type");
+  // const trust_auto_id = Cookies.get("trust_auto_id");
+  // const customer_type = Cookies.get("customer_type");
 
-  const handleAddToQuotation = async (e) => {
-    e.preventDefault();
-    if (!trust_auto_id) {
+  const onSubmit = async (data) => {
+    
+    if (!jobCardData.customerId) {
       return toast.error("No account found.");
     }
     try {
       const values = {
-        username: jobCardData.username,
-        customerId: customerId,
-        companyId: customerId,
-        showRoomId: customerId,
-        job_no: job_no,
+        username: jobCardData.username || data.username,
+        Id: customerId || jobCardData.customerId,
+        job_no: job_no || jobCardData.job_no,
         date: jobCardData.date,
-        car_registration_no: jobCardData.car_registration_no,
-        customer_name: jobCardData?.customer_name,
-        contact_number: jobCardData?.contact_number,
-        mileage: jobCardData?.mileage,
+
+        company_name: data.company_name || jobCardData.company_name,
+        customer_name: data.customer_name || jobCardData.customer_name,
+        contact_contact:  data.contact_contact ||  jobCardData.contact_number,
+        customer_address:  data.customer_address || jobCardData.customer_address,
+
+        car_registration_no: data.car_registration_no || jobCardData.car_registration_no,
+        chassis_no:  data.chassis_no || jobCardData.chassis_no,
+        engine_no:  data.engine_no || jobCardData.engine_no,
+        vehicle_name: data.vehicle_name || jobCardData.vehicle_name,
+        mileage:  data.mileage || jobCardData.mileage,
+
+
+        
         total_amount: grandTotal,
         discount: discount,
         vat: vat,
         net_total: calculateFinalTotal(),
         input_data: items,
       };
-      const hasPreviewNullValues = Object.values(values).some(
-        (val) => val === null
-      );
-
-      if (hasPreviewNullValues) {
-        setError("Please fill in all the required fields.");
-        setPostError("");
-        return;
-      }
+       
       setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/api/v1/quotation",
@@ -161,6 +160,15 @@ const AddQuotation = () => {
         setError("");
         toast.success("Quotation added successful.");
         setReload(!reload);
+        if (preview === "preview") {
+          fetch("http://localhost:5000/api/v1/quotation")
+            .then((res) => res.json())
+            .then((data) => {
+              if (data) {
+                navigate(`/dashboard/quotation-view?id=${data._id}`);
+              }
+            });
+        }
         setLoading(false);
       }
     } catch (error) {
@@ -171,62 +179,59 @@ const AddQuotation = () => {
     }
   };
 
-  const handlePreview = async (e) => {
-    e.preventDefault();
-    if (!trust_auto_id) {
-      return toast.error("No account found.");
-    }
-    const values = {
-      username: jobCardData?.username,
-      customerId: customerId,
-      companyId: customerId,
-      showRoomId: customerId,
-      // serial_no: formattedSerialNo,
-      job_no: job_no,
-      date: jobCardData.date,
+  // const handlePreview = async (e) => {
+  //   e.preventDefault();
+  //   if (!jobCardData.customerId) {
+  //     return toast.error("No account found.");
+  //   }
+  //   const values = {
+  //     username: jobCardData?.username,
+  //     customerId: customerId,
+  //     companyId: customerId,
+  //     showRoomId: customerId,
+  //     // serial_no: formattedSerialNo,
+  //     job_no: job_no,
+  //     date: jobCardData.date,
 
-      
-      company_name: jobCardData.company_name,
-      customer_name: jobCardData.customer_name,
-      contact_contact: jobCardData.contact_number,
-      customer_address: jobCardData.customer_address,
+  //     company_name: jobCardData.company_name,
+  //     customer_name: jobCardData.customer_name,
+  //     contact_contact: jobCardData.contact_number,
+  //     customer_address: jobCardData.customer_address,
 
-      car_registration_no: jobCardData.car_registration_no,
-      chassis_no: jobCardData.chassis_no,
-      engine_no: jobCardData.engine_no,
-      vehicle_name: jobCardData.vehicle_name,
-      mileage: jobCardData.mileage,
+  //     car_registration_no: jobCardData.car_registration_no,
+  //     chassis_no: jobCardData.chassis_no,
+  //     engine_no: jobCardData.engine_no,
+  //     vehicle_name: jobCardData.vehicle_name,
+  //     mileage: jobCardData.mileage,
 
+  //     total_amount: grandTotal,
+  //     discount: discount,
+  //     vat: vat,
+  //     net_total: calculateFinalTotal(),
+  //     input_data: items,
+  //   };
+  //   const hasPreviewNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
 
-
-      total_amount: grandTotal,
-      discount: discount,
-      vat: vat,
-      net_total: calculateFinalTotal(),
-      input_data: items,
-    };
-    const hasPreviewNullValues = Object.values(values).some(
-      (val) => val === null
-    );
-
-    if (hasPreviewNullValues) {
-      setError("Please fill in all the required fields.");
-      return;
-    }
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/quotation",
-      values
-    );
-    if (response.data.message === "Successfully quotation post") {
-      fetch("http://localhost:5000/api/v1/quotation")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data) {
-            navigate(`/dashboard/quotation-view?id=${data._id}`);
-          }
-        });
-    }
-  };
+  //   if (hasPreviewNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/quotation",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully quotation post") {
+  //     fetch("http://localhost:5000/api/v1/quotation")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         if (data) {
+  //           navigate(`/dashboard/quotation-view?id=${data._id}`);
+  //         }
+  //       });
+  //   }
+  // };
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/quotation-view?id=${e}`);
@@ -242,52 +247,52 @@ const AddQuotation = () => {
       });
   }, [reload]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let apiUrl = "";
-        switch (customer_type) {
-          case "customer":
-            apiUrl = "http://localhost:5000/api/v1/customer";
-            break;
-          case "company":
-            apiUrl = "http://localhost:5000/api/v1/company";
-            break;
-          case "show_room":
-            apiUrl = "http://localhost:5000/api/v1/showRoom";
-            break;
-          default:
-            throw new Error("Invalid customer type");
-        }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let apiUrl = "";
+  //       switch (customer_type) {
+  //         case "customer":
+  //           apiUrl = "http://localhost:5000/api/v1/customer";
+  //           break;
+  //         case "company":
+  //           apiUrl = "http://localhost:5000/api/v1/company";
+  //           break;
+  //         case "show_room":
+  //           apiUrl = "http://localhost:5000/api/v1/showRoom";
+  //           break;
+  //         default:
+  //           throw new Error("Invalid customer type");
+  //       }
 
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+  //       const response = await fetch(apiUrl);
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
 
-        const data = await response.json();
-        setCustomerDetails(data);
+  //       const data = await response.json();
+  //       setCustomerDetails(data);
 
-        const selectedCustomer = data.find((customer) => {
-          switch (customer_type) {
-            case "customer":
-              return customer.customerId === customerId;
-            case "company":
-              return customer.companyId === customerId;
-            case "show_room":
-              return customer.showRoomId === customerId;
-            default:
-              return false;
-          }
-        });
-        setShowCustomerData(selectedCustomer);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
+  //       const selectedCustomer = data.find((customer) => {
+  //         switch (customer_type) {
+  //           case "customer":
+  //             return customer.customerId === customerId;
+  //           case "company":
+  //             return customer.companyId === customerId;
+  //           case "show_room":
+  //             return customer.showRoomId === customerId;
+  //           default:
+  //             return false;
+  //         }
+  //       });
+  //       setShowCustomerData(selectedCustomer);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     }
+  //   };
 
-    fetchData();
-  }, [customerId, customer_type]);
+  //   fetchData();
+  // }, [customerId, customer_type]);
 
   // pagination
 
@@ -615,6 +620,8 @@ const AddQuotation = () => {
     },
   }));
 
+  console.log(jobCardData);
+
   return (
     <div className="px-5 py-10">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
@@ -641,176 +648,120 @@ const AddQuotation = () => {
         </div>
       </div>
       <div className="mt-5">
-        <form>
-          {/** 
-          <div className="lg:flex gap-x-2">
-            <div>
-              <label className="block">Order Number </label>
-              <input
-                onChange={(e) => setJob_no(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Order Number"
-                defaultValue={orderNo}
-                className="orderNumber border border-[#42A1DA] w-full px-1 py-[10px] rounded"
-              />
-            </div>
-            {jobLoading ? (
-              <div>Loading...</div>
-            ) : (
-              <div className="flex qutationForm invoicForm gap-x-3">
-                <div>
-                  <label className="block">Customer Name </label>
-                  <input
-                    autoComplete="off"
-                    type="text"
-                    placeholder="Customer Name"
-                    defaultValue={jobCardData?.customer_name}
-                  />
-                </div>
-
-                <div>
-                  <label className="block">Car Number </label>
-                  <input
-                    defaultValue={jobCardData?.car_registration_no}
-                    autoComplete="off"
-                    type="text"
-                    placeholder="Car Number"
-                  />
-                </div>
-                <div>
-                  <label className="block">Mobile Number </label>
-                  <input
-                    autoComplete="off"
-                    type="text"
-                    placeholder="Mobile Number "
-                    defaultValue={jobCardData?.contact_number}
-                  />
-                </div>
-                <div>
-                  <label className="block">Date</label>
-                  <input
-                    defaultValue={jobCardData?.date}
-                    autoComplete="off"
-                    placeholder="Date"
-                    className="orderNumber"
-                    readOnly
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-          */}
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="vehicleCard">Create Quotation </div>
 
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-3xl font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Serial No"
+                  onChange={(e) => setJob_no(e.target.value)}
+                  value={jobCardData?.job_no}
+                  focused={jobCardData?.job_no}
+                />
+              </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Customer Id"
-                  onChange={(e) => setJob_no(e.target.value)}
+                  onChange={(e) => setCustomerId(e.target.value)}
+                  value={jobCardData?.customerId}
+                  focused={jobCardData?.customerId}
+                  required
+                />
+              </div>
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Company"
+                  value={jobCardData?.company_name}
+                  focused={jobCardData?.company_name}
+                  {...register("company_name")}
                 />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Serial No" />
+                <TextField
+                  className="addJobInputField"
+                  label="Customer"
+                  value={jobCardData?.customer_name}
+                  focused={jobCardData?.customer_name}
+                  {...register("customer_name")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Company" />
+                <TextField
+                  className="addJobInputField"
+                  label="Phone"
+                  value={jobCardData?.customer_contact}
+                  focused={jobCardData?.customer_contact}
+                  {...register("customer_contact")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Customer" />
-              </div>
-              <div className="mt-3">
-                <TextField className="addJobInputField" label="Phone" />
-              </div>
-              <div className="mt-3">
-                <TextField className="addJobInputField" label="Address" />
+                <TextField
+                  className="addJobInputField"
+                  label="Address"
+                  value={jobCardData?.customer_address}
+                  focused={jobCardData?.customer_address}
+                  {...register("customer_address")}
+                />
               </div>
             </div>
 
-            <div className="mt-3 md:mt-0 jobCardFieldRightSide">
-              <h3 className="text-3xl font-bold">Vehicle Info</h3>
+            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
+              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Registration No"
+                  value={jobCardData?.car_registration_no}
+                  focused={jobCardData?.car_registration_no}
+                  {...register("car_registration_no")}
                 />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Chassis No" />
-              </div>
-              <div className="mt-3">
-                <TextField className="addJobInputField" label="Engine & CC" />
-              </div>
-              <div className="mt-3">
-                <TextField className="addJobInputField" label="Vehicle Name" />
-              </div>
-              <div className="mt-3">
-                <TextField className="addJobInputField" label="Mileage" />
-              </div>
-            </div>
-          </div>
-
-          {/**
-          <div className="mb-5">
-          
-        
-            <span>
-              {" "}
-              <b>ID:</b> TAS000
-            </span>
-            <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center topSearchBa">
-                <Autocomplete
-                  onChange={(event, value) => setCustomerId(value)}
-                  className="jobCardSelect"
-                  id="free-solo-demo"
-                  Customer
-                  ID
-                  options={customerDetails?.map(
-                    (option) =>
-                      option?.customerId ||
-                      option?.companyId ||
-                      option?.showRoomId
-                  )}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select ID" />
-                  )}
+                <TextField
+                  className="addJobInputField"
+                  label="Chassis No"
+                  value={jobCardData?.chassis_no}
+                  focused={jobCardData?.chassis_no}
+                  {...register("chassis_no")}
                 />
               </div>
-              {customer_type === "customer" && (
-                <Link to="/dashboard/add-customer">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Customer
-                  </button>
-                </Link>
-              )}
-
-              {customer_type === "company" && (
-                <Link to="/dashboard/add-company">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Company
-                  </button>
-                </Link>
-              )}
-              {customer_type === "show_room" && (
-                <Link to="/dashboard/add-show-room">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Show Room
-                  </button>
-                </Link>
-              )}
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Engine & CC"
+                  value={jobCardData?.engine_no}
+                  focused={jobCardData?.engine_no}
+                  {...register("engine_no")}
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Vehicle Name"
+                  value={jobCardData?.vehicle_name}
+                  focused={jobCardData?.vehicle_name}
+                  {...register("vehicle_name")}
+                />
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Mileage"
+                  value={jobCardData?.mileage}
+                  focused={jobCardData?.mileage}
+                  {...register("mileage")}
+                />
+              </div>
             </div>
-           
           </div>
-          */}
-
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
@@ -892,7 +843,7 @@ const AddQuotation = () => {
                       onClick={handleAddClick}
                       className="flex justify-end mt-2 addQuotationBtns "
                     >
-                      <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white">
+                      <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white p-2 rounded-md">
                         Add
                       </button>
                     </div>
@@ -937,13 +888,13 @@ const AddQuotation = () => {
           <div className="mt-8 buttonGroup">
             <div>
               {/* <Link to={}> */}
-              <button onClick={handlePreview}>Preview</button>
+              <button onClick={()=>setPreview("preview")}>Preview</button>
               {/* </Link> */}
               <button>Download </button>
               <button>Print </button>
             </div>
             <div className="submitQutationBtn">
-              <button onClick={handleAddToQuotation} className="">
+              <button className="">
                 Add To Quotation{" "}
               </button>
             </div>
@@ -958,15 +909,9 @@ const AddQuotation = () => {
       </div>
       <div className="mt-20 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="mb-3 text-3xl font-bold">Quotaiton List:</h3>
+          <h3 className="mb-3 text-3xl font-bold">Quotation List:</h3>
           <div className="flex items-center searcList">
-            {/* <select onChange={(e) => setSelect(e.target.value)}>
-              <option value="SL No"> SL No</option>
-              <option value="Customer Name"> Customer Name</option>
-              <option value="Order Number"> Order Number</option>
-              <option value="Car Number"> Car Number</option>
-              <option value="Mobile Number"> Mobile Number</option>
-            </select> */}
+            
             <div
               onClick={handleAllQuotation}
               className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
@@ -1046,21 +991,7 @@ const AddQuotation = () => {
         )}
       </div>
 
-      {/* <div className="pagination">
-        <div className="paginationBtn">
-          <button>
-            <FaArrowLeft className="arrowLeft" />
-          </button>
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>
-            <FaArrowRight className="arrowRight" />
-          </button>
-        </div>
-      </div> */}
+      
     </div>
   );
 };

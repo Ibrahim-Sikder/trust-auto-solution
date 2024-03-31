@@ -136,7 +136,7 @@ const AddExpense = () => {
               </div>
             </div>
 
-            <h3 className="mt-10 text-xl font-semibold">Add Payment </h3>
+            <h3 className="mt-10 text-xl font-semibold"> Payment Method </h3>
             <div>
               <div className="productFieldWrap">
                 <TextField
@@ -173,7 +173,7 @@ const AddExpense = () => {
                     <option value="Cash"> Cash </option>
                     <option value="Check"> Check </option>
                     <option value="Card"> Card </option>
-                    <option value="Bank Transfer ">Bank Transfer </option>
+                    <option value="Bank Transfer">Bank Transfer </option>
                     <option value="Other">Other </option>
                   </Select>
                 </FormControl>
@@ -197,18 +197,46 @@ const AddExpense = () => {
               <div className="mt-10">
                 {payment &&
                   (payment === "Check" ? (
-                    <TextField
-                      className="productField"
-                      fullWidth
-                      label=" Check No  "
-                    />
+                  <div>
+                  <TextField
+                  className="productField"
+                  fullWidth
+                  label=" Check No  "
+                />
+                <textarea
+                  placeholder="Expense Note "
+                  className="productDetail"
+                  name=""
+                />
+                  </div>
+                    
                   ) : payment === "Bank Transfer" ? (
+                   
+                    <div className="mt-4 ">
                     <TextField
-                      className="productField"
-                      fullWidth
-                      label=" Bank Account No "
-                    />
-                  ) : payment === "Card" ? (
+                    className="productField"
+                    fullWidth
+                    label=" Bank Account No "
+                  />
+                  <textarea
+                  placeholder="Expense Note "
+                  className="productDetail"
+                  name=""
+                />
+                  </div>
+                  ) :
+                  
+                   payment === "Cash" ? (
+                   
+                    <div className="mt-4 ">
+                   
+                  <textarea
+                  placeholder="Expense Note "
+                  className="productDetail"
+                  name=""
+                />
+                  </div>
+                  ) :  payment === "Card" ? (
                     <div>
                       <div className="productFieldWrap">
                         <TextField
@@ -279,11 +307,18 @@ const AddExpense = () => {
                       </div>
                     </div>
                   ) :  payment === "Other" ? (
-                    <TextField
-                      className="productField"
-                      fullWidth
-                      label="Transition No "
-                    />
+                   <div>
+                   <TextField
+                   className="productField"
+                   fullWidth
+                   label="Transition No "
+                 />
+                 <textarea
+               placeholder="Expense Note "
+               className="productDetail"
+               name=""
+             />
+                   </div>
                   ) 
                   
                   

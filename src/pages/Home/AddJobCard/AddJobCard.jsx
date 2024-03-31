@@ -28,12 +28,12 @@ const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
   const [allJobCard, setAllJobCard] = useState([]);
+
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
 
-  const [customerDetails, setCustomerDetails] = useState([]);
+  // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-  
 
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
@@ -62,7 +62,7 @@ const AddJobCard = () => {
   const formRef = useRef();
   const navigate = useNavigate();
 
-  const customer_type = Cookies.get("customer_type");
+  // const customer_type = Cookies.get("customer_type");
 
   const onSubmit = async (data) => {
     try {
@@ -70,9 +70,7 @@ const AddJobCard = () => {
         return toast.error("Please add your Id.");
       }
       const values = {
-        customerId: customerId,
-        companyId: customerId,
-        showRoomId: customerId,
+        Id: customerId,
         job_no: jobNo,
         date: formattedDate,
         company_name: data.company_name || showCustomerData.company_name,
@@ -132,10 +130,10 @@ const AddJobCard = () => {
             });
         }
         if (clickControl === "quotation") {
-          navigate(`/dashboard/qutation?Id=${customerId}`);
+          navigate(`/dashboard/qutation?serial_no=${jobNo}`);
         }
         if (clickControl === "invoice") {
-          navigate(`/dashboard/invoice?Id=${customerId}`);
+          navigate(`/dashboard/invoice?serial_no=${jobNo}`);
         }
         toast.success("Add to job card successful.");
         formRef.current.reset();
@@ -161,19 +159,10 @@ const AddJobCard = () => {
     const fetchData = async () => {
       try {
         let apiUrl = "";
-        switch (customer_type) {
-          case "customer":
-            apiUrl = "http://localhost:5000/api/v1/customer";
-            break;
-          case "company":
-            apiUrl = "http://localhost:5000/api/v1/company";
-            break;
-          case "show_room":
-            apiUrl = "http://localhost:5000/api/v1/showRoom";
-            break;
-          default:
-            throw new Error("Invalid customer type");
-        }
+        apiUrl =
+          `http://localhost:5000/api/v1/customer/${customerId}` ||
+          `http://localhost:5000/api/v1/company/${customerId}` ||
+          `http://localhost:5000/api/v1/showRoom/${customerId}`;
 
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -181,25 +170,25 @@ const AddJobCard = () => {
         }
 
         const data = await response.json();
-        setCustomerDetails(data);
-        const selectedCustomer = data.find((customer) => {
-          return (
-            customer.customerId === customerId ||
-            customer.companyId === customerId ||
-            customer.showRoomId === customerId
-          );
-        });
+      
+        setShowCustomerData(data);
+        // const selectedCustomer = data.find((customer) => {
+        //   return (
+        //     customer.customerId === customerId ||
+        //     customer.companyId === customerId ||
+        //     customer.showRoomId === customerId
+        //   );
+        // });
 
-        setShowCustomerData(selectedCustomer);
+        // setShowCustomerData(selectedCustomer);
       } catch (error) {
         setError(error.message);
       }
     };
 
     fetchData();
-  }, [customerId, customer_type]);
+  }, [customerId]);
 
-  
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };
@@ -788,7 +777,7 @@ const AddJobCard = () => {
             )} */}
               </div>
             </div>
-            <div className="jobCardFieldLeftSide">
+            <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
               <div className="flex items-center mt-3 ">

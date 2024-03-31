@@ -10,10 +10,11 @@
 .viewMoneyReceiptWrap {
 	background-color: #dddddd;
 	padding: 30px 0;
-	height: 100dvh;
+	height: 100vh;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
+
 }
 .moneyFormWrap {
 	border: 1px solid black;
