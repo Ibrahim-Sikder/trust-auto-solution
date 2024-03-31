@@ -37,6 +37,10 @@ const UpdateJobCard = () => {
     }
   }, [id]);
 
+
+
+ console.log(singleCard)
+
   const onSubmit = async (data) => {
     const values = {
       username: singleCard.username,

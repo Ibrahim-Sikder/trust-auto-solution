@@ -33,7 +33,7 @@ const AddJobCard = () => {
 
   const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-  console.log(showCustomerData);
+  
 
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
@@ -182,19 +182,14 @@ const AddJobCard = () => {
 
         const data = await response.json();
         setCustomerDetails(data);
-
         const selectedCustomer = data.find((customer) => {
-          switch (customer_type) {
-            case "customer":
-              return customer.customerId === customerId;
-            case "company":
-              return customer.companyId === customerId;
-            case "show_room":
-              return customer.showRoomId === customerId;
-            default:
-              return false;
-          }
+          return (
+            customer.customerId === customerId ||
+            customer.companyId === customerId ||
+            customer.showRoomId === customerId
+          );
         });
+
         setShowCustomerData(selectedCustomer);
       } catch (error) {
         setError(error.message);
@@ -204,181 +199,7 @@ const AddJobCard = () => {
     fetchData();
   }, [customerId, customer_type]);
 
-  // const handlePreview = async (e) => {
-  //   e.preventDefault();
-  // try {
-  //   const values = {
-  //     customerId: id,
-  //     job_no: jobNo,
-  //     date: formattedDate,
-  //     chassis_no: chassisNo,
-  //     carReg_no: carRegNo,
-  //     car_registration_no: registration,
-  //     vehicle_model: vehicleModel,
-  //     vehicle_brand: vehicleBrand,
-  //     mileage: mileage,
-  //     color: color,
-  //     engine_no: engineNo,
-  //     reference_name: reference,
-  //     company_name: companyName,
-  //     vehicle_category: vehicleCategory,
-  //     customer_name: customerName,
-  //     contact_number: contactNo,
-  //     driver_name: driverName,
-  //     phone_number: phoneNo,
-  //     vehicle_interior_parts: value,
-  //     reported_defect: value2,
-  //     reported_action: value3,
-  //     vehicle_body_report: vehicleBody,
-  //     technician_name: technicianName,
-  //     technician_signature: technicianSignature,
-  //     technician_date: technicianDate,
-  //     vehicle_owner: owner,
-  //   };
-  //   const hasPreviewNullValues = Object.values(values).some(
-  //     (val) => val === null
-  //   );
-
-  //   if (hasPreviewNullValues) {
-  //     setError("Please fill in all the required fields.");
-  //     return;
-  //   }
-
-  //   const response = await axios.post(
-  //     "http://localhost:5000/api/v1/jobCard",
-  //     values
-  //   );
-  //   if (response.data.message === "Successfully add to card post") {
-  //     const newJobNo = jobNo + 1;
-  //     setJobNo(newJobNo);
-  //     setReload(!reload);
-  //     fetch("http://localhost:5000/api/v1/jobCard/recent")
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         if (data) {
-  //           navigate(`/dashboard/preview?id=${data._id}`);
-  //         }
-  //       });
-
-  //     // formRef.current.reset()
-  //     reset();
-  //   }
-  // } catch (error) {
-  //   toast.error(error.message);
-  // }
-  // };
-  // const handleQuotation = async (e) => {
-  // e.preventDefault();
-  // try {
-  //   const values = {
-  //     customerId: id,
-  //     job_no: jobNo,
-  //     date: formattedDate,
-  //     chassis_no: chassisNo,
-  //     carReg_no: carRegNo,
-  //     car_registration_no: registration,
-  //     vehicle_model: vehicleModel,
-  //     vehicle_brand: vehicleBrand,
-  //     mileage: mileage,
-  //     color: color,
-  //     engine_no: engineNo,
-  //     reference_name: reference,
-  //     company_name: companyName,
-  //     vehicle_category: vehicleCategory,
-  //     customer_name: customerName,
-  //     contact_number: contactNo,
-  //     driver_name: driverName,
-  //     phone_number: phoneNo,
-  //     vehicle_interior_parts: value,
-  //     reported_defect: value2,
-  //     reported_action: value3,
-  //     vehicle_body_report: vehicleBody,
-  //     technician_name: technicianName,
-  //     technician_signature: technicianSignature,
-  //     technician_date: technicianDate,
-  //     vehicle_owner: owner,
-  //   };
-  //   const hasQuotationNullValues = Object.values(values).some(
-  //     (val) => val === null
-  //   );
-  //   if (hasQuotationNullValues) {
-  //     setError("Please fill in all the required fields.");
-  //     return;
-  //   }
-  //   setLoading(true);
-  //   const response = await axios.post(
-  //     "http://localhost:5000/api/v1/jobCard",
-  //     values
-  //   );
-  //   if (response.data.message === "Successfully add to card post") {
-  //     const newJobNo = jobNo + 1;
-  //     setJobNo(newJobNo);
-  //     setReload(!reload);
-  //     navigate(`/dashboard/qutation?order_no=${jobNo}`);
-  //     // formRef.current.reset()
-  //     setLoading(false);
-  //   }
-  // } catch (error) {
-  //   setLoading(false);
-  //   toast.error("Something went wrong.");
-  // }
-  // };
-  // const handleInvoice = async (e) => {
-  // e.preventDefault();
-  // try {
-  //   const values = {
-  //     customerId: id,
-  //     job_no: jobNo,
-  //     date: formattedDate,
-  //     chassis_no: chassisNo,
-  //     carReg_no: carRegNo,
-  //     car_registration_no: registration,
-  //     vehicle_model: vehicleModel,
-  //     vehicle_brand: vehicleBrand,
-  //     mileage: mileage,
-  //     color: color,
-  //     engine_no: engineNo,
-  //     reference_name: reference,
-  //     company_name: companyName,
-  //     vehicle_category: vehicleCategory,
-  //     customer_name: customerName,
-  //     contact_number: contactNo,
-  //     driver_name: driverName,
-  //     phone_number: phoneNo,
-  //     vehicle_interior_parts: value,
-  //     reported_defect: value2,
-  //     reported_action: value3,
-  //     vehicle_body_report: vehicleBody,
-  //     technician_name: technicianName,
-  //     technician_signature: technicianSignature,
-  //     technician_date: technicianDate,
-  //     vehicle_owner: owner,
-  //   };
-  //   const hasQuotationNullValues = Object.values(values).some(
-  //     (val) => val === null
-  //   );
-  //   if (hasQuotationNullValues) {
-  //     setError("Please fill in all the required fields.");
-  //     return;
-  //   }
-  //   setLoading(true);
-  //   const response = await axios.post(
-  //     "http://localhost:5000/api/v1/jobCard",
-  //     values
-  //   );
-  //   if (response.data.message === "Successfully add to card post") {
-  //     const newJobNo = jobNo + 1;
-  //     setJobNo(newJobNo);
-  //     setReload(!reload);
-  //     setLoading(false);
-  //     navigate(`/dashboard/invoice?order_no=${jobNo}`);
-  //     // formRef.current.reset()
-  //   }
-  // } catch (error) {
-  //   setLoading(false);
-  //   toast.error("Something went wrong.");
-  // }
-  // };
+  
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };
