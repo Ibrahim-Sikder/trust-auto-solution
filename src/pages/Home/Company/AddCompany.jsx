@@ -356,7 +356,7 @@ const AddCompany = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-wrap justify-center">
+            <div className="">
               <div>
                 <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
                   Company Information{" "}

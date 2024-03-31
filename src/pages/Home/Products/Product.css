@@ -167,6 +167,10 @@
 .searchBtn2 {
 	height: 45px;
 }
+.addCompanyInputWrap{
+	display: flex ;
+	justify-content: center;
+}
 
 @media only screen and (max-width: 1024px) {
 	.addProductWrap {

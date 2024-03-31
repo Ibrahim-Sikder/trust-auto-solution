@@ -705,7 +705,7 @@ const AddQuotation = () => {
 
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-3xl font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -730,8 +730,8 @@ const AddQuotation = () => {
               </div>
             </div>
 
-            <div className="mt-3 md:mt-0 jobCardFieldRightSide">
-              <h3 className="text-3xl font-bold">Vehicle Info</h3>
+            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
+              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
                 <TextField
@@ -892,7 +892,7 @@ const AddQuotation = () => {
                       onClick={handleAddClick}
                       className="flex justify-end mt-2 addQuotationBtns "
                     >
-                      <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white">
+                      <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white p-2 rounded-md">
                         Add
                       </button>
                     </div>

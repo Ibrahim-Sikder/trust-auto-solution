@@ -28,6 +28,7 @@ const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
   const [allJobCard, setAllJobCard] = useState([]);
+  console.log(allJobCard)
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
 
@@ -967,7 +968,7 @@ const AddJobCard = () => {
             )} */}
               </div>
             </div>
-            <div className="jobCardFieldLeftSide">
+            <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
               <div className="flex items-center mt-3 ">

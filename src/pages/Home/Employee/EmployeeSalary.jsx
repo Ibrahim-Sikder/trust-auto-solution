@@ -1,4 +1,3 @@
-import { HiCheck, HiOutlineX } from "react-icons/hi";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 // Start from 2024 and go up to 2030

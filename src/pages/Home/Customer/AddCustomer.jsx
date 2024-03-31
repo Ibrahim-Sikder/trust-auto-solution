@@ -28,6 +28,7 @@ const AddCustomer = () => {
 
   const [filterType, setFilterType] = useState("");
   const [customerData, setCustomerData] = useState([]);
+  console.log(customerData)
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");

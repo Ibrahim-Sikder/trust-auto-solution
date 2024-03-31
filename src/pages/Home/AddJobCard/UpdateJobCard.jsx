@@ -18,6 +18,7 @@ import {
   cmDmOptions,
   fuelType,
   totalYear,
+  vehicleName,
   vehicleTypes,
 } from "../../../constant";
 import Cookies from "js-cookie";
@@ -26,12 +27,14 @@ const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
   const [allJobCard, setAllJobCard] = useState([]);
+  console.log(allJobCard);
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
+  console.log(customerId);
 
   const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-
+  console.log(showCustomerData);
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
@@ -195,7 +198,6 @@ const UpdateJobCard = () => {
 
     fetchData();
   }, [customerId, customer_type]);
-
 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
@@ -511,8 +513,6 @@ const UpdateJobCard = () => {
 
   // ...
 
-
-
   const handlePrevious = () => {
     const newPage = currentPage - 1;
     setCurrentPage(newPage);
@@ -650,7 +650,9 @@ const UpdateJobCard = () => {
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}
             </h2>
-            <span className="text-[12px] lg:text-xl">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+            <span className="text-[12px] lg:text-xl">
+              Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
+            </span>
           </div>
           <div className="space-y-1 text-justify jobCardContactInfo">
             <span className="block">
@@ -678,7 +680,6 @@ const UpdateJobCard = () => {
                 <span>
                   <b>Customer ID:</b> TAS000
                 </span>
-              
               </div>
             </div>
             <div>
@@ -707,7 +708,7 @@ const UpdateJobCard = () => {
                   </button>
                 </Link>
               )}
-              
+
               {customer_type === "company" && (
                 <Link to="/dashboard/add-company">
                   {" "}
@@ -716,12 +717,170 @@ const UpdateJobCard = () => {
                   </button>
                 </Link>
               )}
-              
             </div>
           </div>
 
           <div className="jobCardFieldWraps">
-            <div className="jobCardFieldLeftSide">
+            <div className="jobCardFieldRightSide">
+              <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Company Name (T)"
+                  placeholder="Company Name"
+                  {...register("company_name")}
+                  value={showCustomerData?.company_name}
+                  focused={showCustomerData?.company_name}
+                />
+                {/* {errors.company_name && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Vehicle User Name (T)"
+                  {...register("username")}
+                  value={showCustomerData?.username}
+                  focused={showCustomerData?.username}
+                />
+                {/* {errors.username && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Company Address (T)"
+                  {...register("company_address")}
+                  value={showCustomerData?.company_address}
+                  focused={showCustomerData?.company_address}
+                />
+                {/* {errors.company_address && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Name (T)"
+                  {...register("customer_name")}
+                  value={showCustomerData?.customer_name}
+                  focused={showCustomerData?.customer_name}
+                />
+                {/* {errors.customer_name && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Contact No (N)"
+                  {...register("customer_contact", {
+                    // required: "This field is required.",
+                    pattern: {
+                      value: /^\d{11}$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.customer_contact}
+                  focused={showCustomerData?.customer_contact}
+                />
+                {/* {errors.customer_contact && (
+              <span className="text-sm text-red-400">
+                {errors.customer_contact.message}
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Email Address (T)"
+                  {...register("customer_email")}
+                  type="email"
+                  value={showCustomerData?.customer_email}
+                  focused={showCustomerData?.customer_email}
+                />
+                {/* {errors.customer_email && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Address (T) "
+                  {...register("customer_address")}
+                  value={showCustomerData?.customer_address}
+                  focused={showCustomerData?.customer_address}
+                />
+                {/* {errors.customer_address && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Driver Name (T)"
+                  {...register("driver_name")}
+                  value={showCustomerData?.driver_name}
+                  focused={showCustomerData?.driver_name}
+                />
+                {/* {errors.driver_name && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Driver Contact No (N)"
+                  {...register("driver_contact", {
+                    // required: "This field is required.",
+                    pattern: {
+                      value: /^\d{11}$/,
+                      message: "Please enter a valid number.",
+                    },
+                  })}
+                  value={showCustomerData?.driver_contact}
+                  focused={showCustomerData?.driver_contact}
+                />
+                {/* {errors.driver_contact && (
+              <span className="text-sm text-red-400">
+                {errors.driver_contact.message}
+              </span>
+            )} */}
+              </div>
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Reference Name (T) "
+                  {...register("reference_name")}
+                  value={showCustomerData?.reference_name}
+                  focused={showCustomerData?.reference_name}
+                />
+                {/* {errors.reference_name && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+              </div>
+            </div>
+
+            <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
               <div className="flex items-center mt-3 ">
@@ -735,59 +894,60 @@ const UpdateJobCard = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Car Reg No"
-                      {...register("carReg_no", { required: true })}
+                      label="Vehicle Reg No"
+                      {...register("carReg_no")}
                       value={showCustomerData?.carReg_no}
                       focused={showCustomerData?.carReg_no}
                     />
                   )}
                 />
                 <TextField
-                  className="addJobInputField"
+                  className="jobCardSelect2"
                   label="Car R (T&N)"
-                  {...register("car_registration_no", { required: true })}
+                  {...register("car_registration_no")}
                   value={showCustomerData?.car_registration_no}
                   focused={showCustomerData?.car_registration_no}
                 />
               </div>
 
-              {errors.car_registration_no && (
+              {/* {errors.car_registration_no && (
                 <span className="text-sm text-red-400">
                   This field is required.
                 </span>
-              )}
+              )} */}
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  {...register("chassis_no", { required: true })}
+                  {...register("chassis_no")}
                   label="Chassis No (T&N)"
                   value={showCustomerData?.chassis_no}
                   focused={showCustomerData?.chassis_no}
                 />
-                {errors.chassis_no && (
+                {/* {errors.chassis_no && (
                   <span className="text-sm text-red-400">
                     This field is required.
                   </span>
-                )}
+                )} */}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  {...register("engine_no", { required: true })}
+                  {...register("engine_no")}
                   label="ENGINE NO & CC (T&N) "
                   value={showCustomerData?.engine_no}
                   focused={showCustomerData?.engine_no}
                 />
-                {errors.engine_no && (
+                {/* {errors.engine_no && (
                   <span className="text-sm text-red-400">
                     This field is required.
                   </span>
-                )}
+                )} */}
               </div>
 
               <div className="mt-3">
                 <Autocomplete
+                  className="addJobInputField"
                   id="free-solo-demo"
                   Vehicle
                   Brand
@@ -797,33 +957,44 @@ const UpdateJobCard = () => {
                     <TextField
                       {...params}
                       label="Vehicle Brand"
-                      {...register("vehicle_brand", { required: true })}
+                      {...register("vehicle_brand")}
                       value={showCustomerData?.vehicle_brand}
                       focused={showCustomerData?.vehicle_brand}
                     />
                   )}
                 />
-                {errors.vehicle_brand && !brand && (
+                {/* {errors.vehicle_brand && !brand && (
                   <span className="text-sm text-red-400">
                     This field is required.
                   </span>
-                )}
+                )} */}
               </div>
 
               <div className="mt-3">
-                <TextField
+                <Autocomplete
                   className="addJobInputField"
-                  {...register("vehicle_name", { required: true })}
-                  label="Vehicle Name "
-                  value={showCustomerData?.vehicle_name}
-                  focused={showCustomerData?.vehicle_name}
+                  id="free-solo-demo"
+                  Vehicle
+                  Brand
+                  onInputChange={handleBrandChange}
+                  options={vehicleName.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Name "
+                      {...register("vehicle_name")}
+                      value={showCustomerData?.vehicle_name}
+                      focused={showCustomerData?.vehicle_name}
+                    />
+                  )}
                 />
-                {errors.vehicle_name && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
+                {/* {errors.vehicle_brand && !brand && (
+                <span className="text-sm text-red-400">
+                  This field is required.
+                </span>
+              )} */}
               </div>
+
               {/** 
               <div className="mt-3">
                 <TextField
@@ -836,6 +1007,7 @@ const UpdateJobCard = () => {
 
               <div className="mt-3">
                 {/* <Autocomplete
+                className="addJobInputField"
                   onChange={(e) => setCarModel(e.target.value)}
                   id="free-solo-demo"
                   Vehicle
@@ -849,7 +1021,7 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Vehicle Model (N)"
                   {...register("vehicle_model", {
-                    required: "This field is required.",
+                    // required: "This field is required.",
                     pattern: {
                       value: /^\d+$/,
                       message: "Please enter a valid model number.",
@@ -859,15 +1031,16 @@ const UpdateJobCard = () => {
                   focused={showCustomerData?.vehicle_model}
                 />
 
-                {errors.vehicle_model && (
+                {/* {errors.vehicle_model && (
                   <span className="text-sm text-red-400">
                     {errors.vehicle_model.message}
                   </span>
-                )}
+                )} */}
               </div>
 
               <div className="mt-3">
                 <Autocomplete
+                  className="addJobInputField"
                   id="free-solo-demo"
                   Vehicle
                   Types
@@ -877,38 +1050,41 @@ const UpdateJobCard = () => {
                     <TextField
                       {...params}
                       label=" Vehicle Categories "
-                      {...register("vehicle_category", { required: true })}
+                      {...register("vehicle_category")}
                       value={showCustomerData?.vehicle_category}
                       focused={showCustomerData?.vehicle_category}
                     />
                   )}
                 />
-                {errors.vehicle_category && !category && (
+                {/* {errors.vehicle_category && !category && (
                   <span className="text-sm text-red-400">
                     This field is required.
                   </span>
-                )}
+                )} */}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  {...register("color_code", { required: true })}
+                  {...register("color_code")}
                   label="Color & Code (T&N) "
                   value={showCustomerData?.color_code}
-                  focused={showCustomerData?.color_code}
+                  focused={
+                    showCustomerData?.color_code !== "" &&
+                    showCustomerData?.color_code
+                  }
                 />
-                {errors.color_code && (
+                {/* {errors.color_code && (
                   <span className="text-sm text-red-400">
                     This field is required.
                   </span>
-                )}
+                )} */}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Mileage (N) "
                   {...register("mileage", {
-                    required: "This field is required.",
+                    // required: "This field is required.",
                     pattern: {
                       value: /^\d+$/,
                       message: "Please enter a valid number.",
@@ -917,14 +1093,15 @@ const UpdateJobCard = () => {
                   value={showCustomerData?.mileage}
                   focused={showCustomerData?.mileage}
                 />
-                {errors.mileage && (
+                {/* {errors.mileage && (
                   <span className="text-sm text-red-400">
                     {errors.mileage.message}
                   </span>
-                )}
+                )} */}
               </div>
               <div className="mt-3">
                 <Autocomplete
+                  className="addJobInputField"
                   value={showCustomerData?.fuel_type}
                   focused={showCustomerData?.fuel_type}
                   id="free-solo-demo"
@@ -936,175 +1113,17 @@ const UpdateJobCard = () => {
                     <TextField
                       {...params}
                       label=" Fuel Type"
-                      {...register("fuel_type", { required: true })}
+                      {...register("fuel_type")}
                       value={showCustomerData?.fuel_type}
                       focused={showCustomerData?.fuel_type}
                     />
                   )}
                 />
-                {errors.fuel_type && !getFuelType && (
+                {/* {errors.fuel_type && !getFuelType && (
                   <span className="text-sm text-red-400">
                     This field is required.
                   </span>
-                )}
-              </div>
-            </div>
-
-            <div className="jobCardFieldRightSide">
-              <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company Name (T)"
-                  {...register("company_name", { required: true })}
-                  value={showCustomerData?.company_name}
-                  focused={showCustomerData?.company_name}
-                />
-                {errors.company_name && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle User Name (T)"
-                  {...register("username", { required: true })}
-                  value={showCustomerData?.username}
-                  focused={showCustomerData?.username}
-                />
-                {errors.username && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company Address (T)"
-                  {...register("company_address", { required: true })}
-                  value={showCustomerData?.company_address}
-                  focused={showCustomerData?.company_address}
-                />
-                {errors.company_address && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Name (T)"
-                  {...register("customer_name", { required: true })}
-                  value={showCustomerData?.customer_name}
-                  focused={showCustomerData?.customer_name}
-                />
-                {errors.customer_name && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Contact No (N)"
-                  {...register("customer_contact", {
-                    required: "This field is required.",
-                    pattern: {
-                      value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
-                    },
-                  })}
-                  value={showCustomerData?.customer_contact}
-                  focused={showCustomerData?.customer_contact}
-                />
-                {errors.customer_contact && (
-                  <span className="text-sm text-red-400">
-                    {errors.customer_contact.message}
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Email Address (T)"
-                  {...register("customer_email", { required: true })}
-                  type="email"
-                  value={showCustomerData?.customer_email}
-                  focused={showCustomerData?.customer_email}
-                />
-                {errors.customer_email && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Address (T) "
-                  {...register("customer_address", { required: true })}
-                  value={showCustomerData?.customer_address}
-                  focused={showCustomerData?.customer_address}
-                />
-                {errors.customer_address && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Driver Name (T)"
-                  {...register("driver_name", { required: true })}
-                  value={showCustomerData?.driver_name}
-                  focused={showCustomerData?.driver_name}
-                />
-                {errors.driver_name && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Driver Contact No (N)"
-                  {...register("driver_contact", {
-                    required: "This field is required.",
-                    pattern: {
-                      value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
-                    },
-                  })}
-                  value={showCustomerData?.driver_contact}
-                  focused={showCustomerData?.driver_contact}
-                />
-                {errors.driver_contact && (
-                  <span className="text-sm text-red-400">
-                    {errors.driver_contact.message}
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Reference Name (T) "
-                  {...register("reference_name", { required: true })}
-                  value={showCustomerData?.reference_name}
-                  focused={showCustomerData?.reference_name}
-                />
-                {errors.reference_name && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )}
+                )} */}
               </div>
             </div>
           </div>
@@ -1235,8 +1254,8 @@ const UpdateJobCard = () => {
             </div>
             <div>
               <TextField
-              disabled
-              className="ownerInput"
+                disabled
+                className="ownerInput"
                 o
                 {...register("technician_signature", { required: true })}
                 label="Technician Signature (T) "
@@ -1266,7 +1285,7 @@ const UpdateJobCard = () => {
             </div>
             <div>
               <TextField
-              disabled
+                disabled
                 className="ownerInput"
                 {...register("vehicle_owner", { required: true })}
                 label="Vehicle Owner (T) "
@@ -1280,20 +1299,18 @@ const UpdateJobCard = () => {
             </div>
           </div>
 
-           <div className="mt-12">
-              <button
-                disabled={loading}
-                // onClick={handleAddToCard}
-                type="submit"
-                className="addJobBtn"
-              >
-               Update Job Card{" "}
-              </button>
-            </div>
+          <div className="mt-12">
+            <button
+              disabled={loading}
+              // onClick={handleAddToCard}
+              type="submit"
+              className="addJobBtn"
+            >
+              Update Job Card{" "}
+            </button>
+          </div>
         </div>
       </form>
-    
-
     </div>
   );
 };
