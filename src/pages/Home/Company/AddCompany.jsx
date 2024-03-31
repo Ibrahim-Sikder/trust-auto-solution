@@ -46,7 +46,13 @@ const AddCompany = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
+    // const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
+    const companyNamePrefix = data.company_name.substring(0, 4);
+    const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
+    const paddedNumber = randomNumber.toString().padStart(4, "0"); // Ensures the number is 3 digits long
+
+    // Concatenate the name and the number to form the unique ID
+    const uniqueId = `${companyNamePrefix}${paddedNumber}`;
     data.companyId = uniqueId;
     try {
       

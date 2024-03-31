@@ -8,7 +8,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -27,7 +27,11 @@ const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
   const [allJobCard, setAllJobCard] = useState([]);
+ 
+  const [singleCard, setSingleCard] = useState({});
+ 
   console.log(allJobCard);
+ 
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
   console.log(customerId);
@@ -61,6 +65,22 @@ const UpdateJobCard = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const formRef = useRef();
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      fetch(`http://localhost:5000/api/v1/jobCard/one/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setSingleCard(data);
+          setLoading(false);
+        });
+    }
+  }, [id]);
+
 
   const customer_type = Cookies.get("customer_type");
 
@@ -199,6 +219,7 @@ const UpdateJobCard = () => {
     fetchData();
   }, [customerId, customer_type]);
 
+ 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
   // try {
@@ -374,6 +395,7 @@ const UpdateJobCard = () => {
   //   toast.error("Something went wrong.");
   // }
   // };
+ 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };

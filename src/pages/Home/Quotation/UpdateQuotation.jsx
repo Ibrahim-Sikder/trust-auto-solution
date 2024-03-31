@@ -1,22 +1,22 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import logo from "../../../../public/assets/logo.png";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
 import { TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
-  const [orderNo, setOrderNo] = useState(null);
-  const [customerName, setCustomerName] = useState(null);
-  const [carNumber, setCarNumber] = useState(null);
-  const [mobileNumber, setMobileNumber] = useState(null);
-  const [date, setDate] = useState(null);
-  const [descriptions, setDescriptions] = useState([]);
-  const [quantity, setQuantity] = useState([]);
-  const [rate, setRate] = useState([]);
-  const [total, setTotal] = useState([]);
+  // const [orderNo, setOrderNo] = useState(null);
+  // const [customerName, setCustomerName] = useState(null);
+  // const [carNumber, setCarNumber] = useState(null);
+  // const [mobileNumber, setMobileNumber] = useState(null);
+  // const [date, setDate] = useState(null);
+  // const [descriptions, setDescriptions] = useState([]);
+  // const [quantity, setQuantity] = useState([]);
+  // const [rate, setRate] = useState([]);
+  // const [total, setTotal] = useState([]);
   const [grandTotal, setGrandTotal] = useState(0);
 
   const [discount, setDiscount] = useState(0);
@@ -32,6 +32,13 @@ const UpdateQuotation = () => {
   const [inputList, setinputList] = useState([
     { flyingFrom: "", flyingTo: "", date: "" },
   ]);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const handleRemove = (index) => {
     if (!index) {
@@ -126,27 +133,32 @@ const UpdateQuotation = () => {
     return finalTotal;
   };
 
-  const trust_auto_id = Cookies.get("trust_auto_id");
+  // const trust_auto_id = Cookies.get("trust_auto_id");
 
-  const handleUpdateQuotation = async (e) => {
-    e.preventDefault();
-    if (specificInvoice.customerId !== trust_auto_id) {
+  const onSubmit = async (data) => {
+    if (!specificInvoice.Id) {
       return toast.error("Unauthorized");
     }
     try {
       const values = {
-        username: specificInvoice.username,
-        // serial_no: formattedSerialNo,
-        customerId: specificInvoice.customerId,
-        job_no: orderNo || specificInvoice.job_no,
-        date: date || specificInvoice.date,
-        car_registration_no: carNumber || specificInvoice.car_registration_no,
-        customer_name: customerName || specificInvoice?.customer_name,
-        contact_number: mobileNumber || specificInvoice?.contact_number,
-        // descriptions: descriptions,
-        // quantity: quantity,
-        // rate: rate,
-        // amount: total,
+        username: specificInvoice.username || data.username,
+        Id: data.customerId || specificInvoice.Id,
+        job_no: data.job_no || specificInvoice.job_no,
+        date: specificInvoice.date,
+
+        company_name: data.company_name || specificInvoice.company_name,
+        customer_name: data.customer_name || specificInvoice.customer_name,
+        contact_contact: data.contact_contact || specificInvoice.contact_number,
+        customer_address:
+          data.customer_address || specificInvoice.customer_address,
+
+        car_registration_no:
+          data.car_registration_no || specificInvoice.car_registration_no,
+        chassis_no: data.chassis_no || specificInvoice.chassis_no,
+        engine_no: data.engine_no || specificInvoice.engine_no,
+        vehicle_name: data.vehicle_name || specificInvoice.vehicle_name,
+        mileage: data.mileage || specificInvoice.mileage,
+
         total_amount: grandTotal || setSpecificInvoice.total_amount,
         discount: discount || specificInvoice?.discount,
         vat: vat || specificInvoice?.vat,
@@ -158,15 +170,15 @@ const UpdateQuotation = () => {
           total: item.total,
         })),
       };
-      const hasPreviewNullValues = Object.values(values).some(
-        (val) => val === null
-      );
+      // const hasPreviewNullValues = Object.values(values).some(
+      //   (val) => val === null
+      // );
 
-      if (hasPreviewNullValues) {
-        setError("Please fill in all the required fields.");
+      // if (hasPreviewNullValues) {
+      //   setError("Please fill in all the required fields.");
 
-        return;
-      }
+      //   return;
+      // }
       const response = await axios.put(
         `http://localhost:5000/api/v1/quotation/one/${id}`,
         values
@@ -184,7 +196,7 @@ const UpdateQuotation = () => {
   };
 
   const handleRemoveButton = (i) => {
-    if (specificInvoice.customerId !== trust_auto_id) {
+    if (!specificInvoice.Id) {
       return toast.error("Unauthorized");
     }
     axios
@@ -222,54 +234,117 @@ const UpdateQuotation = () => {
       </div>
 
       <div className="mt-5">
-        <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Customer Id" />
+                <TextField
+                  className="addJobInputField"
+                  label="Serial No"
+                  {...register("job_no")}
+                  value={specificInvoice?.job_no}
+                  focused={specificInvoice?.job_no}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Serial No" />
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Id"
+                  {...register("customerId")}
+                  value={specificInvoice?.Id}
+                  focused={specificInvoice?.Id}
+                />
+              </div>
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Company"
+                  value={specificInvoice?.company_name}
+                  focused={specificInvoice?.company_name}
+                  {...register("company_name")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Company" />
+                <TextField
+                  className="addJobInputField"
+                  label="Customer"
+                  value={specificInvoice?.customer_name}
+                  focused={specificInvoice?.customer_name}
+                  {...register("customer_name")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Customer" />
+                <TextField
+                  className="addJobInputField"
+                  label="Phone"
+                  value={specificInvoice?.customer_contact}
+                  focused={specificInvoice?.customer_contact}
+                  {...register("customer_contact")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Phone" />
-              </div>
-              <div className="mt-3">
-                <TextField className="addJobInputField" label="Address" />
+                <TextField
+                  className="addJobInputField"
+                  label="Address"
+                  value={specificInvoice?.customer_address}
+                  focused={specificInvoice?.customer_address}
+                  {...register("customer_address")}
+                />
               </div>
             </div>
 
-            <div className="jobCardFieldRightSide mt-5 lg:mt-0">
+            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Registration No"
+                  value={specificInvoice?.car_registration_no}
+                  focused={specificInvoice?.car_registration_no}
+                  {...register("car_registration_no")}
                 />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Chassis No" />
+                <TextField
+                  className="addJobInputField"
+                  label="Chassis No"
+                  value={specificInvoice?.chassis_no}
+                  focused={specificInvoice?.chassis_no}
+                  {...register("chassis_no")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Engine & CC" />
+                <TextField
+                  className="addJobInputField"
+                  label="Engine & CC"
+                  value={specificInvoice?.engine_no}
+                  focused={specificInvoice?.engine_no}
+                  {...register("engine_no")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Vehicle Name" />
+                <TextField
+                  className="addJobInputField"
+                  label="Vehicle Name"
+                  value={specificInvoice?.vehicle_name}
+                  focused={specificInvoice?.vehicle_name}
+                  {...register("vehicle_name")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Mileage" />
+                <TextField
+                  className="addJobInputField"
+                  label="Mileage"
+                  value={specificInvoice?.mileage}
+                  focused={specificInvoice?.mileage}
+                  {...register("mileage")}
+                />
               </div>
             </div>
           </div>
-
           <div className="vehicleCard">Update Quotation </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
@@ -511,14 +586,14 @@ const UpdateQuotation = () => {
             </div>
           </div>
 
-          <div onClick={handleUpdateQuotation}>
+          <div>
             <button className="addJobBtn">Update Quotation </button>
           </div>
 
           {error && (
             <div className="pt-6 text-center text-red-400">{error}</div>
           )}
-        </div>
+        </form>
       </div>
     </div>
   );

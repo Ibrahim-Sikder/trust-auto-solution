@@ -43,7 +43,13 @@ const AddShowRoom = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
+    // const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
+    const showRoomNamePrefix = data.showRoom_name.substring(0, 4);
+    const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
+    const paddedNumber = randomNumber.toString().padStart(4, "0"); // Ensures the number is 3 digits long
+
+    // Concatenate the name and the number to form the unique ID
+    const uniqueId = `${showRoomNamePrefix}${paddedNumber}`;
     data.showRoomId = uniqueId;
     try {
       const response = await axios.post(

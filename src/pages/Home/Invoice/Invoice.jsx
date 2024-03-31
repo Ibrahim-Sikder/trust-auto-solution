@@ -712,7 +712,7 @@ const Invoice = () => {
             </div>
           </div>
          */}
-         <div className="vehicleCard">Create Invoice </div>
+          <div className="vehicleCard">Create Invoice </div>
 
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
@@ -721,7 +721,11 @@ const Invoice = () => {
                 <TextField className="addJobInputField" label="Customer Id" />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Serial No" />
+                <TextField
+                  className="addJobInputField"
+                  label="Serial No"
+                  onChange={(e) => setJob_no(e.target.value)}
+                />
               </div>
               <div className="mt-3">
                 <TextField className="addJobInputField" label="Company" />
@@ -760,8 +764,6 @@ const Invoice = () => {
               </div>
             </div>
           </div>
-
-         
 
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
@@ -853,55 +855,54 @@ const Invoice = () => {
               </div>
             );
           })}
-         <div className="discountFieldWrap">
-<div className="flex items-center">
-  <b className="mr-2"> Total Amount: </b>
-  <span>{grandTotal}</span>
-</div>
-<div>
-  <b className="mr-2"> Discount: </b>
-  <input
-    className="py-1 text-center"
-    onChange={(e) => handleDiscountChange(e.target.value)}
-    autoComplete="off"
-    type="text"
-    placeholder="Discount"
-  />
-</div>
-<div>
-  <b className="mr-2">Vat: </b>
-  <input
-    className="text-center"
-    onChange={(e) => handleVATChange(e.target.value)}
-    autoComplete="off"
-    type="text"
-    placeholder="Vat"
-  />
-</div>
-<div>
-  <div className="flex items-center ml-3 ">
-    <b className="mr-2">Final Total:</b>
-    <span>{calculateFinalTotal()}</span>
-  </div>
-</div>
-<div>
-  <b className="mr-2">Advance: </b>
-  <input
-    className="text-center"
-    onChange={(e) => handleVATChange(e.target.value)}
-    autoComplete="off"
-    type="text"
-    placeholder="Advance"
-  />
-</div>
-<div>
-  <div className="flex items-center ml-3 ">
-    <b className="mr-2">Due:</b>
-    <span>{calculateFinalTotal()}</span>
-  </div>
-</div>
-</div>
-         
+          <div className="discountFieldWrap">
+            <div className="flex items-center">
+              <b className="mr-2"> Total Amount: </b>
+              <span>{grandTotal}</span>
+            </div>
+            <div>
+              <b className="mr-2"> Discount: </b>
+              <input
+                className="py-1 text-center"
+                onChange={(e) => handleDiscountChange(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Discount"
+              />
+            </div>
+            <div>
+              <b className="mr-2">Vat: </b>
+              <input
+                className="text-center"
+                onChange={(e) => handleVATChange(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Vat"
+              />
+            </div>
+            <div>
+              <div className="flex items-center ml-3 ">
+                <b className="mr-2">Final Total:</b>
+                <span>{calculateFinalTotal()}</span>
+              </div>
+            </div>
+            <div>
+              <b className="mr-2">Advance: </b>
+              <input
+                className="text-center"
+                onChange={(e) => handleVATChange(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Advance"
+              />
+            </div>
+            <div>
+              <div className="flex items-center ml-3 ">
+                <b className="mr-2">Due:</b>
+                <span>{calculateFinalTotal()}</span>
+              </div>
+            </div>
+          </div>
 
           <div className="mt-8 buttonGroup">
             <div>
