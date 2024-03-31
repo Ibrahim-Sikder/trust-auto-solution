@@ -213,7 +213,8 @@ const AddCustomer = () => {
         <tbody>
           {customerData?.map((card, index) => (
             <tr key={card._id}>
-              <td>{index + 1}</td>
+              {/* <td>{index + 1}</td> */}
+              <td>{card.customerId}</td>
               <td>{card.customer_name}</td>
 
               <td>{card.car_registration_no}</td>

@@ -56,6 +56,8 @@ const AddQuotation = () => {
     }
   }, [job_no]);
 
+  console.log(jobCardData);
+
   const handleRemove = (index) => {
     if (!index) {
       const list = [...items];
@@ -182,10 +184,21 @@ const AddQuotation = () => {
       // serial_no: formattedSerialNo,
       job_no: job_no,
       date: jobCardData.date,
-      car_registration_no: jobCardData.car_registration_no,
+
+      
+      company_name: jobCardData.company_name,
       customer_name: jobCardData.customer_name,
-      contact_number: jobCardData.contact_number,
+      contact_contact: jobCardData.contact_number,
+      customer_address: jobCardData.customer_address,
+
+      car_registration_no: jobCardData.car_registration_no,
+      chassis_no: jobCardData.chassis_no,
+      engine_no: jobCardData.engine_no,
+      vehicle_name: jobCardData.vehicle_name,
       mileage: jobCardData.mileage,
+
+
+
       total_amount: grandTotal,
       discount: discount,
       vat: vat,
@@ -694,7 +707,11 @@ const AddQuotation = () => {
             <div className="jobCardFieldLeftSide">
               <h3 className="text-3xl font-bold">Customer Info</h3>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Customer Id" />
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Id"
+                  onChange={(e) => setJob_no(e.target.value)}
+                />
               </div>
               <div className="mt-3">
                 <TextField className="addJobInputField" label="Serial No" />
@@ -737,7 +754,6 @@ const AddQuotation = () => {
             </div>
           </div>
 
-         
           {/**
           <div className="mb-5">
           
