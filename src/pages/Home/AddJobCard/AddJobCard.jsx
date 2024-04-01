@@ -34,7 +34,7 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-
+console.log(showCustomerData)
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");

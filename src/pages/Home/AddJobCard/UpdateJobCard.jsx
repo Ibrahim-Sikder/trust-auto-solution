@@ -27,11 +27,11 @@ const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
   const [allJobCard, setAllJobCard] = useState([]);
- 
+
   const [singleCard, setSingleCard] = useState({});
- 
-  console.log(allJobCard);
- 
+
+  console.log("single field ", singleCard);
+
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
   console.log(customerId);
@@ -56,6 +56,7 @@ const UpdateJobCard = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
   const [formattedDate, setFormattedDate] = useState("");
@@ -80,7 +81,6 @@ const UpdateJobCard = () => {
         });
     }
   }, [id]);
-
 
   const customer_type = Cookies.get("customer_type");
 
@@ -219,7 +219,6 @@ const UpdateJobCard = () => {
     fetchData();
   }, [customerId, customer_type]);
 
- 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
   // try {
@@ -395,7 +394,7 @@ const UpdateJobCard = () => {
   //   toast.error("Something went wrong.");
   // }
   // };
- 
+
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };
@@ -613,13 +612,31 @@ const UpdateJobCard = () => {
         setNoMatching(null);
       });
   };
-
   const currentDate = new Date().toISOString().split("T")[0];
   useEffect(() => {
-    // Get the current date in the format YYYY-MM-DD
-    const currentDate = new Date().toISOString().split("T")[0];
+    const currentDate = new Date();
+
+    // Set the day to 1 to get the first day of the month
+    currentDate.setDate(1);
+
+    // Get the current month and year
+    const currentMonth = currentDate.getMonth() + 1; // Note: January is 0
+    const currentYear = currentDate.getFullYear();
+
+    // Format the date string as "YYYY-MM-DD"
+    const formattedDate = `${currentYear}-${
+      currentMonth < 10 ? "0" : ""
+    }${currentMonth}-01`;
+
     setFormattedDate(currentDate);
   }, []);
+
+  // const currentDate = new Date().toISOString().split("T")[0];
+  // useEffect(() => {
+  //   // Get the current date in the format YYYY-MM-DD
+  //   const currentDate = new Date().toISOString().split("T")[0];
+  //   setFormattedDate(currentDate);
+  // }, []);
 
   // const Search = styled("div")(({ theme }) => ({
   //   position: "relative",
@@ -748,39 +765,53 @@ const UpdateJobCard = () => {
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Company Name (T)"
-                  placeholder="Company Name"
                   {...register("company_name")}
-                  value={showCustomerData?.company_name}
-                  focused={showCustomerData?.company_name}
+                  label="Company Name (T)"
+                  defaultValue={singleCard.company_name}
+                  value={singleCard.company_name}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      company_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.company_name,
+                  }}
                 />
-                {/* {errors.company_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Vehicle User Name (T)"
                   {...register("username")}
-                  value={showCustomerData?.username}
-                  focused={showCustomerData?.username}
+                  defaultValue={singleCard?.username}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      username: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.username,
+                  }}
                 />
-                {/* {errors.username && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Company Address (T)"
                   {...register("company_address")}
-                  value={showCustomerData?.company_address}
-                  focused={showCustomerData?.company_address}
+                  value={singleCard?.company_address}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      company_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.company_address,
+                  }}
                 />
                 {/* {errors.company_address && (
               <span className="text-sm text-red-400">
@@ -794,8 +825,16 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Customer Name (T)"
                   {...register("customer_name")}
-                  value={showCustomerData?.customer_name}
-                  focused={showCustomerData?.customer_name}
+                  value={singleCard?.customer_name}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      customer_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.customer_name,
+                  }}
                 />
                 {/* {errors.customer_name && (
               <span className="text-sm text-red-400">
@@ -814,14 +853,17 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={showCustomerData?.customer_contact}
-                  focused={showCustomerData?.customer_contact}
+                  value={singleCard?.contact_number}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      contact_number: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.contact_number,
+                  }}
                 />
-                {/* {errors.customer_contact && (
-              <span className="text-sm text-red-400">
-                {errors.customer_contact.message}
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -829,8 +871,16 @@ const UpdateJobCard = () => {
                   label="Customer Email Address (T)"
                   {...register("customer_email")}
                   type="email"
-                  value={showCustomerData?.customer_email}
-                  focused={showCustomerData?.customer_email}
+                  value={singleCard?.customer_email}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      contact_number: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.contact_number,
+                  }}
                 />
                 {/* {errors.customer_email && (
               <span className="text-sm text-red-400">
@@ -843,8 +893,16 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Customer Address (T) "
                   {...register("customer_address")}
-                  value={showCustomerData?.customer_address}
-                  focused={showCustomerData?.customer_address}
+                  value={singleCard?.customer_address}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      customer_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.customer_address,
+                  }}
                 />
                 {/* {errors.customer_address && (
               <span className="text-sm text-red-400">
@@ -857,8 +915,16 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Driver Name (T)"
                   {...register("driver_name")}
-                  value={showCustomerData?.driver_name}
-                  focused={showCustomerData?.driver_name}
+                  value={singleCard?.driver_name}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      driver_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.driver_name,
+                  }}
                 />
                 {/* {errors.driver_name && (
               <span className="text-sm text-red-400">
@@ -877,8 +943,16 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={showCustomerData?.driver_contact}
-                  focused={showCustomerData?.driver_contact}
+                  value={singleCard?.phone_number}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      phone_number: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.phone_number,
+                  }}
                 />
                 {/* {errors.driver_contact && (
               <span className="text-sm text-red-400">
@@ -891,8 +965,16 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Reference Name (T) "
                   {...register("reference_name")}
-                  value={showCustomerData?.reference_name}
-                  focused={showCustomerData?.reference_name}
+                  value={singleCard?.reference_name}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      reference_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.reference_name,
+                  }}
                 />
                 {/* {errors.reference_name && (
               <span className="text-sm text-red-400">
@@ -918,8 +1000,7 @@ const UpdateJobCard = () => {
                       {...params}
                       label="Vehicle Reg No"
                       {...register("carReg_no")}
-                      value={showCustomerData?.carReg_no}
-                      focused={showCustomerData?.carReg_no}
+                      value={singleCard?.carReg_no}
                     />
                   )}
                 />
@@ -927,8 +1008,16 @@ const UpdateJobCard = () => {
                   className="jobCardSelect2"
                   label="Car R (T&N)"
                   {...register("car_registration_no")}
-                  value={showCustomerData?.car_registration_no}
-                  focused={showCustomerData?.car_registration_no}
+                  value={singleCard?.car_registration_no}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      car_registration_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.car_registration_no,
+                  }}
                 />
               </div>
 
@@ -943,8 +1032,16 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   {...register("chassis_no")}
                   label="Chassis No (T&N)"
-                  value={showCustomerData?.chassis_no}
-                  focused={showCustomerData?.chassis_no}
+                  value={singleCard?.chassis_no}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      chassis_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.chassis_no,
+                  }}
                 />
                 {/* {errors.chassis_no && (
                   <span className="text-sm text-red-400">
@@ -957,8 +1054,16 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   {...register("engine_no")}
                   label="ENGINE NO & CC (T&N) "
-                  value={showCustomerData?.engine_no}
-                  focused={showCustomerData?.engine_no}
+                  value={singleCard?.engine_no}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      engine_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.engine_no,
+                  }}
                 />
                 {/* {errors.engine_no && (
                   <span className="text-sm text-red-400">
@@ -980,8 +1085,7 @@ const UpdateJobCard = () => {
                       {...params}
                       label="Vehicle Brand"
                       {...register("vehicle_brand")}
-                      value={showCustomerData?.vehicle_brand}
-                      focused={showCustomerData?.vehicle_brand}
+                      value={singleCard?.vehicle_brand}
                     />
                   )}
                 />
@@ -1005,8 +1109,16 @@ const UpdateJobCard = () => {
                       {...params}
                       label="Vehicle Name "
                       {...register("vehicle_name")}
-                      value={showCustomerData?.vehicle_name}
-                      focused={showCustomerData?.vehicle_name}
+                      value={singleCard?.vehicle_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          vehicle_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.vehicle_name,
+                      }}
                     />
                   )}
                 />
@@ -1049,8 +1161,16 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid model number.",
                     },
                   })}
-                  value={showCustomerData?.vehicle_model}
-                  focused={showCustomerData?.vehicle_model}
+                  value={singleCard?.vehicle_model}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      vehicle_model: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.vehicle_model,
+                  }}
                 />
 
                 {/* {errors.vehicle_model && (
@@ -1073,8 +1193,7 @@ const UpdateJobCard = () => {
                       {...params}
                       label=" Vehicle Categories "
                       {...register("vehicle_category")}
-                      value={showCustomerData?.vehicle_category}
-                      focused={showCustomerData?.vehicle_category}
+                      value={singleCard?.vehicle_category}
                     />
                   )}
                 />
@@ -1089,11 +1208,16 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   {...register("color_code")}
                   label="Color & Code (T&N) "
-                  value={showCustomerData?.color_code}
-                  focused={
-                    showCustomerData?.color_code !== "" &&
-                    showCustomerData?.color_code
+                  value={singleCard?.color}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      color: e.target.value,
+                    })
                   }
+                  InputLabelProps={{
+                    shrink: !!singleCard.color,
+                  }}
                 />
                 {/* {errors.color_code && (
                   <span className="text-sm text-red-400">
@@ -1112,8 +1236,16 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={showCustomerData?.mileage}
-                  focused={showCustomerData?.mileage}
+                  value={singleCard?.mileage}
+                  onChange={(e) =>
+                    setSingleCard({
+                      ...singleCard,
+                      mileage: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!singleCard.mileage,
+                  }}
                 />
                 {/* {errors.mileage && (
                   <span className="text-sm text-red-400">
@@ -1124,8 +1256,8 @@ const UpdateJobCard = () => {
               <div className="mt-3">
                 <Autocomplete
                   className="addJobInputField"
-                  value={showCustomerData?.fuel_type}
-                  focused={showCustomerData?.fuel_type}
+                  value={singleCard?.fuel_type}
+                  focused={singleCard?.fuel_type}
                   id="free-solo-demo"
                   Fuel
                   Type
@@ -1136,8 +1268,7 @@ const UpdateJobCard = () => {
                       {...params}
                       label=" Fuel Type"
                       {...register("fuel_type")}
-                      value={showCustomerData?.fuel_type}
-                      focused={showCustomerData?.fuel_type}
+                      value={singleCard?.fuel_type}
                     />
                   )}
                 />
