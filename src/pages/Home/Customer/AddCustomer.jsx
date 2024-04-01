@@ -206,7 +206,6 @@ const AddCustomer = () => {
             <th>Order Number </th>
             <th>Car Number </th>
             <th>Mobile Number</th>
-            <th>Date</th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>
@@ -221,12 +220,17 @@ const AddCustomer = () => {
               <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>
-                <div
-                  onClick={() => handleIconPreview(card.customerId)}
-                  className="editIconWrap edit2"
-                >
-                  <FaUserTie className="invoicIcon" />
-                </div>
+
+              <div 
+              onClick={() => handleIconPreview(card.customerId)}
+              className="flex items-center justify-center ">
+              <Link to="/dashboard/employee-profile">
+                <FaUserTie size={25} className="" />
+              </Link>
+            </div>
+
+
+               
               </td>
 
               <td>
@@ -237,6 +241,7 @@ const AddCustomer = () => {
                 </div>
               </td>
               <td>
+
                 <div
                   onClick={() => deletePackage(card._id)}
                   className="editIconWrap"

@@ -8,6 +8,7 @@ import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
+  console.log('quotation data ', specificInvoice)
   // const [orderNo, setOrderNo] = useState(null);
   // const [customerName, setCustomerName] = useState(null);
   // const [carNumber, setCarNumber] = useState(null);
@@ -240,20 +241,38 @@ const UpdateQuotation = () => {
               <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
+                type="number"
                   className="addJobInputField"
                   label="Serial No"
                   {...register("job_no")}
                   value={specificInvoice?.job_no}
-                  focused={specificInvoice?.job_no}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      job_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.job_no,
+                  }}
                 />
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Customer Id"
                   {...register("customerId")}
                   value={specificInvoice?.Id}
-                  focused={specificInvoice?.Id}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      customerId: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.customerId,
+                  }}
                 />
               </div>
 
@@ -262,7 +281,15 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Company"
                   value={specificInvoice?.company_name}
-                  focused={specificInvoice?.company_name}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      company_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.company_name,
+                  }}
                   {...register("company_name")}
                 />
               </div>
@@ -271,8 +298,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Customer"
                   value={specificInvoice?.customer_name}
-                  focused={specificInvoice?.customer_name}
                   {...register("customer_name")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      customer_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.customer_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -280,8 +315,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Phone"
                   value={specificInvoice?.customer_contact}
-                  focused={specificInvoice?.customer_contact}
                   {...register("customer_contact")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      customer_contact: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.customer_contact,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -289,8 +332,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Address"
                   value={specificInvoice?.customer_address}
-                  focused={specificInvoice?.customer_address}
                   {...register("customer_address")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      customer_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.customer_address,
+                  }}
                 />
               </div>
             </div>
@@ -303,8 +354,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Registration No"
                   value={specificInvoice?.car_registration_no}
-                  focused={specificInvoice?.car_registration_no}
                   {...register("car_registration_no")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      car_registration_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.car_registration_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -312,8 +371,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Chassis No"
                   value={specificInvoice?.chassis_no}
-                  focused={specificInvoice?.chassis_no}
                   {...register("chassis_no")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      chassis_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.chassis_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -321,8 +388,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Engine & CC"
                   value={specificInvoice?.engine_no}
-                  focused={specificInvoice?.engine_no}
                   {...register("engine_no")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      engine_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.engine_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -330,8 +405,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Vehicle Name"
                   value={specificInvoice?.vehicle_name}
-                  focused={specificInvoice?.vehicle_name}
                   {...register("vehicle_name")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      vehicle_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.vehicle_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -339,8 +422,16 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Mileage"
                   value={specificInvoice?.mileage}
-                  focused={specificInvoice?.mileage}
                   {...register("mileage")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      mileage: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.mileage,
+                  }}
                 />
               </div>
             </div>
