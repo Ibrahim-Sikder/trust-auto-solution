@@ -15,11 +15,12 @@ import swal from "sweetalert";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { Autocomplete, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
 const Invoice = () => {
   const [select, setSelect] = useState(null);
 
   const location = useLocation();
-  const orderNo = new URLSearchParams(location.search).get("order_no");
+  const orderNo = new URLSearchParams(location.search).get("serial_no");
   const navigate = useNavigate();
   const [job_no, setJob_no] = useState(orderNo);
   const [jobCardData, setJobCardData] = useState({});
@@ -34,6 +35,14 @@ const Invoice = () => {
   const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
   const [customerId, setCustomerId] = useState(null);
+  const [preview, setPreview] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     if (job_no) {
@@ -75,7 +84,9 @@ const Invoice = () => {
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
+  const [advance, setAdvance] = useState(0);
 
+  
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
   ]);
@@ -205,54 +216,71 @@ const Invoice = () => {
       setVAT(parsedValue);
     }
   };
+  const handleAdvance = (value) => {
+    const parsedValue = value === "" ? 0 : parseFloat(value);
+
+    if (!isNaN(parsedValue)) {
+      setAdvance(parsedValue);
+    }
+  };
 
   const calculateFinalTotal = () => {
     const discountAsPercentage = discount;
     const totalAfterDiscount = grandTotal - discountAsPercentage;
 
     const vatAsPercentage = vat / 100;
-    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    let finalTotal =  totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
     finalTotal = parseFloat(finalTotal.toFixed(2));
 
     return finalTotal;
   };
+  const calculateDue = () => {
+   const due = calculateFinalTotal() - advance
+    return due
+  };
 
-  const trust_auto_id = Cookies.get("trust_auto_id");
-  const customer_type = Cookies.get("customer_type");
+ 
 
-  const handleAddToInvoice = async (e) => {
-    e.preventDefault();
-    if (!trust_auto_id) {
+  const onSubmit = async (data) => {
+    if (!jobCardData.Id) {
       return toast.error("No account found.");
     }
     try {
       const values = {
-        username: jobCardData?.username,
-        // serial_no: formattedSerialNo,
-        customerId: customerId,
-        companyId: customerId,
-        showRoomId: customerId,
-        job_no: job_no,
+        username: jobCardData.username || data.username,
+        Id: customerId || jobCardData.Id,
+        job_no: job_no || jobCardData.job_no,
         date: jobCardData.date,
-        car_registration_no: jobCardData.car_registration_no,
-        customer_name: jobCardData?.customer_name,
-        contact_number: jobCardData?.contact_number,
-        mileage: jobCardData.mileage,
+
+        company_name: data.company_name || jobCardData.company_name,
+        customer_name: data.customer_name || jobCardData.customer_name,
+        customer_contact: data.customer_contact || jobCardData.customer_contact,
+        customer_address: data.customer_address || jobCardData.customer_address,
+
+        car_registration_no:
+          data.car_registration_no || jobCardData.car_registration_no,
+        chassis_no: data.chassis_no || jobCardData.chassis_no,
+        engine_no: data.engine_no || jobCardData.engine_no,
+        vehicle_name: data.vehicle_name || jobCardData.vehicle_name,
+        mileage: data.mileage || jobCardData.mileage,
+
         total_amount: grandTotal,
         discount: discount,
         vat: vat,
         net_total: calculateFinalTotal(),
         input_data: items,
+        advance : advance,
+        due : calculateDue()
       };
-      const hasPreviewNullValues = Object.values(values).some(
-        (val) => val === null
-      );
+      // const hasPreviewNullValues = Object.values(values).some(
+      //   (val) => val === null
+      // );
 
-      if (hasPreviewNullValues) {
-        setError("Please fill in all the required fields.");
-        setPostError("");
-        return;
-      }
+      // if (hasPreviewNullValues) {
+      //   setError("Please fill in all the required fields.");
+      //   setPostError("");
+      //   return;
+      // }
       setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/api/v1/invoice",
@@ -263,7 +291,16 @@ const Invoice = () => {
         setReload(!reload);
         setPostError("");
         setError("");
-        toast.success("Quotation added successful.");
+        toast.success("Invoice added successful.");
+        if (preview === "preview") {
+          fetch("http://localhost:5000/api/v1/invoice")
+            .then((res) => res.json())
+            .then((data) => {
+              if (data) {
+                navigate(`/dashboard/detail?id=${data._id}`);
+              }
+            });
+        }
         setLoading(false);
       }
     } catch (error) {
@@ -274,75 +311,66 @@ const Invoice = () => {
     }
   };
 
-  const handlePreview = async (e) => {
-    e.preventDefault();
+  // const handlePreview = async (e) => {
+  //   e.preventDefault();
 
-    if (!trust_auto_id) {
-      return toast.error("No account found.");
-    }
+  //   if (!trust_auto_id) {
+  //     return toast.error("No account found.");
+  //   }
 
-    const values = {
-      username: jobCardData?.username,
-      // serial_no: formattedSerialNo,
-      customerId: customerId,
-      companyId: customerId,
-      showRoomId: customerId,
-      job_no: job_no,
-      date: jobCardData.date,
-      car_registration_no: jobCardData.car_registration_no,
-      customer_name: jobCardData.customer_name,
-      contact_number: jobCardData.contact_number,
-      mileage: jobCardData.mileage,
-      // descriptions: descriptions,
-      // quantity: quantity,
-      // rate: rate,
-      // amount: total,
-      total_amount: grandTotal,
-      discount: discount,
-      vat: vat,
-      net_total: calculateFinalTotal(),
-      input_data: items,
-    };
-    const hasPreviewNullValues = Object.values(values).some(
-      (val) => val === null
-    );
+  //   const values = {
+  //     username: jobCardData?.username,
+  //     // serial_no: formattedSerialNo,
+  //     customerId: customerId,
+  //     companyId: customerId,
+  //     showRoomId: customerId,
+  //     job_no: job_no,
+  //     date: jobCardData.date,
+  //     car_registration_no: jobCardData.car_registration_no,
+  //     customer_name: jobCardData.customer_name,
+  //     contact_number: jobCardData.contact_number,
+  //     mileage: jobCardData.mileage,
+  //     // descriptions: descriptions,
+  //     // quantity: quantity,
+  //     // rate: rate,
+  //     // amount: total,
+  //     total_amount: grandTotal,
+  //     discount: discount,
+  //     vat: vat,
+  //     net_total: calculateFinalTotal(),
+  //     input_data: items,
+  //   };
+  //   const hasPreviewNullValues = Object.values(values).some(
+  //     (val) => val === null
+  //   );
 
-    if (hasPreviewNullValues) {
-      setError("Please fill in all the required fields.");
-      return;
-    }
-    const response = await axios.post(
-      "http://localhost:5000/api/v1/invoice",
-      values
-    );
-    if (response.data.message === "Successfully Invoice post") {
-      fetch("http://localhost:5000/api/v1/invoice")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data) {
-            navigate(`/dashboard/detail?id=${data._id}`);
-          }
-        });
-    }
-  };
+  //   if (hasPreviewNullValues) {
+  //     setError("Please fill in all the required fields.");
+  //     return;
+  //   }
+  //   const response = await axios.post(
+  //     "http://localhost:5000/api/v1/invoice",
+  //     values
+  //   );
+  //   if (response.data.message === "Successfully Invoice post") {
+  //     fetch("http://localhost:5000/api/v1/invoice")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         if (data) {
+  //           navigate(`/dashboard/detail?id=${data._id}`);
+  //         }
+  //       });
+  //   }
+  // };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         let apiUrl = "";
-        switch (customer_type) {
-          case "customer":
-            apiUrl = "http://localhost:5000/api/v1/customer";
-            break;
-          case "company":
-            apiUrl = "http://localhost:5000/api/v1/company";
-            break;
-          case "show_room":
-            apiUrl = "http://localhost:5000/api/v1/showRoom";
-            break;
-          default:
-            throw new Error("Invalid customer type");
-        }
+        apiUrl =
+          "http://localhost:5000/api/v1/customer" ||
+          "http://localhost:5000/api/v1/company" ||
+          "http://localhost:5000/api/v1/showRoom";
 
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -350,28 +378,14 @@ const Invoice = () => {
         }
 
         const data = await response.json();
-        setCustomerDetails(data);
-
-        const selectedCustomer = data.find((customer) => {
-          switch (customer_type) {
-            case "customer":
-              return customer.customerId === customerId;
-            case "company":
-              return customer.companyId === customerId;
-            case "show_room":
-              return customer.showRoomId === customerId;
-            default:
-              return false;
-          }
-        });
-        setShowCustomerData(selectedCustomer);
+        setShowCustomerData(data);
       } catch (error) {
         setError(error.message);
       }
     };
 
     fetchData();
-  }, [customerId, customer_type]);
+  }, [customerId]);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
@@ -658,7 +672,7 @@ const Invoice = () => {
         </div>
       </div>
       <div className="mt-5">
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/** 
           <div className="qutationForm invoicForm">
             <div>
@@ -716,51 +730,112 @@ const Invoice = () => {
 
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
-              <div className="mt-3">
-                <TextField className="addJobInputField" label="Customer Id" />
-              </div>
+              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Serial No"
                   onChange={(e) => setJob_no(e.target.value)}
+                  value={jobCardData?.job_no}
+                  focused={jobCardData?.job_no}
                 />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Company" />
+                <TextField
+                  className="addJobInputField"
+                  label="Customer Id"
+                  onChange={(e) => setCustomerId(e.target.value)}
+                  value={jobCardData?.Id}
+                  focused={jobCardData?.Id}
+                  required
+                />
+              </div>
+
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Company"
+                  value={jobCardData?.company_name}
+                  focused={jobCardData?.company_name}
+                  {...register("company_name")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Customer" />
+                <TextField
+                  className="addJobInputField"
+                  label="Customer"
+                  value={jobCardData?.customer_name}
+                  focused={jobCardData?.customer_name}
+                  {...register("customer_name")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Phone" />
+                <TextField
+                  className="addJobInputField"
+                  label="Phone"
+                  value={jobCardData?.customer_contact}
+                  focused={jobCardData?.customer_contact}
+                  {...register("customer_contact")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Address" />
+                <TextField
+                  className="addJobInputField"
+                  label="Address"
+                  value={jobCardData?.customer_address}
+                  focused={jobCardData?.customer_address}
+                  {...register("customer_address")}
+                />
               </div>
             </div>
 
-            <div className="jobCardFieldRightSide lg:mt-0 mt-5 ">
+            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Registration No"
+                  value={jobCardData?.car_registration_no}
+                  focused={jobCardData?.car_registration_no}
+                  {...register("car_registration_no")}
                 />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Chassis No" />
+                <TextField
+                  className="addJobInputField"
+                  label="Chassis No"
+                  value={jobCardData?.chassis_no}
+                  focused={jobCardData?.chassis_no}
+                  {...register("chassis_no")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Engine & CC" />
+                <TextField
+                  className="addJobInputField"
+                  label="Engine & CC"
+                  value={jobCardData?.engine_no}
+                  focused={jobCardData?.engine_no}
+                  {...register("engine_no")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Vehicle Name" />
+                <TextField
+                  className="addJobInputField"
+                  label="Vehicle Name"
+                  value={jobCardData?.vehicle_name}
+                  focused={jobCardData?.vehicle_name}
+                  {...register("vehicle_name")}
+                />
               </div>
               <div className="mt-3">
-                <TextField className="addJobInputField" label="Mileage" />
+                <TextField
+                  className="addJobInputField"
+                  label="Mileage"
+                  value={jobCardData?.mileage}
+                  focused={jobCardData?.mileage}
+                  {...register("mileage")}
+                />
               </div>
             </div>
           </div>
@@ -890,7 +965,7 @@ const Invoice = () => {
               <b className="mr-2">Advance: </b>
               <input
                 className="text-center"
-                onChange={(e) => handleVATChange(e.target.value)}
+                onChange={(e) => handleAdvance(e.target.value)}
                 autoComplete="off"
                 type="text"
                 placeholder="Advance"
@@ -899,7 +974,7 @@ const Invoice = () => {
             <div>
               <div className="flex items-center ml-3 ">
                 <b className="mr-2">Due:</b>
-                <span>{calculateFinalTotal()}</span>
+                <span>{calculateDue()}</span>
               </div>
             </div>
           </div>
@@ -907,15 +982,13 @@ const Invoice = () => {
           <div className="mt-8 buttonGroup">
             <div>
               {/* <Link to={}> */}
-              <button onClick={handlePreview}>Preview</button>
+              <button onClick={() => setPreview("preview")}>Preview</button>
               {/* </Link> */}
               <button>Download </button>
               <button>Print </button>
             </div>
             <div className="submitQutationBtn">
-              <button onClick={handleAddToInvoice} className="">
-                Add To Invoice{" "}
-              </button>
+              <button className="">Add To Invoice </button>
             </div>
           </div>
           {error && (

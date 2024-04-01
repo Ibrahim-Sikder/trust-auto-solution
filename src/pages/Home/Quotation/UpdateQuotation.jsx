@@ -148,7 +148,7 @@ const UpdateQuotation = () => {
 
         company_name: data.company_name || specificInvoice.company_name,
         customer_name: data.customer_name || specificInvoice.customer_name,
-        contact_contact: data.contact_contact || specificInvoice.contact_number,
+        customer_contact: data.customer_contact || specificInvoice.customer_contact,
         customer_address:
           data.customer_address || specificInvoice.customer_address,
 
