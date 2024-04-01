@@ -34,15 +34,15 @@ const UpdateJobCard = () => {
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
 
-  const [customerDetails, setCustomerDetails] = useState([]);
-  const [showCustomerData, setShowCustomerData] = useState({});
+ 
+  
 
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
 
   const [vehicleBody, setVehicleBody] = useState(null);
-  const [clickControl, setClickControl] = useState(null);
+ 
 
   const [error, setError] = useState(null);
   const [select, setSelect] = useState("SL No");
@@ -144,45 +144,7 @@ const UpdateJobCard = () => {
   const handleFuelChange = (_, newInputValue) => {
     setGetFuelType(newInputValue);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let apiUrl = "";
-
-        apiUrl =
-          `http://localhost:5000/api/v1/customer/${customerId}` ||
-          `http://localhost:5000/api/v1/company/${customerId}` ||
-          `http://localhost:5000/api/v1/showRoom/${customerId}`;
-
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setShowCustomerData(data);
-
-        // const selectedCustomer = data.find((customer) => {
-        //   switch (customer_type) {
-        //     case "customer":
-        //       return customer.customerId === customerId;
-        //     case "company":
-        //       return customer.companyId === customerId;
-        //     case "show_room":
-        //       return customer.showRoomId === customerId;
-        //     default:
-        //       return false;
-        //   }
-        // });
-        // setShowCustomerData(selectedCustomer);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    fetchData();
-  }, [customerId]);
+ 
 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
