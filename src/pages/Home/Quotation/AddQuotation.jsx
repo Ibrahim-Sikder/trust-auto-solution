@@ -119,19 +119,19 @@ const AddQuotation = () => {
 
   const onSubmit = async (data) => {
     
-    if (!jobCardData.customerId) {
+    if (!jobCardData.Id) {
       return toast.error("No account found.");
     }
     try {
       const values = {
         username: jobCardData.username || data.username,
-        Id: customerId || jobCardData.customerId,
+        Id: customerId || jobCardData.Id,
         job_no: job_no || jobCardData.job_no,
         date: jobCardData.date,
 
         company_name: data.company_name || jobCardData.company_name,
         customer_name: data.customer_name || jobCardData.customer_name,
-        contact_contact:  data.contact_contact ||  jobCardData.contact_number,
+        customer_contact:  data.customer_contact ||  jobCardData.customer_contact,
         customer_address:  data.customer_address || jobCardData.customer_address,
 
         car_registration_no: data.car_registration_no || jobCardData.car_registration_no,
@@ -668,8 +668,8 @@ const AddQuotation = () => {
                   className="addJobInputField"
                   label="Customer Id"
                   onChange={(e) => setCustomerId(e.target.value)}
-                  value={jobCardData?.customerId}
-                  focused={jobCardData?.customerId}
+                  value={jobCardData?.Id}
+                  focused={jobCardData?.Id}
                   required
                 />
               </div>
