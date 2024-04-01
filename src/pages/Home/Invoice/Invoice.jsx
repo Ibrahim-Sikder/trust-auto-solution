@@ -363,29 +363,29 @@ const Invoice = () => {
   //   }
   // };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let apiUrl = "";
-        apiUrl =
-          "http://localhost:5000/api/v1/customer" ||
-          "http://localhost:5000/api/v1/company" ||
-          "http://localhost:5000/api/v1/showRoom";
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let apiUrl = "";
+  //       apiUrl =
+  //         "http://localhost:5000/api/v1/customer" ||
+  //         "http://localhost:5000/api/v1/company" ||
+  //         "http://localhost:5000/api/v1/showRoom";
 
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
+  //       const response = await fetch(apiUrl);
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch data");
+  //       }
 
-        const data = await response.json();
-        setShowCustomerData(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
+  //       const data = await response.json();
+  //       setShowCustomerData(data);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     }
+  //   };
 
-    fetchData();
-  }, [customerId]);
+  //   fetchData();
+  // }, [customerId]);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);

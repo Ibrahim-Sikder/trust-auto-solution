@@ -90,9 +90,7 @@ const UpdateJobCard = () => {
         return toast.error("Please add your Id.");
       }
       const values = {
-        customerId: customerId,
-        companyId: customerId,
-        showRoomId: customerId,
+        Id: customerId,
         job_no: jobNo,
         date: formattedDate,
         company_name: data.company_name,
@@ -176,19 +174,11 @@ const UpdateJobCard = () => {
     const fetchData = async () => {
       try {
         let apiUrl = "";
-        switch (customer_type) {
-          case "customer":
-            apiUrl = "http://localhost:5000/api/v1/customer";
-            break;
-          case "company":
-            apiUrl = "http://localhost:5000/api/v1/company";
-            break;
-          case "show_room":
-            apiUrl = "http://localhost:5000/api/v1/showRoom";
-            break;
-          default:
-            throw new Error("Invalid customer type");
-        }
+
+        apiUrl =
+          `http://localhost:5000/api/v1/customer/${customerId}` ||
+          `http://localhost:5000/api/v1/company/${customerId}` ||
+          `http://localhost:5000/api/v1/showRoom/${customerId}`;
 
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -196,21 +186,21 @@ const UpdateJobCard = () => {
         }
 
         const data = await response.json();
-        setCustomerDetails(data);
+        setShowCustomerData(data);
 
-        const selectedCustomer = data.find((customer) => {
-          switch (customer_type) {
-            case "customer":
-              return customer.customerId === customerId;
-            case "company":
-              return customer.companyId === customerId;
-            case "show_room":
-              return customer.showRoomId === customerId;
-            default:
-              return false;
-          }
-        });
-        setShowCustomerData(selectedCustomer);
+        // const selectedCustomer = data.find((customer) => {
+        //   switch (customer_type) {
+        //     case "customer":
+        //       return customer.customerId === customerId;
+        //     case "company":
+        //       return customer.companyId === customerId;
+        //     case "show_room":
+        //       return customer.showRoomId === customerId;
+        //     default:
+        //       return false;
+        //   }
+        // });
+        // setShowCustomerData(selectedCustomer);
       } catch (error) {
         setError(error.message);
       }
