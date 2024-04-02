@@ -53,8 +53,6 @@ const AddQuotation = () => {
     formState: { errors },
   } = useForm();
 
-
-
   useEffect(() => {
     if (job_no) {
       setJobLoading(true);
@@ -66,7 +64,6 @@ const AddQuotation = () => {
         });
     }
   }, [job_no]);
-
 
   const handleRemove = (index) => {
     if (!index) {
@@ -118,7 +115,6 @@ const AddQuotation = () => {
   // const customer_type = Cookies.get("customer_type");
 
   const onSubmit = async (data) => {
-    
     if (!jobCardData.Id) {
       return toast.error("No account found.");
     }
@@ -131,24 +127,23 @@ const AddQuotation = () => {
 
         company_name: data.company_name || jobCardData.company_name,
         customer_name: data.customer_name || jobCardData.customer_name,
-        customer_contact:  data.customer_contact ||  jobCardData.customer_contact,
-        customer_address:  data.customer_address || jobCardData.customer_address,
+        customer_contact: data.customer_contact || jobCardData.customer_contact,
+        customer_address: data.customer_address || jobCardData.customer_address,
 
-        car_registration_no: data.car_registration_no || jobCardData.car_registration_no,
-        chassis_no:  data.chassis_no || jobCardData.chassis_no,
-        engine_no:  data.engine_no || jobCardData.engine_no,
+        car_registration_no:
+          data.car_registration_no || jobCardData.car_registration_no,
+        chassis_no: data.chassis_no || jobCardData.chassis_no,
+        engine_no: data.engine_no || jobCardData.engine_no,
         vehicle_name: data.vehicle_name || jobCardData.vehicle_name,
-        mileage:  data.mileage || jobCardData.mileage,
+        mileage: data.mileage || jobCardData.mileage,
 
-
-        
         total_amount: grandTotal,
         discount: discount,
         vat: vat,
         net_total: calculateFinalTotal(),
         input_data: items,
       };
-       
+
       setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/api/v1/quotation",
@@ -158,7 +153,9 @@ const AddQuotation = () => {
       if (response.data.message === "Successfully quotation post") {
         setPostError("");
         setError("");
-        toast.success("Quotation added successful.");
+        if (preview === "") {
+          toast.success("Quotation added successful.");
+        }
         setReload(!reload);
         if (preview === "preview") {
           fetch("http://localhost:5000/api/v1/quotation")
@@ -888,15 +885,13 @@ const AddQuotation = () => {
           <div className="mt-8 buttonGroup">
             <div>
               {/* <Link to={}> */}
-              <button onClick={()=>setPreview("preview")}>Preview</button>
+              <button onClick={() => setPreview("preview")}>Preview</button>
               {/* </Link> */}
               <button>Download </button>
               <button>Print </button>
             </div>
             <div className="submitQutationBtn">
-              <button className="">
-                Add To Quotation{" "}
-              </button>
+              <button className="">Add To Quotation </button>
             </div>
           </div>
           {error && (
@@ -911,7 +906,6 @@ const AddQuotation = () => {
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-3xl font-bold">Quotation List:</h3>
           <div className="flex items-center searcList">
-            
             <div
               onClick={handleAllQuotation}
               className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
@@ -990,8 +984,6 @@ const AddQuotation = () => {
           </div>
         )}
       </div>
-
-      
     </div>
   );
 };
