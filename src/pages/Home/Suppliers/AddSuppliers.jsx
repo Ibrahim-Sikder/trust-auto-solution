@@ -61,7 +61,7 @@ const AddSuppliers = () => {
       });
 
       const data = await response.json();
-      if (data.message === "Image uploaded successfully") {
+      if (data.message === "Image uploaded successful") {
         setUrl(data.image_url);
         setImageLoading(false);
       }
