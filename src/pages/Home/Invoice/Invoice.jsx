@@ -32,8 +32,8 @@ const Invoice = () => {
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [customerDetails, setCustomerDetails] = useState([]);
-  const [showCustomerData, setShowCustomerData] = useState({});
+  // const [customerDetails, setCustomerDetails] = useState([]);
+  // const [showCustomerData, setShowCustomerData] = useState({});
   const [customerId, setCustomerId] = useState(null);
   const [preview, setPreview] = useState("");
 
@@ -86,7 +86,6 @@ const Invoice = () => {
   const [vat, setVAT] = useState(0);
   const [advance, setAdvance] = useState(0);
 
-  
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
   ]);
@@ -229,17 +228,15 @@ const Invoice = () => {
     const totalAfterDiscount = grandTotal - discountAsPercentage;
 
     const vatAsPercentage = vat / 100;
-    let finalTotal =  totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
     finalTotal = parseFloat(finalTotal.toFixed(2));
 
     return finalTotal;
   };
   const calculateDue = () => {
-   const due = calculateFinalTotal() - advance
-    return due
+    const due = calculateFinalTotal() - advance;
+    return due;
   };
-
- 
 
   const onSubmit = async (data) => {
     if (!jobCardData.Id) {
@@ -269,8 +266,8 @@ const Invoice = () => {
         vat: vat,
         net_total: calculateFinalTotal(),
         input_data: items,
-        advance : advance,
-        due : calculateDue()
+        advance: advance,
+        due: calculateDue(),
       };
       // const hasPreviewNullValues = Object.values(values).some(
       //   (val) => val === null
@@ -291,7 +288,9 @@ const Invoice = () => {
         setReload(!reload);
         setPostError("");
         setError("");
-        toast.success("Invoice added successful.");
+        if (preview === "") {
+          toast.success("Invoice added successful.");
+        }
         if (preview === "preview") {
           fetch("http://localhost:5000/api/v1/invoice")
             .then((res) => res.json())

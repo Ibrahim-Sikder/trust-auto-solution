@@ -22,6 +22,8 @@ const UpdateInvoice = () => {
   const [error, setError] = useState("");
   const [reload, setReload] = useState(false);
 
+  const [removeButton, setRemoveButton] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -187,6 +189,7 @@ const UpdateInvoice = () => {
     if (!specificInvoice.Id) {
       return toast.error("Unauthorized");
     }
+    setRemoveButton("");
     try {
       const values = {
         username: specificInvoice.username || data.username,
@@ -233,14 +236,19 @@ const UpdateInvoice = () => {
 
       //   return;
       // }
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/invoice/one/${id}`,
-        values
-      );
+      if (removeButton === "") {
+        const response = await axios.put(
+          `http://localhost:5000/api/v1/invoice/one/${id}`,
+          values
+        );
 
-      if (response.data.message === "Successfully update card.") {
-        setError("");
-        // navigate("/dashboard/invoice-view");
+        if (response.data.message === "Successfully update card.") {
+          setError("");
+          navigate("/dashboard/invoice-view");
+        }
+      }
+      if (removeButton === "remove") {
+        handleRemoveButton();
       }
     } catch (error) {
       if (error.response) {
@@ -400,7 +408,7 @@ const UpdateInvoice = () => {
                   return (
                     <div key={i}>
                       <div className="qutationForm">
-                        <div>
+                        <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
                               onClick={() => handleRemoveButton(i)}

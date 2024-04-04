@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { FaUsers } from "react-icons/fa";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
@@ -5,6 +6,10 @@ import "./Employee.css";
 import avatar from "../../../../public/assets/avatar.jpg";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import swal from "sweetalert";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const EmployeeList = () => {
   const employeeData = [
@@ -98,26 +103,245 @@ const EmployeeList = () => {
       image: avatar,
     },
   ];
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [getAllEmployee, setGetAllEmployee] = useState([]);
+  const [filterType, setFilterType] = useState("");
+  const [noMatching, setNoMatching] = useState(null);
+  const [reload, setReload] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/v1/employee")
+      .then((response) => {
+        setGetAllEmployee(response.data.employee);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }, []);
+
+  // pagination
+
+  const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(
+    Number(sessionStorage.getItem("supplier")) || 1
+  );
+  const [pageNumberLimit, setPageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
+
+  const deletePackage = async (id) => {
+    const willDelete = await swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this card?",
+      icon: "warning",
+      dangerMode: true,
+    });
+
+    if (willDelete) {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/v1/employee/one/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        const data = await res.json();
+
+        if (data.message == "Employee delete successful") {
+          setGetAllEmployee(getAllEmployee?.filter((pkg) => pkg._id !== id));
+          setReload(!reload);
+        }
+        swal("Deleted!", "Card delete successful.", "success");
+      } catch (error) {
+        swal("Error", "An error occurred while deleting the card.", "error");
+      }
+    }
+  };
+
+  useEffect(() => {
+    sessionStorage.setItem("supplier", currentPage.toString());
+  }, [currentPage]);
+
+  useEffect(() => {
+    const storedPage = Number(sessionStorage.getItem("supplier")) || 1;
+    setCurrentPage(storedPage);
+    setMaxPageNumberLimit(
+      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
+    );
+    setMinPageNumberLimit(
+      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
+    );
+  }, [pageNumberLimit]);
+
+  const handleClick = (e) => {
+    const pageNumber = Number(e.target.id);
+    setCurrentPage(pageNumber);
+    sessionStorage.setItem("supplier", pageNumber.toString());
+  };
+  const pages = [];
+  for (let i = 1; i <= Math.ceil(getAllEmployee?.length / limit); i++) {
+    pages.push(i);
+  }
+
+  const renderPagesNumber = pages?.map((number) => {
+    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={handleClick}
+          className={
+            currentPage === number
+              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
+              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
+          }
+        >
+          {number}
+        </li>
+      );
+    } else {
+      return null;
+    }
+  });
+
+  const lastIndex = currentPage * limit;
+  const startIndex = lastIndex - limit;
+
+  let currentItems;
+  if (Array.isArray(getAllEmployee)) {
+    currentItems = getAllEmployee?.slice(startIndex, lastIndex);
+  } else {
+    currentItems = [];
+  }
+
+  const renderData = (getAllEmployee) => {
+    return (
+      <div className="grid grid-cols-5 gap-5">
+        {getAllEmployee.map((employee) => (
+          <div key={employee.id} className="employeeCard">
+            <div>
+              <img className="employeeCardImg" src={employee?.image} alt="" />
+              <h3 className="text-xl font-semibold">{employee?.full_name} </h3>
+              <p>{employee?.designation}</p>
+              <Link to="/dashboard/employee-profile">
+                <div className="flex items-center justify-center">
+                  <span>See More </span>
+                  <HiOutlineArrowNarrowRight className="ml-1 " />
+                </div>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const handlePrevious = () => {
+    const newPage = currentPage - 1;
+    setCurrentPage(newPage);
+    sessionStorage.setItem("supplier", newPage.toString());
+
+    if (newPage % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
+  const handleNext = () => {
+    const newPage = currentPage + 1;
+    setCurrentPage(newPage);
+    sessionStorage.setItem("supplier", newPage.toString());
+
+    if (newPage > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+
+  let pageIncrementBtn = null;
+  if (pages?.length > maxPageNumberLimit) {
+    pageIncrementBtn = (
+      <li
+        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
+        className="pl-1 text-black cursor-pointer"
+      >
+        &hellip;
+      </li>
+    );
+  }
+
+  let pageDecrementBtn = null;
+  if (currentPage > pageNumberLimit) {
+    pageDecrementBtn = (
+      <li
+        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
+        className="pr-1 text-black cursor-pointer"
+      >
+        &hellip;
+      </li>
+    );
+  }
+
+  const handleFilterType = async () => {
+    try {
+      const data = {
+        filterType,
+      };
+      setLoading(true);
+      const response = await axios.post(
+        `http://localhost:5000/api/v1/supplier/all`,
+        data
+      );
+
+      if (response.data.message === "Filter successful") {
+        setGetAllEmployee(response.data.result);
+        setNoMatching(null);
+        setLoading(false);
+      }
+      if (response.data.message === "No matching found") {
+        setNoMatching(response.data.message);
+        setLoading(false);
+      }
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const handleAllSuppliers = () => {
+    try {
+      fetch(`http://localhost:5000/api/v1/supplier`)
+        .then((res) => res.json())
+        .then((data) => {
+          setGetAllEmployee(data.allSupplier);
+          setNoMatching(null);
+        });
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <div className="w-full mt-5 mb-24">
       <div className="flex justify-end pb-3 border-b-2">
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
-          <FaUserGear size={30} />{" "}
-        </div>{" "}
-      </div>{" "}
+          <FaUserGear size={30} /> 
+        </div> 
+      </div> 
       <div className="flex items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />
           <div className="ml-2">
-            <h3 className="text-2xl font-bold"> Employee </h3>{" "}
-            <span> Manage Customer </span>{" "}
-          </div>{" "}
-        </div>{" "}
+            <h3 className="text-2xl font-bold"> Employee </h3> 
+            <span> Manage Customer </span> 
+          </div> 
+        </div> 
         <div className="productHome">
-          <span> Home / </span> <span> Customer / </span>{" "}
-          <span> New Customer </span>{" "}
-        </div>{" "}
+          <span> Home / </span> <span> Customer / </span> 
+          <span> New Customer </span> 
+        </div> 
       </div>
       <div className="employeeCardWraps">
         <div className="grid grid-cols-5 gap-5 my-8">
@@ -145,29 +369,70 @@ const EmployeeList = () => {
           <div className="relative rounded-sm w-max">
             <Link to="/dashboard/add-employee">
               <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95">
-                {" "}
-                + Add Employee{" "}
+                + Add Employee 
               </button>
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-5 gap-5">
-          {employeeData.map((employee) => (
-            <div key={employee.id} className="employeeCard">
-              <div>
-                <img className="employeeCardImg" src={employee.image} alt="" />
-                <h3 className="text-xl font-semibold">{employee.name} </h3>
-                <p>{employee.designation}</p>
-                <Link to="/dashboard/employee-profile">
-                  <div className="flex items-center justify-center">
-                    <span>See More </span>
-                    <HiOutlineArrowNarrowRight className="ml-1 " />
-                  </div>
-                </Link>
+        <div className="text-sm text-red-400 py-2">{error}</div>
+        {loading ? (
+          <div className="flex items-center justify-center text-xl">
+            Loading...
+          </div>
+        ) : (
+          <div>
+            {getAllEmployee?.length === 0 || currentItems.length === 0 ? (
+              <div className="flex items-center justify-center h-full text-xl text-center">
+                No matching suppliers found.
               </div>
-            </div>
-          ))}
-        </div>
+            ) : (
+              <>
+                <section>
+                  {renderData(currentItems)}
+                  <ul
+                    className={
+                      minPageNumberLimit < 5
+                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
+                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
+                    }
+                  >
+                    <button
+                      onClick={handlePrevious}
+                      disabled={currentPage === pages[0] ? true : false}
+                      className={
+                        currentPage === pages[0]
+                          ? "text-gray-600"
+                          : "text-gray-300"
+                      }
+                    >
+                      Previous
+                    </button>
+                    <span
+                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
+                    >
+                      {pageDecrementBtn}
+                    </span>
+                    {renderPagesNumber}
+                    {pageIncrementBtn}
+                    <button
+                      onClick={handleNext}
+                      disabled={
+                        currentPage === pages[pages?.length - 1] ? true : false
+                      }
+                      className={
+                        currentPage === pages[pages?.length - 1]
+                          ? "text-gray-700"
+                          : "text-gray-300 pl-1"
+                      }
+                    >
+                      Next
+                    </button>
+                  </ul>
+                </section>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

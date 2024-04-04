@@ -8,7 +8,7 @@ import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
-  console.log('quotation data ', specificInvoice)
+  console.log("quotation data ", specificInvoice);
   // const [orderNo, setOrderNo] = useState(null);
   // const [customerName, setCustomerName] = useState(null);
   // const [carNumber, setCarNumber] = useState(null);
@@ -23,7 +23,7 @@ const UpdateQuotation = () => {
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
   const [error, setError] = useState("");
-  const [dateHandle, setDateHandle] = useState(false);
+  const [removeButton, setRemoveButton] = useState("");
   const [reload, setReload] = useState(false);
   const [quantityIndex, setQuantityIndex] = useState(null);
   const [rateIndex, setRateIndex] = useState(null);
@@ -134,12 +134,27 @@ const UpdateQuotation = () => {
     return finalTotal;
   };
 
-  // const trust_auto_id = Cookies.get("trust_auto_id");
+  const handleRemoveButton = (i) => {
+    if (!specificInvoice.Id) {
+      return toast.error("Unauthorized");
+    }
+    axios
+      .put(`http://localhost:5000/api/v1/quotation/${id}`, { index: i })
+      .then((response) => {
+        if (response.data.message === "Deleted successful") {
+          setReload(!reload);
+        }
+      })
+      .catch((error) => {
+        toast.error("Something went wrong");
+      });
+  };
 
   const onSubmit = async (data) => {
     if (!specificInvoice.Id) {
       return toast.error("Unauthorized");
     }
+    setRemoveButton("");
     try {
       const values = {
         username: specificInvoice.username || data.username,
@@ -149,7 +164,8 @@ const UpdateQuotation = () => {
 
         company_name: data.company_name || specificInvoice.company_name,
         customer_name: data.customer_name || specificInvoice.customer_name,
-        customer_contact: data.customer_contact || specificInvoice.customer_contact,
+        customer_contact:
+          data.customer_contact || specificInvoice.customer_contact,
         customer_address:
           data.customer_address || specificInvoice.customer_address,
 
@@ -180,14 +196,20 @@ const UpdateQuotation = () => {
 
       //   return;
       // }
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/quotation/one/${id}`,
-        values
-      );
+      if (removeButton === "") {
+        const response = await axios.put(
+          `http://localhost:5000/api/v1/quotation/one/${id}`,
+          values
+        );
 
-      if (response.data.message === "Successfully update card.") {
-        setError("");
-        navigate("/dashboard/quotaiton-list");
+        if (response.data.message === "Successfully update card.") {
+          setError("");
+          navigate("/dashboard/quotaiton-list");
+        }
+      }
+
+      if (removeButton === "remove") {
+        handleRemoveButton();
       }
     } catch (error) {
       if (error.response) {
@@ -196,21 +218,7 @@ const UpdateQuotation = () => {
     }
   };
 
-  const handleRemoveButton = (i) => {
-    if (!specificInvoice.Id) {
-      return toast.error("Unauthorized");
-    }
-    axios
-      .put(`http://localhost:5000/api/v1/quotation/${id}`, { index: i })
-      .then((response) => {
-        if (response.data.message === "Deleted successful") {
-          setReload(!reload);
-        }
-      })
-      .catch((error) => {
-        toast.error("Something went wrong");
-      });
-  };
+  console.log(removeButton);
 
   return (
     <div className="px-5 py-10">
@@ -241,7 +249,7 @@ const UpdateQuotation = () => {
               <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
-                type="number"
+                  type="number"
                   className="addJobInputField"
                   label="Serial No"
                   {...register("job_no")}
@@ -451,7 +459,7 @@ const UpdateQuotation = () => {
                   return (
                     <div key={i}>
                       <div className="qutationForm">
-                        <div>
+                        <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
                               onClick={() => handleRemoveButton(i)}
