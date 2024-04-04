@@ -107,17 +107,21 @@ const DashboardLayout = () => {
             </div>
 
             <NavLink to="/dashboard">
-              <div className="flex items-center dashboardItems">
+              <div className="flex items-center dashboardItems p-3">
                 <FaHome className="dashboardIcon" />
                 <span>Dashboard</span>
               </div>
             </NavLink>
+
+
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion "
               expanded={expanded === "panel1"}
               onChange={handleChange("panel1")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
@@ -147,12 +151,16 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
 
+
+
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel2"}
               onChange={handleChange("panel2")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
@@ -184,11 +192,13 @@ const DashboardLayout = () => {
             </Accordion>
 
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel3"}
               onChange={handleChange("panel3")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel3a-content"
                 id="panel3a-header"
@@ -218,11 +228,13 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel4"}
               onChange={handleChange("panel4")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel4a-content"
                 id="panel4a-header"
@@ -255,11 +267,13 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel5"}
               onChange={handleChange("panel5")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel5a-content"
                 id="panel5a-header"
@@ -281,11 +295,13 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel6"}
               onChange={handleChange("panel6")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -328,11 +344,13 @@ const DashboardLayout = () => {
             </Accordion>
 
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel7"}
               onChange={handleChange("panel7")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
@@ -393,11 +411,13 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel9"}
               onChange={handleChange("panel9")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -430,15 +450,17 @@ const DashboardLayout = () => {
             </Accordion>
 
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel8"}
               onChange={handleChange("panel8")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
-                className="dashboardAccordionSummary"
+                className=""
               >
                 <Typography>
                   <div className="flex items-center dashboardItems">
@@ -497,11 +519,13 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel10"}
               onChange={handleChange("panel10")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -534,11 +558,13 @@ const DashboardLayout = () => {
             </Accordion>
 
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel11"}
               onChange={handleChange("panel11")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -567,11 +593,13 @@ const DashboardLayout = () => {
             </Accordion>
 
             <Accordion
+            sx={{paddingBottom: '10px'}}
               className="dashboardAccordion"
               expanded={expanded === "panel12"}
               onChange={handleChange("panel12")}
             >
               <AccordionSummary
+              sx={{marginBottom: '-15px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel7a-content"
                 id="panel7a-header"
@@ -598,37 +626,40 @@ const DashboardLayout = () => {
                 </Typography>
               </AccordionDetails>
             </Accordion>
-            <NavLink to="/dashboard/services">
-              <div className="flex items-center dashboardItems">
-                <FaAlipay className="dashboardIcon" />
-                <span> Bill Pay</span>
-              </div>
-            </NavLink>
 
-            <NavLink to="/dashboard/profile">
-              <div className="flex items-center dashboardItems">
-                <FaUsersCog className="dashboardIcon" />
-                <span> Profile</span>
-              </div>
-            </NavLink>
-            <NavLink to="/dashboard/services">
-              <div className="flex items-center dashboardItems">
-                <FaDatabase className="dashboardIcon" />
-                <span> Data Backup </span>
-              </div>
-            </NavLink>
-            <NavLink to="/dashboard/services">
-              <div className="flex items-center dashboardItems">
-                <FaHeadset className="dashboardIcon" />
-                <span>Support</span>
-              </div>
-            </NavLink>
-            <NavLink to="/dashboard/services">
-              <div className="flex items-center dashboardItems">
-                <Logout className="dashboardIcon" />
-                <span>Log Out </span>
-              </div>
-            </NavLink>
+           <div className="pl-3 space-y-3">
+           <NavLink to="/dashboard/services">
+           <div className="flex items-center dashboardItems">
+             <FaAlipay className="dashboardIcon" />
+             <span> Bill Pay</span>
+           </div>
+         </NavLink>
+
+         <NavLink to="/dashboard/profile">
+           <div className="flex items-center dashboardItems">
+             <FaUsersCog className="dashboardIcon" />
+             <span> Profile</span>
+           </div>
+         </NavLink>
+         <NavLink to="/dashboard/services">
+           <div className="flex items-center dashboardItems">
+             <FaDatabase className="dashboardIcon" />
+             <span> Data Backup </span>
+           </div>
+         </NavLink>
+         <NavLink to="/dashboard/services">
+           <div className="flex items-center dashboardItems">
+             <FaHeadset className="dashboardIcon" />
+             <span>Support</span>
+           </div>
+         </NavLink>
+         <NavLink to="/dashboard/services">
+           <div className="flex items-center dashboardItems">
+             <Logout className="dashboardIcon" />
+             <span>Log Out </span>
+           </div>
+         </NavLink>
+           </div>
           </div>
           <div
             className={`${toggle ? `activeToggle` : `navActive`}`}
