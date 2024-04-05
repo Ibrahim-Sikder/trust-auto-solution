@@ -31,7 +31,7 @@ const UpdateJobCard = () => {
 
   const [singleCard, setSingleCard] = useState({});
 
-  console.log(singleCard)
+
 
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
@@ -1058,69 +1058,72 @@ const UpdateJobCard = () => {
                   Vehicle Interior Parts, Papers, Tools, Meter Light & Others{" "}
                 </b>
                 <ReactQuill
-                  value={value}
-                  className="textEditor"
-                  onChange={setValue}
-                  modules={{
-                    toolbar: [
-                      [{ font: [] }],
-                      [{ size: ["small", false, "large", "huge"] }],
-                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                      [{ color: [] }, { background: [] }],
-                      [{ align: [] }],
-                      [{ list: "ordered" }, { list: "bullet" }],
-                      ["bold", "italic", "underline"],
-                      [{ align: [] }],
-                      ["link", "image"],
-                      ["video"],
-                      ["clean"],
-                      ["blockquote", "code-block"],
-                      ["direction"],
-                      ["formula"],
-                      ["strike"],
-                    ],
-                  }}
-                />
+                value={singleCard.vehicle_interior_parts}
+                className="textEditor"
+                onChange={(content) => setSingleCard(prevState => ({ ...prevState, vehicle_interior_parts: content }))}
+                modules={{
+                  toolbar: [
+                    [{ font: [] }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                    ["link", "image"],
+                    ["video"],
+                    ["clean"],
+                    ["blockquote", "code-block"],
+                    ["direction"],
+                    ["formula"],
+                    ["strike"],
+                  ],
+                }}
+              />
+              
               </div>
               <div className="mt-5">
                 <b className="block mb-1"> Reported Defect </b>
                 <ReactQuill
-                  value={value2}
-                  className="textEditor"
-                  onChange={setValue2}
-                  modules={{
-                    toolbar: [
-                      [{ font: [] }],
-                      [{ size: ["small", false, "large", "huge"] }],
-                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                      [{ color: [] }, { background: [] }],
-                      [{ align: [] }],
-                      [{ list: "ordered" }, { list: "bullet" }],
-                      ["bold", "italic", "underline"],
-                      [{ align: [] }],
-                    ],
-                  }}
-                />
+                value={singleCard.reported_defect}
+                className="textEditor"
+                onChange={(content) => setSingleCard(prevState => ({ ...prevState, reported_defect: content }))}
+                modules={{
+                  toolbar: [
+                    [{ font: [] }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                  ],
+                }}
+              />
+              
               </div>
               <div className="mt-5">
                 <b className="block mb-1"> Reported Action </b>
                 <ReactQuill
-                  value={value3}
-                  className="textEditor"
-                  onChange={setValue3}
-                  modules={{
-                    toolbar: [
-                      [{ font: [] }],
-                      [{ size: ["small", false, "large", "huge"] }],
-                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                      [{ color: [] }, { background: [] }],
-                      [{ align: [] }],
-                      [{ list: "ordered" }, { list: "bullet" }],
-                      ["bold", "italic", "underline"],
-                      [{ align: [] }],
-                    ],
-                  }}
-                />
+                value={singleCard.reported_action}
+                className="textEditor"
+                onChange={(content) => setSingleCard(prevState => ({ ...prevState, reported_action: content }))}
+                modules={{
+                  toolbar: [
+                    [{ font: [] }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                  ],
+                }}
+              />
+              
               </div>
             </div>
             <div className="vehicleReportRightSide">
@@ -1153,10 +1156,13 @@ const UpdateJobCard = () => {
               <div className="mt-5">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
                 <textarea
-                  onChange={(e) => setVehicleBody(e.target.value)}
-                  required
-                  autoComplete="off"
-                ></textarea>
+                className="p-5"
+                value={singleCard.vehicle_body_report}
+                onChange={(e) => setSingleCard(prevState => ({ ...prevState, vehicle_body_report: e.target.value }))}
+                required
+                autoComplete="off"
+              ></textarea>
+              
               </div>
             </div>
           </div>
@@ -1191,7 +1197,7 @@ const UpdateJobCard = () => {
             </div>
             <div>
               <input
-                {...register("technician_date", { required: true })}
+                {...register("technician_date",)}
                 required
                 autoComplete="off"
                 type="date"
@@ -1207,9 +1213,9 @@ const UpdateJobCard = () => {
             </div>
             <div>
               <TextField
-                // disabled
+                disabled
                 className="ownerInput"
-                {...register("vehicle_owner", { required: true })}
+                {...register("vehicle_owner",)}
                 label="Vehicle Owner (T) "
               />
               <br />

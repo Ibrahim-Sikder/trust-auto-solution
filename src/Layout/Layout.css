@@ -107,7 +107,7 @@
 	transition:all .5s ease-in-out;
 }
 .accordionTypoGrapy:hover{
-	background:#42A1DA !important;
+	/* background:#42A1DA !important; */
 	color:#fff;
 	padding-top:10px;
 	padding-bottom:10px;
