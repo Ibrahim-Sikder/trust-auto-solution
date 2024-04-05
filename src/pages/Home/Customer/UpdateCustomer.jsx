@@ -19,7 +19,6 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 
 const UpdateCustomer = () => {
 
-
   const {
     register,
     handleSubmit,

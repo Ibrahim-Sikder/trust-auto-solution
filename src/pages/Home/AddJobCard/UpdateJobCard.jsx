@@ -31,6 +31,8 @@ const UpdateJobCard = () => {
 
   const [singleCard, setSingleCard] = useState({});
 
+  console.log(singleCard)
+
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
 
@@ -620,15 +622,15 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={singleCard?.contact_number}
+                  value={singleCard?.customer_contact}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      contact_number: e.target.value,
+                      customer_contact: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.contact_number,
+                    shrink: !!singleCard.customer_contact,
                   }}
                 />
               </div>
@@ -642,11 +644,11 @@ const UpdateJobCard = () => {
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      contact_number: e.target.value,
+                      customer_email: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.contact_number,
+                    shrink: !!singleCard.customer_email,
                   }}
                 />
                 {/* {errors.customer_email && (
@@ -710,15 +712,15 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={singleCard?.phone_number}
+                  value={singleCard?.driver_contact}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      phone_number: e.target.value,
+                      driver_contact: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.phone_number,
+                    shrink: !!singleCard.driver_contact,
                   }}
                 />
                 {/* {errors.driver_contact && (
@@ -975,15 +977,15 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   {...register("color_code")}
                   label="Color & Code (T&N) "
-                  value={singleCard?.color}
+                  value={singleCard?.color_code}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      color: e.target.value,
+                      color_code: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.color,
+                    shrink: !!singleCard.color_code,
                   }}
                 />
                 {/* {errors.color_code && (
