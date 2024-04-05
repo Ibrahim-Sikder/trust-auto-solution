@@ -25,12 +25,11 @@ const AddEmployee = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getAllEmployee, setGetAllEmployee] = useState([]);
-  // const [previousEmployee, setPreviousEmployee] = useState({});
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
 
-  // const [empId, setEmpId] = useState(previousEmployee.employeeId);
+ 
 
   const {
     register,
@@ -54,15 +53,7 @@ const AddEmployee = () => {
       });
   }, [reload]);
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetch(`http://localhost:5000/api/v1/employee`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setPreviousEmployee(data);
-  //       setLoading(false);
-  //     });
-  // }, [reload]);
+ 
 
   const handleImageUpload = async (e) => {
     try {
@@ -127,8 +118,7 @@ const AddEmployee = () => {
       if (response.data.message === "Successfully employee post") {
         toast.success("Successfully employee added.");
         setLoading(false);
-        // const newId = empId + 1;
-        // setEmpId(newId);
+       
         setReload(!reload);
         reset();
         setError("");
@@ -141,14 +131,8 @@ const AddEmployee = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (previousEmployee.employeeId && !empId) {
-  //     setEmpId(previousEmployee.employeeId + 1);
-  //   }
-  // }, [reload, previousEmployee.employeeId, empId]);
-
-  // pagination
-
+ 
+// pagination 
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(
     Number(sessionStorage.getItem("supplier")) || 1
@@ -344,7 +328,7 @@ const AddEmployee = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/supplier/all`,
+        `http://localhost:5000/api/v1/employee/all`,
         data
       );
 
@@ -362,12 +346,12 @@ const AddEmployee = () => {
     }
   };
 
-  const handleAllSuppliers = () => {
+  const handleAllEmployee = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/supplier`)
+      fetch(`http://localhost:5000/api/v1/employee`)
         .then((res) => res.json())
         .then((data) => {
-          setGetAllEmployee(data.allSupplier);
+          setGetAllEmployee(data.employee);
           setNoMatching(null);
         });
     } catch (error) {
@@ -596,33 +580,32 @@ const AddEmployee = () => {
         </div>
       </div>
       <div className="w-full mt-5 mb-24">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-3xl font-bold text-center "> Employee List: </h3>
-        </div>
+        
 
-        <div className="grid grid-cols-5 gap-5 my-8">
-          <div className="relative rounded-sm w-max">
-            <input className="peer employeeInput" type="text" placeholder="" />
-            <label className="employeeLavel" htmlFor="">
-              Employee ID
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input className="peer employeeInput" type="text" placeholder="" />
-            <label className="employeeLavel" htmlFor="">
-              Employee Name
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input className="peer employeeInput" type="text" placeholder="" />
-            <label className="employeeLavel" htmlFor="">
-              Designation
-            </label>
-          </div>
-          <div onClick={handleFilterType} className="relative rounded-sm w-max">
-            <button className="employeeBtn employeeInput">Search</button>
+        <div className="mt-20 overflow-x-auto">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="mb-3 text-sm font-bold lg:text-3xl">Employee List:</h3>
+          <div className="flex items-center searcList">
+            <div
+              onClick={handleAllEmployee}
+              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            >
+              All
+            </div>
+            <div className="searchGroup">
+              <input
+                onChange={(e) => setFilterType(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Search"
+              />
+            </div>
+            <button onClick={handleFilterType} className="SearchBtn ">
+              Search{" "}
+            </button>
           </div>
         </div>
+      </div>
         {loading ? (
           <div className="flex items-center justify-center text-xl">
             Loading...
