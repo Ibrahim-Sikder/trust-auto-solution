@@ -6,32 +6,35 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { FaFileInvoice, FaCloudUploadAlt } from "react-icons/fa";
-
-import { useEffect, useState } from "react";
+import {
+  FaFileInvoice,
+  FaEye,
+  FaTrashAlt,
+  FaCloudUploadAlt,
+} from "react-icons/fa";
+import { TiEdit } from "react-icons/ti";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import { Axios } from "axios";
 import { toast } from "react-toastify";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const UpdateExpense = () => {
+const AddExpense = () => {
   const [payment, setPayment] = useState("");
 
-  const handlePaymentChange = (e) => {
-    setPayment(e.target.value);
-  };
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [getSingleExpense, setGetSingleExpense] = useState({});
+  const [getAllEmployee, setGetAllEmployee] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
 
-  const location = useLocation();
-  const id = new URLSearchParams(location.search).get("id");
-  const navigate = useNavigate();
+  const handlePaymentChange = (e) => {
+    setPayment(e.target.value);
+  };
+  console.log(payment);
 
   const {
     register,
@@ -39,19 +42,6 @@ const UpdateExpense = () => {
     reset,
     formState: { errors },
   } = useForm();
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/v1/expense/one/${id}`)
-      .then((response) => {
-        setGetSingleExpense(response.data.expense);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }, [id, reload]);
-
-  console.log(getSingleExpense);
 
   const handleImageUpload = async (e) => {
     try {
@@ -75,88 +65,62 @@ const UpdateExpense = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log(data)
     setError("");
 
-    try {
+    // const randomNumber = Math.floor(Math.random() * 1000);
+    // const paddedNumber = randomNumber.toString().padStart(4, "0");
+    // const uniqueId = `TAS${paddedNumber}`;
+
+   
       const values = {
-        category: data.category || getSingleExpense.category,
-        sub_category: data.sub_category || getSingleExpense.sub_category,
-        expense_for: data.expense_for || getSingleExpense.expense_for,
-        tax_application:
-          data.tax_application || getSingleExpense.tax_application,
-        individual_markup_first:
-          data.individual_markup_first ||
-          getSingleExpense.individual_markup_first,
-        expense_note_first:
-          data.expense_note_first || getSingleExpense.expense_note_first,
-        individual_markup_second:
-          data.individual_markup_second ||
-          getSingleExpense.individual_markup_second,
-        expense_note_second:
-          data.expense_note_second || getSingleExpense.expense_note_second,
-        amount: data.amount || getSingleExpense.amount,
-        paid_on: data.paid_on || getSingleExpense.paid_on,
-        payment_individual_markup:
-          data.payment_individual_markup ||
-          getSingleExpense.payment_individual_markup,
-        payment_account_first:
-          payment || getSingleExpense.payment_account_first,
-        payment_account_second:
-          data.payment_account_second ||
-          getSingleExpense.payment_account_second,
-        check_no: data.check_no || getSingleExpense.check_no,
-        check_expense_note:
-          data.check_expense_note || getSingleExpense.check_expense_note,
-        bank_account_no:
-          data.bank_account_no || getSingleExpense.bank_account_no,
+        // employeeId: uniqueId,
+        full_name: data.full_name,
+        date_of_birth: data.date_of_birth,
+        nid_number: data.nid_number,
+        blood_group: data.blood_group,
+        phone_number: data.phone_number,
+        email: data.email,
+        gender: data.gender,
+        join_date: data.join_date,
+        designation: data.designation,
+        status: data.status,
+        password: data.password,
+        confirm_password: data.confirm_password,
+        father_name: data.father_name,
+        mother_name: data.mother_name,
+        nationality: data.nationality,
+        religion: data.religion,
 
-        bank_expense_note:
-          data.bank_expense_note || getSingleExpense.bank_expense_note,
-        cash_expense_note:
-          data.cash_expense_note || getSingleExpense.cash_expense_note,
-        card_number: data.card_number || getSingleExpense.card_number,
-        card_holder_name:
-          data.card_holder_name || getSingleExpense.card_holder_name,
-        card_transaction_no:
-          data.card_transaction_no || getSingleExpense.card_transaction_no,
-        card_type: data.card_type || getSingleExpense.card_type,
-        month_first: data.month_first || getSingleExpense.month_first,
-        year: data.year || getSingleExpense.year,
-        month_second: data.month_second || getSingleExpense.month_second,
-        security_code: data.security_code || getSingleExpense.security_code,
-        card_expense_note:
-          data.card_expense_note || getSingleExpense.card_expense_note,
-        other_transaction_no:
-          data.other_transaction_no || getSingleExpense.other_transaction_no,
-        other_expense_note:
-          data.other_expense_note || getSingleExpense.other_expense_note,
-
-        image: url ? url : getSingleExpense.image,
+        country: data.country,
+        city: data.city,
+        address: data.address,
+        image: url,
       };
 
       setLoading(true);
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/expense/one/${id}`,
-        values
-      );
+      // const response = await Axios.post(
+      //   "http://localhost:5000/api/v1/employee",
+      //   values
+      // );
 
-      if (response.data.message === "Successfully update card.") {
-        toast.success("Successfully update card.");
-        setLoading(false);
-        setReload(!reload);
-        navigate("/dashboard/expense");
-        reset();
-        setError("");
-      }
-    } catch (error) {
-      if (error.response) {
-        setLoading(false);
-        setError(error.response.data.message);
-      }
-    }
+    //   if (response.data.message === "Successfully employee post") {
+    //     toast.success("Successfully employee added.");
+    //     setLoading(false);
+    //     // const newId = empId + 1;
+    //     // setEmpId(newId);
+    //     setReload(!reload);
+    //     reset();
+    //     setError("");
+    //   }
+    // } catch (error) {
+    //   if (error.response) {
+    //     setLoading(false);
+    //     setError(error.response.data.message);
+    //   }
+    // }
   };
 
-  console.log(getSingleExpense);
   return (
     <section>
       <div className="addProductWraps">
@@ -330,7 +294,7 @@ const UpdateExpense = () => {
                     native
                     id="grouped-native-select"
                     label="Payment Account "
-                    // {...register("payment_account_first")}
+                    {...register("payment_account_first")}
                   >
                     <option aria-label="None" value="" />
                     <option value="Cash"> Cash </option>
@@ -502,8 +466,65 @@ const UpdateExpense = () => {
           </form>
         </div>
       </div>
+      <div className="w-full mt-5 mb-24">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-5">
+            <h3 className="text-3xl font-bold text-center "> Expense List: </h3>
+          </div>
+
+          <div className="flex items-center">
+            <div className="searchGroup">
+              <input autoComplete="off" type="text" />
+            </div>
+            <button className="SearchBtn ">Search </button>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto ">
+          <table className="table ">
+            <thead className="tableWrap">
+              <tr>
+                <th>SL</th>
+                <th>Expense Category </th>
+                <th>Sub Category </th>
+                <th>Expense For </th>
+                <th>Total Amount </th>
+                <th>Payment Method </th>
+                <th colSpan={3}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>01</td>
+                <td>Month </td>
+                <td>Salary </td>
+                <td>Electricity </td>
+                <td>595995</td>
+                <td>Card</td>
+                <td>
+                  <div className="editIconWrap edit">
+                    <FaEye className="editIcon" />
+                  </div>
+                </td>
+                <td>
+                  <div className="editIconWrap edit">
+                    <Link to="/dashboard/update-expense">
+                      <TiEdit className="editIcon" />
+                    </Link>
+                  </div>
+                </td>
+                <td>
+                  <div className="editIconWrap">
+                    <FaTrashAlt className="deleteIcon" />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
   );
 };
 
-export default UpdateExpense;
+export default AddExpense;

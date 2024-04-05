@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { HiCheck, HiOutlineEye, HiOutlineX } from "react-icons/hi";
 import avatar from "../../../../public/assets/avatar.jpg";
 import "./Attendance.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
-
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 // Start from 2024 and go up to 2030
@@ -20,6 +20,9 @@ import { FaRegTrashAlt, FaUserEdit } from "react-icons/fa";
 import AttendanceTimePicker from "./AttendanceTimePicker";
 import { Link } from "react-router-dom";
 import { months } from "../../../constant/Vehicle.constant";
+import axios from "axios";
+import dayjs from "dayjs";
+import AttendanceOutTimePicker from "./AttendanceForOutTime";
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -62,6 +65,158 @@ const AddAttendance = () => {
     setSelectedOption2(selectedOption2);
   };
 
+  const [error, setError] = useState("");
+  const [getAllEmployee, setGetAllEmployee] = useState([]);
+  const [presentState, setPresentState] = useState(
+    new Array(getAllEmployee.length).fill(false)
+  );
+  const [absentState, setAbsentState] = useState(
+    new Array(getAllEmployee.length).fill(false)
+  );
+  const [inTime, setInTime] = useState(
+    new Array(getAllEmployee.length).fill(null)
+  );
+  const [outTime, setOutTime] = useState(
+    new Array(getAllEmployee.length).fill(null)
+  );
+  const [overtime, setOvertime] = useState(
+    new Array(getAllEmployee.length).fill(null)
+  );
+  const [lateStatus, setLateStatus] = useState(false);
+
+  const [attendanceData, setAttendanceData] = useState([]);
+
+  const parsedDate = new Date();
+  const day = parsedDate.getDate().toString().padStart(2, "0");
+  const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = parsedDate.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
+
+  // Function to format the time
+  const formatTime = (time) => {
+    if (!time) return "";
+    return dayjs(time).format("h:mmA");
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/v1/employee")
+      .then((response) => {
+        setGetAllEmployee(response.data.employee);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }, []);
+
+  const handlePresent = (index) => {
+    const newPresentState = [...presentState];
+    const newAbsentState = [...absentState];
+
+    // Toggle present state
+    newPresentState[index] = !newPresentState[index];
+
+    // If present checkbox is checked, uncheck absent checkbox
+    if (newPresentState[index]) {
+      newAbsentState[index] = false;
+    }
+
+    // Update states
+    setPresentState(newPresentState);
+    setAbsentState(newAbsentState);
+  };
+
+  // Handler for absent checkbox
+  const handleAbsent = (index) => {
+    const newAbsentState = [...absentState];
+    const newPresentState = [...presentState];
+
+    // Toggle absent state
+    newAbsentState[index] = !newAbsentState[index];
+
+    // If absent checkbox is checked, uncheck present checkbox
+    if (newAbsentState[index]) {
+      newPresentState[index] = false;
+    }
+
+    // Update states
+    setAbsentState(newAbsentState);
+    setPresentState(newPresentState);
+  };
+
+  const handleAttendanceInTime = (index, time) => {
+    const formattedTime = formatTime(time);
+    setInTime((prevSelectedTimes) => {
+      const updatedSelectedTimes = [...prevSelectedTimes];
+      updatedSelectedTimes[index] = formattedTime;
+      return updatedSelectedTimes;
+    });
+  };
+
+  const handleAttendanceOutTime = (index, value) => {
+    const formattedTime = formatTime(value);
+    setOutTime((prevSelectedTimes) => {
+      const updatedSelectedTimes = [...prevSelectedTimes];
+      updatedSelectedTimes[index] = formattedTime;
+      return updatedSelectedTimes;
+    });
+  };
+  const handleAttendanceOvertime = (index, value) => {
+    console.log(value);
+    const newOvertime = [...overtime];
+    newOvertime[index] = value;
+    setOvertime(newOvertime);
+  };
+
+  
+
+  const handleSubMitAttendance = async () => {
+    const newAttendanceData = getAllEmployee.map((employee, index) => {
+      return {
+        _id: employee._id,
+        full_name: employee.full_name,
+        employeeId: employee.employeeId,
+        status: employee.status,
+        date: formattedDate,
+        present: presentState[index],
+        absent: absentState[index],
+        in_time: inTime[index],
+        out_time: outTime[index],
+        overtime: overtime[index],
+        late_status: lateStatus,
+      };
+    });
+    setAttendanceData(newAttendanceData);
+
+    // getAllEmployee.forEach(async (attendanceRecord) => {
+    //   try {
+    //     // Send a PUT request to update the attendance for the employee
+    //      console.log(attendanceRecord._id)
+    //      console.log(attendanceRecord)
+    //      console.log(attendanceData)
+    //     const response = await axios.put(
+    //       `http://localhost:5000/api/v1/employee/one/${attendanceRecord._id}`, // Include employee ID in the URL
+    //       attendanceData
+    //     );
+    //     console.log(
+    //       `Attendance response ${response}`
+    //     );
+    //     console.log(
+    //       `Attendance updated for employee with ID ${attendanceRecord._id}`
+    //     );
+    //   } catch (error) {
+    //     console.error(
+    //       `Error updating attendance for employee with ID ${attendanceRecord._id}`
+    //     );
+    //     console.error(error);
+    //   }
+    // });
+    // Set the state with the array of objects
+  };
+
+  // console.log(selectedTime);
+  // console.log(attendanceData);
+
   return (
     <div className="pt-8 pb-20">
       <div className="flex items-center justify-between my-3 mb-8">
@@ -72,7 +227,7 @@ const AddAttendance = () => {
           </div>
         </div>
       </div>
-      <form className=" attendanceWraps">
+      <div className=" attendanceWraps">
         <table className="attendanceInputTable">
           <thead>
             <tr>
@@ -91,298 +246,80 @@ const AddAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+            {getAllEmployee.map((employee, index) => (
+              <tr className="even-row" key={employee._id}>
+                <td>{index + 1}</td>
+                <td>{employee.full_name}</td>
+                <td>{employee.employeeId}</td>
+                <td>{employee.status}</td>
+                <td>{formattedDate}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    className="border"
+                    onClick={() => handlePresent(index)}
+                    checked={presentState[index]}
                   />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    className="border"
+                    onClick={() => handleAbsent(index)}
+                    checked={absentState[index]}
                   />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                </td>
+                <td>10.00</td>
+                <td>
+                  <AttendanceTimePicker
+                    handleAttendanceInTime={handleAttendanceInTime}
+                    index={index}
                   />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
+                </td>
+                <td>
+                  <AttendanceOutTimePicker
+                    handleAttendanceOutTime={handleAttendanceOutTime}
+                    index={index}
                   />
-                </div>
-              </td>
-            </tr>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="border overTimeInput"
+                    onChange={(e) =>
+                      handleAttendanceOvertime(index, e.target.value)
+                    }
                   />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
+                </td>
+                <td>
+                  <div className="flex items-center justify-center cursor-pointer ">
+                    <HiCheck
+                      size={20}
+                      className="text-[#F62D51] attendanceIcon"
+                      onClick={() => setLateStatus(true)}
+                    />
+                    <HiCheck
+                      className="text-[#4AB657] attendanceIcon "
+                      size={20}
+                      onClick={() => setLateStatus(false)}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <div className="flex justify-end mt-3">
           {" "}
           <button
+            onClick={handleSubMitAttendance}
             className="bg-[#42A1DA] text-white px-3 py-2 rounded-sm"
             type="submit"
           >
             Submit Attendance
           </button>
         </div>
-      </form>
+      </div>
       <div className="mt-14 table-container">
         <h3 className="mt-5 mb-8 text-2xl font-semibold">Today Attendance</h3>
         <table className="attendanceTable">

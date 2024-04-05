@@ -294,7 +294,7 @@ const EmployeeList = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/supplier/all`,
+        `http://localhost:5000/api/v1/employee/all`,
         data
       );
 
@@ -312,12 +312,12 @@ const EmployeeList = () => {
     }
   };
 
-  const handleAllSuppliers = () => {
+  const handleAllEmployee = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/supplier`)
+      fetch(`http://localhost:5000/api/v1/employee`)
         .then((res) => res.json())
         .then((data) => {
-          setGetAllEmployee(data.allSupplier);
+          setGetAllEmployee(data.employee);
           setNoMatching(null);
         });
     } catch (error) {
@@ -347,36 +347,32 @@ const EmployeeList = () => {
         </div>
       </div>
       <div className="employeeCardWraps">
-        <div className="grid grid-cols-5 gap-5 my-8">
-          <div className="relative rounded-sm w-max">
-            <input className="peer employeeInput" type="text" placeholder="" />
-            <label className="employeeLavel" htmlFor="">
-              Employee ID
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input className="peer employeeInput" type="text" placeholder="" />
-            <label className="employeeLavel" htmlFor="">
-              Employee Name
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input className="peer employeeInput" type="text" placeholder="" />
-            <label className="employeeLavel" htmlFor="">
-              Designation
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <button className="employeeBtn employeeInput">Search</button>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <Link to="/dashboard/add-employee">
-              <button className="px-3 py-3 text-xl text-white duration-300 rounded-lg px- bg-sky-500 active:scale-95">
-                + Add Employee
-              </button>
-            </Link>
+ 
+      <div className="mt-20 overflow-x-auto">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="mb-3 text-sm font-bold lg:text-3xl">Employee List:</h3>
+          <div className="flex items-center searcList">
+            <div
+              onClick={handleAllEmployee}
+              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            >
+              All
+            </div>
+            <div className="searchGroup">
+              <input
+                onChange={(e) => setFilterType(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Search"
+              />
+            </div>
+            <button onClick={handleFilterType} className="SearchBtn ">
+              Search{" "}
+            </button>
+ 
           </div>
         </div>
+      </div>
         <div className="text-sm text-red-400 py-2">{error}</div>
         {loading ? (
           <div className="flex items-center justify-center text-xl">
