@@ -220,21 +220,24 @@ const EmployeeList = () => {
   const renderData = (getAllEmployee) => {
     return (
       <div className="grid grid-cols-5 gap-5">
+      <Link to="/dashboard/employee-profile">
         {getAllEmployee.map((employee) => (
           <div key={employee.id} className="employeeCard">
             <div>
               <img className="employeeCardImg" src={employee?.image} alt="" />
               <h3 className="text-xl font-semibold">{employee?.full_name} </h3>
               <p>{employee?.designation}</p>
-              <Link to="/dashboard/employee-profile">
+              
                 <div className="flex items-center justify-center">
                   <span>See More </span>
                   <HiOutlineArrowNarrowRight className="ml-1 " />
                 </div>
-              </Link>
+            
             </div>
           </div>
+
         ))}
+        </Link>
       </div>
     );
   };
@@ -327,23 +330,24 @@ const EmployeeList = () => {
       <div className="flex justify-end pb-3 border-b-2">
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
-          <FaUserGear size={30} /> 
-        </div> 
-      </div> 
+          <FaUserGear size={30} />
+        </div>
+      </div>
       <div className="flex items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />
           <div className="ml-2">
-            <h3 className="text-2xl font-bold"> Employee </h3> 
-            <span> Manage Customer </span> 
-          </div> 
-        </div> 
+            <h3 className="text-2xl font-bold"> Employee </h3>
+            <span> Manage Customer </span>
+          </div>
+        </div>
         <div className="productHome">
-          <span> Home / </span> <span> Customer / </span> 
-          <span> New Customer </span> 
-        </div> 
+          <span> Home / </span> <span> Customer / </span>
+          <span> New Customer </span>
+        </div>
       </div>
       <div className="employeeCardWraps">
+ 
       <div className="mt-20 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-sm font-bold lg:text-3xl">Employee List:</h3>
@@ -365,6 +369,7 @@ const EmployeeList = () => {
             <button onClick={handleFilterType} className="SearchBtn ">
               Search{" "}
             </button>
+ 
           </div>
         </div>
       </div>

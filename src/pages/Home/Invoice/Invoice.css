@@ -193,19 +193,19 @@
 	}
 	
 	.labelWrap label:nth-child(2) {
-		left: -255px !important;
+		left: -235px !important;
 	}
 	
 	.labelWrap label:nth-child(3) {
-		left: 442px !important;
+		left: 468px !important;
 	}
 	
 	.labelWrap label:nth-child(4) {
-		left: 196px !important;
+		left: 220px !important;
 	}
 	
 	.labelWrap label:nth-child(5) {
-		left: 50px !important;
+		left: 70px !important;
 	}
 }
 
