@@ -26,6 +26,8 @@ const CompanyProfile = () => {
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
+
+  
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -37,6 +39,9 @@ const CompanyProfile = () => {
         });
     }
   }, [id]);
+
+
+ 
 
   useEffect(() => {
     if (id) {

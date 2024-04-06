@@ -29,7 +29,7 @@ const ShowRoomProfile = () => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetch(`http://localhost:5000/api/v1/company/${id}`)
+      fetch(`http://localhost:5000/api/v1/showRoom/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setProfileData(data);
@@ -38,6 +38,8 @@ const ShowRoomProfile = () => {
     }
   }, [id]);
 
+
+  
   useEffect(() => {
     if (id) {
       fetch(`http://localhost:5000/api/v1/jobCard/${id}`, {
