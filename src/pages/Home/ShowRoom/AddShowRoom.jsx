@@ -197,7 +197,7 @@ const AddShowRoom = () => {
           {showRoomData?.map((card, index) => (
             <tr key={card._id}>
               <td>{index + 1}</td>
-              <td>{card.company_name}</td>
+              <td>{card?.company_name}</td>
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
@@ -215,7 +215,7 @@ const AddShowRoom = () => {
 
               <td>
                 <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-customer?id=${card._id}`}>
+                  <Link to={`/dashboard/update-show-room?id=${card._id}`}>
                     <FaEdit className="editIcon" />
                   </Link>
                 </div>

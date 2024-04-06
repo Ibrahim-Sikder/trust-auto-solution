@@ -505,6 +505,24 @@ const AddEmployee = () => {
                   {...register("mother_name")}
                 />
                 <TextField
+                className="productField"
+                fullWidth
+                label="New Field "
+                {...register("guardian_name")}
+              />
+              <TextField
+              className="productField"
+              fullWidth
+              label="New Field "
+              {...register("guardian_contact")}
+            />
+            <TextField
+            className="productField"
+            fullWidth
+            label="New Field "
+            {...register("relationship")}
+          />
+                <TextField
                   className="productField"
                   fullWidth
                   label="Nationality"

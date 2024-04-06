@@ -8,6 +8,7 @@ import "../Employee.css";
 import EmployeeSalary from "./EmployeeSalary";
 import EmployeeOvertime from "./EmployeeOvertime";
 import EmployeeHoliday from "./EmployeeHoliday";
+
 const CustomerProfile = () => {
   return (
     <div>
@@ -94,7 +95,6 @@ const CustomerProfile = () => {
           <TabPanel>
             <EmployeeAccount />
           </TabPanel>
-
           <TabPanel>
             <Attendance />
           </TabPanel>

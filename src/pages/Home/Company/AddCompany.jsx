@@ -47,7 +47,7 @@ const AddCompany = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     // const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
-    const companyNamePrefix = data.company_name.substring(0, 4);
+    const companyNamePrefix = data?.company_name.substring(0, 4);
     const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
     const paddedNumber = randomNumber.toString().padStart(4, "0"); // Ensures the number is 3 digits long
 
@@ -207,7 +207,6 @@ const AddCompany = () => {
             <th>Order Number </th>
             <th>Car Number </th>
             <th>Mobile Number</th>
-            <th>Date</th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>
@@ -215,7 +214,7 @@ const AddCompany = () => {
           {companyData?.map((card, index) => (
             <tr key={card._id}>
               <td>{index + 1}</td>
-              <td>{card.company_name}</td>
+              <td>{card?.company_name}</td>
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
@@ -223,15 +222,15 @@ const AddCompany = () => {
               <td>
                 <div
                   onClick={() => handleIconPreview(card.companyId)}
-                  className="editIconWrap edit2"
+                  className="flex items-center justify-center"
                 >
-                  <FaUserTie className="invoicIcon" />
+                <FaUserTie size={25} className="" />
                 </div>
               </td>
 
               <td>
                 <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-customer?id=${card._id}`}>
+                  <Link to={`/dashboard/update-company?id=${card._id}`}>
                     <FaEdit className="editIcon" />
                   </Link>
                 </div>
@@ -362,7 +361,7 @@ const AddCompany = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="">
+            <div className="block md:flex">
               <div>
                 <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
                   Company Information{" "}

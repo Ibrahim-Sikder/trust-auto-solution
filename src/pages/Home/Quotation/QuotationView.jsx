@@ -21,6 +21,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
+  console.log(invoicePreview)
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -244,11 +245,11 @@ const Detail = () => {
                         <b>Address</b>
                       </div>
                       <div className="invoiceCustomerInfo">
-                        <small>: 03</small>
-                        <small>: SoftyPy PVT LTD </small>
-                        <small>: Customer</small>
-                        <small>: 3456789044</small>
-                        <small>: Kuril Bishawroad </small>
+                      <small>: {invoicePreview.job_no}</small>
+                      <small>: {invoicePreview.company_name}</small>
+                      <small>: {invoicePreview.customer_name}</small>
+                      <small>: {invoicePreview.customer_contact}</small>
+                      <small>: {invoicePreview.customer_address}</small>
                       </div>
                     </div>
                     <div className="invoiceLine"></div>
@@ -261,11 +262,11 @@ const Detail = () => {
                         <b>Mileage </b>
                       </div>
                       <div className="invoiceCustomerInfo">
-                        <small>: 03566666</small>
-                        <small>: 85456 </small>
-                        <small>: 456</small>
-                        <small>: 3454</small>
-                        <small>: 765</small>
+                        <small>: {invoicePreview.car_registration_no}</small>
+                        <small>: {invoicePreview.chassis_no}</small>
+                        <small>: {invoicePreview.engine_no}</small>
+                        <small>: {invoicePreview.vehicle_name}</small>
+                        <small>: {invoicePreview.mileage}</small>
                       </div>
                     </div>
 

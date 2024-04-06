@@ -162,7 +162,7 @@ const CompanyList = () => {
 
               <td>
                 <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-customer?id=${card._id}`}>
+                  <Link to={`/dashboard/update-company?id=${card._id}`}>
                     <FaEdit className="editIcon" />
                   </Link>
                 </div>

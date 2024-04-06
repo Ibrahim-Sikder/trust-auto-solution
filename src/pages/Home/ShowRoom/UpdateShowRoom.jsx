@@ -28,6 +28,7 @@ const UpdateShowRoom = () => {
 
   const [filterType, setFilterType] = useState("");
   const [showRoomData, setShowRoomData] = useState([]);
+  console.log(showRoomData)
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -73,7 +74,7 @@ const UpdateShowRoom = () => {
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
-        console.log(data);
+  
         setLoading(false);
       });
   }, [reload]);
@@ -193,7 +194,7 @@ const UpdateShowRoom = () => {
           {showRoomData?.map((card, index) => (
             <tr key={card._id}>
               <td>{index + 1}</td>
-              <td>{card.company_name}</td>
+              <td>{card?.company_name}</td>
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>

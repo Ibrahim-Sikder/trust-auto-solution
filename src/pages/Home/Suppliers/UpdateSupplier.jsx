@@ -17,6 +17,7 @@ const UpdateSupplier = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getSingleSuppliers, setGetSingleSuppliers] = useState({});
+  console.log(getSingleSuppliers);
   const [reload, setReload] = useState(false);
 
   const location = useLocation();
@@ -140,7 +141,16 @@ const UpdateSupplier = () => {
                   label="Full Name "
                   id="Full Name "
                   {...register("full_name")}
-                  value={getSingleSuppliers?.full_name}
+                  value={getSingleSuppliers.full_name}
+                  onChange={(e) =>
+                    setGetSingleSuppliers({
+                      ...getSingleSuppliers,
+                      full_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!getSingleSuppliers.full_name,
+                  }}
                 />
                 <TextField
                   className="productField"
@@ -148,7 +158,16 @@ const UpdateSupplier = () => {
                   label="Phone Number "
                   id="Phone Number "
                   {...register("phone_number")}
-                  value={getSingleSuppliers?.phone_number}
+                  value={getSingleSuppliers.phone_number}
+                  onChange={(e) =>
+                    setGetSingleSuppliers({
+                      ...getSingleSuppliers,
+                      phone_number: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!getSingleSuppliers.phone_number,
+                  }}
                 />
                 <TextField
                   className="productField"
@@ -156,7 +175,16 @@ const UpdateSupplier = () => {
                   label="Email Address "
                   id="Email Address "
                   {...register("email")}
-                  value={getSingleSuppliers?.email}
+                  value={getSingleSuppliers.email}
+                  onChange={(e) =>
+                    setGetSingleSuppliers({
+                      ...getSingleSuppliers,
+                      email: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!getSingleSuppliers.email,
+                  }}
                 />
                 <div>
                   <FormControl className="productField">
@@ -187,7 +215,16 @@ const UpdateSupplier = () => {
                   label="Shop Name"
                   id="Password"
                   {...register("shop_name")}
-                  value={getSingleSuppliers?.shop_name}
+                  value={getSingleSuppliers.shop_name}
+                  onChange={(e) =>
+                    setGetSingleSuppliers({
+                      ...getSingleSuppliers,
+                      shop_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!getSingleSuppliers.shop_name,
+                  }}
                 />
               </div>
 
@@ -199,60 +236,92 @@ const UpdateSupplier = () => {
                   fullWidth
                   label="Country "
                   {...register("country")}
-                  value={getSingleSuppliers?.country}
+                  value={getSingleSuppliers.country}
+                  onChange={(e) =>
+                    setGetSingleSuppliers({
+                      ...getSingleSuppliers,
+                      country: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!getSingleSuppliers.country,
+                  }}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Town/City "
                   {...register("city")}
-                  value={getSingleSuppliers?.city}
+                  value={getSingleSuppliers.city}
+                  onChange={(e) =>
+                    setGetSingleSuppliers({
+                      ...getSingleSuppliers,
+                      city: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!getSingleSuppliers.city,
+                  }}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Address "
                   {...register("address")}
-                  value={getSingleSuppliers?.address}
+                  value={getSingleSuppliers.address}
+                  onChange={(e) =>
+                    setGetSingleSuppliers({
+                      ...getSingleSuppliers,
+                      address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!getSingleSuppliers.address,
+                  }}
                 />
                 <div className="productField">
-                  <input
-                    onChange={handleImageUpload}
-                    type="file"
-                    id="files"
-                    className="hidden"
-                  />
-                  <label
-                    for="files"
-                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                  >
-                    <span>
-                      <FaCloudUploadAlt size={30} className="mr-2" />
-                    </span>
-                    {imageLoading ? (
-                      <span>Uploading...</span>
-                    ) : (
-                      <>
-                        {url || getSingleSuppliers.image ? (
-                          <div>
-                            {/* Check if url exists, if yes, render it */}
-                            {url && (
-                              <span className=" overflow-hidden">{url}</span>
-                            )}
-                            {/* Check if getSingleSuppliers.image exists, if yes, render it */}
-                            {getSingleSuppliers.image && (
-                              <span className=" overflow-hidden">
-                                {getSingleSuppliers.image}
-                              </span>
-                            )}
-                          </div>
-                        ) : (
-                          <span>Upload Image</span>
-                        )}
-                      </>
-                    )}
-                  </label>
-                </div>
+                <input
+                  onChange={handleImageUpload}
+                  type="file"
+                  id="files"
+                  className="hidden"
+                />
+                <label
+                  htmlFor="files"
+                  className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                >
+                  <span>
+                    <FaCloudUploadAlt size={30} className="mr-2" />
+                  </span>
+                  {imageLoading ? (
+                    <span>Uploading...</span>
+                  ) : (
+                    <>
+                      {url || getSingleSuppliers.image ? (
+                        <div>
+                          {/* Check if url exists, if yes, render it */}
+                          {url && (
+                            <span className="overflow-hidden">
+                              {url.slice(0, 4)}{/* Display only the first 4 characters */}
+                              {url.slice(url.lastIndexOf('.'))} {/* Display file extension */}
+                            </span>
+                          )}
+                          {/* Check if getSingleSuppliers.image exists, if yes, render it */}
+                          {getSingleSuppliers.image && (
+                            <span className="overflow-hidden">
+                              {getSingleSuppliers.image.slice(0, 4)}{/* Display only the first 4 characters */}
+                              {getSingleSuppliers.image.slice(getSingleSuppliers.image.lastIndexOf('.'))} {/* Display file extension */}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span>Upload Image</span>
+                      )}
+                    </>
+                  )}
+                </label>
+              </div>
+              
               </div>
             </div>
             <div className="text-start text-red-400 py-2">{error}</div>

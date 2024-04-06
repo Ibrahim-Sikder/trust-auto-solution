@@ -211,7 +211,7 @@ const ShowRoomList = () => {
 
               <td>
                 <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-customer?id=${card._id}`}>
+                  <Link to={`/dashboard/update-show-room?id=${card._id}`}>
                     <FaEdit className="editIcon" />
                   </Link>
                 </div>
