@@ -5,24 +5,16 @@ import { Email, Home, WhatsApp, LocalPhone } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import { toast } from "react-toastify";
+
 import AddMoneyReceiptList from "./AddMoneyReceiptList";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
 
-  const trust_auto_id = Cookies.get("trust_auto_id");
-
   const onSubmit = async (data) => {
-    if (!trust_auto_id) {
-      return toast.error("No customer id found.");
-    }
-
     const values = {
-      customerId: trust_auto_id,
-      companyId: trust_auto_id,
-      showRoomId: trust_auto_id,
+      Id: "",
+
       thanks_from: data.thanks_from,
       against_bill_no: data.against_bill_no,
       vehicle_no: data.vehicle_no,
@@ -222,9 +214,7 @@ const MoneyReceiptView = () => {
         </div>
       </div>
 
-      
-
-      <AddMoneyReceiptList/>
+      <AddMoneyReceiptList />
     </>
   );
 };

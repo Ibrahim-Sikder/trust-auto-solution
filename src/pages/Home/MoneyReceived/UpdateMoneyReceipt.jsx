@@ -26,7 +26,7 @@ const UpdateMoneyReceipt = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log(data);
+     
     const values = {
       thanks_from: data.thanks_from || specificMoneyReceipt.thanks_from ,
       against_bill_no: data.against_bill_no || specificMoneyReceipt.against_bill_no ,
