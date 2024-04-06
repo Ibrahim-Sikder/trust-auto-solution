@@ -121,7 +121,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel1")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
@@ -160,7 +160,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel2")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
@@ -198,7 +198,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel3")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel3a-content"
                 id="panel3a-header"
@@ -234,7 +234,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel4")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel4a-content"
                 id="panel4a-header"
@@ -273,7 +273,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel5")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel5a-content"
                 id="panel5a-header"
@@ -301,7 +301,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel6")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -350,7 +350,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel7")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
@@ -417,7 +417,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel9")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -456,7 +456,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel8")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel2a-content"
                 id="panel2a-header"
@@ -525,7 +525,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel10")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -564,7 +564,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel11")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel6a-content"
                 id="panel6a-header"
@@ -599,7 +599,7 @@ const DashboardLayout = () => {
               onChange={handleChange("panel12")}
             >
               <AccordionSummary
-              sx={{marginBottom: '-15px'}}
+              sx={{marginBottom: '-10px'}}
                 expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
                 aria-controls="panel7a-content"
                 id="panel7a-header"
