@@ -83,7 +83,7 @@ const AddShowRoom = () => {
   }, [reload]);
 
   const handleIconPreview = async (e) => {
-    navigate(`/dashboard/company-profile?id=${e}`);
+    navigate(`/dashboard/show-room-profile?id=${e}`);
   };
   // pagination
 
@@ -204,7 +204,7 @@ const AddShowRoom = () => {
               <td>{card.date}</td>
               <td>
                 <div
-                  onClick={() => handleIconPreview(card._id)}
+                  onClick={() => handleIconPreview(card.showRoomId)}
                   className="flex items-center justify-center "
                 >
                   <Link to="/dashboard/employee-profile">
