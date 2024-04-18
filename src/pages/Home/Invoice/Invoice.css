@@ -180,7 +180,7 @@
 
 @media only screen and (min-width:1440px){
 	.secondInputField {
-		width: 1059px;
+		width: 1200px;
 	}
 
 	.labelWrap label {
@@ -193,19 +193,19 @@
 	}
 	
 	.labelWrap label:nth-child(2) {
-		left: -255px !important;
+		left: -290px !important;
 	}
 	
 	.labelWrap label:nth-child(3) {
-		left: 442px !important;
+		left: 525px !important;
 	}
 	
 	.labelWrap label:nth-child(4) {
-		left: 196px !important;
+		left: 250px !important;
 	}
 	
 	.labelWrap label:nth-child(5) {
-		left: 50px !important;
+		left: 74px !important;
 	}
 }
 
