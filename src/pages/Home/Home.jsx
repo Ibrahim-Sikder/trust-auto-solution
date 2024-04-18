@@ -170,6 +170,8 @@ const Home = () => {
 
   return (
     <div className="mt-10 pb-20">
+    <h3 className="text-3xl font-bold">Welcome Admin !</h3>
+    <span>Home / Dashboard</span>
       <div className="dashBoardRight  ">
         <div className="md:flex items-center justify-between md:p-[0px] lg:p-[18px]"></div>
 
@@ -284,7 +286,7 @@ const Home = () => {
         </div>
         <ChartComponent />
       </div>
-      
+
      <div className="flex  justify-between mt-10">
   
      <div className="earningCardWrap ">
