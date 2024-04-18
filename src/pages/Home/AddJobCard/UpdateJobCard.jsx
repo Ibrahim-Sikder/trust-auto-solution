@@ -22,6 +22,7 @@ import {
   vehicleTypes,
 } from "../../../constant";
 import Cookies from "js-cookie";
+import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
 
 const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
@@ -30,21 +31,20 @@ const UpdateJobCard = () => {
 
   const [singleCard, setSingleCard] = useState({});
 
-  console.log("single field ", singleCard);
+
 
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
-  console.log(customerId);
 
-  const [customerDetails, setCustomerDetails] = useState([]);
-  const [showCustomerData, setShowCustomerData] = useState({});
-  console.log(showCustomerData);
+ 
+  
+
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
 
   const [vehicleBody, setVehicleBody] = useState(null);
-  const [clickControl, setClickControl] = useState(null);
+ 
 
   const [error, setError] = useState(null);
   const [select, setSelect] = useState("SL No");
@@ -82,79 +82,54 @@ const UpdateJobCard = () => {
     }
   }, [id]);
 
-  const customer_type = Cookies.get("customer_type");
-
   const onSubmit = async (data) => {
     try {
-      if (!customerId) {
+      if (!singleCard.Id) {
         return toast.error("Please add your Id.");
       }
       const values = {
-        customerId: customerId,
-        companyId: customerId,
-        showRoomId: customerId,
-        job_no: jobNo,
-        date: formattedDate,
-        company_name: data.company_name,
-        username: data.username,
-        company_address: data.company_address,
-        customer_name: data.customer_name,
-        customer_contact: data.customer_contact,
-        customer_email: data.customer_email,
-        customer_address: data.customer_address,
-        driver_name: data.driver_name,
-        driver_contact: data.driver_contact,
-        reference_name: data.reference_name,
-        carReg_no: data.carReg_no,
-        car_registration_no: data.car_registration_no,
-        chassis_no: data.chassis_no,
-        engine_no: data.engine_no,
-        vehicle_brand: data.vehicle_brand,
-        vehicle_name: data.vehicle_name,
-        vehicle_model: data.vehicle_model,
-        vehicle_category: data.vehicle_category,
-        color_code: data.color_code,
-        mileage: data.mileage,
-        fuel_type: data.fuel_type,
-        vehicle_interior_parts: value,
-        reported_defect: value2,
-        reported_action: value3,
-        vehicle_body_report: vehicleBody,
-        technician_name: data.technician_name,
-        technician_signature: data.technician_signature,
-        technician_date: data.technician_date,
-        vehicle_owner: data.vehicle_owner,
+        Id: customerId || singleCard.Id,
+        job_no: jobNo || singleCard.job_no,
+        date: formattedDate || singleCard.date,
+        company_name: data.company_name || singleCard.company_name,
+        username: data.username || singleCard.username,
+        company_address: data.company_address || singleCard.company_address,
+        customer_name: data.customer_name || singleCard.customer_name,
+        customer_contact: data.customer_contact || singleCard.customer_contact,
+        customer_email: data.customer_email || singleCard.customer_email,
+        customer_address: data.customer_address || singleCard.customer_address,
+        driver_name: data.driver_name || singleCard.driver_name,
+        driver_contact: data.driver_contact || singleCard.driver_contact,
+        reference_name: data.reference_name || singleCard.reference_name,
+        carReg_no: data.carReg_no || singleCard.carReg_no,
+        car_registration_no: data.car_registration_no || singleCard.car_registration_no,
+        chassis_no: data.chassis_no || singleCard.chassis_no,
+        engine_no: data.engine_no || singleCard.engine_no,
+        vehicle_brand: data.vehicle_brand || singleCard.vehicle_brand,
+        vehicle_name: data.vehicle_name || singleCard.vehicle_name,
+        vehicle_model: data.vehicle_model || singleCard.vehicle_model,
+        vehicle_category: data.vehicle_category || singleCard.vehicle_category,
+        color_code: data.color_code || singleCard.color_code,
+        mileage: data.mileage || singleCard.mileage,
+        fuel_type: data.fuel_type || singleCard.fuel_type,
+        vehicle_interior_parts: value || singleCard.vehicle_interior_parts,
+        reported_defect: value2 || singleCard.reported_defect,
+        reported_action: value3 || singleCard.reported_action,
+        vehicle_body_report: vehicleBody || singleCard.vehicle_body_report,
+        technician_name: data.technician_name || singleCard.technician_name,
+        technician_signature: data.technician_signature || singleCard.technician_signature,
+        technician_date: data.technician_date || singleCard.technician_date,
+        vehicle_owner: data.vehicle_owner || singleCard.vehicle_owner,
       };
 
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/jobCard",
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/jobCard/one/${id}`,
         values
       );
-
-      if (response.data.message === "Successfully add to card post") {
+      if (response.data.message === "Successfully update card.") {
+        navigate("/dashboard/addjob");
         setLoading(false);
-        const newJobNo = jobNo + 1;
-        setJobNo(newJobNo);
-        setReload(!reload);
-        if (clickControl === "preview") {
-          fetch("http://localhost:5000/api/v1/jobCard/recent")
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                navigate(`/dashboard/preview?id=${data._id}`);
-              }
-            });
-        }
-        if (clickControl === "quotation") {
-          navigate(`/dashboard/qutation?order_no=${jobNo}`);
-        }
-        if (clickControl === "invoice") {
-          navigate(`/dashboard/invoice?order_no=${jobNo}`);
-        }
-        toast.success("Add to job card successful.");
-        formRef.current.reset();
-        setError(null);
       }
     } catch (error) {
       setLoading(false);
@@ -171,53 +146,7 @@ const UpdateJobCard = () => {
   const handleFuelChange = (_, newInputValue) => {
     setGetFuelType(newInputValue);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let apiUrl = "";
-        switch (customer_type) {
-          case "customer":
-            apiUrl = "http://localhost:5000/api/v1/customer";
-            break;
-          case "company":
-            apiUrl = "http://localhost:5000/api/v1/company";
-            break;
-          case "show_room":
-            apiUrl = "http://localhost:5000/api/v1/showRoom";
-            break;
-          default:
-            throw new Error("Invalid customer type");
-        }
-
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const data = await response.json();
-        setCustomerDetails(data);
-
-        const selectedCustomer = data.find((customer) => {
-          switch (customer_type) {
-            case "customer":
-              return customer.customerId === customerId;
-            case "company":
-              return customer.companyId === customerId;
-            case "show_room":
-              return customer.showRoomId === customerId;
-            default:
-              return false;
-          }
-        });
-        setShowCustomerData(selectedCustomer);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    fetchData();
-  }, [customerId, customer_type]);
+ 
 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
@@ -435,183 +364,7 @@ const UpdateJobCard = () => {
     setFormattedDate(formattedDate);
   };
 
-  // pagination
-
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("job")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-
-  const deletePackage = async (id) => {
-    const willDelete = await swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to delete this card?",
-      icon: "warning",
-      dangerMode: true,
-    });
-
-    if (willDelete) {
-      try {
-        const res = await fetch(
-          `http://localhost:5000/api/v1/jobCard/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Job card delete successful") {
-          setAllJobCard(allJobCard?.filter((pkg) => pkg._id !== id));
-        }
-        swal("Deleted!", "Card delete successful.", "success");
-      } catch (error) {
-        swal("Error", "An error occurred while deleting the card.", "error");
-      }
-    }
-  };
-
-  useEffect(() => {
-    sessionStorage.setItem("job", currentPage.toString());
-  }, [currentPage]);
-  // ...
-
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("job")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  // ...
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("job", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(allJobCard?.length / limit); i++) {
-    pages.push(i);
-  }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(allJobCard)) {
-    currentItems = allJobCard.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  // ...
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
-  };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `http://localhost:5000/api/v1/jobCard/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setAllJobCard(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
-
-  const handleAllAddToJobCard = () => {
-    fetch(`http://localhost:5000/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllJobCard(data);
-        setNoMatching(null);
-      });
-  };
+   
   const currentDate = new Date().toISOString().split("T")[0];
   useEffect(() => {
     const currentDate = new Date();
@@ -713,13 +466,19 @@ const UpdateJobCard = () => {
                 <b>
                   Job No: <span className="requiredStart">*</span>
                 </b>
-                <span>{jobNo}</span>
+                <span>{singleCard.job_no}</span>
               </div>
               <div>
                 <span>
                   <b>Customer ID:</b> TAS000
                 </span>
               </div>
+              <input
+                onChange={(e) => setCustomerId(e.target.value)}
+                type="text"
+                className="border-[#ddd] border w-56 h-10 mt-2 p-2 rounded-sm"
+                defaultValue={singleCard.Id}
+              />
             </div>
             <div>
               <div className="vehicleCard">Vehicle Job Card </div>
@@ -736,26 +495,36 @@ const UpdateJobCard = () => {
                   type="date"
                   placeholder="Date"
                   max={currentDate}
-                  defaultValue={formattedDate}
+                  defaultValue={singleCard.date}
                 />
               </div>
-              {customer_type === "customer" && (
-                <Link to="/dashboard/add-customer">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Customer
-                  </button>
-                </Link>
-              )}
+              <div className="addCustomerRelative">
+                <div className="flex items-center w-40 h-10 mt-2 p-2 rounded-sm bg-[#42A1DA] text-white">
+                  <p>Add Customer </p>
+                  <HiOutlineChevronDown className="ml-1" size={20} />
+                </div>
+                <div className="space-y-2 addCustomerDropDown ">
+                  <Link to="/dashboard/add-customer">
+                    {" "}
+                    <span className="flex items-center">
+                      <HiOutlinePlus size={20} /> Add Customer{" "}
+                    </span>
+                  </Link>
+                  <Link to="/dashboard/add-company">
+                    {" "}
+                    <span className="flex items-center">
+                      <HiOutlinePlus size={20} /> Add Company{" "}
+                    </span>
+                  </Link>
 
-              {customer_type === "company" && (
-                <Link to="/dashboard/add-company">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Company
-                  </button>
-                </Link>
-              )}
+                  <Link to="/dashboard/add-show-room">
+                    {" "}
+                    <span className="flex items-center">
+                      <HiOutlinePlus size={20} /> Add Show Room{" "}
+                    </span>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -853,15 +622,15 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={singleCard?.contact_number}
+                  value={singleCard?.customer_contact}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      contact_number: e.target.value,
+                      customer_contact: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.contact_number,
+                    shrink: !!singleCard.customer_contact,
                   }}
                 />
               </div>
@@ -875,11 +644,11 @@ const UpdateJobCard = () => {
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      contact_number: e.target.value,
+                      customer_email: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.contact_number,
+                    shrink: !!singleCard.customer_email,
                   }}
                 />
                 {/* {errors.customer_email && (
@@ -943,15 +712,15 @@ const UpdateJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={singleCard?.phone_number}
+                  value={singleCard?.driver_contact}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      phone_number: e.target.value,
+                      driver_contact: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.phone_number,
+                    shrink: !!singleCard.driver_contact,
                   }}
                 />
                 {/* {errors.driver_contact && (
@@ -1208,15 +977,15 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   {...register("color_code")}
                   label="Color & Code (T&N) "
-                  value={singleCard?.color}
+                  value={singleCard?.color_code}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
-                      color: e.target.value,
+                      color_code: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.color,
+                    shrink: !!singleCard.color_code,
                   }}
                 />
                 {/* {errors.color_code && (
@@ -1289,69 +1058,72 @@ const UpdateJobCard = () => {
                   Vehicle Interior Parts, Papers, Tools, Meter Light & Others{" "}
                 </b>
                 <ReactQuill
-                  value={value}
-                  className="textEditor"
-                  onChange={setValue}
-                  modules={{
-                    toolbar: [
-                      [{ font: [] }],
-                      [{ size: ["small", false, "large", "huge"] }],
-                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                      [{ color: [] }, { background: [] }],
-                      [{ align: [] }],
-                      [{ list: "ordered" }, { list: "bullet" }],
-                      ["bold", "italic", "underline"],
-                      [{ align: [] }],
-                      ["link", "image"],
-                      ["video"],
-                      ["clean"],
-                      ["blockquote", "code-block"],
-                      ["direction"],
-                      ["formula"],
-                      ["strike"],
-                    ],
-                  }}
-                />
+                value={singleCard.vehicle_interior_parts}
+                className="textEditor"
+                onChange={(content) => setSingleCard(prevState => ({ ...prevState, vehicle_interior_parts: content }))}
+                modules={{
+                  toolbar: [
+                    [{ font: [] }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                    ["link", "image"],
+                    ["video"],
+                    ["clean"],
+                    ["blockquote", "code-block"],
+                    ["direction"],
+                    ["formula"],
+                    ["strike"],
+                  ],
+                }}
+              />
+              
               </div>
               <div className="mt-5">
                 <b className="block mb-1"> Reported Defect </b>
                 <ReactQuill
-                  value={value2}
-                  className="textEditor"
-                  onChange={setValue2}
-                  modules={{
-                    toolbar: [
-                      [{ font: [] }],
-                      [{ size: ["small", false, "large", "huge"] }],
-                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                      [{ color: [] }, { background: [] }],
-                      [{ align: [] }],
-                      [{ list: "ordered" }, { list: "bullet" }],
-                      ["bold", "italic", "underline"],
-                      [{ align: [] }],
-                    ],
-                  }}
-                />
+                value={singleCard.reported_defect}
+                className="textEditor"
+                onChange={(content) => setSingleCard(prevState => ({ ...prevState, reported_defect: content }))}
+                modules={{
+                  toolbar: [
+                    [{ font: [] }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                  ],
+                }}
+              />
+              
               </div>
               <div className="mt-5">
                 <b className="block mb-1"> Reported Action </b>
                 <ReactQuill
-                  value={value3}
-                  className="textEditor"
-                  onChange={setValue3}
-                  modules={{
-                    toolbar: [
-                      [{ font: [] }],
-                      [{ size: ["small", false, "large", "huge"] }],
-                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                      [{ color: [] }, { background: [] }],
-                      [{ align: [] }],
-                      [{ list: "ordered" }, { list: "bullet" }],
-                      ["bold", "italic", "underline"],
-                      [{ align: [] }],
-                    ],
-                  }}
-                />
+                value={singleCard.reported_action}
+                className="textEditor"
+                onChange={(content) => setSingleCard(prevState => ({ ...prevState, reported_action: content }))}
+                modules={{
+                  toolbar: [
+                    [{ font: [] }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    ["bold", "italic", "underline"],
+                    [{ align: [] }],
+                  ],
+                }}
+              />
+              
               </div>
             </div>
             <div className="vehicleReportRightSide">
@@ -1384,10 +1156,13 @@ const UpdateJobCard = () => {
               <div className="mt-5">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
                 <textarea
-                  onChange={(e) => setVehicleBody(e.target.value)}
-                  required
-                  autoComplete="off"
-                ></textarea>
+                className="p-5"
+                value={singleCard.vehicle_body_report}
+                onChange={(e) => setSingleCard(prevState => ({ ...prevState, vehicle_body_report: e.target.value }))}
+                required
+                autoComplete="off"
+              ></textarea>
+              
               </div>
             </div>
           </div>
@@ -1407,7 +1182,7 @@ const UpdateJobCard = () => {
             </div>
             <div>
               <TextField
-                disabled
+                // disabled
                 className="ownerInput"
                 o
                 {...register("technician_signature", { required: true })}
@@ -1422,7 +1197,7 @@ const UpdateJobCard = () => {
             </div>
             <div>
               <input
-                {...register("technician_date", { required: true })}
+                {...register("technician_date",)}
                 required
                 autoComplete="off"
                 type="date"
@@ -1440,7 +1215,7 @@ const UpdateJobCard = () => {
               <TextField
                 disabled
                 className="ownerInput"
-                {...register("vehicle_owner", { required: true })}
+                {...register("vehicle_owner",)}
                 label="Vehicle Owner (T) "
               />
               <br />

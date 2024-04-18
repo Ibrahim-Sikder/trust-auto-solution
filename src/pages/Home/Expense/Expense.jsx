@@ -17,26 +17,27 @@ import { FaUserGear } from "react-icons/fa6";
 import { toast } from "react-toastify";
 const ViewInvoice = () => {
   const [select, setSelect] = useState(null);
-  const [getAllInvoice, setGetAllInvoice] = useState([]);
+  const [error, setError] = useState("");
+  const [getAllExpense, setGetAllExpense] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const username = "683231669175";
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`http://localhost:5000/api/v1/invoice/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setGetAllInvoice(data);
-        setLoading(false);
+    axios
+      .get("http://localhost:5000/api/v1/expense")
+      .then((response) => {
+        setGetAllExpense(response.data.expense);
+      })
+      .catch((error) => {
+        setError(error.message);
       });
-  }, [username]);
+  }, []);
 
   // pagination
 
@@ -59,15 +60,15 @@ const ViewInvoice = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/invoice/one/${id}`,
+          `http://localhost:5000/api/v1/expense/one/${id}`,
           {
             method: "DELETE",
           }
         );
         const data = await res.json();
 
-        if (data.message == "Invoice card delete successful") {
-          setGetAllInvoice(getAllInvoice?.filter((pkg) => pkg._id !== id));
+        if (data.message == "Expense delete successful") {
+          setGetAllExpense(getAllExpense?.filter((pkg) => pkg._id !== id));
         }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
@@ -79,7 +80,6 @@ const ViewInvoice = () => {
   useEffect(() => {
     sessionStorage.setItem("q_n", currentPage.toString());
   }, [currentPage]);
-  // ...
 
   useEffect(() => {
     const storedPage = Number(sessionStorage.getItem("q_n")) || 1;
@@ -92,15 +92,13 @@ const ViewInvoice = () => {
     );
   }, [pageNumberLimit]);
 
-  // ...
-
   const handleClick = (e) => {
     const pageNumber = Number(e.target.id);
     setCurrentPage(pageNumber);
     sessionStorage.setItem("q_n", pageNumber.toString());
   };
   const pages = [];
-  for (let i = 1; i <= Math.ceil(getAllInvoice?.length / limit); i++) {
+  for (let i = 1; i <= Math.ceil(getAllExpense?.length / limit); i++) {
     pages.push(i);
   }
 
@@ -129,13 +127,13 @@ const ViewInvoice = () => {
   const startIndex = lastIndex - limit;
 
   let currentItems;
-  if (Array.isArray(getAllInvoice)) {
-    currentItems = getAllInvoice?.slice(startIndex, lastIndex);
+  if (Array.isArray(getAllExpense)) {
+    currentItems = getAllExpense?.slice(startIndex, lastIndex);
   } else {
     currentItems = [];
   }
 
-  const renderData = (getAllInvoice) => {
+  const renderData = (getAllExpense) => {
     return (
       <div className="px-5 py-14 bg-[#F1F3F6] ">
         <table className="table bg-[#fff]">
@@ -151,14 +149,14 @@ const ViewInvoice = () => {
             </tr>
           </thead>
           <tbody>
-            {getAllInvoice?.map((card, index) => (
+            {getAllExpense?.map((card, index) => (
               <tr key={card._id}>
                 <td>{index + 1}</td>
-                <td>{card.customer_name}</td>
-                <td>{card.job_no}</td>
-                <td>{card.car_registration_no}</td>
-                <td> {card.contact_number} </td>
-                <td>{card.date}</td>
+                <td>{card.category}</td>
+                <td>{card.sub_category}</td>
+                <td>{card.expense_for}</td>
+                <td> {card.amount} </td>
+                <td>{card.payment_account_first}</td>
                 <td>
                   <div
                     onClick={() => handleIconPreview(card._id)}
@@ -171,7 +169,7 @@ const ViewInvoice = () => {
                 </td>
                 <td>
                   <div className="editIconWrap edit">
-                    <Link to='/dashboard/update-expense'>
+                    <Link to={`/dashboard/update-expense?id=${card._id}`}>
                       <FaEdit className="editIcon" />
                     </Link>
                   </div>
@@ -244,29 +242,30 @@ const ViewInvoice = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/invoice/all`,
+        `http://localhost:5000/api/v1/expense/all`,
         data
       );
 
       if (response.data.message === "Filter successful") {
-        setGetAllInvoice(response.data.result);
+        setGetAllExpense(response.data.result);
         setNoMatching(null);
         setLoading(false);
       }
       if (response.data.message === "No matching found") {
         setNoMatching(response.data.message);
+        setLoading(false);
       }
     } catch (error) {
       setLoading(false);
     }
   };
 
-  const handleAllInvoice = () => {
+  const handleAllExpense = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/invoice/all`)
+      fetch(`http://localhost:5000/api/v1/expense`)
         .then((res) => res.json())
         .then((data) => {
-          setGetAllInvoice(data);
+          setGetAllExpense(data.expense);
           setNoMatching(null);
         });
     } catch (error) {
@@ -306,26 +305,28 @@ const ViewInvoice = () => {
           <span>New Expense </span>
         </div>
       </div>
-      <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-        <h3 className="mb-3 text-3xl font-bold">Expense List:</h3>
-        <div className="flex items-center searcList">
-          <div
-            onClick={handleAllInvoice}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
+      <div className="mt-20 overflow-x-auto">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="mb-3 text-sm font-bold lg:text-3xl">Expense List:</h3>
+          <div className="flex items-center searcList">
+            <div
+              onClick={handleAllExpense}
+              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            >
+              All
+            </div>
+            <div className="searchGroup">
+              <input
+                onChange={(e) => setFilterType(e.target.value)}
+                autoComplete="off"
+                type="text"
+                placeholder="Search"
+              />
+            </div>
+            <button onClick={handleFilterType} className="SearchBtn ">
+              Search{" "}
+            </button>
           </div>
-          <div className="searchGroup">
-            <input
-              onChange={(e) => setFilterType(e.target.value)}
-              autoComplete="off"
-              type="text"
-              placeholder={select}
-            />
-          </div>
-          <button onClick={handleFilterType} className="SearchBtn ">
-            Search{" "}
-          </button>
         </div>
       </div>
 
@@ -335,7 +336,7 @@ const ViewInvoice = () => {
         </div>
       ) : (
         <div>
-          {getAllInvoice?.length === 0 || currentItems.length === 0 ? (
+          {getAllExpense?.length === 0 || currentItems.length === 0 ? (
             <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>

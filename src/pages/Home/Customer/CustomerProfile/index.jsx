@@ -19,9 +19,16 @@ const CustomerProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
   const [jobCardData, setJobCardData] = useState([]);
+  console.log(jobCardData);
   const [quotationData, setQuotationData] = useState([]);
+  console.log(quotationData);
   const [invoiceData, setInvoiceData] = useState([]);
+  console.log(invoiceData);
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
+  console.log(moneyReceiptData);
+
+  const [error, setError] = useState("");
+
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   useEffect(() => {
@@ -36,6 +43,8 @@ const CustomerProfile = () => {
     }
   }, [id]);
 
+  console.log(profileData);
+
   useEffect(() => {
     if (id) {
       fetch(`http://localhost:5000/api/v1/jobCard/${id}`, {
@@ -48,7 +57,7 @@ const CustomerProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
+          setError(error.message);
           // Handle errors
         });
     }
@@ -66,8 +75,7 @@ const CustomerProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
-          // Handle errors
+          setError(error.message);
         });
     }
   }, [id]);
@@ -83,8 +91,7 @@ const CustomerProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
-          // Handle errors
+          setError(error.message);
         });
     }
   }, [id]);
@@ -101,7 +108,7 @@ const CustomerProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
+          setError(error.message);
           // Handle errors
         });
     }
@@ -110,19 +117,22 @@ const CustomerProfile = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  if (error) {
+    return <div>Something went wrong</div>;
+  }
 
   return (
     <div>
       <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
         <div className="flex justify-between w-full ">
           <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
-            <div className='flex-wrap ml-5 b'>
+            <div className="flex flex-wrap ml-5 b">
               <div className="md:w-24 md:h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
                 <ImUserTie size="80" className="text-white" />
               </div>
-              <div>
+              <div className="text-sm">
                 <h3 className="text-2xl">Trust Auto Solution </h3>
-                <div className="flex mt-3 space-y-2">
+                <div className=" mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
                     <span>{profileData.customer_contact}</span>

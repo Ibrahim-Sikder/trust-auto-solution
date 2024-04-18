@@ -92,7 +92,7 @@
 }
 .dashboardAccordion {
 	background: #2c3136 !important;
-    width: 265px !important;
+    width: 270px !important;
     color: #fff !important;
     transition: all 500s ease-in-out;
 }
@@ -107,8 +107,8 @@
 	transition:all .5s ease-in-out;
 }
 .accordionTypoGrapy:hover{
-	background:#42A1DA !important;
-	color:#fff;
+	/* background:#42A1DA !important; */
+	color:#111;
 	padding-top:10px;
 	padding-bottom:10px;
 	padding-left: 30px;
@@ -120,9 +120,9 @@
 	font-size: 20px !important;
 }
 .dashboardItems {
-	padding-left: 16px;
-	margin-bottom: 5px;
-	margin-top: 5px;
+	/* padding-left: 16px;
+	margin-bottom: 5px; */
+	/* margin-top: 5px; */
 	transition: all .5s ease-in-out;
 	font-size: 14px;
 }

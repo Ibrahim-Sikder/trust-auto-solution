@@ -2,12 +2,7 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import {
-  FaTrashAlt,
-  FaEdit,
-  FaUserTie,
-} from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Autocomplete } from "@mui/material";
 import {
   carBrands,
@@ -19,23 +14,19 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
-import swal from "sweetalert";
-import Loading from "../../../components/Loading/Loading";
-import { HiOfficeBuilding, HiOutlineSearch } from "react-icons/hi";
+
+import { HiOfficeBuilding } from "react-icons/hi";
 
 const UpdateShowRoom = () => {
+  const [showRoomData, setShowRoomData] = useState({});
+  console.log(showRoomData);
 
-
-  const [filterType, setFilterType] = useState("");
-  const [showRoomData, setShowRoomData] = useState([]);
-  const [noMatching, setNoMatching] = useState(null);
-
-  // const [brand, setBrand] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [getFuelType, setGetFuelType] = useState("");
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
+
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
+  const navigate = useNavigate();
 
   const {
     register,
@@ -44,17 +35,55 @@ const UpdateShowRoom = () => {
     formState: { errors },
   } = useForm();
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    setLoading(true);
+    fetch(`http://localhost:5000/api/v1/showRoom/one/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setShowRoomData(data);
+
+        setLoading(false);
+      });
+  }, [id, reload]);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/showRoom",
-        data
+      const values = {
+        showRoomId: showRoomData.showRoomId,
+        showRoom_name: data.showRoom_name || showRoomData.showRoom_name,
+        username: data.username || showRoomData.username,
+        showRoom_address:
+          data.showRoom_address || showRoomData.showRoom_address,
+        company_name: data.company_name || showRoomData.company_name,
+        company_address: data.company_address || showRoomData.company_address,
+        company_contact: data.company_contact || showRoomData.company_contact,
+        company_email: data.company_email || showRoomData.company_email,
+        driver_name: data.driver_name || showRoomData.driver_name,
+        driver_contact: data.driver_contact || showRoomData.driver_contact,
+        reference_name: data.reference_name || showRoomData.reference_name,
+
+        carReg_no: data.carReg_no || showRoomData.carReg_no,
+        car_registration_no:
+          data.car_registration_no || showRoomData.car_registration_no,
+        chassis_no: data.chassis_no || showRoomData.chassis_no,
+        engine_no: data.engine_no || showRoomData.engine_no,
+        vehicle_brand: data.vehicle_brand || showRoomData.vehicle_brand,
+        vehicle_name: data.vehicle_name || showRoomData.vehicle_name,
+        vehicle_model: data.vehicle_model || showRoomData.vehicle_model,
+        vehicle_category:
+          data.vehicle_category || showRoomData.vehicle_category,
+        color_code: data.color_code || showRoomData.color_code,
+        mileage: data.mileage || showRoomData.mileage,
+        fuel_type: data.fuel_type || showRoomData.fuel_type,
+      };
+
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/showRoom/one/${id}`,
+        values
       );
 
-      if (response.data.message === "Successfully add to show room post") {
+      if (response.data.message === "Successfully update card.") {
         setReload(!reload);
         navigate("/dashboard/show-room-list");
         toast.success("Successfully add to show room post");
@@ -66,247 +95,6 @@ const UpdateShowRoom = () => {
       toast.error(error.message);
       setLoading(false);
     }
-  };
-  useEffect(() => {
-    setLoading(true);
-    fetch(`http://localhost:5000/api/v1/showRoom`)
-      .then((res) => res.json())
-      .then((data) => {
-        setShowRoomData(data);
-        console.log(data);
-        setLoading(false);
-      });
-  }, [reload]);
-
-  const handleIconPreview = async (e) => {
-    navigate(`/dashboard/company-profile?id=${e}`);
-  };
-  // pagination
-
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("showRoom")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-
-  const deletePackage = async (id) => {
-    const willDelete = await swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to delete this card?",
-      icon: "warning",
-      dangerMode: true,
-    });
-
-    if (willDelete) {
-      try {
-        const res = await fetch(
-          `http://localhost:5000/api/v1/showRoom/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Show room card delete successful") {
-          setShowRoomData(showRoomData?.filter((pkg) => pkg._id !== id));
-        }
-        swal("Deleted!", "Card delete successful.", "success");
-      } catch (error) {
-        swal("Error", "An error occurred while deleting the card.", "error");
-      }
-    }
-  };
-
-  useEffect(() => {
-    sessionStorage.setItem("showRoom", currentPage.toString());
-  }, [currentPage]);
-
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("showRoom")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("showRoom", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(showRoomData?.length / limit); i++) {
-    pages.push(i);
-  }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(showRoomData)) {
-    currentItems = showRoomData.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  const renderData = (showRoomData) => {
-    return (
-      <table className="table">
-        <thead className="tableWrap">
-          <tr>
-            <th>SL No</th>
-            <th>Customer Name</th>
-            <th>Order Number </th>
-            <th>Car Number </th>
-            <th>Mobile Number</th>
-            <th>Date</th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {showRoomData?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{index + 1}</td>
-              <td>{card.company_name}</td>
-
-              <td>{card.car_registration_no}</td>
-              <td> {card.company_contact} </td>
-              <td>{card.date}</td>
-              <td>
-                <div
-                  onClick={() => handleIconPreview(card._id)}
-                  className="editIconWrap edit2"
-                >
-                  <FaUserTie className="invoicIcon" />
-                </div>
-              </td>
-
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-customer?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("showRoom", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
-  };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("showRoom", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  console.log(filterType);
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `http://localhost:5000/api/v1/showRoom/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setShowRoomData(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
-
-  const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/showRoom`)
-      .then((res) => res.json())
-      .then((data) => {
-        setShowRoomData(data);
-        setNoMatching(null);
-      });
   };
 
   return (
@@ -327,7 +115,10 @@ const UpdateShowRoom = () => {
           <div className="flex items-center justify-center ">
             <HiOfficeBuilding className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-xl font-bold md:text-2xl"> Update Show Room </h3>
+              <h3 className="text-xl font-bold md:text-2xl">
+                {" "}
+                Update Show Room{" "}
+              </h3>
               <span>Update New Show Room </span>
             </div>
           </div>
@@ -444,8 +235,10 @@ const UpdateShowRoom = () => {
                 </div>
               </div>
 
-              <div className='mt-5 md:mt-0'>
-                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">Vehicle Information </h3>
+              <div className="mt-5 md:mt-0">
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
+                  Vehicle Information{" "}
+                </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -582,12 +375,11 @@ const UpdateShowRoom = () => {
             </div>
 
             <div className="mt-2 ml-3 savebtn">
-              <button>Update Show Room </button>
+              <button disabled={loading}>Update Show Room </button>
             </div>
           </form>
         </div>
       </div>
-   
     </section>
   );
 };

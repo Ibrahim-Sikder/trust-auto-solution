@@ -47,13 +47,11 @@ const UpdateCompany = () => {
     }
   }, [id]);
 
-  console.log(singleCard);
-
   const onSubmit = async (data) => {
     setLoading(true);
 
     const values = {
-      company_name: data.company_name || singleCard.company_name,
+      company_name: data?.company_name || singleCard?.company_name,
       username: data.username || singleCard.username,
       company_address: data.company_address || singleCard.company_address,
 
@@ -123,7 +121,6 @@ const UpdateCompany = () => {
           </div>
         </div>
         
-
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-center">
@@ -137,6 +134,16 @@ const UpdateCompany = () => {
                     on
                     label="Company Name (T)"
                     {...register("company_name")}
+                    value={singleCard?.company_name}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        company_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.company_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -145,6 +152,16 @@ const UpdateCompany = () => {
                     onC
                     label="Vehicle User Name (T)"
                     {...register("username")}
+                    value={singleCard?.username}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        username: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.username,
+                    }}
                   />
                 </div>
                 <div>
@@ -153,6 +170,16 @@ const UpdateCompany = () => {
                     on
                     label="Company Address (T)"
                     {...register("company_address")}
+                    value={singleCard?.company_address}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        company_address: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.company_address,
+                    }}
                   />
                 </div>
                 <div>
@@ -165,6 +192,17 @@ const UpdateCompany = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
+                    value={singleCard?.company_contact}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        company_contact: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.company_contact,
+                    }}
+
                   />
                   {errors.company_contact && (
                     <span className="text-sm text-red-400">
@@ -177,6 +215,16 @@ const UpdateCompany = () => {
                     className="productField"
                     label="Company Email Address (N)"
                     {...register("company_email")}
+                    value={singleCard?.company_email}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        company_email: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.company_email,
+                    }}
                   />
                 </div>
                 <div>
@@ -185,6 +233,16 @@ const UpdateCompany = () => {
                     o
                     label="Driver Name (T)"
                     {...register("driver_name")}
+                    value={singleCard?.driver_name}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        driver_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.driver_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -197,6 +255,18 @@ const UpdateCompany = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
+
+                    value={singleCard?.driver_contact}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        driver_contact: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.driver_contact,
+                    }}
+
                   />
                   {errors.driver_contact && (
                     <span className="text-sm text-red-400">
@@ -209,6 +279,16 @@ const UpdateCompany = () => {
                     className="productField"
                     label="Reference Name (T) "
                     {...register("reference_name")}
+                    value={singleCard?.reference_name}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        reference_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.reference_name,
+                    }}
                   />
                 </div>
               </div>
@@ -228,6 +308,7 @@ const UpdateCompany = () => {
                         {...params}
                         label="Car Reg No"
                         {...register("carReg_no")}
+                        
                       />
                     )}
                   />
@@ -235,6 +316,16 @@ const UpdateCompany = () => {
                     className="carRegNumbers"
                     label="Car R (T&N)"
                     {...register("car_registration_no")}
+                    value={singleCard?.car_registration_no}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        car_registration_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.car_registration_no,
+                    }}
                   />
                 </div>
 
@@ -243,6 +334,16 @@ const UpdateCompany = () => {
                     className="productField"
                     label="Chassis No (T&N)"
                     {...register("chassis_no")}
+                    value={singleCard?.chassis_no}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        chassis_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.chassis_no,
+                    }}
                   />
                 </div>
                 <div>
@@ -250,6 +351,16 @@ const UpdateCompany = () => {
                     className="productField"
                     label="ENGINE NO & CC (T&N) "
                     {...register("engine_no")}
+                    value={singleCard?.engine_no}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        engine_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.engine_no,
+                    }}
                   />
                 </div>
 
@@ -265,6 +376,7 @@ const UpdateCompany = () => {
                         {...params}
                         label="Vehicle Brand"
                         {...register("vehicle_brand")}
+                       
                       />
                     )}
                   />
@@ -274,6 +386,16 @@ const UpdateCompany = () => {
                     className="productField"
                     label="Vehicle Name "
                     {...register("vehicle_name")}
+                    value={singleCard?.vehicle_name}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        vehicle_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.vehicle_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -286,6 +408,16 @@ const UpdateCompany = () => {
                         message: "Please enter a valid model number.",
                       },
                     })}
+                    value={singleCard?.vehicle_model}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        vehicle_model: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.vehicle_model,
+                    }}
                   />
                   {errors.vehicle_model && (
                     <span className="text-sm text-red-400">
@@ -306,6 +438,16 @@ const UpdateCompany = () => {
                         {...register("vehicle_category")}
                       />
                     )}
+                    value={singleCard?.vehicle_category}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        vehicle_category: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.vehicle_category,
+                    }}
                   />
                 </div>
                 <div>
@@ -313,6 +455,16 @@ const UpdateCompany = () => {
                     className="productField"
                     label="Color & Code (T&N) "
                     {...register("color_code")}
+                    value={singleCard?.color_code}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        color_code: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.color_code,
+                    }}
                   />
                 </div>
                 <div>
@@ -325,6 +477,16 @@ const UpdateCompany = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
+                    value={singleCard?.mileage}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        mileage: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.mileage,
+                    }}
                   />
                   {errors.mileage && (
                     <span className="text-sm text-red-400">
@@ -345,6 +507,16 @@ const UpdateCompany = () => {
                         {...register("fuel_type")}
                       />
                     )}
+                    value={singleCard?.fuel_type}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        fuel_type: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard.fuel_type,
+                    }}
                   />
                 </div>
               </div>

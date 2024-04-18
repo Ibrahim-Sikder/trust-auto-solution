@@ -1,46 +1,37 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import {
-  FaHouseDamage,
-  FaGripHorizontal,
-  FaChartLine,
-  FaBookmark,
-  FaHandHoldingUsd,
-  FaUserAlt,
-  FaScribd,
-  FaSearch,
-  FaUsers,
-  FaStripeS,
-  FaWrench,
-  FaFileInvoiceDollar,
-  FaFileInvoice,
   FaCarSide,
+  FaFileInvoice,
+  FaFileInvoiceDollar,
   FaPercent,
+  FaRegUser,
+  FaUsers,
+  FaWrench,
 } from "react-icons/fa";
+import { FaCarOn } from "react-icons/fa6";
 import {
-  ComposedChart,
-  Line,
-  Area,
+  HiOutlineBriefcase,
+  HiOutlineCheckCircle,
+  HiOutlineUserGroup,
+  HiOutlineUsers,
+} from "react-icons/hi";
+import {
   Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Pie,
+  PieChart,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Scatter,
-  Pie,
-  Sector,
-  Cell,
-  PieChart,
-  BarChart,
-  ResponsiveContainer,
 } from "recharts";
-import { FaCarOn } from "react-icons/fa6";
 import "./Home.css";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { HiOutlineBriefcase } from "react-icons/hi";
-import { TextField } from "@mui/material";
+import ChartComponent from "../../components/Chart/ChartComponent";
+import MonthlyBarChart from "../../components/Chart/MonthlyBarChart";
+import YearlyIncomeChart from "../../components/Chart/YearlyIncomeChart";
+import { CircularProgressbar } from "react-circular-progressbar";
 const Home = () => {
   const [expanded, setExpanded] = React.useState(false);
   const [salesData, setSalesData] = useState([]);
@@ -143,47 +134,45 @@ const Home = () => {
     );
   };
 
+  const userData = [
+    {
+      id: 1,
+      name: " Employees ",
+      user: 30,
+    },
+    {
+      id: 2,
+      name: " Customers ",
+      user: 15,
+    },
+    {
+      id: 3,
+      name: " Suppliers ",
+      user: 10,
+    },
+
+    {
+      id: 5,
+      name: " Job Card ",
+      user: 10,
+    },
+    {
+      id: 6,
+      name: " Quotation ",
+      user: 10,
+    },
+    {
+      id: 6,
+      name: " Invoice ",
+      user: 10,
+    },
+  ];
+
   return (
-    <div className="mt-10">
+    <div className="mt-10 pb-20">
       <div className="dashBoardRight  ">
-        <div className="md:flex items-center justify-between md:p-[0px] lg:p-[18px]">
-          <div className="flex items-center justify-center ">
-            {/* <input autoComplete="off" type="text" placeholder='Search' /> */}
-            <TextField
-              className="searchInptu"
-              id="outlined-basic"
-              label="Search..."
-              variant="outlined"
-            />
-            <button className="searchBtn">Search </button>
-          </div>
-          <div className="mt-3 md:mt-0 flex items-center">
-            <Link to="/dashboard/addjob">
-              <button className="btn btn-outline border-0 border-b-4  ">
-                Job Card{" "}
-              </button>
-            </Link>
-            <Link to="/dashboard/qutation">
-              {" "}
-              <button className="mx-2 btn btn-outline border-0 border-b-4">
-                Qutation
-              </button>
-            </Link>
-            <Link to="/dashboard/invoice">
-              {" "}
-              <button className="btn btn-outline border-0 border-b-4 ">
-                Invoice
-              </button>
-            </Link>
-          </div>
-        </div>
-        <div className="nameWrap px-3 py-3">
-          <div className="projectName">
-            <h2 className="text-[#654FC3] font-bold text-2xl">
-              Admin Dashboard
-            </h2>
-          </div>
-        </div>
+        <div className="md:flex items-center justify-between md:p-[0px] lg:p-[18px]"></div>
+
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
           <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#42A1DA] text-white ">
             <div className="mr-5">
@@ -262,67 +251,243 @@ const Home = () => {
             </div>
           </div>
         </div>
-
-        <div className="flex justify-between px-5 mt-24">
-          <div className="">
-            <BarChart
-              width={600}
-              height={300}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
-
-            <h2 className="text-xl centerText font-bold text-[#42A1DA]">
-              Yearly Income Chart
-            </h2>
-          </div>
-          <div className="pieChart">
-            <PieChart width={500} height={380}>
-              <Pie
-                data={data01}
-                dataKey="value"
-                cx={200}
-                cy={200}
-                outerRadius={100}
-                fill="#8884d8"
-              />
-              <Pie
-                data={data02}
-                dataKey="value"
-                cx={200}
-                cy={200}
-                innerRadius={100}
-                outerRadius={120}
-                fill="#82ca9d"
-                label
-              />
-            </PieChart>
-            <h2 className="text-xl centerText center font-bold text-[#42A1DA]">
-              Monthly Income Chart
-            </h2>
-          </div>
-        </div>
       </div>
-      {/*  */}
-      <div>
-        {salesData.map((data) => (
-          <>
-            <p>{data.length}</p>
-          </>
-        ))}
+
+      <div className="grid grid-cols-2 gap-3 my-14">
+        <div
+          className="flex flex-wrap gap-4
+        5"
+        >
+          {userData.map((data, i) => (
+            <div key={data.id} className="dashboardCard">
+              <div className="dashboardIconWrap">
+                {i == 0 ? (
+                  <HiOutlineUserGroup className="text-[#fff]" size={50} />
+                ) : i == 1 ? (
+                  <HiOutlineUsers className="text-[#fff]" size={50} />
+                ) : i == 2 ? (
+                  <HiOutlineUsers className="text-[#fff]" size={50} />
+                ) : i == 3 ? (
+                  <HiOutlineBriefcase className="text-[#fff]" size={50} />
+                ) : i == 4 ? (
+                  <FaCarSide className="text-[#fff]" size={50} />
+                ) : i == 5 ? (
+                  <FaFileInvoice className="text-[#fff]" size={50} />
+                ) : null}
+              </div>
+              <div className="mt-2">
+                <span>{data.user}</span>
+                <h2 className="mt-2">{data.name}</h2>
+              </div>
+            </div>
+          ))}
+        </div>
+        <ChartComponent />
+      </div>
+      
+     <div className="flex  justify-between mt-10">
+  
+     <div className="earningCardWrap ">
+     <p className="mb-3 font-semibold">Statistic</p>
+     <div className="grid grid-cols-2 justify-between gap-5">
+     <div className="flex items-center w-40 justify-between earningCard">
+        <div>
+        <div style={{ width: 60, height: 60 }}>
+          <CircularProgressbar
+            value={90}
+            text={`${90}%`}
+            styles={{
+              // Customize the root element (outer circle)
+              path: {
+                stroke: `#60BE6B`, // Set the color of the progress bar
+              },
+              // Customize the text
+              text: {
+                fill: "#3e98c7", // Set the color of the text
+              },
+              // Customize the trail (background)
+              trail: {
+                stroke: "#f4f4f4", // Set the color of the background
+              },
+            }}
+          />
+         
+        </div>
+        <b className="text-sm">Today Leave</b>
+        </div>
+        <b> 5 / 45</b>
+      </div>
+      <div className="flex items-center w-40 justify-between earningCard">
+        <div>
+        <div style={{ width: 60, height: 60 }}>
+          <CircularProgressbar
+            value={90}
+            text={`${90}%`}
+            styles={{
+              // Customize the root element (outer circle)
+              path: {
+                stroke: `#60BE6B`, // Set the color of the progress bar
+              },
+              // Customize the text
+              text: {
+                fill: "#3e98c7", // Set the color of the text
+              },
+              // Customize the trail (background)
+              trail: {
+                stroke: "#f4f4f4", // Set the color of the background
+              },
+            }}
+          />
+         
+        </div>
+        <b className="text-sm">Pending Invoice </b>
+        </div>
+        <b> 5 / 45</b>
+      </div>
+      <div className="flex items-center w-40 justify-between earningCard">
+        <div>
+        <div style={{ width: 60, height: 60 }}>
+          <CircularProgressbar
+            value={90}
+            text={`${90}%`}
+            styles={{
+              // Customize the root element (outer circle)
+              path: {
+                stroke: `#60BE6B`, // Set the color of the progress bar
+              },
+              // Customize the text
+              text: {
+                fill: "#3e98c7", // Set the color of the text
+              },
+              // Customize the trail (background)
+              trail: {
+                stroke: "#f4f4f4", // Set the color of the background
+              },
+            }}
+          />
+         
+        </div>
+        <b className="text-sm">Pending Quotation </b>
+        </div>
+        <b> 5 / 45</b>
+      </div>
+      <div className="flex items-center w-40 justify-between earningCard">
+        <div>
+        <div style={{ width: 60, height: 60 }}>
+          <CircularProgressbar
+            value={90}
+            text={`${90}%`}
+            styles={{
+              // Customize the root element (outer circle)
+              path: {
+                stroke: `#60BE6B`, // Set the color of the progress bar
+              },
+              // Customize the text
+              text: {
+                fill: "#3e98c7", // Set the color of the text
+              },
+              // Customize the trail (background)
+              trail: {
+                stroke: "#f4f4f4", // Set the color of the background
+              },
+            }}
+          />
+         
+        </div>
+        <b className="text-sm ">Complete Projects </b>
+        </div>
+        <b> 5 / 45</b>
+      </div>
+     </div>
+     
+      </div>
+      <div className="earningCardWrap mt-5">
+        <p className="mb-3 font-semibold ">Task Statistic </p>
+        <div className="flex items-center justify-between">
+        <div className="task">
+          <p>Total Tasks </p>
+          <b>350</b>
+        </div>
+        <div className="task">
+          <p>Overdue Tasks </p>
+          <b>350</b>
+        </div>
+        </div>
+      
+     <div className="space-y-5 mt-5">
+     <div className="flex items-center justify-between ">
+            <div className="flex items-center">
+            <HiOutlineCheckCircle className="text-[#FFBC34] mr-1"/>
+            <span className="font-semibold">Complete Task </span>
+            </div>
+       <b>455</b>
+       </div>
+     <div className="flex items-center justify-between ">
+            <div className="flex items-center">
+            <HiOutlineCheckCircle className="text-[#FFBC34] mr-1"/>
+            <span className="font-semibold">Inprogress Task </span>
+            </div>
+       <b>25</b>
+       </div>
+       <div className="flex items-center justify-between ">
+            <div className="flex items-center">
+            <HiOutlineCheckCircle className="text-[#FFBC34] mr-1"/>
+            <span className="font-semibold">Pending Task </span>
+            </div>
+       <b>25</b>
+       </div>
+       <div className="flex items-center justify-between ">
+            <div className="flex items-center">
+            <HiOutlineCheckCircle className="text-[#FFBC34] mr-1"/>
+            <span className="font-semibold">Review Task </span>
+            </div>
+       <b>25</b>
+       </div>
+     </div>
+      </div>
+      <div className="earningCardWrap space-y-2">
+       <div className="flex items-center">
+       <h3 className="font-semibold mr-3">Today Absent </h3>
+        <b className="bg-[#FDE2E7] text-red-500  p-2  rounded-md  ">6</b>
+       </div>
+       <div className="absentCard">
+        <div className="flex items-center">
+       <div className="userImgWrap">
+       <FaRegUser size={30}/>
+       </div>
+        <span>Md Raihan</span>
+        </div>
+        <div className="my-3 flex items-center justify-between">
+         <div >
+         <small className="block">4 Mar 2022</small>
+          <small>Leave Date </small>
+         </div>
+         <b className="bg-[#E2F6ED] text-[#55CE63] text-sm  py-1 px-2  rounded-md  ">Approved</b> 
+        </div>
+       </div>
+       <div className="absentCard">
+        <div className="flex items-center">
+        <div className="userImgWrap">
+       <FaRegUser size={30}/>
+       </div>
+        <span>Md Karim</span>
+        </div>
+        <div className="my-3 flex items-center justify-between">
+         <div >
+         <small className="block">4 Mar 2022</small>
+          <small>Leave Date </small>
+         </div>
+         <b className="bg-[#FDE2E7] text-red-500  py-1 px-2  rounded-md text-sm ">Pending</b> 
+        </div>
+       </div>
+      </div>
+     </div>
+
+
+      
+      <div className="flex mt-16">
+        <MonthlyBarChart />
+        <YearlyIncomeChart />
       </div>
     </div>
   );

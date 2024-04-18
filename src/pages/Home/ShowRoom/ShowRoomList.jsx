@@ -79,7 +79,7 @@ const ShowRoomList = () => {
   }, [reload]);
 
   const handleIconPreview = async (e) => {
-    navigate(`/dashboard/company-profile?id=${e}`);
+    navigate(`/dashboard/show-room-profile?id=${e}`);
   };
   // pagination
 
@@ -200,7 +200,7 @@ const ShowRoomList = () => {
               <td>{card.date}</td>
               <td>
                 <div
-                  onClick={() => handleIconPreview(card._id)}
+                  onClick={() => handleIconPreview(card.showRoomId)}
                   className="flex items-center justify-center "
                 >
                   <Link to="/dashboard/employee-profile">
@@ -211,7 +211,7 @@ const ShowRoomList = () => {
 
               <td>
                 <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-customer?id=${card._id}`}>
+                  <Link to={`/dashboard/update-show-room?id=${card._id}`}>
                     <FaEdit className="editIcon" />
                   </Link>
                 </div>

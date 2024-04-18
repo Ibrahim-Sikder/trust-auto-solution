@@ -98,7 +98,7 @@ const LeaveModal = ({ onClose }) => {
                 id=""
                 cols="30"
                 rows="10"
-                className="border-2-[#ddd] border w-full h-[70px] rounded-sm resize-none"
+                className="border-2-[#ddd] border w-full h-[70px] rounded-sm resize-none p-2"
               ></textarea>
             </div>
             <div className="mt-3 text-center">

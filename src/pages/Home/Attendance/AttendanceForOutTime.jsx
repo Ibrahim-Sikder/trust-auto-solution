@@ -5,8 +5,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 // AttendanceTimePicker component
-export default function AttendanceTimePicker({
-  handleAttendanceInTime,
+export default function AttendanceOutTimePicker({
+  handleAttendanceOutTime,
   index,
 }) {
   return (
@@ -21,7 +21,7 @@ export default function AttendanceTimePicker({
       >
         <DemoItem>
           <TimePicker
-            onChange={(time) => handleAttendanceInTime(index, time)}
+            onChange={(time) => handleAttendanceOutTime(index, time)}
             renderInput={(props) => <input {...props} />}
           />
         </DemoItem>

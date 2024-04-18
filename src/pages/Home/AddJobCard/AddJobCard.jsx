@@ -34,7 +34,7 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-console.log(showCustomerData)
+ 
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
@@ -1138,6 +1138,7 @@ console.log(showCustomerData)
           <div className="flex flex-wrap items-center justify-between mt-5">
             <div>
               <TextField
+        
                 className="ownerInput"
                 {...register("technician_name", { required: true })}
                 label="Technician Name (T) "
@@ -1151,7 +1152,7 @@ console.log(showCustomerData)
             </div>
             <div>
               <TextField
-                // disabled
+                 disabled
                 className="ownerInput"
                 o
                 {...register("technician_signature", { required: true })}
@@ -1182,7 +1183,7 @@ console.log(showCustomerData)
             </div>
             <div>
               <TextField
-                // disabled
+                 disabled
                 className="ownerInput"
                 {...register("vehicle_owner", { required: true })}
                 label="Vehicle Owner (T) "
