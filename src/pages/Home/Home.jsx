@@ -176,7 +176,6 @@ const Home = () => {
           <div className=" completedServiceCards flex justify-between items-center rounded-lg bg-[#3a0ca3] text-white">
             <div className="mr-5">
               <h3 className="text-xl">About Trust Auto Solution</h3>
-              <span className="text-2xl font-bold">99 </span>
             </div>
             <div className="valueRight">
               <FaCarOn size={70} />
@@ -196,6 +195,22 @@ const Home = () => {
         </h3>
       </div>
       <div className="profiteCardWrap flex items-center justify-between mt-[100px]">
+      <div className="profitCard ">
+          <div className="flex items-center justify-between">
+            <b>Expense</b>
+            <small className="text-[#55CE63]">+35%</small>
+          </div>
+
+          <div className="space-y-2 mt-3">
+            <b className="block ">৳465785</b>
+            <Stack spacing={2} sx={{ flexGrow: 1, color: " red" }}>
+              <BorderLinearProgress variant="determinate" value={50} />
+            </Stack>
+            <small className="block">
+              Previous month <b className="text-[#]">৳ 305785</b>
+            </small>
+          </div>
+        </div>
         <div className="profitCard ">
           <div className="flex items-center justify-between">
             <b>Earnings</b>
@@ -212,22 +227,7 @@ const Home = () => {
             </small>
           </div>
         </div>
-        <div className="profitCard ">
-          <div className="flex items-center justify-between">
-            <b>Expense</b>
-            <small className="text-[#55CE63]">+35%</small>
-          </div>
-
-          <div className="space-y-2 mt-3">
-            <b className="block ">৳465785</b>
-            <Stack spacing={2} sx={{ flexGrow: 1, color: " red" }}>
-              <BorderLinearProgress variant="determinate" value={50} />
-            </Stack>
-            <small className="block">
-              Previous month <b className="text-[#]">৳ 305785</b>
-            </small>
-          </div>
-        </div>
+       
         <div className="profitCard ">
           <div className="flex items-center justify-between">
             <b>Profit</b>
@@ -246,7 +246,7 @@ const Home = () => {
         </div>
         <div className="profitCard ">
           <div className="flex items-center justify-between">
-            <b>Earnings</b>
+            <b>Donations</b>
             <small className="text-[#55CE63]">+35%</small>
           </div>
 

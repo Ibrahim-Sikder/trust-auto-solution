@@ -27,6 +27,12 @@
 .completedServiceCards {
   width: 100%;
   padding: 50px 20px;
+  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
+}
+.completedServiceCards:hover{
+  background:#42A1DA;
+  color:black;
+  cursor: pointer;
 }
 .dashboardCard{
 	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;

@@ -160,6 +160,53 @@
 .dashboardAccordion:hover .accordionExpandIcon{
 	color:black !important;
 }
+.dashboardSearchBar{
+	width:250px;
+	background:#42a0da59;
+	height:35px;
+	display: flex;
+	align-items: center;
+	border-radius: 20px;
+	overflow: hidden;
+	justify-content: space-between;
+	padding-right: 10px;
+	border:1px solid #ddd;
+}
+.dashboardSearchBar input{
+	height: 100%;
+	background-color: transparent;
+	padding-left:10px;
+}
+.dashboardSearchBar input::placeholder{
+	color:#fff;
+}
+.notificationIcon{
+	font-size:30px !important;
+}
+.adminProfile{
+	position: absolute;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	padding: 10px;
+	border-radius: 3px;
+	top:30px;
+	left:45px;
+	width:100px;
+	background:#fff;
+	color:black;
+	opacity: 0;
+	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
+	transform: scale(0);
+	transform-origin: top;
+
+}
+.adminProfileWrap{
+	position: relative;
+	cursor: pointer;
+}
+.adminProfileWrap:hover .adminProfile{
+	opacity: 1;
+	transform: scale(1);
+}
 
 @media only screen and (max-width: 1024px) {
 	.activeToggle {
