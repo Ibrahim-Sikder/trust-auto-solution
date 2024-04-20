@@ -321,7 +321,7 @@ const Home = () => {
         </>
       </div>
       <h3 className="text-3xl font-bold flex justify-end mr-20 lg:mr-72">
-        Sales Overview
+        Project Overview
       </h3>
 
       <div className="recentCardWrap xl:flex justify-between mt-[100px]">
