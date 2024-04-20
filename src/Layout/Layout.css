@@ -49,13 +49,13 @@
 	cursor: pointer;
 }
 .navActive {
-    left: 129px;
+	left: 32px;
     z-index: 999999 !important;
 }
 
 .activeToggle {
     position: fixed;
-	left: 129px;
+	left: 32px;
     transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeRightSideBarWrap {

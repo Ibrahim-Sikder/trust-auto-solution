@@ -37,7 +37,7 @@ body {
 .drawer-content {
 	position: absolute !important;
 	right: 0px !important;
-	width: 80%;
+	width: 85%;
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeDrawer {

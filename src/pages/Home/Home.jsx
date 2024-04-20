@@ -470,7 +470,7 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center">
-                    <HiDotsVertical size={20} />
+                  <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
@@ -497,7 +497,7 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center">
-                    <HiDotsVertical size={20} />
+                  <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
@@ -524,7 +524,7 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center">
-                    <HiDotsVertical size={20} />
+                  <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
@@ -551,7 +551,7 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center">
-                    <HiDotsVertical size={20} />
+                  <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
