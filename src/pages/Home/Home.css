@@ -39,8 +39,14 @@
 	text-align: center;
 	border-radius:3px;
 	height: 200px;;
-
+  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
 }
+.dashboardCard:hover{
+  background:#42A1DA;
+  color:#fff;
+  cursor: pointer;
+}
+
 .dashboardIconWrap{
 	display: flex;
 	justify-content: center;
@@ -50,7 +56,22 @@
 	width:70px;
 	height:70px;
 	border-radius:100%;
+  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
 
+}
+.dashboardIcon{
+  color:#fff;
+  scale:1;
+  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
+  overflow: hidden;
+}
+.dashboardCard:hover .dashboardIconWrap{
+  background:#fff;
+color:#42A1DA
+}
+.dashboardCard:hover .dashboardIcon{
+color:#42A1DA;
+scale:1.2
 }
 .earningCardWrap{
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
@@ -84,6 +105,15 @@
   align-items: center;
   margin-right: 5px;
 
+}
+.profitCard{
+  width:430px;
+  border: 1px solid #ddd;
+  padding:10px;
+  border-radius: 3px;
+}
+.monthlyTitle{
+  margin-right:250px
 }
 @media only screen and (max-width: 1400px) {
   .completedServiceCards {

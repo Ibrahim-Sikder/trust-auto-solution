@@ -33,7 +33,7 @@ export default function YearlyIncomeChart() {
   return (
     <Box sx={{ width: '100%' }}>
       <PieChart
-        height={300}
+        height={400}
         series={[
           { data: data1, outerRadius: radius },
           {
@@ -45,7 +45,7 @@ export default function YearlyIncomeChart() {
         skipAnimation={skipAnimation}
       />
      
-      <h3 className="text-3xl font-semibold">Yearly Income</h3>
+      
       
     </Box>
   );

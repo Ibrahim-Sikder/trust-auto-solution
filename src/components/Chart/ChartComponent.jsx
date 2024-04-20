@@ -1,9 +1,8 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 
-export default function GridDemo() {
+export default function ChartComponent() {
   return (
     <>
-     
       <LineChart
         xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
         series={[
