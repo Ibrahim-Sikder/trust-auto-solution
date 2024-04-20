@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import {
   FaCarAlt,
   FaProjectDiagram,
@@ -125,7 +125,8 @@ const DashboardLayout = () => {
                   <HiOutlineChevronDown size={20} />
                 </div> 
                 <div className="adminProfile space-y-2">
-              <p>My Profile</p>
+              
+              <Link to='/dashboard/profile'><p>My Profile</p></Link>
               <p>Settings</p>
               <p>Logout</p>
               </div>
@@ -158,10 +159,11 @@ const DashboardLayout = () => {
               </NavLink>
             </div> */}
 
-            <div className=" flex p-4 items-center">
+            <div className=" ">
+             
+              <NavLink to="/dashboard" className="z-10  flex p-4 items-center">
               <FaCarSide size={25} />
-              <NavLink to="/" className="z-10 ml-2">
-                <h3 className="text-xl font-semibold ">Dashboard</h3>
+                <h3 className="text-xl font-semibold ml-2">Dashboard</h3>
               </NavLink>
             </div>
 
