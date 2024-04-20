@@ -84,6 +84,15 @@ const DashboardLayout = () => {
       <div className="static w-full h-16">
         <div className="w-full h-16  bg-[#42A1DA] fixed z-10 ">
           <div className="flex items-center justify-between pr-8 pl-44 mt-3">
+          <div
+            className={`${toggle ? `activeToggle` : `navActive`}`}
+            ref={navRef}
+            onClick={toggleSideBar}
+          >
+            <span className="bar" />
+            <span className="bar" />
+            <span className="bar" />
+          </div>
             <h3 className="text-2xl font-semibold text-white ">
               Trust Auto Solution
             </h3>
@@ -712,15 +721,7 @@ const DashboardLayout = () => {
               </NavLink>
             </div>
           </div>
-          <div
-            className={`${toggle ? `activeToggle` : `navActive`}`}
-            ref={navRef}
-            onClick={toggleSideBar}
-          >
-            <span className="bar" />
-            <span className="bar" />
-            <span className="bar" />
-          </div>
+          {/* bar here  */}
           <div
             className={`${
               toggle ? `rightSideBarWrap` : `activeRightSideBarWrap`

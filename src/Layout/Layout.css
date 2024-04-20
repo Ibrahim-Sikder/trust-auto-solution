@@ -15,8 +15,12 @@
 	-o-transition: all .3s ease-in-out;
 	background: white !important;
 }
+.bar:nth-child(2){
+	width:16px !important
+}
 .activeToggle .bar:nth-child(2) {
 	opacity: 0;
+	
 }
 .activeToggle .bar:nth-child(1) {
 	transform: translateY(8px) rotate(45deg);
@@ -35,7 +39,7 @@
 .navActive,
 .activeToggle {
 	position: fixed;
-	background: #2c3136;
+
 	left: 3px;
 	padding: 5px;
 	border-top-right-radius: 5px;
@@ -45,13 +49,13 @@
 	cursor: pointer;
 }
 .navActive {
-	left: 24px;
-	z-index: 999999 !important;
+    left: 129px;
+    z-index: 999999 !important;
 }
 
 .activeToggle {
     position: fixed;
-    left: 270px;
+	left: 129px;
     transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeRightSideBarWrap {
