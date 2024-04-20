@@ -1,37 +1,45 @@
 /* eslint-disable no-unused-vars */
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import { PieChart } from '@mui/x-charts/PieChart';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const data1 = [
-  { label: 'Group A', value: 400 },
-  { label: 'Group B', value: 300 },
-  { label: 'Group C', value: 300 },
-  { label: 'Group D', value: 200 },
+  { label: "January", value: 400 },
+  { label: "February", value: 300 },
+  { label: "March", value: 300 },
+  { label: "April", value: 200 },
+  { label: "May", value: 200 },
+  { label: "June", value: 200 },
+  { label: "July", value: 200 },
+  { label: "August", value: 300 },
+  { label: "September", value: 300 },
+  { label: "October", value: 200 },
+  { label: "November", value: 200 },
+  { label: "December", value: 200 },
 ];
 
 const data2 = [
-  { label: '1', value: 100 },
-  { label: '2', value: 300 },
-  { label: '3', value: 100 },
-  { label: '4', value: 80 },
-  { label: '5', value: 40 },
-  { label: '6', value: 30 },
-  { label: '7', value: 50 },
-  { label: '8', value: 100 },
-  { label: '9', value: 200 },
-  { label: '10', value: 150 },
-  { label: '11', value: 50 },
+  { label: "20%", value: 200 },
+  { label: "30%", value: 200 },
+  { label: "50%", value: 100 },
+  { label: "60%", value: 100 },
+  { label: "100%", value: 100 },
+  { label: "10%", value: 100 },
+  { label: "90%", value: 100 },
+  { label: "80%", value: 200 },
+  { label: "60%", value: 200 },
+  { label: "88%", value: 150 },
+  { label: "94%", value: 250 },
+  { label: "90%", value: 200 },
 ];
 
 export default function YearlyIncomeChart() {
   const [radius, setRadius] = React.useState(50);
-  const [itemNb, setItemNb] = React.useState(5);
+  const [itemNb, setItemNb] = React.useState(12);
   const [skipAnimation, setSkipAnimation] = React.useState(false);
 
-
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "100%" }}>
       <PieChart
         height={400}
         series={[
@@ -39,14 +47,11 @@ export default function YearlyIncomeChart() {
           {
             data: data2.slice(0, itemNb),
             innerRadius: radius,
-            arcLabel: (params) => params.label ?? '',
+            arcLabel: (params) => params.label ?? "",
           },
         ]}
         skipAnimation={skipAnimation}
       />
-     
-      
-      
     </Box>
   );
 }

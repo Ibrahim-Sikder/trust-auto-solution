@@ -115,6 +115,21 @@ scale:1.2
 .monthlyTitle{
   margin-right:250px
 }
+.recentCard{
+  width:870px;
+  border:1px solid #ddd;
+  padding-top:10px;
+  border-radius: 5px;
+}
+.recentCard th{
+  border:none
+}
+.recentCard th , .recentCard td{
+ padding:10px;
+ text-align: left;
+}
+
+
 @media only screen and (max-width: 1400px) {
   .completedServiceCards {
     width: 290px;
