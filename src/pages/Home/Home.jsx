@@ -79,18 +79,18 @@ const Home = () => {
 
     {
       id: 5,
-      name: " Job Card ",
-      user: 10,
+      name: "Projects",
+      user: 350,
     },
     {
       id: 6,
-      name: " Quotation ",
-      user: 10,
+      name: "Clients ",
+      user: 200,
     },
     {
       id: 6,
-      name: " Invoice ",
-      user: 10,
+      name: " Tasks ",
+      user: 500,
     },
   ];
 
@@ -192,7 +192,7 @@ const Home = () => {
           Yearly Income Chart
         </h3>
       </div>
-      <div className="grid grid-cols-2 gap-3 my-14 mt-[100px]">
+      <div className="grid grid-cols-2 gap-3  mt-[100px]">
         <div
           className="flex flex-wrap gap-4
         5"
@@ -221,8 +221,14 @@ const Home = () => {
             </div>
           ))}
         </div>
-        <ExpanseIncomeChart />
+
+       <>
+    
+       <ExpanseIncomeChart />
+       
+       </>
       </div>
+      <h3 className="text-3xl font-bold flex justify-end mr-72">Salse Overview</h3>
       <div className="profiteCardWrap flex items-center justify-between mt-[100px]">
         <div className="profitCard ">
           <div className="flex items-center justify-between">
