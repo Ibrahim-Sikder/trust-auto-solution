@@ -13,7 +13,6 @@ import {
   FaHeadset,
   FaPlus,
   FaThLarge,
-  FaHome,
   FaAngleDoubleUp,
   FaRegListAlt,
   FaHospitalUser,
@@ -83,7 +82,7 @@ const DashboardLayout = () => {
     <main>
       <div className="static w-full h-16">
         <div className="w-full h-16  bg-[#42A1DA] fixed z-10 ">
-          <div className="flex items-center justify-between pr-8 pl-44 mt-3">
+          <div className="flex items-center justify-between pr-8 pl-10 lg:pl-44 mt-2 lg:mt-3">
           <div
             className={`${toggle ? `activeToggle` : `navActive`}`}
             ref={navRef}
@@ -93,7 +92,7 @@ const DashboardLayout = () => {
             <span className="bar" />
             <span className="bar" />
           </div>
-            <h3 className="text-2xl font-semibold text-white ">
+            <h3 className="text-xl lg:text-2xl font-semibold text-white ">
               Trust Auto Solution
             </h3>
             <div className="flex items-center space-x-5 ">

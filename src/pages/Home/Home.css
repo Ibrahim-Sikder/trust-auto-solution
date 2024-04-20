@@ -27,125 +27,154 @@
 .completedServiceCards {
   width: 100%;
   padding: 50px 20px;
-  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
+  transition: all 0.5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
 }
-.completedServiceCards:hover{
-  background:#42A1DA;
-  color:black;
+.completedServiceCards:hover {
+  background: #42a1da;
+  color: black;
   cursor: pointer;
 }
-.dashboardCard{
-	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-	padding: 20px;
-	width: 230px;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	border-radius:3px;
-	height: 200px;;
-  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
+.dashboardCard {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 20px;
+  width: 230px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 3px;
+  height: 200px;
+  transition: all 0.5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
 }
-.dashboardCard:hover{
-  background:#42A1DA;
-  color:#fff;
+.dashboardCard:hover {
+  background: #42a1da;
+  color: #fff;
   cursor: pointer;
 }
 
-.dashboardIconWrap{
-	display: flex;
-	justify-content: center;
-	padding:4px;
-	background:#45bed47e;
-	align-items: center;
-	width:70px;
-	height:70px;
-	border-radius:100%;
-  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
-
+.dashboardIconWrap {
+  display: flex;
+  justify-content: center;
+  padding: 4px;
+  background: #45bed47e;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  transition: all 0.5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
 }
-.dashboardIcon{
-  color:#fff;
-  scale:1;
-  transition: all .5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
+.dashboardIcon {
+  color: #fff;
+  scale: 1;
+  transition: all 0.5s cubic-bezier(0.51, 0.48, 0.66, 0.6);
   overflow: hidden;
 }
-.dashboardCard:hover .dashboardIconWrap{
-  background:#fff;
-color:#42A1DA
+.dashboardCard:hover .dashboardIconWrap {
+  background: #fff;
+  color: #42a1da;
 }
-.dashboardCard:hover .dashboardIcon{
-color:#42A1DA;
-scale:1.2
+.dashboardCard:hover .dashboardIcon {
+  color: #42a1da;
+  scale: 1.2;
 }
-.earningCardWrap{
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
-  width:550px;
-  padding:20px; 
+.earningCardWrap {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  padding: 20px;
 }
-.earningCard{
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
+.earningCard {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 10px 20px;
-  width:250px;
-  border-radius:10px;
-  height:140px;
+  border-radius: 10px;
+  height: 140px;
 }
-.task{
+.task {
   border: 1px solid #ddd;
   padding: 10px;
-  width:250px;
+  width: 250px;
   text-align: center;
 }
-.absentCard{
+.absentCard {
   border: 1px solid #ddd;
   padding: 10px 20px;
 }
-.userImgWrap{
-  width:50px;
-  height:50px;
-  background:#ddd;
+.userImgWrap {
+  width: 50px;
+  height: 50px;
+  background: #ddd;
   border-radius: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 5px;
-
 }
-.profitCard{
-  width:430px;
+.profitCard {
+  width: 430px;
   border: 1px solid #ddd;
-  padding:10px;
+  padding: 10px;
   border-radius: 3px;
 }
-.monthlyTitle{
-  margin-right:250px
+.monthlyTitle {
+  margin-right: 250px;
 }
-.recentCard{
-  width:870px;
-  border:1px solid #ddd;
-  padding-top:10px;
+.recentCard {
+  border: 1px solid #ddd;
+  padding-top: 10px;
   border-radius: 5px;
 }
-.recentCard th{
-  border:none
+.recentCard th {
+  border: none;
 }
-.recentCard th , .recentCard td{
- padding:10px;
- text-align: left;
+.recentCard th,
+.recentCard td {
+  padding: 10px;
+  text-align: left;
 }
 
-
-@media only screen and (max-width: 1400px) {
+@media only screen and (min-width: 1441px) {
+  .earningCardWrap {
+    width: 550px;
+  }
+  .earningCard {
+    width: 250px;
+  }
+  .recentCard {
+    width: 870px;
+  }
+}
+@media only screen and (max-width: 1440px) {
   .completedServiceCards {
     width: 290px;
     padding: 40px 20px;
+  }
+  .earningCardWrap {
+    width: 500px;
+  }
+  .earningCard {
+    width: 180px;
+  }
+  .recentCard {
+    width: 680px;
   }
 }
 @media only screen and (max-width: 1024px) {
   .pieChart {
     margin-top: 0px;
   }
+  .recentCard,
+  .earningCardWrap {
+    width: 75%;
+    margin: 0 auto;
+  }
+  .earningCard {
+    width: 235px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .monthlyTitle {
+    margin-right: 0;
+  
+}
 }
 
 @media only screen and (max-width: 768px) {
@@ -176,6 +205,26 @@ scale:1.2
     display: grid;
     place-items: center;
   }
+  .recentCard,
+  .earningCardWrap {
+    width: 100%;
+  }
+  .dashboardCard {
+    width: 163px;
+}
+.completedServiceCards {
+  width: 98% !important;
+  padding: 35px 15px !important;
+}
+.profitCard {
+  margin: 5px auto;
+}
+.dashboardIconWrap {
+  width: 64px;
+  height: 64px;
+}
+
+
 }
 
 @media only screen and (max-width: 400px) {

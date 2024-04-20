@@ -212,9 +212,28 @@
 	transform: scale(1);
 }
 
+@media only screen and (min-width: 1441px) {
+	.activeDrawer {
+		width: 93%;
+	}
+}
+
+@media only screen and (max-width: 1440px) {
+	.activeDrawer {
+		width: 91%;
+	}
+}
+
 @media only screen and (max-width: 1024px) {
 	.activeToggle {
 		left: 204px;
+	}
+	.activeDrawer {
+		width: 98%;
+	}
+	.completedServiceCards {
+		width: 235px;
+		padding: 20px 5px;
 	}
 
 	.activeRightSideBarWrap {
@@ -229,9 +248,7 @@
 	.navActive {
 		left: 0px;
 	}
-	.activeDrawer {
-		width: 97%;
-	}
+	
 	/* .activeDrawer {
 		width: 98%;
 	} */
@@ -252,6 +269,9 @@
 	.activeToggle {
 		left: 230px;
 	
+	}
+	.dashboardSearchBar {
+		width: 230px;
 	}
 	
 }
