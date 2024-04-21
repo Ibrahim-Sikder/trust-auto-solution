@@ -298,7 +298,7 @@ const DashboardLayout = () => {
               >
                 <Typography>
                   <div className="flex items-center justify-center">
-                    <CurrencyExchange className="dashboardIcon" />
+                    <CurrencyExchange  />
                     <span className="ml-2">Money receipt</span>
                   </div>
                 </Typography>
@@ -419,7 +419,7 @@ const DashboardLayout = () => {
               >
                 <Typography>
                   <div className="flex items-center justify-center">
-                    <HiOutlineUserGroup className="dashboardIcon" />
+                    <HiOutlineUserGroup size={22}/>
                     <span className="ml-2"> Customer</span>
                   </div>
                 </Typography>
@@ -525,8 +525,8 @@ const DashboardLayout = () => {
               >
                 <Typography>
                   <div className="flex items-center dashboardItems">
-                    <FaUsers className="dashboardIcon" />
-                    <span>Employee</span>
+                    <FaUsers size={22} />
+                    <span className="ml-2">Employee</span>
                   </div>
                 </Typography>
               </AccordionSummary>
@@ -688,36 +688,36 @@ const DashboardLayout = () => {
               </AccordionDetails>
             </Accordion>
 
-            <div className="pl-3 space-y-3">
+            <div className="pl-3 space-y-3 mt-3 flex flex-col">
               <NavLink to="/dashboard/services">
                 <div className="flex items-center dashboardItems">
-                  <FaAlipay className="dashboardIcon" />
-                  <span> Bill Pay</span>
+                  <FaAlipay size={22} />
+                  <span className="ml-2"> Bill Pay</span>
                 </div>
               </NavLink>
 
               <NavLink to="/dashboard/profile">
                 <div className="flex items-center dashboardItems">
-                  <FaUsersCog className="dashboardIcon" />
-                  <span> Profile</span>
+                  <FaUsersCog size={22}/>
+                  <span className="ml-2"> Profile</span>
                 </div>
               </NavLink>
               <NavLink to="/dashboard/services">
                 <div className="flex items-center dashboardItems">
-                  <FaDatabase className="dashboardIcon" />
-                  <span> Data Backup </span>
+                  <FaDatabase size={22} />
+                  <span className="ml-2"> Data Backup </span>
                 </div>
               </NavLink>
               <NavLink to="/dashboard/services">
                 <div className="flex items-center dashboardItems">
-                  <FaHeadset className="dashboardIcon" />
-                  <span>Support</span>
+                  <FaHeadset size={22} />
+                  <span className="ml-2">Support</span>
                 </div>
               </NavLink>
               <NavLink to="/dashboard/services">
                 <div className="flex items-center dashboardItems">
-                  <Logout className="dashboardIcon" />
-                  <span>Log Out </span>
+                  <Logout size={22} />
+                  <span className="ml-2">Log Out </span>
                 </div>
               </NavLink>
             </div>
