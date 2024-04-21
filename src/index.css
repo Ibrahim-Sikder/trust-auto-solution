@@ -17,6 +17,7 @@ body {
 	box-sizing: border-box;
 	scroll-behavior: smooth;
 	font-family: 'Poppins', sans-serif;
+
 }
 
 
@@ -186,6 +187,34 @@ input:focus {
 
 
 
+  .labelWrap label:nth-child(2) {
+    left: -305px !important;
+  }
+
+.drawer-content .labelWrap label:nth-child(2) {
+    left: -255px !important;
+  }
+
+  .labelWrap label:nth-child(3) {
+    left: 515px !important;
+  }
+
+  .drawer-content .labelWrap label:nth-child(3) {
+	left: 595px !important;
+  }
+  .labelWrap label:nth-child(4) {
+    left: 246px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(4) {
+	left: 356px !important;
+  }
+
+  .labelWrap label:nth-child(5) {
+    left: 70px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(5) {
+	left: 210px !important;
+  }
 
 @media only screen and (min-width:1024px) {
 	.activeDrawer {

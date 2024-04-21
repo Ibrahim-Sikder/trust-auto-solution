@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import { FaRegTrashAlt, FaPlus, FaFileInvoice, FaEye, FaReddit, FaTrashAlt, FaArrowRight, FaArrowLeft } from 'react-icons/fa'
+import { FaRegTrashAlt, FaPlus, FaFileInvoice, FaEye, FaReddit, FaTrashAlt} from 'react-icons/fa'
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -247,22 +247,7 @@ const AddProduct = () => {
           </tbody>
         </table>
       </div>
-      <div className='pagination'>
-        <div className='paginationBtn'>
-          <button>
-            <FaArrowLeft className='arrowLeft' />
-          </button>
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>
-            <FaArrowRight className='arrowRight' />
-
-          </button>
-        </div>
-      </div>
+      
     </div>
 		</section>
 	)

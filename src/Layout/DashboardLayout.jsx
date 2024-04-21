@@ -38,6 +38,8 @@ import { animateScroll as scroll } from "react-scroll";
 import {
   HiOutlineChat,
   HiOutlineChevronDown,
+  HiOutlineCube,
+  HiOutlineCurrencyDollar,
   HiOutlineUserAdd,
   HiOutlineUserGroup,
 } from "react-icons/hi";
@@ -83,15 +85,15 @@ const DashboardLayout = () => {
       <div className="static w-full h-16">
         <div className="w-full h-16  bg-[#42A1DA] fixed z-10 ">
           <div className="flex items-center justify-between pr-8 pl-10 lg:pl-20 mt-2 lg:mt-3">
-          <div
-            className={`${toggle ? `activeToggle` : `navActive`}`}
-            ref={navRef}
-            onClick={toggleSideBar}
-          >
-            <span className="bar" />
-            <span className="bar" />
-            <span className="bar" />
-          </div>
+            <div
+              className={`${toggle ? `activeToggle` : `navActive`}`}
+              ref={navRef}
+              onClick={toggleSideBar}
+            >
+              <span className="bar" />
+              <span className="bar" />
+              <span className="bar" />
+            </div>
             <h3 className="text-xl lg:text-2xl font-semibold text-white ">
               Trust Auto Solution
             </h3>
@@ -122,15 +124,15 @@ const DashboardLayout = () => {
                 <div className="flex items-center text-white ml-2">
                   <span>Admin</span>
                   <HiOutlineChevronDown size={20} />
-                </div> 
+                </div>
                 <div className="adminProfile space-y-2">
-              
-              <Link to='/dashboard/profile'><p>My Profile</p></Link>
-              <p>Settings</p>
-              <p>Logout</p>
+                  <Link to="/dashboard/profile">
+                    <p>My Profile</p>
+                  </Link>
+                  <p>Settings</p>
+                  <p>Logout</p>
+                </div>
               </div>
-              </div>
-             
             </div>
           </div>
         </div>
@@ -159,9 +161,8 @@ const DashboardLayout = () => {
             </div> */}
 
             <div className=" ">
-             
               <NavLink to="/dashboard" className="z-10  flex p-4 items-center">
-              <FaCarSide size={25} />
+                <FaCarSide size={25} />
                 <h3 className="text-xl font-semibold ml-2">Dashboard</h3>
               </NavLink>
             </div>
@@ -185,7 +186,7 @@ const DashboardLayout = () => {
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
               >
-                <Typography >
+                <Typography>
                   <div className="flex items-center justify-center ">
                     <FaCarAlt />
                     <span className="ml-2">Vehicle Job Card</span>
@@ -298,7 +299,7 @@ const DashboardLayout = () => {
               >
                 <Typography>
                   <div className="flex items-center justify-center">
-                    <CurrencyExchange  />
+                    <CurrencyExchange />
                     <span className="ml-2">Money receipt</span>
                   </div>
                 </Typography>
@@ -337,7 +338,7 @@ const DashboardLayout = () => {
               >
                 <Typography className="accordionName">
                   <div className="flex items-center justify-center">
-                    <FaProjectDiagram />
+                    <HiOutlineCube size={22} />
                     <span className="ml-2"> Projects</span>
                   </div>
                 </Typography>
@@ -345,12 +346,19 @@ const DashboardLayout = () => {
               <AccordionDetails>
                 <Typography className="accordionTypoGrapy">
                   <NavLink to="/dashboard/running-project">
-                    Running Project
+                    <span className="flex items-center">
+                      <HiOutlineCurrencyDollar size={22} className="mr-2" />
+                      Running Project
+                    </span>
                   </NavLink>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
+                 
                   <NavLink to="/dashboard/complete-project">
-                    Complete Project
+                    <span className="flex items-center">
+                      <HiOutlineCurrencyDollar size={22} className="mr-2" />
+                      Complete Project
+                    </span>
                   </NavLink>
                 </Typography>
               </AccordionDetails>
@@ -419,7 +427,7 @@ const DashboardLayout = () => {
               >
                 <Typography>
                   <div className="flex items-center justify-center">
-                    <HiOutlineUserGroup size={22}/>
+                    <HiOutlineUserGroup size={22} />
                     <span className="ml-2"> Customer</span>
                   </div>
                 </Typography>
@@ -698,7 +706,7 @@ const DashboardLayout = () => {
 
               <NavLink to="/dashboard/profile">
                 <div className="flex items-center dashboardItems">
-                  <FaUsersCog size={22}/>
+                  <FaUsersCog size={22} />
                   <span className="ml-2"> Profile</span>
                 </div>
               </NavLink>

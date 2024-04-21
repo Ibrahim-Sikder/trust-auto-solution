@@ -183,8 +183,8 @@
     left: -40px !important;
   }
 
-  .labelWrap label:nth-child(2) {
-    left: -255px !important;
+  /* .labelWrap label:nth-child(2) {
+    left: -305px !important;
   }
 
   .labelWrap label:nth-child(3) {
@@ -197,7 +197,9 @@
 
   .labelWrap label:nth-child(5) {
     left: 50px !important;
-  }
+  } */
+
+  
 }
 
 @media only screen and (max-width: 1440px) {
