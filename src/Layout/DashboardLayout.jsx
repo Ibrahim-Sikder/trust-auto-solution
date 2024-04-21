@@ -185,7 +185,7 @@ const DashboardLayout = () => {
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
               >
-                <Typography>
+                <Typography >
                   <div className="flex items-center justify-center ">
                     <FaCarAlt />
                     <span className="ml-2">Vehicle Job Card</span>

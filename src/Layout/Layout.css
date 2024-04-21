@@ -212,6 +212,12 @@
 	transform: scale(1);
 }
 
+ .accordionTypoGrapy:hover{
+	background:#2C3136;
+	padding-left:50px;
+	color:#fff !important;
+}
+
 @media only screen and (min-width: 1441px) {
 	.activeDrawer {
 		width: 93%;
