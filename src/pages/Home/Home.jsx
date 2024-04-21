@@ -328,7 +328,7 @@ const Home = () => {
         <div className="recentCard">
           <div className="flex items-center justify-between">
           <h3 className="m-3 text-xl block font-semibold">Client</h3>
-          <Link to="/dashboard/employee-list">
+          <Link to="/dashboard/customer-list">
               <button className=" flex items-center mr-2  rounded-full px-3 py-1 bg-[#DDDDDD]  ">
                 <small className="">See More</small>
                 <HiOutlineArrowNarrowRight size={15} className="ml-1" />
@@ -338,13 +338,17 @@ const Home = () => {
           <hr />
           <table>
             <thead>
-              <th>Name</th>
-              <th>Last Job Card Date</th>
+              <th>Order Id </th>
+              <th>Customer Name</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Profit</th>
               <th>Status</th>
               <th>Action</th>
             </thead>
             <tbody>
               <tr>
+              <td>#TAS-1217</td>
                 <td>
                   <div className="flex items-center">
                     <img
@@ -358,7 +362,9 @@ const Home = () => {
                     </div>
                   </div>
                 </td>
-                <td>client@gmail.com</td>
+                <td>12-04-24</td>
+                <td>৳765445</td>
+                <td>৳7654</td>
                 <td>
                   <button className="px-3 py-1 border rounded-full ">
                     Active
@@ -371,6 +377,7 @@ const Home = () => {
                 </td>
               </tr>
               <tr>
+              <td>#TAS-1217</td>
                 <td>
                   <div className="flex items-center">
                     <img
@@ -384,7 +391,9 @@ const Home = () => {
                     </div>
                   </div>
                 </td>
-                <td>client@gmail.com</td>
+                <td>12-04-24</td>
+                <td>৳765445</td>
+                <td>৳7654</td>
                 <td>
                   <button className="px-3 py-1 border rounded-full ">
                     Active
@@ -397,6 +406,7 @@ const Home = () => {
                 </td>
               </tr>
               <tr>
+              <td>#TAS-1217</td>
                 <td>
                   <div className="flex items-center">
                     <img
@@ -410,7 +420,38 @@ const Home = () => {
                     </div>
                   </div>
                 </td>
-                <td>client@gmail.com</td>
+                <td>12-04-24</td>
+                <td>৳765445</td>
+                <td>৳7654</td>
+                <td>
+                  <button className="px-3 py-1 border rounded-full ">
+                    Active
+                  </button>
+                </td>
+                <td>
+                  <div>
+                  <HiOutlineEye size={20} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+              <td>#TAS-1217</td>
+                <td>
+                  <div className="flex items-center">
+                    <img
+                      src={client}
+                      className="rounded-full w-16"
+                      alt="client"
+                    />
+                    <div className="ml-2 text-justify">
+                      <h2 className="block">Mr John</h2>
+                      <small>CEO</small>
+                    </div>
+                  </div>
+                </td>
+                <td>12-04-24</td>
+                <td>৳765445</td>
+                <td>৳7654</td>
                 <td>
                   <button className="px-3 py-1 border rounded-full ">
                     Active
@@ -439,12 +480,15 @@ const Home = () => {
           <hr />
           <table>
             <thead>
+            <th>Project Id</th>
               <th>Project Name </th>
+              <th>Date</th>
               <th>Progress</th>
               <th>Action</th>
             </thead>
             <tbody>
               <tr>
+              <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -458,6 +502,7 @@ const Home = () => {
                     </div>
                   </div>
                 </td>
+                <td>10-04-24</td>
                 <td>
                   <Stack spacing={1} sx={{ flexGrow: 1 }}>
                     <BorderLinearProgress
@@ -469,12 +514,13 @@ const Home = () => {
                 </td>
 
                 <td>
-                  <div className="flex  items-center">
+                  <div className="flex  items-center justify-center mr-8">
                   <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
+              <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -488,47 +534,25 @@ const Home = () => {
                     </div>
                   </div>
                 </td>
+                <td>10-04-24</td>
                 <td>
-                  {" "}
-                  <Stack spacing={1} sx={{ flexGrow: 1, color: " red" }}>
-                    <BorderLinearProgress variant="determinate" value={70} />
+                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
+                    <BorderLinearProgress
+                      stroke="#60BE6B"
+                      variant="determinate"
+                      value={70}
+                    />
                   </Stack>
                 </td>
 
                 <td>
-                  <div className="flex  items-center">
+                  <div className="flex  items-center justify-center mr-8">
                   <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-                <td>
-                  <div>
-                    <h4>Global Technologies</h4>
-                    <div className="flex items-center">
-                      <small className="block mr-3 text-[#8E8E8E]">
-                        2 Open task ,{" "}
-                      </small>
-                      <small className="text-[#60BE6B]">
-                        10 task completed
-                      </small>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  {" "}
-                  <Stack spacing={1} sx={{ flexGrow: 1, color: " red" }}>
-                    <BorderLinearProgress variant="determinate" value={70} />
-                  </Stack>
-                </td>
-
-                <td>
-                  <div className="flex  items-center">
-                  <HiOutlineEye size={20} />
-                  </div>
-                </td>
-              </tr>
-              <tr>
+              <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -542,20 +566,25 @@ const Home = () => {
                     </div>
                   </div>
                 </td>
+                <td>10-04-24</td>
                 <td>
-                  {" "}
-                  <Stack spacing={1} sx={{ flexGrow: 1, color: " red" }}>
-                    <BorderLinearProgress variant="determinate" value={70} />
+                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
+                    <BorderLinearProgress
+                      stroke="#60BE6B"
+                      variant="determinate"
+                      value={70}
+                    />
                   </Stack>
                 </td>
 
                 <td>
-                  <div className="flex  items-center">
+                  <div className="flex  items-center justify-center mr-8">
                   <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
+              <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -569,16 +598,84 @@ const Home = () => {
                     </div>
                   </div>
                 </td>
+                <td>10-04-24</td>
                 <td>
-                  {" "}
-                  <Stack spacing={1} sx={{ flexGrow: 1, color: " red" }}>
-                    <BorderLinearProgress variant="determinate" value={70} />
+                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
+                    <BorderLinearProgress
+                      stroke="#60BE6B"
+                      variant="determinate"
+                      value={70}
+                    />
                   </Stack>
                 </td>
 
                 <td>
-                  <div className="flex  items-center">
-                    <HiDotsVertical size={20} />
+                  <div className="flex  items-center justify-center mr-8">
+                  <HiOutlineEye size={20} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+              <td>#TAS-666</td>
+                <td>
+                  <div>
+                    <h4>Global Technologies </h4>
+                    <div className="flex items-center">
+                      <small className="block mr-3 text-[#8E8E8E]">
+                        2 Open task ,{" "}
+                      </small>
+                      <small className="text-[#60BE6B]">
+                        10 task completed
+                      </small>
+                    </div>
+                  </div>
+                </td>
+                <td>10-04-24</td>
+                <td>
+                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
+                    <BorderLinearProgress
+                      stroke="#60BE6B"
+                      variant="determinate"
+                      value={70}
+                    />
+                  </Stack>
+                </td>
+
+                <td>
+                  <div className="flex  items-center justify-center mr-8">
+                  <HiOutlineEye size={20} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+              <td>#TAS-666</td>
+                <td>
+                  <div>
+                    <h4>Global Technologies </h4>
+                    <div className="flex items-center">
+                      <small className="block mr-3 text-[#8E8E8E]">
+                        2 Open task ,{" "}
+                      </small>
+                      <small className="text-[#60BE6B]">
+                        10 task completed
+                      </small>
+                    </div>
+                  </div>
+                </td>
+                <td>10-04-24</td>
+                <td>
+                  <Stack spacing={1} sx={{ flexGrow: 1 }}>
+                    <BorderLinearProgress
+                      stroke="#60BE6B"
+                      variant="determinate"
+                      value={70}
+                    />
+                  </Stack>
+                </td>
+
+                <td>
+                  <div className="flex  items-center justify-center mr-8">
+                  <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
