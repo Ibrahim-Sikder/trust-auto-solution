@@ -838,9 +838,13 @@ const DashboardLayout = () => {
           </div>
         </aside>
       </div>
-      <button onClick={scrollToTop} id="button">
-        <FaAngleDoubleUp size={25} />
+
+     <button onClick={scrollToTop} id="button">
+       <div className="scrollBtn">
+       <FaAngleDoubleUp size={25} />
+       </div>
       </button>
+
     </main>
   );
 };

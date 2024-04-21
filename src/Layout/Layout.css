@@ -96,7 +96,6 @@
 }
 .dashboardAccordion {
 	background: #2c3136 !important;
-    width: 270px !important;
     color: #fff !important;
     transition: all 500s ease-in-out;
 }
@@ -142,6 +141,10 @@
 	z-index: 999;
 	color: #42a1da;
 }
+.scrollBtn{
+	display: none;
+}
+
 .scrollToTopBtn {
 	width: 40px;
 	height: 40px;
@@ -156,6 +159,10 @@
 	place-items: center;
 	transition: all .5s ease;
 	animation-delay: .5s;
+
+}
+.scrollToTopBtn .scrollBtn{
+	display: block !important;
 }
 .accordionExpandIcon {
 	color: #fff !important;
@@ -222,6 +229,9 @@
 	.activeDrawer {
 		width: 93%;
 	}
+	.dashboardAccordion {
+		width: 270px !important;
+	}
 }
 
 @media only screen and (max-width: 1440px) {
@@ -231,9 +241,7 @@
 }
 
 @media only screen and (max-width: 1024px) {
-	.activeToggle {
-		left: 204px;
-	}
+	
 	.activeDrawer {
 		width: 98%;
 	}
@@ -245,15 +253,11 @@
 	.activeRightSideBarWrap {
 		width: 60px;
 	}
-	.navActive {
-		left: 10px;
-	}
+
 	.activeRightSideBarWrap {
 		display: none;
 	}
-	.navActive {
-		left: 0px;
-	}
+
 	
 	/* .activeDrawer {
 		width: 98%;
@@ -272,12 +276,12 @@
 		background: black;
 		width: 30% !important;
 	}
-	.activeToggle {
-		left: 230px;
-	
-	}
+
 	.dashboardSearchBar {
 		width: 230px;
+	}
+	.navActive {
+		left: 0px;
 	}
 	
 }
@@ -301,9 +305,7 @@
 		background: #2C3136;
 		z-index: 99999999;
 	}
-	.activeToggle {
-		left: 213px;
-	}
+	
 
 	.activeToggle .bar:nth-child(3) {
 		margin-top: 7px;

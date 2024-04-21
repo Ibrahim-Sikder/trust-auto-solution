@@ -131,6 +131,7 @@
   text-align: left;
 }
 
+
 @media only screen and (min-width: 1441px) {
   .earningCardWrap {
     width: 550px;
@@ -141,8 +142,15 @@
   .recentCard {
     width: 870px;
   }
+  .dashboardCardIcon{
+    font-size: 70px;
+  }
+  
 }
 @media only screen and (max-width: 1440px) {
+  .dashboardCardIcon{
+    font-size: 50px;
+  }
   .completedServiceCards {
     width: 290px;
     padding: 40px 20px;
@@ -158,6 +166,10 @@
   }
 }
 @media only screen and (max-width: 1024px) {
+  .profitCard {
+    width: 483px;
+    margin: 9px;
+}
   .pieChart {
     margin-top: 0px;
   }
@@ -223,7 +235,9 @@
   width: 64px;
   height: 64px;
 }
-
+.profitCard {
+  width: 100%;
+}
 
 }
 

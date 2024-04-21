@@ -188,33 +188,62 @@ input:focus {
 
 
   .labelWrap label:nth-child(2) {
-    left: -305px !important;
+    left: -295px !important;
   }
 
 .drawer-content .labelWrap label:nth-child(2) {
-    left: -255px !important;
+    left: -245px !important;
   }
 
   .labelWrap label:nth-child(3) {
-    left: 515px !important;
+    left: 495px !important;
   }
 
   .drawer-content .labelWrap label:nth-child(3) {
-	left: 595px !important;
+	left: 415px !important;
   }
   .labelWrap label:nth-child(4) {
-    left: 246px !important;
+    left: 225px !important;
   }
   .drawer-content .labelWrap label:nth-child(4) {
-	left: 356px !important;
+	left: 180px !important;
   }
 
   .labelWrap label:nth-child(5) {
-    left: 70px !important;
+    left: 60px !important;
   }
   .drawer-content .labelWrap label:nth-child(5) {
-	left: 210px !important;
+	left: 40px !important;
   }
+
+
+
+  .jobCardSelect {
+	width: 200px !important;
+  }
+  .jobCardSelect2 {
+	width: 644px !important;
+  }
+
+  .drawer-content .jobCardSelect2 {
+	width: 570px !important;
+  }
+  .sectionMargin{
+	margin-top:80px;
+  }
+
+
+  @media only screen and (min-width: 1440px) {
+	.secondInputField {
+	  width: 1165px;
+	}
+
+	.drawer-content .secondInputField {
+		width: 1000px;
+	  }
+	
+}
+
 
 @media only screen and (min-width:1024px) {
 	.activeDrawer {

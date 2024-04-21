@@ -170,9 +170,7 @@
 }
 
 @media only screen and (min-width: 1440px) {
-  .secondInputField {
-    width: 1200px;
-  }
+
 
   .labelWrap label {
     display: block;

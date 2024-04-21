@@ -110,83 +110,83 @@ const Home = () => {
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
           <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#42A1DA] text-white ">
             <div className="mr-5">
-              <h3 className="text-xl">Completed Services</h3>
+              <h3 className="xl:text-xl">Completed Services</h3>
               <span className="text-2xl font-bold">99 </span>
             </div>
             <div className="valueRight">
-              <HiOutlineBriefcase size={70} />
+              <HiOutlineBriefcase  className="dashboardCardIcon" />
             </div>
           </div>
           <div className="completedServiceCards flex justify-between items-center  rounded-lg bg-[#42A1DA] text-white">
             <div className="mr-5">
               <h3 className="text-xl">Running Services</h3>
-              <span className="text-2xl font-bold">200 </span>
+              <span className="xl:text-2xl font-bold">200 </span>
             </div>
             <div className="valueRight">
-              <FaWrench size={70} />
+              <FaWrench className="dashboardCardIcon" />
             </div>
           </div>
 
           <div className="completedServiceCards flex justify-between items-center  rounded-lg bg-[#48cae4] text-white">
             <div className="mr-5">
-              <h3 className="text-xl">Total Sale </h3>
-              <span className="text-2xl font-bold">99 </span>
+              <h3 className="xl:text-xl">Total Sale </h3>
+              <span className="text-xl xl:text-2xl font-bold">99 </span>
             </div>
             <div className="valueRight">
-              <FaPercent size={70} />
+              <FaPercent className="dashboardCardIcon"/>
             </div>
           </div>
           <div className="completedServiceCards flex justify-between items-center  rounded-lg bg-[#03045e] text-white">
             <div className="mr-5">
-              <h3 className="text-xl">Total Product </h3>
-              <span className="text-2xl font-bold">99 </span>
+              <h3 className="xl:text-xl">Total Product </h3>
+              <span className="text-xl xl:text-2xl font-bold">99 </span>
             </div>
             <div className="valueRight">
-              <FaCarSide size={70} />
+              <FaCarSide className="dashboardCardIcon" />
             </div>
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
           <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#f77f00] text-white">
             <div className="mr-5">
-              <h3 className="text-xl">Paid Services Bill</h3>
-              <span className="text-2xl font-bold">856৳</span>
+              <h3 className="xl:text-xl">Paid Services Bill</h3>
+              <span className="text-xl xl:text-2xl font-bold">856৳</span>
             </div>
             <div className="valueRight">
-              <FaFileInvoice size={70} />
+              <FaFileInvoice className="dashboardCardIcon" />
             </div>
           </div>
 
           <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#ef233c] text-white">
             <div className="mr-5">
-              <h3 className="text-xl">Due Service Bill </h3>
-              <span className="text-2xl font-bold">8106৳ </span>
+              <h3 className="xl:text-xl">Due Service Bill </h3>
+              <span className="text-xl xl:text-2xl font-bold">8106৳ </span>
             </div>
             <div className="valueRight">
-              <FaFileInvoiceDollar size={70} />
+              <FaFileInvoiceDollar className="dashboardCardIcon" />
             </div>
           </div>
           <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#0a9396] text-white">
             <div className="mr-5">
-              <h3 className="text-xl">Our Customer </h3>
-              <span className="text-2xl font-bold">159 </span>
+              <h3 className="xl:text-xl">Our Customer </h3>
+              <span className="text-xl xl:text-2xl font-bold">159 </span>
             </div>
             <div className="valueRight">
-              <FaUsers size={70} />
+              <FaUsers className="dashboardCardIcon" />
             </div>
           </div>
           <div className=" completedServiceCards flex justify-between items-center rounded-lg bg-[#3a0ca3] text-white">
             <div className="mr-5">
-              <h3 className="text-xl">About Trust Auto Solution</h3>
+              <h3 className=" xl:text-xl">About Trust Auto Solution</h3>
             </div>
             <div className="valueRight">
-              <FaCarOn size={70} />
+              <FaCarOn className="dashboardCardIcon" />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex mt-[100px] lg:flex-nowrap flex-wrap">
+      <div className="flex sectionMargin lg:flex-nowrap flex-wrap">
         <MonthlyBarChart />
         <YearlyIncomeChart />
       </div>
@@ -196,7 +196,7 @@ const Home = () => {
           Yearly Income Chart
         </h3>
       </div>
-      <div className="profiteCardWrap flex-wrap flex items-center justify-between mt-[100px]">
+      <div className="profiteCardWrap flex-wrap flex items-center justify-between sectionMargin">
       
         <div className="profitCard ">
           <div className="flex items-center justify-between">
@@ -264,7 +264,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex lg:flex-nowrap flex-wrap  gap-3  mt-[100px]">
+      <div className="flex lg:flex-nowrap flex-wrap  gap-3  sectionMargin">
         <div
           className="flex flex-wrap gap-4
         5"
@@ -324,7 +324,7 @@ const Home = () => {
         Project Overview
       </h3>
 
-      <div className="recentCardWrap xl:flex justify-between mt-[100px]">
+      <div className="recentCardWrap xl:flex justify-between sectionMargin">
         <div className="recentCard">
           <div className="flex items-center justify-between">
           <h3 className="m-3 text-xl block font-semibold">Client</h3>
