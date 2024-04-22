@@ -205,12 +205,12 @@ const Home = () => {
           </div>
 
           <div className="space-y-2 mt-3">
-            <b className="block ">৳465785</b>
+            <b className="block ">৳46785</b>
             <Stack spacing={2} sx={{ flexGrow: 1, color: " red" }}>
               <BorderLinearProgress variant="determinate" value={50} />
             </Stack>
             <small className="block">
-              Previous month <b className="text-[#]">৳ 305785</b>
+              Previous month <b className="text-[#]">৳ 5785</b>
             </small>
           </div>
         </div>
