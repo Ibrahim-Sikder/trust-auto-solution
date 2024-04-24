@@ -14,10 +14,10 @@ import { months } from "../../../constant/Vehicle.constant";
 import axios from "axios";
 import dayjs from "dayjs";
 import AttendanceOutTimePicker from "./AttendanceForOutTime";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -423,7 +423,7 @@ const AddAttendance = () => {
           <div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
-                <DatePicker label="Basic date picker" />
+                <DatePicker label="Select Date" />
               </DemoContainer>
             </LocalizationProvider>
           </div>
@@ -444,9 +444,19 @@ const AddAttendance = () => {
           <tbody>
             <tr className="even-row">
               <td>12-04-24</td>
-              <td>10</td>
-              <td>10</td>
-              <td>10</td>
+              <td>
+                <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
+                  20
+                </div>
+              </td>
+              <td>
+                <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                  20
+                </div>
+              </td>
+              <td> <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                  20
+                </div></td>
               <td>
                 <Link to="/dashboard/update-attendance">
                   <FaUserEdit
