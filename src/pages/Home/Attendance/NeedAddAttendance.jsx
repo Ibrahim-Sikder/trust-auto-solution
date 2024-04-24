@@ -23,11 +23,6 @@ import { months } from "../../../constant/Vehicle.constant";
 import axios from "axios";
 import dayjs from "dayjs";
 import AttendanceOutTimePicker from "./AttendanceForOutTime";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -172,6 +167,8 @@ const AddAttendance = () => {
     newOvertime[index] = value;
     setOvertime(newOvertime);
   };
+
+  
 
   const handleSubMitAttendance = async () => {
     const newAttendanceData = getAllEmployee.map((employee, index) => {
@@ -454,63 +451,84 @@ const AddAttendance = () => {
 
       <div className="mt-10 table-container">
         <h3 className="mt-5 mb-8 text-2xl font-semibold">
-          Attendance Sheet : March 2024
+          Today Attendance Sheet : March 2024
         </h3>
-
-        <div className="flex items-center my-5 ">
-          <div>
-            <LocalizationProvider sx={{height:'20px'}} dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DatePicker"]}>
-                <DatePicker label="Select Date" />
-              </DemoContainer>
-            </LocalizationProvider>
+        <div className="grid grid-cols-5 gap-5 mt-5 mb-8">
+          <div className="relative rounded-sm w-max">
+            <input
+              className="peer employeeInput w-[300px h-[60px]]"
+              type="text"
+              placeholder=""
+            />
+            <label className="employeeLavel" htmlFor="">
+              Employee ID
+            </label>
           </div>
-          <div className="relative rounded-sm w-max mt-2 ml-2">
+          <div>
+            <Select
+              value={selectedOption}
+              onChange={handleChange}
+              options={months}
+            />
+          </div>
+          <div>
+            <Select
+              value={selectedOption2}
+              onChange={handleChange2}
+              options={years}
+            />
+          </div>
+          <div className="relative rounded-sm w-max">
             <button className="employeeBtn employeeInput">Search</button>
           </div>
         </div>
         <table className="attendanceTable">
           <thead>
             <tr className="bg-[#42A1DA] text-white ">
-              <th>Date</th>
-              <th>Present </th>
-              <th>Absent </th>
-              <th>Late </th>
-              <th colSpan={3}>Action </th>
+              <th>Employee </th>
+              <th>Employee ID </th>
+              {[...Array(31).keys()].map((day) => (
+                <th key={day}>
+                  <div>
+                    <span>March </span>
+                    {day + 1}
+                  </div>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            <tr className="even-row">
-              <td>12-04-24</td>
-              <td>10</td>
-              <td>10</td>
-              <td>10</td>
-              <td>
-                <Link to="/dashboard/update-attendance">
-                  <FaUserEdit
-                    className="text-[#60BF6B] cursor-pointer mx-auto"
-                    size={30}
-                  />
-                </Link>
-              </td>
-
-              <td>
-                <Link to="/dashboard/view-attendance">
-                  {" "}
-                  <HiOutlineEye
-                    className="text-[#42A1DA] cursor-pointer mx-auto"
-                    size={30}
-                  />{" "}
-                </Link>
-              </td>
-              <td>
-                {" "}
-                <FaRegTrashAlt
-                  className="text-[#F62F52] cursor-pointer mx-auto"
-                  size={30}
+            {[...Array(6).keys()].map((row) => (
+              <tr key={row} className={row % 2 === 0 ? "even-row" : "odd-row"}>
+                <td>
+                  <div className="flex items-center">
+                    <img
+                      src={avatar}
+                      className="object-cover w-8 h-8 mr-2 rounded-full"
+                      alt=""
+                    />
+                    <span>Mr John</span>
+                  </div>
+                </td>
+                <td>0002024</td>
+                {generateIcons(31, closeIconPositions).map((icon, index) => (
+                  <td key={index}>
+                    <span className="block attendanceIcon">{icon}</span>
+                    <div className="flex items-center justify-center">
+                      <small className="block mt-3">12.30 - 5.00 </small>
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            ))}
+            <div className="flex my-5 ml-5">
+              <Link to="/dashboard/update-attendance">
+                <FaUserEdit
+                  className="text-[#60BF6B] cursor-pointer mx-auto"
+                  size={50}
                 />
-              </td>
-            </tr>
+              </Link>
+            </div>
           </tbody>
         </table>
       </div>

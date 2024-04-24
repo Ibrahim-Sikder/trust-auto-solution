@@ -1,4 +1,4 @@
-import { HiCheck, HiOutlineX } from "react-icons/hi";
+import { HiCheck } from "react-icons/hi";
 
 import "./Attendance.css";
 
@@ -62,9 +62,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
@@ -97,9 +97,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
@@ -132,9 +132,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
@@ -167,9 +167,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
@@ -202,9 +202,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
@@ -237,9 +237,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
@@ -272,9 +272,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
@@ -307,9 +307,9 @@ const UpdateAttendance = () => {
               </td>
               <td>
                 <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
+                <HiCheck
+                    className="text-[#F62D51] attendanceIcon "
+                    size={25}
                   />
                   <HiCheck
                     className="text-[#4AB657] attendanceIcon "
