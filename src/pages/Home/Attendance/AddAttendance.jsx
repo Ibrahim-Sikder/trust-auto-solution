@@ -4,6 +4,16 @@ import avatar from "../../../../public/assets/avatar.jpg";
 import "./Attendance.css";
 import { useEffect, useState } from "react";
 import Select from "react-select";
+import { toast } from "react-toastify";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { FaRegTrashAlt, FaUserEdit } from "react-icons/fa";
+import AttendanceTimePicker from "./AttendanceTimePicker";
+import { Link } from "react-router-dom";
+import { months } from "../../../constant/Vehicle.constant";
+import axios from "axios";
+import dayjs from "dayjs";
+import AttendanceOutTimePicker from "./AttendanceForOutTime";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 // Start from 2024 and go up to 2030
@@ -14,15 +24,6 @@ for (let year = 2024; year <= 2030; year++) {
 const initialSelectedOption = months[0];
 const initialSelectedOption2 = years[0];
 
-import { CircularProgressbar } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import { FaRegTrashAlt, FaUserEdit } from "react-icons/fa";
-import AttendanceTimePicker from "./AttendanceTimePicker";
-import { Link } from "react-router-dom";
-import { months } from "../../../constant/Vehicle.constant";
-import axios from "axios";
-import dayjs from "dayjs";
-import AttendanceOutTimePicker from "./AttendanceForOutTime";
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -84,7 +85,7 @@ const AddAttendance = () => {
   );
   const [lateStatus, setLateStatus] = useState(false);
 
-  const [attendanceData, setAttendanceData] = useState([]);
+  // const [attendanceData, setAttendanceData] = useState([]);
 
   const parsedDate = new Date();
   const day = parsedDate.getDate().toString().padStart(2, "0");
@@ -168,8 +169,6 @@ const AddAttendance = () => {
     setOvertime(newOvertime);
   };
 
-  
-
   const handleSubMitAttendance = async () => {
     const newAttendanceData = getAllEmployee.map((employee, index) => {
       return {
@@ -177,6 +176,7 @@ const AddAttendance = () => {
         full_name: employee.full_name,
         employeeId: employee.employeeId,
         status: employee.status,
+        designation: employee.designation,
         date: formattedDate,
         present: presentState[index],
         absent: absentState[index],
@@ -186,36 +186,20 @@ const AddAttendance = () => {
         late_status: lateStatus,
       };
     });
-    setAttendanceData(newAttendanceData);
+    // setAttendanceData(newAttendanceData);
 
-    // getAllEmployee.forEach(async (attendanceRecord) => {
-    //   try {
-    //     // Send a PUT request to update the attendance for the employee
-    //      console.log(attendanceRecord._id)
-    //      console.log(attendanceRecord)
-    //      console.log(attendanceData)
-    //     const response = await axios.put(
-    //       `http://localhost:5000/api/v1/employee/one/${attendanceRecord._id}`, // Include employee ID in the URL
-    //       attendanceData
-    //     );
-    //     console.log(
-    //       `Attendance response ${response}`
-    //     );
-    //     console.log(
-    //       `Attendance updated for employee with ID ${attendanceRecord._id}`
-    //     );
-    //   } catch (error) {
-    //     console.error(
-    //       `Error updating attendance for employee with ID ${attendanceRecord._id}`
-    //     );
-    //     console.error(error);
-    //   }
-    // });
-    // Set the state with the array of objects
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/employee/all`,
+        newAttendanceData
+      );
+      if (response.status === 200) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   };
-
-  // console.log(selectedTime);
-  // console.log(attendanceData);
 
   return (
     <div className="pt-8 pb-20">
