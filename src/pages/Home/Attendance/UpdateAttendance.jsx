@@ -33,7 +33,9 @@ const UpdateAttendance = () => {
   const [overtime, setOvertime] = useState(
     new Array(employeeAttendance.length).fill(null)
   );
-  const [lateStatus, setLateStatus] = useState(false);
+  const [lateStatus, setLateStatus] = useState(
+    new Array(employeeAttendance.length).fill(false)
+  );
 
   useEffect(() => {
     axios
@@ -128,6 +130,15 @@ const UpdateAttendance = () => {
     setOvertime(newOvertime);
   };
 
+
+
+  const handleLate = (index, value) => {
+    const newLateState = [...lateStatus];
+    newLateState[index] = value
+    setLateStatus(newLateState);
+  };
+   
+
   const handleSubMitAttendance = async () => {
     const newAttendanceData = employeeAttendance.map((employee, index) => {
       return {
@@ -142,7 +153,7 @@ const UpdateAttendance = () => {
         in_time: inTime[index] !== undefined ? inTime[index] : employee.in_time,
         out_time: outTime[index] !== undefined ? outTime[index] : employee.out_time,
         overtime: overtime[index] !== undefined ? overtime[index] : employee.overtime,
-        late_status: lateStatus || employee.late_status,
+        late_status: lateStatus[index] !== undefined ? lateStatus[index] : employee.late_status,
       };
     });
 
@@ -158,8 +169,7 @@ const UpdateAttendance = () => {
       setError(error.message);
     }
   };
-
-  console.log(lateStatus)
+ 
   return (
     <div className="pt-8 pb-20">
       <div className="flex items-center justify-between my-3 mb-8">
@@ -242,12 +252,12 @@ const UpdateAttendance = () => {
                     <HiCheck
                       size={20}
                       className="text-[#F62D51] attendanceIcon"
-                      onClick={() => setLateStatus(true)}
+                      onClick={() => handleLate(index, true)}
                     />
                     <HiCheck
                       className="text-[#4AB657] attendanceIcon "
                       size={20}
-                      onClick={() => setLateStatus(false)}
+                      onClick={() => handleLate(index, false)}
                     />
                   </div>
                 </td>

@@ -67,25 +67,36 @@ const AddAttendance = () => {
   };
 
   const [error, setError] = useState("");
+  const [reload, setReload] = useState(false);
+
   const [getAllEmployee, setGetAllEmployee] = useState([]);
   const [presentState, setPresentState] = useState(
-    new Array(getAllEmployee.length).fill(false)
+    new Array(getAllEmployee?.length).fill(false)
   );
   const [absentState, setAbsentState] = useState(
-    new Array(getAllEmployee.length).fill(false)
+    new Array(getAllEmployee?.length).fill(false)
   );
   const [inTime, setInTime] = useState(
-    new Array(getAllEmployee.length).fill(null)
+    new Array(getAllEmployee?.length).fill(null)
   );
   const [outTime, setOutTime] = useState(
-    new Array(getAllEmployee.length).fill(null)
+    new Array(getAllEmployee?.length).fill(null)
   );
   const [overtime, setOvertime] = useState(
-    new Array(getAllEmployee.length).fill(null)
+    new Array(getAllEmployee?.length).fill(null)
   );
-  const [lateStatus, setLateStatus] = useState(false);
+  const [lateStatus, setLateStatus] = useState(
+    new Array(getAllEmployee?.length).fill(false)
+  );
 
-  // const [attendanceData, setAttendanceData] = useState([]);
+  const [presentPercentage, setPresentPercentage] = useState(null);
+  const [presentNumber, setPresentNumber] = useState(null);
+  const [absentPercentage, setAbsentPercentage] = useState(null);
+  const [absentNumber, setAbsentNumber] = useState(null);
+  const [latePercentage, setLatePercentage] = useState(null);
+  const [lateNumber, setLateNumber] = useState(null);
+
+ 
 
   const parsedDate = new Date();
   const day = parsedDate.getDate().toString().padStart(2, "0");
@@ -104,11 +115,88 @@ const AddAttendance = () => {
       .get("http://localhost:5000/api/v1/employee")
       .then((response) => {
         setGetAllEmployee(response.data.employee);
+
+        const attendanceData = response.data.employee.map(
+          (data) => data.attendance
+        );
+
+        const allAttendance = attendanceData.flat();
+
+        const parsedDate = new Date();
+        const day = parsedDate.getDate().toString().padStart(2, "0");
+        const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+        const year = parsedDate.getFullYear();
+        const today = `${day}-${month}-${year}`;
+
+        const filteredAttendance = allAttendance.filter(
+          (attendance) => attendance.date === today
+        );
+
+        const totalEntries = filteredAttendance.length;
+
+        const presentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === true
+        ).length;
+
+        setPresentNumber(presentEntries);
+        const presentPercentage = parseFloat(
+          (presentEntries / totalEntries) * 100
+        ).toFixed(2);
+        // If there are no entries for today, set presentPercentage to 0 to avoid NaN
+        // const finalPresentPercentage =
+        //   totalEntries === 0 ? 0 : presentPercentage;
+        const isIntegerPresentPercentage = presentPercentage.endsWith(".00");
+
+        // If the decimal part is .00, parse the number to an integer
+        const finalPresentPercentage = isIntegerPresentPercentage
+          ? parseInt(presentPercentage)
+          : presentPercentage;
+        setPresentPercentage(finalPresentPercentage);
+
+        //  for absent
+
+        const absentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === false
+        ).length;
+
+        setAbsentNumber(absentEntries);
+        const absentPercentage = parseFloat(
+          (absentEntries / totalEntries) * 100
+        ).toFixed(2);
+        // If there are no entries for today, set presentPercentage to 0 to avoid NaN
+        const isIntegerAbsentPercentage = absentPercentage.endsWith(".00");
+
+        // If the decimal part is .00, parse the number to an integer
+        const finalAbsentPercentage = isIntegerAbsentPercentage
+          ? parseInt(absentPercentage)
+          : absentPercentage;
+        // const finalAbsentPercentage = totalEntries === 0 ? 0 : absentPercentage;
+        setAbsentPercentage(finalAbsentPercentage);
+
+        // for late status
+        const lateEntries = filteredAttendance.filter(
+          (attendance) => attendance.late_status === true
+        ).length;
+
+        setLateNumber(lateEntries);
+        const latePercentage = parseFloat(
+          (lateEntries / totalEntries) * 100
+        ).toFixed(2);
+        // If there are no entries for today, set presentPercentage to 0 to avoid NaN
+        const isIntegerPercentage = latePercentage.endsWith(".00");
+
+        // If the decimal part is .00, parse the number to an integer
+        const finalLatePercentage = isIntegerPercentage
+          ? parseInt(latePercentage)
+          : latePercentage;
+        // const finalLatePercentage = totalEntries === 0 ? 0 : latePercentage;
+  
+        setLatePercentage(finalLatePercentage);
       })
       .catch((error) => {
         setError(error.message);
       });
-  }, []);
+  }, [reload]);
 
   const handlePresent = (index) => {
     const newPresentState = [...presentState];
@@ -169,6 +257,12 @@ const AddAttendance = () => {
     setOvertime(newOvertime);
   };
 
+  const handleLate = (index, value) => {
+    const newLateState = [...lateStatus];
+    newLateState[index] = value;
+    setLateStatus(newLateState);
+  };
+
   const handleSubMitAttendance = async () => {
     const newAttendanceData = getAllEmployee.map((employee, index) => {
       return {
@@ -183,7 +277,7 @@ const AddAttendance = () => {
         in_time: inTime[index],
         out_time: outTime[index],
         overtime: overtime[index],
-        late_status: lateStatus,
+        late_status: lateStatus[index],
       };
     });
     // setAttendanceData(newAttendanceData);
@@ -195,6 +289,29 @@ const AddAttendance = () => {
       );
       if (response.status === 200) {
         toast.success(response.data.message);
+        setReload(!reload);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    try {
+      const newAttendanceData = getAllEmployee.map((employee) => {
+        return {
+          _id: employee._id,
+          date: formattedDate,
+          deleted: e,
+        };
+      });
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/employee/all`,
+        newAttendanceData
+      );
+      if (response.status === 200) {
+        toast.success("Deleted successful.");
+        setReload(!reload);
       }
     } catch (error) {
       setError(error.message);
@@ -230,67 +347,68 @@ const AddAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            {getAllEmployee.map((employee, index) => (
-              <tr className="even-row" key={employee._id}>
-                <td>{index + 1}</td>
-                <td>{employee.full_name}</td>
-                <td>{employee.employeeId}</td>
-                <td>{employee.status}</td>
-                <td>{formattedDate}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    className="border"
-                    onClick={() => handlePresent(index)}
-                    checked={presentState[index]}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    className="border"
-                    onClick={() => handleAbsent(index)}
-                    checked={absentState[index]}
-                  />
-                </td>
-                <td>10.00</td>
-                <td>
-                  <AttendanceTimePicker
-                    handleAttendanceInTime={handleAttendanceInTime}
-                    index={index}
-                  />
-                </td>
-                <td>
-                  <AttendanceOutTimePicker
-                    handleAttendanceOutTime={handleAttendanceOutTime}
-                    index={index}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="border overTimeInput"
-                    onChange={(e) =>
-                      handleAttendanceOvertime(index, e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <div className="flex items-center justify-center cursor-pointer ">
-                    <HiCheck
-                      size={20}
-                      className="text-[#F62D51] attendanceIcon"
-                      onClick={() => setLateStatus(true)}
+            {Array.isArray(getAllEmployee) &&
+              getAllEmployee?.map((employee, index) => (
+                <tr className="even-row" key={employee._id}>
+                  <td>{index + 1}</td>
+                  <td>{employee.full_name}</td>
+                  <td>{employee.employeeId}</td>
+                  <td>{employee.status}</td>
+                  <td>{formattedDate}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="border"
+                      onClick={() => handlePresent(index)}
+                      checked={presentState[index]}
                     />
-                    <HiCheck
-                      className="text-[#4AB657] attendanceIcon "
-                      size={20}
-                      onClick={() => setLateStatus(false)}
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="border"
+                      onClick={() => handleAbsent(index)}
+                      checked={absentState[index]}
                     />
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td>10.00</td>
+                  <td>
+                    <AttendanceTimePicker
+                      handleAttendanceInTime={handleAttendanceInTime}
+                      index={index}
+                    />
+                  </td>
+                  <td>
+                    <AttendanceOutTimePicker
+                      handleAttendanceOutTime={handleAttendanceOutTime}
+                      index={index}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      className="border overTimeInput"
+                      onChange={(e) =>
+                        handleAttendanceOvertime(index, e.target.value)
+                      }
+                    />
+                  </td>
+                  <td>
+                    <div className="flex items-center justify-center cursor-pointer ">
+                      <HiCheck
+                        size={20}
+                        className="text-[#F62D51] attendanceIcon"
+                        onClick={() => handleLate(index, true)}
+                      />
+                      <HiCheck
+                        className="text-[#4AB657] attendanceIcon "
+                        size={20}
+                        onClick={() => handleLate(index, false)}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         <div className="flex justify-end mt-3">
@@ -318,15 +436,15 @@ const AddAttendance = () => {
           </thead>
           <tbody>
             <tr>
-              <td> 10-02-2024</td>
+              <td> {formattedDate}</td>
               <td>
                 <div className="presentCard employeeCard">
                   <div className="flex items-center justify-center w-full px-5 py-3">
                     <div className="flex items-center">
                       <div style={{ width: 60, height: 60 }}>
                         <CircularProgressbar
-                          value={90}
-                          text={`${90}%`}
+                          value={presentPercentage}
+                          text={`${presentPercentage}%`}
                           styles={{
                             // Customize the root element (outer circle)
                             path: {
@@ -344,7 +462,7 @@ const AddAttendance = () => {
                         />
                       </div>
                     </div>
-                    <b className="ml-3 text-3xl">20</b>
+                    <b className="ml-3 text-3xl">{presentNumber}</b>
                   </div>
                 </div>
               </td>
@@ -354,8 +472,8 @@ const AddAttendance = () => {
                     <div className="flex items-center">
                       <div style={{ width: 60, height: 60 }}>
                         <CircularProgressbar
-                          value={10}
-                          text={`${10}%`}
+                          value={absentPercentage}
+                          text={`${absentPercentage}%`}
                           styles={{
                             // Customize the root element (outer circle)
                             path: {
@@ -373,7 +491,7 @@ const AddAttendance = () => {
                         />
                       </div>
                     </div>
-                    <b className="ml-3 text-3xl">10</b>
+                    <b className="ml-3 text-3xl">{absentNumber}</b>
                   </div>
                 </div>
               </td>
@@ -383,8 +501,8 @@ const AddAttendance = () => {
                     <div className="flex items-center">
                       <div style={{ width: 60, height: 60 }}>
                         <CircularProgressbar
-                          value={5}
-                          text={`${5}%`}
+                          value={latePercentage}
+                          text={`${latePercentage}%`}
                           styles={{
                             // Customize the root element (outer circle)
                             path: {
@@ -402,7 +520,7 @@ const AddAttendance = () => {
                         />
                       </div>
                     </div>
-                    <b className="ml-3 text-3xl">5</b>
+                    <b className="ml-3 text-3xl">{lateNumber}</b>
                   </div>
                 </div>
               </td>
@@ -426,6 +544,7 @@ const AddAttendance = () => {
                 <FaRegTrashAlt
                   className="text-[#F62F52] cursor-pointer mx-auto"
                   size={30}
+                  onClick={() => handleDelete("delete")}
                 />
               </td>
             </tr>
