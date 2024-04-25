@@ -212,12 +212,7 @@
   font-size: 14px;
 }
 
-.jobCardSelect {
-  width: 200px !important;
-}
-.jobCardSelect2 {
-  width: 635px !important;
-}
+
 .jobCardFieldWraps {
   width: 100%;
   display: flex;
@@ -264,14 +259,15 @@
 .addCustomerDropDown {
   position: absolute;
   top: 41px;
-  background: #48cae4;
-  color: #fff;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   display: flex;
   flex-direction: column;
   padding: 10px;
   transform: scaleY(0);
   transform-origin: top;
   transition: all 0.5s ease-in-out;
+  background:#fff;
+  color:#111;
 }
 .addCustomerRelative:hover .addCustomerDropDown {
   transform: scaleY(1);

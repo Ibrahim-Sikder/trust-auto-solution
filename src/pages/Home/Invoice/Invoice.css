@@ -1,96 +1,92 @@
 .invoicePrintWrap {
-	background-color: #ddd;
-	padding: 50px 0;
+  background-color: #ddd;
+  padding: 50px 0;
 }
 
 .invoiceHead {
-	width: 782px;
-	margin-left: 20px;
+  width: 782px;
+  margin-left: 20px;
 }
 
 .invoicePrint {
-	width: 8.27in;
-	margin: 0 auto;
-	background-color: #fff;
-	min-height: 11in;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  width: 8.27in;
+  margin: 0 auto;
+  background-color: #fff;
+  min-height: 11in;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .firstInputField {
-	width: 80px;
+  width: 80px;
 }
 
 .thirdInputField {
-	width: 150px;
+  width: 150px;
 }
 
-
-
 .SearchBtn {
-	width: 100px;
-	height: 40px;
-	background: #42a1da;
-	color: #fff;
-	border-radius: 5px;
-	margin-left: 10px;
+  width: 100px;
+  height: 40px;
+  background: #42a1da;
+  color: #fff;
+  border-radius: 5px;
+  margin-left: 10px;
 }
 
 .searcList select {
-	border: 1px solid #42a1da;
-	padding: 5px;
-	border-radius: 5px;
-	margin-right: 5px;
+  border: 1px solid #42a1da;
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 5px;
 }
 
 .discountFieldWrap {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .discountFieldWrap input,
 .discountFieldWrap span {
-	border: 1px solid #ddd;
-	margin-bottom: 7px;
-	height: 45px;
-	border-radius: 5px;
-	padding-left: 5px;
-	width: 148px;
+  border: 1px solid #ddd;
+  margin-bottom: 7px;
+  height: 45px;
+  border-radius: 5px;
+  padding-left: 5px;
+  width: 148px;
 }
 
 .discountFieldWrap span {
-	display: flex;
-	justify-content: left;
-	align-items: center;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 
 .addInvoiceItem {
-	position: absolute;
+  position: absolute;
 }
 
-
-
 .buttonGroup {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
 .buttonGroup button {
-	background: #42a1da;
-	color: #fff;
-	margin-right: 5px;
-	width: 100px;
-	height: 40px;
-	border-radius: 20px;
-	transition: all 0.3s ease-in-out;
+  background: #42a1da;
+  color: #fff;
+  margin-right: 5px;
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
 }
 
 .buttonGroup button:hover {
-	background-color: #42A1DA;
+  background-color: #42a1da;
 }
 
 /* .submitQutationBtn {
@@ -99,28 +95,25 @@
 } */
 
 .submitQutationBtn button {
-	background: #42a1da;
-    color: white;
-    width: 150px;
-    height: 46px;
-    border-radius: 4px;
+  background: #42a1da;
+  color: white;
+  width: 150px;
+  height: 46px;
+  border-radius: 4px;
 }
 
 .invoiceCard {
-	text-align: center !important;
-	width: 15rem !important;
-	margin: 28px auto;
+  text-align: center !important;
+  width: 15rem !important;
+  margin: 28px auto;
 }
 
 .qoutationTitle {
-	font-size: 36px !important;
-	
+  font-size: 36px !important;
 }
-.text-left{
-	font-size: 12px;
+.text-left {
+  font-size: 12px;
 }
-
-
 
 .invoicTable td,
 .invoicTable th,
@@ -128,251 +121,239 @@
 .invoiceTable2 td,
 .invoiceTable2 th,
 .invoiceTable2 tr {
-	border: 1px solid #c0c2c1;
-	text-align: center;
-	font-size: 10px !important;
+  border: 1px solid #c0c2c1;
+  text-align: center;
+  font-size: 10px !important;
 }
 
 .invoiceTable2 th {
-	background: #4671a1;
-	color: #fff;
+  background: #4671a1;
+  color: #fff;
 }
 
 .printInvoiceBtnGroup {
-	margin-left: 210px;
-	margin-top: 30px;
+  margin-left: 210px;
+  margin-top: 30px;
 }
 
 .printInvoiceBtnGroup button {
-	background: #42a1da;
-	color: #fff;
-	border-radius: 20px;
-	margin-right: 5px;
-	width: 69px;
-	height: 30px;
-	font-size: 14px;
+  background: #42a1da;
+  color: #fff;
+  border-radius: 20px;
+  margin-right: 5px;
+  width: 69px;
+  height: 30px;
+  font-size: 14px;
 }
 
-.customerSignatureWrap, .customerSignatureWrap2{
-	display: flex;
-	justify-content: space-between;
-	margin: 5px 0;
-	margin-top: 25px;
+.customerSignatureWrap,
+.customerSignatureWrap2 {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  margin-top: 25px;
 }
-
 
 .customerSignatur {
-	position: relative;
-	bottom: 0;
+  position: relative;
+  bottom: 0;
 }
 
 .customerSignatur::after {
-	content: '';
-	position: absolute;
-	width: 100%;
-	height: 1px;
-	top: 0;
-	background: black;
-	left: 0;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  top: 0;
+  background: black;
+  left: 0;
 }
 
+@media only screen and (min-width: 1440px) {
 
 
-@media only screen and (min-width:1440px){
-	.secondInputField {
-		width: 1059px;
-	}
+  .labelWrap label {
+    display: block;
+    position: absolute;
+  }
 
-	.labelWrap label {
-		display: block;
-		position: absolute;
-	}
-	
-	.labelWrap label:nth-child(1) {
-		left: -40px !important;
-	}
-	
-	.labelWrap label:nth-child(2) {
-		left: -235px !important;
-	}
-	
-	.labelWrap label:nth-child(3) {
-		left: 468px !important;
-	}
-	
-	.labelWrap label:nth-child(4) {
-		left: 220px !important;
-	}
-	
-	.labelWrap label:nth-child(5) {
-		left: 70px !important;
-	}
+  .labelWrap label:nth-child(1) {
+    left: -40px !important;
+  }
+
+  /* .labelWrap label:nth-child(2) {
+    left: -305px !important;
+  }
+
+  .labelWrap label:nth-child(3) {
+    left: 442px !important;
+  }
+
+  .labelWrap label:nth-child(4) {
+    left: 196px !important;
+  }
+
+  .labelWrap label:nth-child(5) {
+    left: 50px !important;
+  } */
+
+  
 }
 
-@media only screen and (max-width:1440px){
-	.secondInputField {
-		width: 687px;
-	}
-	.labelWrap label:nth-child(2) {
-		left: -147px !important;
-	}
-	.labelWrap label:nth-child(1) {
-		left: -2px !important;
-	}
-	.labelWrap label:nth-child(3) {
-		left: 258px !important;
-	}
+@media only screen and (max-width: 1440px) {
+  .secondInputField {
+    width: 687px;
+  }
+  .labelWrap label:nth-child(2) {
+    left: -147px !important;
+  }
+  .labelWrap label:nth-child(1) {
+    left: -2px !important;
+  }
+  .labelWrap label:nth-child(3) {
+    left: 258px !important;
+  }
 
-	.labelWrap label:nth-child(4) {
-		left: 86px !important;
-	}
-	.labelWrap label:nth-child(5) {
-		left: 14px !important;
-	}
-
-
-
+  .labelWrap label:nth-child(4) {
+    left: 86px !important;
+  }
+  .labelWrap label:nth-child(5) {
+    left: 14px !important;
+  }
 }
-
-
-
 
 @media only screen and (max-width: 1024px) {
-	.invoiceHead {
-		width: 100%;
-	}
+  .invoiceHead {
+    width: 100%;
+  }
 
-	.trustAuto {
-		font-size: 50px;
-	}
+  .trustAuto {
+    font-size: 50px;
+  }
 
-	.invoicForm input {
-		width: 182px;
-	}
+  .invoicForm input {
+    width: 182px;
+  }
 
-	.qutationForm {
-		display: flex;
-		align-items: center;
-		margin-bottom: 10px;
-		flex-wrap: wrap;
-		gap: 5px;
-	}
+  .qutationForm {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
 
-	.thirdInputField {
-		width: 95px;
-	}
+  .thirdInputField {
+    width: 95px;
+  }
 
-	.secondInputField {
-		width: 487px;
-	}
+  .secondInputField {
+    width: 487px;
+  }
 
-	.labelWrap label {
-		font-size: 12px;
-	}
+  .labelWrap label {
+    font-size: 12px;
+  }
 
-	.labelWrap label:nth-child(5) {
-		left: 14px !important;
-	}
+  .labelWrap label:nth-child(5) {
+    left: 14px !important;
+  }
 
-	.labelWrap label:nth-child(4) {
-		left: 52px !important;
-	}
+  .labelWrap label:nth-child(4) {
+    left: 52px !important;
+  }
 
-	.labelWrap label:nth-child(3) {
-		left: 133px !important;
-	}
+  .labelWrap label:nth-child(3) {
+    left: 133px !important;
+  }
 
-	.labelWrap label:nth-child(2) {
-		left: -37px !important;
-	}
+  .labelWrap label:nth-child(2) {
+    left: -37px !important;
+  }
 
-	.labelWrap label:nth-child(1) {
-		left: 20px !important;
-	}
+  .labelWrap label:nth-child(1) {
+    left: 20px !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {
-	.qutationForm {
-		flex-wrap: wrap;
-		gap: 5px;
-	}
+  .qutationForm {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
 
-	.trustAuto {
-		font-size: 30px;
-		margin-left: 0px;
-	}
+  .trustAuto {
+    font-size: 30px;
+    margin-left: 0px;
+  }
 
-	.discountFieldWrap input {
-		width: 118px;
-	}
+  .discountFieldWrap input {
+    width: 118px;
+  }
 
-	.discountFieldWrap b {
-		font-size: 12px;
-	}
+  .discountFieldWrap b {
+    font-size: 12px;
+  }
 
-	.labelWrap label {
-		display: none;
-	}
+  .labelWrap label {
+    display: none;
+  }
 
-	.secondInputField {
-		width: 253px;
-	}
-
-
+  .secondInputField {
+    width: 253px;
+  }
 }
 
 @media only screen and (max-width: 500px) {
-	.trustAuto {
-		font-size: 25px;
-	}
+  .trustAuto {
+    font-size: 25px;
+  }
 
-	.qutationForm {
-		justify-content: center;
-	}
+  .qutationForm {
+    justify-content: center;
+  }
 
-	.invoicForm input {
-		width: 300px;
-	}
+  .invoicForm input {
+    width: 300px;
+  }
 
-	.invoicForm input {
-		width: 300px;
-	}
-	.removeBtn {
-		position: relative;
-		top: 262px;
-	}
-	.addQuotationBtns{
-		position: relative;
-		top: 144px;
-
-	}
-	.vehicleCard {
-		margin-right: 0px;
-	}
-
+  .invoicForm input {
+    width: 300px;
+  }
+  .removeBtn {
+    position: relative;
+    top: 262px;
+  }
+  .addQuotationBtns {
+    position: relative;
+    top: 144px;
+  }
+  .vehicleCard {
+    margin-right: 0px;
+  }
 }
 
 @media print {
-	body {
-		background-color: #fff;
-	}
+  body {
+    background-color: #fff;
+  }
 
-	.invoicePrintWrap {
-		background-color: #fff;
-		padding: 0;
-	}
+  .invoicePrintWrap {
+    background-color: #fff;
+    padding: 0;
+  }
 
-	.buttonGroup,
-	.printInvoiceBtnGroup {
-		display: none;
-	}
+  .buttonGroup,
+  .printInvoiceBtnGroup {
+    display: none;
+  }
 
-	.invoiceTable2 th,
-	.invoiceTable2 td {
-		padding: 2px;
-		margin: 0;
-		font-size: 10px;
-	}
+  .invoiceTable2 th,
+  .invoiceTable2 td {
+    padding: 2px;
+    margin: 0;
+    font-size: 10px;
+  }
 }
 .invoicTable td,
 .invoicTable th,
@@ -382,68 +363,64 @@
 .invoiceTable2 tr,
 .invoiceTable2 th,
 .invoiceTable2 td {
-	padding:3px !important;
-	margin: 0 !important;
-	font-size: 13px !important;
-	text-align: center !important;	
+  padding: 3px !important;
+  margin: 0 !important;
+  font-size: 13px !important;
+  text-align: center !important;
 }
 
-.invoiceCustomerInfo small, .invoiceCustomerInfo b, .netTotalAmounts b, .netTotalAmounts small{
-	display: block;
-	font-size: 11px;
+.invoiceCustomerInfo small,
+.invoiceCustomerInfo b,
+.netTotalAmounts b,
+.netTotalAmounts small {
+  display: block;
+  font-size: 11px;
 }
-.netTotalAmounts b, .netTotalAmounts small{
-	font-size: 12px;
+.netTotalAmounts b,
+.netTotalAmounts small {
+  font-size: 12px;
 }
-.invoiceLine{
-	width:1px ;
-	height:80px;
-	background:black;
+.invoiceLine {
+  width: 1px;
+  height: 80px;
+  background: black;
 }
-.invoiceTable2 th:first-child{
-	width:50px !important;
-
+.invoiceTable2 th:first-child {
+  width: 50px !important;
 }
-.invoiceTable2 th:nth-child(3){
-	width:60px !important;
+.invoiceTable2 th:nth-child(3) {
+  width: 60px !important;
 }
-.invoiceTable2 th:nth-child(4){
-	width:55px !important;
+.invoiceTable2 th:nth-child(4) {
+  width: 55px !important;
 }
-.invoiceTable2 th:nth-child(5){
-	width:70px !important;
+.invoiceTable2 th:nth-child(5) {
+  width: 70px !important;
 }
-.invoiceTable2 th:nth-child(2){
-	width:100%;
+.invoiceTable2 th:nth-child(2) {
+  width: 100%;
 }
-
 
 .flex.netTotalAmounts {
-    width: 172px;
-    display: flex;
-    justify-content: space-between;
-    margin-right: 5px;
+  width: 172px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 5px;
 }
 
-.invoiceInformaiton{
-	width:90% !important;
-	margin:0 auto;
+.invoiceInformaiton {
+  width: 90% !important;
+  margin: 0 auto;
 }
-
-
-
-
-
 
 @media print {
-	body.print-mode {
-	  color: #000 !important; 
-	  padding-top: 2px !important  ;
-	  padding-bottom: 2px !important  ;
-	  margin: 0 !important;
-	  font-size: 10px !important;
-	  text-align: center !important;
-	  /* Set the desired text color for print */
-	}
-	
+  body.print-mode {
+    color: #000 !important;
+    padding-top: 2px !important  ;
+    padding-bottom: 2px !important  ;
+    margin: 0 !important;
+    font-size: 10px !important;
+    text-align: center !important;
+    /* Set the desired text color for print */
   }
+}

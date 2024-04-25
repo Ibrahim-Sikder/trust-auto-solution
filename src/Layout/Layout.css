@@ -15,8 +15,12 @@
 	-o-transition: all .3s ease-in-out;
 	background: white !important;
 }
+.bar:nth-child(2){
+	width:16px !important
+}
 .activeToggle .bar:nth-child(2) {
 	opacity: 0;
+	
 }
 .activeToggle .bar:nth-child(1) {
 	transform: translateY(8px) rotate(45deg);
@@ -35,7 +39,7 @@
 .navActive,
 .activeToggle {
 	position: fixed;
-	background: #2c3136;
+
 	left: 3px;
 	padding: 5px;
 	border-top-right-radius: 5px;
@@ -45,13 +49,13 @@
 	cursor: pointer;
 }
 .navActive {
-	left: 24px;
-	z-index: 999999 !important;
+	left: 32px;
+    z-index: 999999 !important;
 }
 
 .activeToggle {
     position: fixed;
-    left: 270px;
+	left: 32px;
     transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeRightSideBarWrap {
@@ -92,7 +96,6 @@
 }
 .dashboardAccordion {
 	background: #2c3136 !important;
-    width: 270px !important;
     color: #fff !important;
     transition: all 500s ease-in-out;
 }
@@ -138,6 +141,10 @@
 	z-index: 999;
 	color: #42a1da;
 }
+.scrollBtn{
+	display: none;
+}
+
 .scrollToTopBtn {
 	width: 40px;
 	height: 40px;
@@ -152,6 +159,10 @@
 	place-items: center;
 	transition: all .5s ease;
 	animation-delay: .5s;
+
+}
+.scrollToTopBtn .scrollBtn{
+	display: block !important;
 }
 .accordionExpandIcon {
 	color: #fff !important;
@@ -160,27 +171,94 @@
 .dashboardAccordion:hover .accordionExpandIcon{
 	color:black !important;
 }
+.dashboardSearchBar{
+	width:250px;
+	background:#42a0da59;
+	height:35px;
+	display: flex;
+	align-items: center;
+	border-radius: 20px;
+	overflow: hidden;
+	justify-content: space-between;
+	padding-right: 10px;
+	border:1px solid #ddd;
+}
+.dashboardSearchBar input{
+	height: 100%;
+	background-color: transparent;
+	padding-left:10px;
+}
+.dashboardSearchBar input::placeholder{
+	color:#fff;
+}
+.notificationIcon{
+	font-size:30px !important;
+}
+.adminProfile{
+	position: absolute;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	padding: 10px;
+	border-radius: 3px;
+	top:30px;
+	left:45px;
+	width:100px;
+	background:#fff;
+	color:black;
+	opacity: 0;
+	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
+	transform: scale(0);
+	transform-origin: top;
+
+}
+.adminProfileWrap{
+	position: relative;
+	cursor: pointer;
+}
+.adminProfileWrap:hover .adminProfile{
+	opacity: 1;
+	transform: scale(1);
+}
+
+ .accordionTypoGrapy:hover{
+	background:#2C3136;
+	padding-left:50px;
+	color:#fff !important;
+}
+
+@media only screen and (min-width: 1441px) {
+	.activeDrawer {
+		width: 93%;
+	}
+	.dashboardAccordion {
+		width: 270px !important;
+	}
+}
+
+@media only screen and (max-width: 1440px) {
+	.activeDrawer {
+		width: 91%;
+	}
+}
 
 @media only screen and (max-width: 1024px) {
-	.activeToggle {
-		left: 204px;
+	
+	.activeDrawer {
+		width: 98%;
+	}
+	.completedServiceCards {
+		width: 235px;
+		padding: 20px 5px;
 	}
 
 	.activeRightSideBarWrap {
 		width: 60px;
 	}
-	.navActive {
-		left: 10px;
-	}
+
 	.activeRightSideBarWrap {
 		display: none;
 	}
-	.navActive {
-		left: 0px;
-	}
-	.activeDrawer {
-		width: 97%;
-	}
+
+	
 	/* .activeDrawer {
 		width: 98%;
 	} */
@@ -198,9 +276,12 @@
 		background: black;
 		width: 30% !important;
 	}
-	.activeToggle {
-		left: 230px;
-	
+
+	.dashboardSearchBar {
+		width: 230px;
+	}
+	.navActive {
+		left: 0px;
 	}
 	
 }
@@ -224,9 +305,7 @@
 		background: #2C3136;
 		z-index: 99999999;
 	}
-	.activeToggle {
-		left: 213px;
-	}
+	
 
 	.activeToggle .bar:nth-child(3) {
 		margin-top: 7px;

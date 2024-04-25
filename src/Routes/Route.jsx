@@ -63,6 +63,7 @@ import EmployeeSalary from "../pages/Home/Employee/EmployeeSalary";
 import EmployeeOvertime from "../pages/Home/Employee/EmployeeOvertime";
 import RunningProject from "../pages/Home/Projects/RunningProject";
 import CompletedProject from "../pages/Home/Projects/CompletedProject";
+import ViewEmployeeAttendance from "../pages/Home/Attendance/ViewEmployeeAttendance";
 
 export const router = createBrowserRouter([
   {
@@ -341,6 +342,10 @@ export const router = createBrowserRouter([
       {
         path: "complete-project",
         element: <CompletedProject />,
+      },
+      {
+        path: "view-attendance",
+        element: <ViewEmployeeAttendance />,
       },
     ],
   },

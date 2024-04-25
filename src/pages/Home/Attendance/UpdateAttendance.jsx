@@ -47,14 +47,14 @@ const UpdateAttendance = () => {
 
         const allAttendance = attendanceData.flat();
 
-        console.log(allAttendance);
+    
         // Filtering attendance data for today's date
         const parsedDate = new Date();
         const day = parsedDate.getDate().toString().padStart(2, "0");
         const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
         const year = parsedDate.getFullYear();
         const today = `${day}-${month}-${year}`;
-        console.log(today);
+    
         const filteredAttendance = allAttendance.filter(
           (attendance) => attendance.date === today
         );

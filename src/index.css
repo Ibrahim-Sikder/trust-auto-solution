@@ -17,6 +17,7 @@ body {
 	box-sizing: border-box;
 	scroll-behavior: smooth;
 	font-family: 'Poppins', sans-serif;
+
 }
 
 
@@ -37,7 +38,7 @@ body {
 .drawer-content {
 	position: absolute !important;
 	right: 0px !important;
-	width: 80%;
+	width: 85%;
 	transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeDrawer {
@@ -180,8 +181,68 @@ input:focus {
     padding-top: 3px !important; 
 }
 
+.css-l0h214-MuiResponsiveChart-container {
+    height: 500px !important;
+}
 
 
+
+  .labelWrap label:nth-child(2) {
+    left: -295px !important;
+  }
+
+.drawer-content .labelWrap label:nth-child(2) {
+    left: -245px !important;
+  }
+
+  .labelWrap label:nth-child(3) {
+    left: 495px !important;
+  }
+
+  .drawer-content .labelWrap label:nth-child(3) {
+	left: 415px !important;
+  }
+  .labelWrap label:nth-child(4) {
+    left: 225px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(4) {
+	left: 180px !important;
+  }
+
+  .labelWrap label:nth-child(5) {
+    left: 60px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(5) {
+	left: 40px !important;
+  }
+
+
+
+  .jobCardSelect {
+	width: 200px !important;
+  }
+  .jobCardSelect2 {
+	width: 644px !important;
+  }
+
+  .drawer-content .jobCardSelect2 {
+	width: 570px !important;
+  }
+  .sectionMargin{
+	margin-top:80px;
+  }
+
+
+  @media only screen and (min-width: 1440px) {
+	.secondInputField {
+	  width: 1165px;
+	}
+
+	.drawer-content .secondInputField {
+		width: 1000px;
+	  }
+	
+}
 
 
 @media only screen and (min-width:1024px) {

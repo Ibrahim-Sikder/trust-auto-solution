@@ -1135,7 +1135,7 @@ const AddJobCard = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-wrap items-center justify-between mt-5">
+          <div className="flex flex-wrap items-center justify-between mt-5 mb-10">
             <div>
               <TextField
         

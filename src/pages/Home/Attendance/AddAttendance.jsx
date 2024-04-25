@@ -14,16 +14,10 @@ import { months } from "../../../constant/Vehicle.constant";
 import axios from "axios";
 import dayjs from "dayjs";
 import AttendanceOutTimePicker from "./AttendanceForOutTime";
-
-const years = [{ value: "Select Year", label: "Select Year" }];
-// Start from 2024 and go up to 2030
-for (let year = 2024; year <= 2030; year++) {
-  years.push({ value: String(year), label: String(year) });
-}
-
-const initialSelectedOption = months[0];
-const initialSelectedOption2 = years[0];
-
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -52,19 +46,6 @@ const AddAttendance = () => {
   };
 
   const closeIconPositions = [Math.floor(20 / 2), 1, 31];
-
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
-  const [selectedOption2, setSelectedOption2] = useState(
-    initialSelectedOption2
-  );
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
-  };
-  const handleChange2 = (selectedOption2) => {
-    setSelectedOption2(selectedOption2);
-  };
 
   const [error, setError] = useState("");
   const [reload, setReload] = useState(false);
@@ -96,8 +77,6 @@ const AddAttendance = () => {
   const [latePercentage, setLatePercentage] = useState(null);
   const [lateNumber, setLateNumber] = useState(null);
 
- 
-
   const parsedDate = new Date();
   const day = parsedDate.getDate().toString().padStart(2, "0");
   const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
@@ -119,19 +98,10 @@ const AddAttendance = () => {
         const attendanceData = response.data.employee.map(
           (data) => data.attendance
         );
-
         const allAttendance = attendanceData.flat();
-
-        const parsedDate = new Date();
-        const day = parsedDate.getDate().toString().padStart(2, "0");
-        const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
-        const year = parsedDate.getFullYear();
-        const today = `${day}-${month}-${year}`;
-
         const filteredAttendance = allAttendance.filter(
-          (attendance) => attendance.date === today
+          (attendance) => attendance.date === formattedDate
         );
-
         const totalEntries = filteredAttendance.length;
 
         const presentEntries = filteredAttendance.filter(
@@ -151,7 +121,11 @@ const AddAttendance = () => {
         const finalPresentPercentage = isIntegerPresentPercentage
           ? parseInt(presentPercentage)
           : presentPercentage;
-        setPresentPercentage(finalPresentPercentage);
+        if (isNaN(finalPresentPercentage)) {
+          setPresentPercentage(0);
+        } else {
+          setPresentPercentage(finalPresentPercentage);
+        }
 
         //  for absent
 
@@ -171,7 +145,11 @@ const AddAttendance = () => {
           ? parseInt(absentPercentage)
           : absentPercentage;
         // const finalAbsentPercentage = totalEntries === 0 ? 0 : absentPercentage;
-        setAbsentPercentage(finalAbsentPercentage);
+        if (isNaN(finalAbsentPercentage)) {
+          setAbsentPercentage(0);
+        } else {
+          setAbsentPercentage(finalAbsentPercentage);
+        }
 
         // for late status
         const lateEntries = filteredAttendance.filter(
@@ -190,13 +168,16 @@ const AddAttendance = () => {
           ? parseInt(latePercentage)
           : latePercentage;
         // const finalLatePercentage = totalEntries === 0 ? 0 : latePercentage;
-  
-        setLatePercentage(finalLatePercentage);
+        if (isNaN(finalLatePercentage)) {
+          setLatePercentage(0);
+        } else {
+          setLatePercentage(finalLatePercentage);
+        }
       })
       .catch((error) => {
         setError(error.message);
       });
-  }, [reload]);
+  }, [formattedDate, reload]);
 
   const handlePresent = (index) => {
     const newPresentState = [...presentState];
@@ -302,6 +283,87 @@ const AddAttendance = () => {
         return {
           _id: employee._id,
           date: formattedDate,
+          deleted: e,
+        };
+      });
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/employee/all`,
+        newAttendanceData
+      );
+      if (response.status === 200) {
+        toast.success("Deleted successful.");
+        setReload(!reload);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  //  search filter
+
+  const [filteredDate, setFilteredDate] = useState(null);
+
+  const [fPresentNumber, setFPresentNumber] = useState(null);
+
+  const [fAbsentNumber, setFAbsentNumber] = useState(null);
+
+  const [fLateNumber, setFLateNumber] = useState(null);
+
+  const handleDateSearch = (e) => {
+    const parsedDate = new Date(e.$d);
+    const day = parsedDate.getDate().toString().padStart(2, "0");
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = parsedDate.getFullYear();
+    const date = `${day}-${month}-${year}`;
+    setFilteredDate(date);
+  };
+
+  const handleFilterData = () => {
+    axios
+      .get("http://localhost:5000/api/v1/employee")
+      .then((response) => {
+        const attendanceData = response.data.employee.map(
+          (data) => data.attendance
+        );
+        const allAttendance = attendanceData.flat();
+        const filteredAttendance = allAttendance.filter(
+          (attendance) => attendance.date === filteredDate
+        );
+
+        setGetAllEmployee(filteredAttendance);
+
+        const presentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === true
+        ).length;
+
+        setFPresentNumber(presentEntries);
+
+        //  for absent
+
+        const absentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === false
+        ).length;
+
+        setFAbsentNumber(absentEntries);
+
+        // for late status
+        const lateEntries = filteredAttendance.filter(
+          (attendance) => attendance.late_status === true
+        ).length;
+
+        setFLateNumber(lateEntries);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  const handleDeleteFilter = async (e) => {
+    try {
+      const newAttendanceData = getAllEmployee.map((employee) => {
+        return {
+          _id: employee._id,
+          date: filteredDate ? filteredDate : formattedDate,
           deleted: e,
         };
       });
@@ -553,87 +615,143 @@ const AddAttendance = () => {
       </div>
 
       <div className="mt-10 table-container">
-        <h3 className="mt-5 mb-8 text-2xl font-semibold">
-          Today Attendance Sheet : March 2024
-        </h3>
-        <div className="grid grid-cols-5 gap-5 mt-5 mb-8">
-          <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput w-[300px h-[60px]]"
-              type="text"
-              placeholder=""
-            />
-            <label className="employeeLavel" htmlFor="">
-              Employee ID
-            </label>
-          </div>
+        <h3 className="mt-5 mb-8 text-2xl font-semibold">Attendance Sheet</h3>
+
+        <div className="flex items-center my-5 ">
           <div>
-            <Select
-              value={selectedOption}
-              onChange={handleChange}
-              options={months}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker label="Select Date" onChange={handleDateSearch} />
+              </DemoContainer>
+            </LocalizationProvider>
           </div>
-          <div>
-            <Select
-              value={selectedOption2}
-              onChange={handleChange2}
-              options={years}
-            />
-          </div>
-          <div className="relative rounded-sm w-max">
-            <button className="employeeBtn employeeInput">Search</button>
+          <div className="relative rounded-sm w-max mt-2 ml-2">
+            <button
+              onClick={handleFilterData}
+              className="employeeBtn employeeInput"
+            >
+              Search
+            </button>
           </div>
         </div>
-        <table className="attendanceTable">
-          <thead>
-            <tr className="bg-[#42A1DA] text-white ">
-              <th>Employee </th>
-              <th>Employee ID </th>
-              {[...Array(31).keys()].map((day) => (
-                <th key={day}>
-                  <div>
-                    <span>March </span>
-                    {day + 1}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {[...Array(6).keys()].map((row) => (
-              <tr key={row} className={row % 2 === 0 ? "even-row" : "odd-row"}>
-                <td>
-                  <div className="flex items-center">
-                    <img
-                      src={avatar}
-                      className="object-cover w-8 h-8 mr-2 rounded-full"
-                      alt=""
-                    />
-                    <span>Mr John</span>
-                  </div>
-                </td>
-                <td>0002024</td>
-                {generateIcons(31, closeIconPositions).map((icon, index) => (
-                  <td key={index}>
-                    <span className="block attendanceIcon">{icon}</span>
-                    <div className="flex items-center justify-center">
-                      <small className="block mt-3">12.30 - 5.00 </small>
+        {getAllEmployee.length > 0 ? (
+          <table className="attendanceTable">
+            <thead>
+              <tr className="bg-[#42A1DA] text-white ">
+                <th>Date</th>
+                <th>Present </th>
+                <th>Absent </th>
+                <th>Late </th>
+                <th colSpan={3}>Action </th>
+              </tr>
+            </thead>
+            {filteredDate ? (
+              <tbody>
+                <tr className="even-row">
+                  <td> {filteredDate}</td>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
+                      {fPresentNumber  }
                     </div>
                   </td>
-                ))}
-              </tr>
-            ))}
-            <div className="flex my-5 ml-5">
-              <Link to="/dashboard/update-attendance">
-                <FaUserEdit
-                  className="text-[#60BF6B] cursor-pointer mx-auto"
-                  size={50}
-                />
-              </Link>
-            </div>
-          </tbody>
-        </table>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      {fAbsentNumber  }
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      {fLateNumber  }
+                    </div>
+                  </td>
+                  <td>
+                    <Link to="/dashboard/update-attendance">
+                      <FaUserEdit
+                        className="text-[#60BF6B] cursor-pointer mx-auto"
+                        size={30}
+                      />
+                    </Link>
+                  </td>
+
+                  <td>
+                    <Link
+                      to={`/dashboard/view-attendance?date=${
+                        filteredDate  
+                      }`}
+                    >
+                      {" "}
+                      <HiOutlineEye
+                        className="text-[#42A1DA] cursor-pointer mx-auto"
+                        size={30}
+                      />{" "}
+                    </Link>
+                  </td>
+                  <td>
+                    {" "}
+                    <FaRegTrashAlt
+                      className="text-[#F62F52] cursor-pointer mx-auto"
+                      size={30}
+                      onClick={() => handleDeleteFilter("delete")}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            ) : (
+              <tbody>
+                <tr className="even-row">
+                  <td> { formattedDate}</td>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
+                      {  presentNumber}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      { absentNumber}
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      {lateNumber}
+                    </div>
+                  </td>
+                  <td>
+                    <Link to="/dashboard/update-attendance">
+                      <FaUserEdit
+                        className="text-[#60BF6B] cursor-pointer mx-auto"
+                        size={30}
+                      />
+                    </Link>
+                  </td>
+
+                  <td>
+                    <Link
+                      to={`/dashboard/view-attendance?date=${formattedDate}`}
+                    >
+                      {" "}
+                      <HiOutlineEye
+                        className="text-[#42A1DA] cursor-pointer mx-auto"
+                        size={30}
+                      />{" "}
+                    </Link>
+                  </td>
+                  <td>
+                    {" "}
+                    <FaRegTrashAlt
+                      className="text-[#F62F52] cursor-pointer mx-auto"
+                      size={30}
+                      onClick={() => handleDelete("delete")}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            )}
+          </table>
+        ) : (
+          <div>No data found.</div>
+        )}
       </div>
     </div>
   );
