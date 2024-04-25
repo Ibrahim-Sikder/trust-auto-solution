@@ -48,25 +48,34 @@ const AddAttendance = () => {
   const closeIconPositions = [Math.floor(20 / 2), 1, 31];
 
   const [error, setError] = useState("");
+  const [reload, setReload] = useState(false);
+
   const [getAllEmployee, setGetAllEmployee] = useState([]);
   const [presentState, setPresentState] = useState(
-    new Array(getAllEmployee.length).fill(false)
+    new Array(getAllEmployee?.length).fill(false)
   );
   const [absentState, setAbsentState] = useState(
-    new Array(getAllEmployee.length).fill(false)
+    new Array(getAllEmployee?.length).fill(false)
   );
   const [inTime, setInTime] = useState(
-    new Array(getAllEmployee.length).fill(null)
+    new Array(getAllEmployee?.length).fill(null)
   );
   const [outTime, setOutTime] = useState(
-    new Array(getAllEmployee.length).fill(null)
+    new Array(getAllEmployee?.length).fill(null)
   );
   const [overtime, setOvertime] = useState(
-    new Array(getAllEmployee.length).fill(null)
+    new Array(getAllEmployee?.length).fill(null)
   );
-  const [lateStatus, setLateStatus] = useState(false);
+  const [lateStatus, setLateStatus] = useState(
+    new Array(getAllEmployee?.length).fill(false)
+  );
 
-  // const [attendanceData, setAttendanceData] = useState([]);
+  const [presentPercentage, setPresentPercentage] = useState(null);
+  const [presentNumber, setPresentNumber] = useState(null);
+  const [absentPercentage, setAbsentPercentage] = useState(null);
+  const [absentNumber, setAbsentNumber] = useState(null);
+  const [latePercentage, setLatePercentage] = useState(null);
+  const [lateNumber, setLateNumber] = useState(null);
 
   const parsedDate = new Date();
   const day = parsedDate.getDate().toString().padStart(2, "0");
@@ -85,11 +94,90 @@ const AddAttendance = () => {
       .get("http://localhost:5000/api/v1/employee")
       .then((response) => {
         setGetAllEmployee(response.data.employee);
+
+        const attendanceData = response.data.employee.map(
+          (data) => data.attendance
+        );
+        const allAttendance = attendanceData.flat();
+        const filteredAttendance = allAttendance.filter(
+          (attendance) => attendance.date === formattedDate
+        );
+        const totalEntries = filteredAttendance.length;
+
+        const presentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === true
+        ).length;
+
+        setPresentNumber(presentEntries);
+        const presentPercentage = parseFloat(
+          (presentEntries / totalEntries) * 100
+        ).toFixed(2);
+        // If there are no entries for today, set presentPercentage to 0 to avoid NaN
+        // const finalPresentPercentage =
+        //   totalEntries === 0 ? 0 : presentPercentage;
+        const isIntegerPresentPercentage = presentPercentage.endsWith(".00");
+
+        // If the decimal part is .00, parse the number to an integer
+        const finalPresentPercentage = isIntegerPresentPercentage
+          ? parseInt(presentPercentage)
+          : presentPercentage;
+        if (isNaN(finalPresentPercentage)) {
+          setPresentPercentage(0);
+        } else {
+          setPresentPercentage(finalPresentPercentage);
+        }
+
+        //  for absent
+
+        const absentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === false
+        ).length;
+
+        setAbsentNumber(absentEntries);
+        const absentPercentage = parseFloat(
+          (absentEntries / totalEntries) * 100
+        ).toFixed(2);
+        // If there are no entries for today, set presentPercentage to 0 to avoid NaN
+        const isIntegerAbsentPercentage = absentPercentage.endsWith(".00");
+
+        // If the decimal part is .00, parse the number to an integer
+        const finalAbsentPercentage = isIntegerAbsentPercentage
+          ? parseInt(absentPercentage)
+          : absentPercentage;
+        // const finalAbsentPercentage = totalEntries === 0 ? 0 : absentPercentage;
+        if (isNaN(finalAbsentPercentage)) {
+          setAbsentPercentage(0);
+        } else {
+          setAbsentPercentage(finalAbsentPercentage);
+        }
+
+        // for late status
+        const lateEntries = filteredAttendance.filter(
+          (attendance) => attendance.late_status === true
+        ).length;
+
+        setLateNumber(lateEntries);
+        const latePercentage = parseFloat(
+          (lateEntries / totalEntries) * 100
+        ).toFixed(2);
+        // If there are no entries for today, set presentPercentage to 0 to avoid NaN
+        const isIntegerPercentage = latePercentage.endsWith(".00");
+
+        // If the decimal part is .00, parse the number to an integer
+        const finalLatePercentage = isIntegerPercentage
+          ? parseInt(latePercentage)
+          : latePercentage;
+        // const finalLatePercentage = totalEntries === 0 ? 0 : latePercentage;
+        if (isNaN(finalLatePercentage)) {
+          setLatePercentage(0);
+        } else {
+          setLatePercentage(finalLatePercentage);
+        }
       })
       .catch((error) => {
         setError(error.message);
       });
-  }, []);
+  }, [formattedDate, reload]);
 
   const handlePresent = (index) => {
     const newPresentState = [...presentState];
@@ -150,6 +238,12 @@ const AddAttendance = () => {
     setOvertime(newOvertime);
   };
 
+  const handleLate = (index, value) => {
+    const newLateState = [...lateStatus];
+    newLateState[index] = value;
+    setLateStatus(newLateState);
+  };
+
   const handleSubMitAttendance = async () => {
     const newAttendanceData = getAllEmployee.map((employee, index) => {
       return {
@@ -164,7 +258,7 @@ const AddAttendance = () => {
         in_time: inTime[index],
         out_time: outTime[index],
         overtime: overtime[index],
-        late_status: lateStatus,
+        late_status: lateStatus[index],
       };
     });
     // setAttendanceData(newAttendanceData);
@@ -176,6 +270,110 @@ const AddAttendance = () => {
       );
       if (response.status === 200) {
         toast.success(response.data.message);
+        setReload(!reload);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    try {
+      const newAttendanceData = getAllEmployee.map((employee) => {
+        return {
+          _id: employee._id,
+          date: formattedDate,
+          deleted: e,
+        };
+      });
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/employee/all`,
+        newAttendanceData
+      );
+      if (response.status === 200) {
+        toast.success("Deleted successful.");
+        setReload(!reload);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  //  search filter
+
+  const [filteredDate, setFilteredDate] = useState(null);
+
+  const [fPresentNumber, setFPresentNumber] = useState(null);
+
+  const [fAbsentNumber, setFAbsentNumber] = useState(null);
+
+  const [fLateNumber, setFLateNumber] = useState(null);
+
+  const handleDateSearch = (e) => {
+    const parsedDate = new Date(e.$d);
+    const day = parsedDate.getDate().toString().padStart(2, "0");
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = parsedDate.getFullYear();
+    const date = `${day}-${month}-${year}`;
+    setFilteredDate(date);
+  };
+
+  const handleFilterData = () => {
+    axios
+      .get("http://localhost:5000/api/v1/employee")
+      .then((response) => {
+        const attendanceData = response.data.employee.map(
+          (data) => data.attendance
+        );
+        const allAttendance = attendanceData.flat();
+        const filteredAttendance = allAttendance.filter(
+          (attendance) => attendance.date === filteredDate
+        );
+
+        setGetAllEmployee(filteredAttendance);
+
+        const presentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === true
+        ).length;
+
+        setFPresentNumber(presentEntries);
+
+        //  for absent
+
+        const absentEntries = filteredAttendance.filter(
+          (attendance) => attendance.present === false
+        ).length;
+
+        setFAbsentNumber(absentEntries);
+
+        // for late status
+        const lateEntries = filteredAttendance.filter(
+          (attendance) => attendance.late_status === true
+        ).length;
+
+        setFLateNumber(lateEntries);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  const handleDeleteFilter = async (e) => {
+    try {
+      const newAttendanceData = getAllEmployee.map((employee) => {
+        return {
+          _id: employee._id,
+          date: filteredDate ? filteredDate : formattedDate,
+          deleted: e,
+        };
+      });
+      const response = await axios.put(
+        `http://localhost:5000/api/v1/employee/all`,
+        newAttendanceData
+      );
+      if (response.status === 200) {
+        toast.success("Deleted successful.");
+        setReload(!reload);
       }
     } catch (error) {
       setError(error.message);
@@ -211,67 +409,68 @@ const AddAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            {getAllEmployee.map((employee, index) => (
-              <tr className="even-row" key={employee._id}>
-                <td>{index + 1}</td>
-                <td>{employee.full_name}</td>
-                <td>{employee.employeeId}</td>
-                <td>{employee.status}</td>
-                <td>{formattedDate}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    className="border"
-                    onClick={() => handlePresent(index)}
-                    checked={presentState[index]}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="checkbox"
-                    className="border"
-                    onClick={() => handleAbsent(index)}
-                    checked={absentState[index]}
-                  />
-                </td>
-                <td>10.00</td>
-                <td>
-                  <AttendanceTimePicker
-                    handleAttendanceInTime={handleAttendanceInTime}
-                    index={index}
-                  />
-                </td>
-                <td>
-                  <AttendanceOutTimePicker
-                    handleAttendanceOutTime={handleAttendanceOutTime}
-                    index={index}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="border overTimeInput"
-                    onChange={(e) =>
-                      handleAttendanceOvertime(index, e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <div className="flex items-center justify-center cursor-pointer ">
-                    <HiCheck
-                      size={20}
-                      className="text-[#F62D51] attendanceIcon"
-                      onClick={() => setLateStatus(true)}
+            {Array.isArray(getAllEmployee) &&
+              getAllEmployee?.map((employee, index) => (
+                <tr className="even-row" key={employee._id}>
+                  <td>{index + 1}</td>
+                  <td>{employee.full_name}</td>
+                  <td>{employee.employeeId}</td>
+                  <td>{employee.status}</td>
+                  <td>{formattedDate}</td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="border"
+                      onClick={() => handlePresent(index)}
+                      checked={presentState[index]}
                     />
-                    <HiCheck
-                      className="text-[#4AB657] attendanceIcon "
-                      size={20}
-                      onClick={() => setLateStatus(false)}
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="border"
+                      onClick={() => handleAbsent(index)}
+                      checked={absentState[index]}
                     />
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td>10.00</td>
+                  <td>
+                    <AttendanceTimePicker
+                      handleAttendanceInTime={handleAttendanceInTime}
+                      index={index}
+                    />
+                  </td>
+                  <td>
+                    <AttendanceOutTimePicker
+                      handleAttendanceOutTime={handleAttendanceOutTime}
+                      index={index}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      className="border overTimeInput"
+                      onChange={(e) =>
+                        handleAttendanceOvertime(index, e.target.value)
+                      }
+                    />
+                  </td>
+                  <td>
+                    <div className="flex items-center justify-center cursor-pointer ">
+                      <HiCheck
+                        size={20}
+                        className="text-[#F62D51] attendanceIcon"
+                        onClick={() => handleLate(index, true)}
+                      />
+                      <HiCheck
+                        className="text-[#4AB657] attendanceIcon "
+                        size={20}
+                        onClick={() => handleLate(index, false)}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         <div className="flex justify-end mt-3">
@@ -299,15 +498,15 @@ const AddAttendance = () => {
           </thead>
           <tbody>
             <tr>
-              <td> 10-02-2024</td>
+              <td> {formattedDate}</td>
               <td>
                 <div className="presentCard employeeCard">
                   <div className="flex items-center justify-center w-full px-5 py-3">
                     <div className="flex items-center">
                       <div style={{ width: 60, height: 60 }}>
                         <CircularProgressbar
-                          value={90}
-                          text={`${90}%`}
+                          value={presentPercentage}
+                          text={`${presentPercentage}%`}
                           styles={{
                             // Customize the root element (outer circle)
                             path: {
@@ -325,7 +524,7 @@ const AddAttendance = () => {
                         />
                       </div>
                     </div>
-                    <b className="ml-3 text-3xl">20</b>
+                    <b className="ml-3 text-3xl">{presentNumber}</b>
                   </div>
                 </div>
               </td>
@@ -335,8 +534,8 @@ const AddAttendance = () => {
                     <div className="flex items-center">
                       <div style={{ width: 60, height: 60 }}>
                         <CircularProgressbar
-                          value={10}
-                          text={`${10}%`}
+                          value={absentPercentage}
+                          text={`${absentPercentage}%`}
                           styles={{
                             // Customize the root element (outer circle)
                             path: {
@@ -354,7 +553,7 @@ const AddAttendance = () => {
                         />
                       </div>
                     </div>
-                    <b className="ml-3 text-3xl">10</b>
+                    <b className="ml-3 text-3xl">{absentNumber}</b>
                   </div>
                 </div>
               </td>
@@ -364,8 +563,8 @@ const AddAttendance = () => {
                     <div className="flex items-center">
                       <div style={{ width: 60, height: 60 }}>
                         <CircularProgressbar
-                          value={5}
-                          text={`${5}%`}
+                          value={latePercentage}
+                          text={`${latePercentage}%`}
                           styles={{
                             // Customize the root element (outer circle)
                             path: {
@@ -383,7 +582,7 @@ const AddAttendance = () => {
                         />
                       </div>
                     </div>
-                    <b className="ml-3 text-3xl">5</b>
+                    <b className="ml-3 text-3xl">{lateNumber}</b>
                   </div>
                 </div>
               </td>
@@ -407,6 +606,7 @@ const AddAttendance = () => {
                 <FaRegTrashAlt
                   className="text-[#F62F52] cursor-pointer mx-auto"
                   size={30}
+                  onClick={() => handleDelete("delete")}
                 />
               </td>
             </tr>
@@ -415,76 +615,143 @@ const AddAttendance = () => {
       </div>
 
       <div className="mt-10 table-container">
-        <h3 className="mt-5 mb-8 text-2xl font-semibold">
-          Attendance Sheet : March 2024
-        </h3>
+        <h3 className="mt-5 mb-8 text-2xl font-semibold">Attendance Sheet</h3>
 
         <div className="flex items-center my-5 ">
           <div>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
-                <DatePicker label="Select Date" />
+                <DatePicker label="Select Date" onChange={handleDateSearch} />
               </DemoContainer>
             </LocalizationProvider>
           </div>
           <div className="relative rounded-sm w-max mt-2 ml-2">
-            <button className="employeeBtn employeeInput">Search</button>
+            <button
+              onClick={handleFilterData}
+              className="employeeBtn employeeInput"
+            >
+              Search
+            </button>
           </div>
         </div>
-        <table className="attendanceTable">
-          <thead>
-            <tr className="bg-[#42A1DA] text-white ">
-              <th>Date</th>
-              <th>Present </th>
-              <th>Absent </th>
-              <th>Late </th>
-              <th colSpan={3}>Action </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="even-row">
-              <td>12-04-24</td>
-              <td>
-                <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
-                  20
-                </div>
-              </td>
-              <td>
-                <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
-                  20
-                </div>
-              </td>
-              <td> <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
-                  20
-                </div></td>
-              <td>
-                <Link to="/dashboard/update-attendance">
-                  <FaUserEdit
-                    className="text-[#60BF6B] cursor-pointer mx-auto"
-                    size={30}
-                  />
-                </Link>
-              </td>
+        {getAllEmployee.length > 0 ? (
+          <table className="attendanceTable">
+            <thead>
+              <tr className="bg-[#42A1DA] text-white ">
+                <th>Date</th>
+                <th>Present </th>
+                <th>Absent </th>
+                <th>Late </th>
+                <th colSpan={3}>Action </th>
+              </tr>
+            </thead>
+            {filteredDate ? (
+              <tbody>
+                <tr className="even-row">
+                  <td> {filteredDate}</td>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
+                      {fPresentNumber  }
+                    </div>
+                  </td>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      {fAbsentNumber  }
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      {fLateNumber  }
+                    </div>
+                  </td>
+                  <td>
+                    <Link to="/dashboard/update-attendance">
+                      <FaUserEdit
+                        className="text-[#60BF6B] cursor-pointer mx-auto"
+                        size={30}
+                      />
+                    </Link>
+                  </td>
 
-              <td>
-                <Link to="/dashboard/view-attendance">
-                  {" "}
-                  <HiOutlineEye
-                    className="text-[#42A1DA] cursor-pointer mx-auto"
-                    size={30}
-                  />{" "}
-                </Link>
-              </td>
-              <td>
-                {" "}
-                <FaRegTrashAlt
-                  className="text-[#F62F52] cursor-pointer mx-auto"
-                  size={30}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                  <td>
+                    <Link
+                      to={`/dashboard/view-attendance?date=${
+                        filteredDate  
+                      }`}
+                    >
+                      {" "}
+                      <HiOutlineEye
+                        className="text-[#42A1DA] cursor-pointer mx-auto"
+                        size={30}
+                      />{" "}
+                    </Link>
+                  </td>
+                  <td>
+                    {" "}
+                    <FaRegTrashAlt
+                      className="text-[#F62F52] cursor-pointer mx-auto"
+                      size={30}
+                      onClick={() => handleDeleteFilter("delete")}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            ) : (
+              <tbody>
+                <tr className="even-row">
+                  <td> { formattedDate}</td>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
+                      {  presentNumber}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      { absentNumber}
+                    </div>
+                  </td>
+                  <td>
+                    {" "}
+                    <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
+                      {lateNumber}
+                    </div>
+                  </td>
+                  <td>
+                    <Link to="/dashboard/update-attendance">
+                      <FaUserEdit
+                        className="text-[#60BF6B] cursor-pointer mx-auto"
+                        size={30}
+                      />
+                    </Link>
+                  </td>
+
+                  <td>
+                    <Link
+                      to={`/dashboard/view-attendance?date=${formattedDate}`}
+                    >
+                      {" "}
+                      <HiOutlineEye
+                        className="text-[#42A1DA] cursor-pointer mx-auto"
+                        size={30}
+                      />{" "}
+                    </Link>
+                  </td>
+                  <td>
+                    {" "}
+                    <FaRegTrashAlt
+                      className="text-[#F62F52] cursor-pointer mx-auto"
+                      size={30}
+                      onClick={() => handleDelete("delete")}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            )}
+          </table>
+        ) : (
+          <div>No data found.</div>
+        )}
       </div>
     </div>
   );
