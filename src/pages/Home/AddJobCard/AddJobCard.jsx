@@ -1106,24 +1106,13 @@ const AddJobCard = () => {
               <div className="mt-2 imgWrap">
                 <img src={car} alt="car" />
               </div>
-              <div className="mt-3">
-                <h4 className="text-xl font-bold capitalize">Legend</h4>
-                <div className="legend">
-                  <ol>
-                    <li>Scratch</li>
-                    <li>Chip</li>
-                    <li>Respainted</li>
-                    <li>New Panel Filter </li>
-                    <li>Scratch</li>
-                  </ol>
-                  <ol>
-                    <li>Scratch</li>
-                    <li>Chip</li>
-                    <li>Respainted</li>
-                    <li>New Panel Filter </li>
-                    <li>Scratch</li>
-                  </ol>
-                </div>
+              <div className="mt-5">
+                <b className="block mb-1 "> Note  </b>
+                <textarea
+                  onChange={(e) => setVehicleBody(e.target.value)}
+                  required
+                  autoComplete="off"
+                ></textarea>
               </div>
               <div className="mt-5">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
@@ -1131,6 +1120,7 @@ const AddJobCard = () => {
                   onChange={(e) => setVehicleBody(e.target.value)}
                   required
                   autoComplete="off"
+                  className="p-5"
                 ></textarea>
               </div>
             </div>

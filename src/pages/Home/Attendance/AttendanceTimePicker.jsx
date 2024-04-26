@@ -1,14 +1,24 @@
 /* eslint-disable react/prop-types */
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useState } from 'react';
+import dayjs from 'dayjs'; // Import Day.js library
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
-// AttendanceTimePicker component
-export default function AttendanceTimePicker({
-  handleAttendanceInTime,
+export default function AttendanceOutTimePicker({
+  handleAttendanceOutTime,
   index,
 }) {
+  // Initialize state for the time value
+  const [selectedTime, setSelectedTime] = useState(dayjs());
+
+  // Handler for when the time changes
+  const handleTimeChange = (time) => {
+    setSelectedTime(time);
+    handleAttendanceOutTime(index, time);
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer
@@ -21,7 +31,8 @@ export default function AttendanceTimePicker({
       >
         <DemoItem>
           <TimePicker
-            onChange={(time) => handleAttendanceInTime(index, time)}
+            value={selectedTime}
+            onChange={handleTimeChange}
             renderInput={(props) => <input {...props} />}
           />
         </DemoItem>
