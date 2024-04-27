@@ -394,7 +394,7 @@ const AddExpense = () => {
                     native
                     defaultValue=""
                     id="grouped-native-select"
-                    label="Select Category "
+                    label="Expense Category"
                     {...register("category")}
                   >
                     <option aria-label="None" value="" />
@@ -405,14 +405,13 @@ const AddExpense = () => {
                 </FormControl>
                 <FormControl className="productField">
                   <InputLabel htmlFor="grouped-native-select">
-                    {" "}
-                    Sub Category{" "}
+                    Sub Category
                   </InputLabel>
                   <Select
                     native
                     defaultValue=""
                     id="grouped-native-select"
-                    label="Select Category "
+                    label="Sub Category"
                     {...register("sub_category")}
                   >
                     <option aria-label="None" value="" />
@@ -473,7 +472,7 @@ const AddExpense = () => {
 
                   <label
                     for="files"
-                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                    className="text-sm flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
                   >
                     <span>
                       <FaCloudUploadAlt size={30} className="mr-2" />
@@ -714,30 +713,32 @@ const AddExpense = () => {
         </div>
       </div>
       <div className="w-full mt-5 mb-24">
-      <div className="mt-20 overflow-x-auto">
-        <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="mb-3 text-sm font-bold lg:text-3xl">Expense List:</h3>
-          <div className="flex items-center searcList">
-            <div
-              onClick={handleAllExpense}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
+        <div className="mt-20 overflow-x-auto">
+          <div className="flex flex-wrap items-center justify-between mb-5">
+            <h3 className="mb-3 text-sm font-bold lg:text-3xl">
+              Expense List:
+            </h3>
+            <div className="flex items-center searcList">
+              <div
+                onClick={handleAllExpense}
+                className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+              >
+                All
+              </div>
+              <div className="searchGroup">
+                <input
+                  onChange={(e) => setFilterType(e.target.value)}
+                  autoComplete="off"
+                  type="text"
+                  placeholder="Search"
+                />
+              </div>
+              <button onClick={handleFilterType} className="SearchBtn ">
+                Search{" "}
+              </button>
             </div>
-            <div className="searchGroup">
-              <input
-                onChange={(e) => setFilterType(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Search"
-              />
-            </div>
-            <button onClick={handleFilterType} className="SearchBtn ">
-              Search{" "}
-            </button>
           </div>
         </div>
-      </div>
 
         {loading ? (
           <div className="flex items-center justify-center text-xl">
