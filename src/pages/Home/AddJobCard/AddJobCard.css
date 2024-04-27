@@ -375,7 +375,9 @@
   .jobCardSelect2{
 	width:100% !important;
 }
-
+.imgWrap {
+  height: 300px;
+}
 
 
 }
@@ -386,10 +388,11 @@
     margin-top: 10px;
   }
   .trustAutoTitle {
-    font-size: 22px;
+    font-size: 22px !important;
   }
+
   .addJobLogoImg {
-    width: 112px;
+    display: none;
   }
   .vehicleCard {
     font-size: 15px;
@@ -401,21 +404,19 @@
     margin-bottom: 10px !important;
     margin: 0 auto;
   }
-  .addJobBtn {
+
+  .searchGroup input, .addJobBtn {
     width: 100%;
-  }
+}
 }
 
 @media only screen and (max-width: 375px) {
   .ownerInput {
-    width: 350px !important;
+    width: 230px !important;
   }
+
 }
-@media only screen and (max-width: 300px) {
-  .ownerInput {
-    width: 280px !important;
-  }
-}
+
 
 /* CSS for responsive table */
 .table {

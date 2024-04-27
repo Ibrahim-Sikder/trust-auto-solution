@@ -86,7 +86,6 @@ const DashboardLayout = () => {
       <div className="static w-full h-16">
         <div className="w-full h-16  bg-[#42A1DA] fixed z-10 ">
           <div className="flex items-center justify-between pr-8 pl-10 lg:pl-20 mt-2 lg:mt-3">
-          
             <div
               className={`${toggle ? `activeToggle` : `navActive`}`}
               ref={navRef}
@@ -96,12 +95,16 @@ const DashboardLayout = () => {
               <span className="bar" />
               <span className="bar" />
             </div>
-            <h3 className="text-xl lg:text-2xl font-semibold text-white hidden md:block">
+            <h3 className="text-xl lg:text-2xl font-semibold text-white hidden lg:block">
               Trust Auto Solution
             </h3>
             <div className="flex items-center space-x-5 flex-end  ">
               <div className="dashboardSearchBar lg:block hidden ">
-                <input placeholder="Search here" type="text" className="lg:block hidden "/>
+                <input
+                  placeholder="Search here"
+                  type="text"
+                  className="lg:block hidden "
+                />
                 <FaSearch size={20} className="text-[#fff]" />
               </div>
 
@@ -136,7 +139,6 @@ const DashboardLayout = () => {
                 </div>
               </div>
             </div>
-           
           </div>
         </div>
       </div>

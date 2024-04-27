@@ -215,7 +215,7 @@
     width: 100%;
   }
   .dashboardCard {
-    width: 163px;
+    width: 100%;
   }
   .completedServiceCards {
     width: 98% !important;
@@ -234,16 +234,11 @@
 }
 
 @media only screen and (max-width: 500px) {
+  .completedServiceCards,
+  .dashboardCard,
   .earningCard {
     width: 100%;
   }
-  .dashboardCard {
-    width: 188px;
-  }
-  .completedServiceCards {
-    width: 100%;
-}
-
 }
 
 @media only screen and (max-width: 400px) {
@@ -261,16 +256,4 @@
   .dashboardCard {
     width: 100%;
   }
-  .adminProfileWrap {
-    right: -227px;
-  }
-
 }
-
-@media only screen and (max-width: 400px) {
-  .adminProfileWrap {
-    right: -187px;
-  }
-
-}
-

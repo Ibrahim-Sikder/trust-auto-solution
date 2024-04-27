@@ -634,24 +634,10 @@ const Invoice = () => {
     }
   };
   return (
-    <div className="px-5 py-10">
+    <div className="px-5 py-5 lg:py-10">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-        {/* <div className="flex items-center justify-center">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[160px]" />
-          <div className="invoiceHead">
-            <h2 className="text-3xl font-bold text-center md:text-4xl lg:text-6xl trustAuto word-sp">
-              Trust Auto Solution{" "}
-            </h2>
-            <p className="text-sm ">
-              It is trusted computerized Ogranizetion for all the kinds of
-              vehicle check up & maintenance such as computerized Engine
-              Analysis Engine tune up, Denting, Painting, Engine, AC, Electrical
-              Works & Car Wash.
-            </p>
-          </div>
-        </div> */}
-        <div className="flex items-center justify-between w-full mt-5 mb-2 flex-wrap ">
-          <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+        <div className="flex lg:flex-row columns-1 space-y-3 w-full mt-5 mb-2 invoiceHeader  ">
+          <img src={logo} alt="logo" className="w-[110px] md:w-[210px]" />
           <div>
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}

@@ -286,6 +286,9 @@
 	.dashboardSearchBar {
         display: none;
     }
+	.adminProfileWrap {
+		right: -577px;
+	}
 	
 }
 
@@ -313,5 +316,30 @@
 	.activeToggle .bar:nth-child(3) {
 		margin-top: 7px;
 	}
+	.adminProfileWrap {
+		right: -227px;
+	  }
+	
 	
 }
+
+@media only screen and (max-width: 376px) {
+	.adminProfileWrap {
+	  right: -187px;
+	}
+	.drawwerLeftSide {
+        width: 70% !important;
+    }
+	.adminProfileWrap {
+        right: -111px;
+    }
+
+  
+  }
+  
+  @media only screen and (max-width: 275px) {
+
+		.adminProfileWrap {
+			right: -69px;
+		}
+	}

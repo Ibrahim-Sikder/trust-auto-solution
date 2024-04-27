@@ -17,9 +17,15 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.invoiceHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
 
 .firstInputField {
-  width: 80px;
+  width: 100px;
 }
 
 .thirdInputField {
@@ -178,24 +184,8 @@
   }
 
   .labelWrap label:nth-child(1) {
-    left: -40px !important;
+    left: -50px !important;
   }
-
-  /* .labelWrap label:nth-child(2) {
-    left: -305px !important;
-  }
-
-  .labelWrap label:nth-child(3) {
-    left: 442px !important;
-  }
-
-  .labelWrap label:nth-child(4) {
-    left: 196px !important;
-  }
-
-  .labelWrap label:nth-child(5) {
-    left: 50px !important;
-  } */
 
   
 }
@@ -300,7 +290,10 @@
   }
 
   .secondInputField {
-    width: 253px;
+    width: 100%
+  }
+  .invoiceHeader{
+    flex-direction: column;
   }
 }
 

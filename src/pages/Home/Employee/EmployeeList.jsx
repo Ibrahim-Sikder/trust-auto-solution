@@ -219,25 +219,25 @@ const EmployeeList = () => {
 
   const renderData = (getAllEmployee) => {
     return (
-      <div className="grid grid-cols-5 gap-5">
-      <Link to="/dashboard/employee-profile">
+      <div className="grid grid-cols-1 xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2  gap-5">
         {getAllEmployee.map((employee) => (
-          <div key={employee.id} className="employeeCard">
-            <div>
-              <img className="employeeCardImg" src={employee?.image} alt="" />
-              <h3 className="text-xl font-semibold">{employee?.full_name} </h3>
-              <p>{employee?.designation}</p>
-              
+          <Link key={employee.id}>
+            <div className="employeeCard">
+              <div>
+                <img className="employeeCardImg" src={employee?.image} alt="" />
+                <h3 className="text-xl font-semibold">
+                  {employee?.full_name}{" "}
+                </h3>
+                <p>{employee?.designation}</p>
+
                 <div className="flex items-center justify-center">
                   <span>See More </span>
                   <HiOutlineArrowNarrowRight className="ml-1 " />
                 </div>
-            
+              </div>
             </div>
-          </div>
-
+          </Link>
         ))}
-        </Link>
       </div>
     );
   };
@@ -333,7 +333,7 @@ const EmployeeList = () => {
           <FaUserGear size={30} />
         </div>
       </div>
-      <div className="flex items-center justify-between my-3 mb-8">
+      <div className="block md:flex items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />
           <div className="ml-2">
@@ -342,37 +342,32 @@ const EmployeeList = () => {
           </div>
         </div>
         <div className="productHome">
-          <span> Home / </span> <span> Customer / </span>
-          <span> New Customer </span>
+          <span> Home / </span> <span> Employee / </span>
+          <span> New Employee </span>
         </div>
       </div>
       <div className="employeeCardWraps">
- 
-      <div className="mt-20 overflow-x-auto">
-        <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="mb-3 text-sm font-bold lg:text-3xl">Employee List:</h3>
-          <div className="flex items-center searcList">
-            <div
-              onClick={handleAllEmployee}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
+        <div className="mt-20 overflow-x-auto">
+          <div className="md:flex block  items-center justify-between mb-5">
+            <h3 className="mb-3 text-sm font-bold lg:text-3xl">
+              Employee List:
+            </h3>
+            <div className="flex items-center searcList">
+             
+              <div className="searchGroup">
+                <input
+                  onChange={(e) => setFilterType(e.target.value)}
+                  autoComplete="off"
+                  type="text"
+                  placeholder="Search"
+                />
+              </div>
+              <button onClick={handleFilterType} className="SearchBtn ">
+                Search{" "}
+              </button>
             </div>
-            <div className="searchGroup">
-              <input
-                onChange={(e) => setFilterType(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Search"
-              />
-            </div>
-            <button onClick={handleFilterType} className="SearchBtn ">
-              Search{" "}
-            </button>
- 
           </div>
         </div>
-      </div>
         <div className="text-sm text-red-400 py-2">{error}</div>
         {loading ? (
           <div className="flex items-center justify-center text-xl">

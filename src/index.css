@@ -188,15 +188,16 @@ input:focus {
 
 
   .labelWrap label:nth-child(2) {
-    left: -295px !important;
+	left: -266px !important;
   }
 
 .drawer-content .labelWrap label:nth-child(2) {
-    left: -245px !important;
+	left: -231px !important;
+
   }
 
   .labelWrap label:nth-child(3) {
-    left: 495px !important;
+	left: 468px !important;
   }
 
   .drawer-content .labelWrap label:nth-child(3) {
@@ -244,11 +245,11 @@ input:focus {
 
   @media only screen and (min-width: 1440px) {
 	.secondInputField {
-	  width: 1165px;
+	  width: 1105px;
 	}
 
 	.drawer-content .secondInputField {
-		width: 1000px;
+		width: 975px;
 	  }
 	
 }

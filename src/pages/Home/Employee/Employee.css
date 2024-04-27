@@ -1,118 +1,129 @@
-.employeeCard, .presentCard{
-    width:324px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-radius: 8px;
-    display: grid;
-    place-items: center;
-    padding:10px;
-    text-align: center;
+.employeeCard,
+.presentCard {
+  width: 324px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  text-align: center;
 }
-.presentCard{
-    width:200px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
-    margin:0 auto;
-    
+.presentCard {
+  width: 200px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  margin: 0 auto;
 }
-.employeeCardImg{
-    width:100px;
-    height:100px;
-    border-radius: 100%;
-    object-fit: cover;
-    margin:0 auto;
-}
-
-.employeeCard2{
-    padding:20px 0;
+.employeeCardImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  object-fit: cover;
+  margin: 0 auto;
 }
 
+.employeeCard2 {
+  padding: 20px 0;
+}
 
 /* Employee.css */
 .table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); 
-    margin: 0 auto; 
-
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
 }
 
-
-th, td {
-    padding: 20px;
-    text-align: center;
-    white-space: nowrap;
+th,
+td {
+  padding: 20px;
+  text-align: center;
+  white-space: nowrap;
 }
 th {
-    padding: 30px; 
-    border-top:1px solid #ddd;
-    border-bottom:1px solid #ddd;
+  padding: 30px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
-
-
 .even-row {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .odd-row {
-    background-color: #fff;
+  background-color: #fff;
 }
-
-
 
 .table-container {
-    overflow-x: auto;
-    max-width: 100%;
-    text-align: center; 
+  overflow-x: auto;
+  max-width: 100%;
+  text-align: center;
 }
 
-
 .leaveTable tbody tr:nth-child(odd) {
-    background-color: #f0f0f0; 
+  background-color: #f0f0f0;
 }
 
 .leaveTable tbody tr:nth-child(even) {
-    background-color: #ffffff;
+  background-color: #ffffff;
 }
 
 /* Center align content */
 .leaveTable td .leaveTable th {
-    text-align: center;
+  text-align: center;
 }
 
-.employeeProfileCard{
-    width:570px !important;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; 
-    padding:20px;
-    border-radius: 4px;
+.employeeProfileCard {
+  width: 570px !important;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  padding: 20px;
+  border-radius: 4px;
 }
 
-.attendanceIcon{
-    margin: 0 auto;
-    width:50px;
+.attendanceIcon {
+  margin: 0 auto;
+  width: 50px;
 }
 
-.overTimeCard{
-    width: 244px !important;
-    height: 130px;
-    border-radius: 11px;
+.overTimeCard {
+  width: 244px !important;
+  height: 130px;
+  border-radius: 11px;
 }
-.overtimeRow{
-    background:#fff !important;
-}
-
-
-.salaryTable input{
-    width:120px;
-    height:42px;
-    padding-left:5px;
+.overtimeRow {
+  background: #fff !important;
 }
 
+.salaryTable input {
+  width: 120px;
+  height: 42px;
+  padding-left: 5px;
+}
 
+@media screen and (min-width: 1405px) {
+  .employeeCard,
+  .presentCard {
+    width: 324px;
+  }
+}
+
+@media screen and (min-width: 1100px) and (max-width: 1400px) {
+  .employeeCard,
+  .presentCard {
+    width: 257px;
+  }
+}
 
 @media screen and (max-width: 1200px) {
-    /* Adjust table width for smaller screens */
-    table {
-        max-width: 100%; /* Set maximum width to 100% for smaller screens */
-    }
+  table {
+    max-width: 100%; 
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .employeeCard,
+  .presentCard {
+    width: 100%;
+    text-align: center;
+  }
 }

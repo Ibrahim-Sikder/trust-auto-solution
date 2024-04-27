@@ -119,8 +119,8 @@ const EmployeeSalaryListTable = ({
           </tr>
         </thead>
         <tbody>
-          {getAllEmployee?.map((employee) => (
-            <tr className="even-row" key={employee?._id}>
+          {getAllEmployee?.map((employee, index) => (
+            <tr className={index %2 == 0 ? 'even-row' : 'odd-row'} key={employee?._id}>
               <td>{employee.full_name}</td>
               <td> {employee.employeeId}</td>
               <td>{employee.month_of_salary}</td>
