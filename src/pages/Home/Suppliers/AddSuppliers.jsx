@@ -474,15 +474,10 @@ const AddSuppliers = () => {
         </div>
       </div>
       <div className="mt-20 overflow-x-auto">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="mb-3 text-3xl font-bold">Suppliers List:</h3>
+        <div className="md:flex items-center justify-between mb-5">
+          <h3 className="mb-3 text-xl md:text-3xl font-bold">Suppliers List:</h3>
           <div className="flex items-center searcList">
-            <div
-              onClick={handleAllSuppliers}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </div>
+           
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}
