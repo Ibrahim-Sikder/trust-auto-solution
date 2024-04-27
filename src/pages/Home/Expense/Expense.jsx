@@ -291,15 +291,15 @@ const ViewInvoice = () => {
           <FaUserGear size={30} />
         </div>
       </div>
-      <div className="flex items-center justify-between mt-5 mb-8">
-        <div className="flex items-center justify-center ">
+      <div className=" md:flex items-center justify-between mt-5 mb-8">
+        <div className=" items-center justify-center ">
           <FaFileInvoice className="invoicIcon" />
           <div className="ml-2">
-            <h3 className="text-2xl font-bold"> Invoice </h3>
+            <h3 className="text-2xl font-bold"> Expense </h3>
             <span>Manage Expense </span>
           </div>
         </div>
-        <div className="productHome">
+        <div className="productHome md:mt-0 mt-3">
           <span>Dashboard / </span>
           <span>Expense / </span>
           <span>New Expense </span>
@@ -309,12 +309,7 @@ const ViewInvoice = () => {
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-sm font-bold lg:text-3xl">Expense List:</h3>
           <div className="flex items-center searcList">
-            <div
-              onClick={handleAllExpense}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </div>
+            
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}
