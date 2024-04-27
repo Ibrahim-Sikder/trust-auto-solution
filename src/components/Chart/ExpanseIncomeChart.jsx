@@ -1,15 +1,51 @@
-import { LineChart } from "@mui/x-charts/LineChart";
+import React from 'react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
+
+// Custom tooltip rendering
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip" style={{ backgroundColor: '#ffff', padding: '10px', border: '1px solid #cccccc' }}>
+        <p className="label">{`${label}`}</p>
+        <p className="intro">{`Series1: ${payload[0].value}%`}</p>
+        <p className="intro">{`Series2: ${payload[1].value}%`}</p>
+        <p className="intro">{`Series3: ${payload[2].value}%`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
 
 export default function ChartComponent() {
+  const data = [
+    { name: 'Jobcard', series1: 0, series2: 6, series3: 7 },
+    { name: 'Quotation', series1: 2, series2: 3, series3: 5 },
+    { name: 'Invoice', series1: 2, series2: 7, series3: 3 },
+  ];
+
   return (
-    <>
-      <LineChart
-        series={[
-          { curve: "monotoneX", data: [0, 2, 2, 6, 3, 9.3] },
-          { curve: "monotoneX", data: [6, 3, 7, 9.5, 4, 2] },
-          { curve: "monotoneX", data: [7, 5, 3, 5, 3, 1] },
-        ]}
-      />
-    </>
+    <ResponsiveContainer width="100%" height={500}>
+      <LineChart data={data}
+        margin={{ top: 5, right: 30, bottom: 5, left: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend />
+        <Line type="monotone" dataKey="series1" stroke="#8884d8" />
+        <Line type="monotone" dataKey="series2" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="series3" stroke="#ffc658" />
+      </LineChart>
+    </ResponsiveContainer>
   );
 }

@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 
 const ViewEmployeeAttendance = () => {
   const [employeeAttendance, setEmployeeAttendance] = useState([]);
+  console.log(employeeAttendance)
   const [error, setError] = useState("");
 
   const location = useLocation();

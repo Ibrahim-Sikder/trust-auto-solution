@@ -220,7 +220,7 @@ const AddAttendance = () => {
                 });
 
                 return (
-                  <tr className="even-row" key={employee._id}>
+                  <tr className={index % 2 === 0 ? 'even-row' : 'odd-row'} key={employee._id}>
                     <td> {employee.full_name}</td>
                     <td> {employee.employeeId}</td>
                     <td>

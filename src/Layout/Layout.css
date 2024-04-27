@@ -283,6 +283,9 @@
 	.navActive {
 		left: 0px;
 	}
+	.dashboardSearchBar {
+        display: none;
+    }
 	
 }
 

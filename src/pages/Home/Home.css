@@ -108,12 +108,7 @@
   align-items: center;
   margin-right: 5px;
 }
-.profitCard {
-  width: 430px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 3px;
-}
+
 .monthlyTitle {
   margin-right: 250px;
 }
@@ -131,7 +126,6 @@
   text-align: left;
 }
 
-
 @media only screen and (min-width: 1441px) {
   .earningCardWrap {
     width: 550px;
@@ -142,13 +136,12 @@
   .recentCard {
     width: 870px;
   }
-  .dashboardCardIcon{
+  .dashboardCardIcon {
     font-size: 70px;
   }
-  
 }
 @media only screen and (max-width: 1440px) {
-  .dashboardCardIcon{
+  .dashboardCardIcon {
     font-size: 50px;
   }
   .completedServiceCards {
@@ -169,7 +162,7 @@
   .profitCard {
     width: 483px;
     margin: 9px;
-}
+  }
   .pieChart {
     margin-top: 0px;
   }
@@ -177,6 +170,7 @@
   .earningCardWrap {
     width: 75%;
     margin: 0 auto;
+    margin-bottom: 10px;
   }
   .earningCard {
     width: 235px;
@@ -185,8 +179,7 @@
   }
   .monthlyTitle {
     margin-right: 0;
-  
-}
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -223,20 +216,32 @@
   }
   .dashboardCard {
     width: 163px;
+  }
+  .completedServiceCards {
+    width: 98% !important;
+    padding: 35px 15px !important;
+  }
+  .profitCard {
+    margin: 5px auto;
+  }
+  .dashboardIconWrap {
+    width: 64px;
+    height: 64px;
+  }
+  .profitCard {
+    width: 100%;
+  }
 }
-.completedServiceCards {
-  width: 98% !important;
-  padding: 35px 15px !important;
-}
-.profitCard {
-  margin: 5px auto;
-}
-.dashboardIconWrap {
-  width: 64px;
-  height: 64px;
-}
-.profitCard {
-  width: 100%;
+
+@media only screen and (max-width: 500px) {
+  .earningCard {
+    width: 100%;
+  }
+  .dashboardCard {
+    width: 188px;
+  }
+  .completedServiceCards {
+    width: 100%;
 }
 
 }
@@ -253,4 +258,19 @@
   .pieChart {
     margin-left: -57px;
   }
+  .dashboardCard {
+    width: 100%;
+  }
+  .adminProfileWrap {
+    right: -227px;
+  }
+
 }
+
+@media only screen and (max-width: 400px) {
+  .adminProfileWrap {
+    right: -187px;
+  }
+
+}
+

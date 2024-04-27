@@ -72,8 +72,10 @@ const AddAttendance = () => {
 
   const [presentPercentage, setPresentPercentage] = useState(null);
   const [presentNumber, setPresentNumber] = useState(null);
+  console.log(presentNumber)
   const [absentPercentage, setAbsentPercentage] = useState(null);
   const [absentNumber, setAbsentNumber] = useState(null);
+  console.log(absentNumber)
   const [latePercentage, setLatePercentage] = useState(null);
   const [lateNumber, setLateNumber] = useState(null);
 
@@ -411,7 +413,7 @@ const AddAttendance = () => {
           <tbody>
             {Array.isArray(getAllEmployee) &&
               getAllEmployee?.map((employee, index) => (
-                <tr className="even-row" key={employee._id}>
+                <tr className={ index % 2 === 0 ? 'even-row' : 'odd-row'} key={employee._id}>
                   <td>{index + 1}</td>
                   <td>{employee.full_name}</td>
                   <td>{employee.employeeId}</td>

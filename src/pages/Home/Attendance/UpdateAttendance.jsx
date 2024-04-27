@@ -47,14 +47,13 @@ const UpdateAttendance = () => {
 
         const allAttendance = attendanceData.flat();
 
-    
         // Filtering attendance data for today's date
         const parsedDate = new Date();
         const day = parsedDate.getDate().toString().padStart(2, "0");
         const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
         const year = parsedDate.getFullYear();
         const today = `${day}-${month}-${year}`;
-    
+
         const filteredAttendance = allAttendance.filter(
           (attendance) => attendance.date === today
         );
@@ -130,14 +129,11 @@ const UpdateAttendance = () => {
     setOvertime(newOvertime);
   };
 
-
-
   const handleLate = (index, value) => {
     const newLateState = [...lateStatus];
-    newLateState[index] = value
+    newLateState[index] = value;
     setLateStatus(newLateState);
   };
-   
 
   const handleSubMitAttendance = async () => {
     const newAttendanceData = employeeAttendance.map((employee, index) => {
@@ -148,12 +144,23 @@ const UpdateAttendance = () => {
         status: employee.status,
         designation: employee.designation,
         date: employee.date,
-        present: presentState[index] !== undefined ? presentState[index] : employee.present,
-        absent: absentState[index] !== undefined ? absentState[index]: employee.absent,
+        present:
+          presentState[index] !== undefined
+            ? presentState[index]
+            : employee.present,
+        absent:
+          absentState[index] !== undefined
+            ? absentState[index]
+            : employee.absent,
         in_time: inTime[index] !== undefined ? inTime[index] : employee.in_time,
-        out_time: outTime[index] !== undefined ? outTime[index] : employee.out_time,
-        overtime: overtime[index] !== undefined ? overtime[index] : employee.overtime,
-        late_status: lateStatus[index] !== undefined ? lateStatus[index] : employee.late_status,
+        out_time:
+          outTime[index] !== undefined ? outTime[index] : employee.out_time,
+        overtime:
+          overtime[index] !== undefined ? overtime[index] : employee.overtime,
+        late_status:
+          lateStatus[index] !== undefined
+            ? lateStatus[index]
+            : employee.late_status,
       };
     });
 
@@ -169,7 +176,7 @@ const UpdateAttendance = () => {
       setError(error.message);
     }
   };
- 
+
   return (
     <div className="pt-8 pb-20">
       <div className="flex items-center justify-between my-3 mb-8">
@@ -200,7 +207,10 @@ const UpdateAttendance = () => {
           </thead>
           <tbody>
             {employeeAttendance.map((employee, index) => (
-              <tr className="even-row" key={employee._id}>
+              <tr
+                className={index % 2 === 0 ? "even-row" : "odd-row"}
+                key={employee._id}
+              >
                 <td>{index + 1}</td>
                 <td>{employee.full_name}</td>
                 <td>{employee.employeeId}</td>
@@ -211,8 +221,11 @@ const UpdateAttendance = () => {
                     type="checkbox"
                     className="border"
                     onClick={() => handlePresent(index)}
-                    checked={presentState[index] !== undefined ? presentState[index] : employee.present}
-                    
+                    checked={
+                      presentState[index] !== undefined
+                        ? presentState[index]
+                        : employee.present
+                    }
                   />
                 </td>
                 <td>
@@ -220,7 +233,11 @@ const UpdateAttendance = () => {
                     type="checkbox"
                     className="border"
                     onClick={() => handleAbsent(index)}
-                    checked={absentState[index] !== undefined ? absentState[index] : employee.absent}
+                    checked={
+                      absentState[index] !== undefined
+                        ? absentState[index]
+                        : employee.absent
+                    }
                   />
                 </td>
                 <td>10.00</td>

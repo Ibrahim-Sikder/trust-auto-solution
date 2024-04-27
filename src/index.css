@@ -231,7 +231,16 @@ input:focus {
   .sectionMargin{
 	margin-top:80px;
   }
-
+  .profitCard {
+	width: 430px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	border-radius: 3px;
+  }
+.drawer-content .profitCard {
+	width: 395px;
+	margin-bottom:10px;
+  }
 
   @media only screen and (min-width: 1440px) {
 	.secondInputField {

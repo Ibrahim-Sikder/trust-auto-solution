@@ -96,7 +96,6 @@ const Home = () => {
       name: "Invoice ",
       user: 200,
     },
- 
   ];
 
   return (
@@ -107,14 +106,14 @@ const Home = () => {
       <div className="dashBoardRight  ">
         <div className="md:flex items-center justify-between md:p-[0px] lg:p-[18px]"></div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
           <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#42A1DA] text-white ">
             <div className="mr-5">
               <h3 className="xl:text-xl">Completed Services</h3>
               <span className="text-2xl font-bold">99 </span>
             </div>
             <div className="valueRight">
-              <HiOutlineBriefcase  className="dashboardCardIcon" />
+              <HiOutlineBriefcase className="dashboardCardIcon" />
             </div>
           </div>
           <div className="completedServiceCards flex justify-between items-center  rounded-lg bg-[#42A1DA] text-white">
@@ -133,7 +132,7 @@ const Home = () => {
               <span className="text-xl xl:text-2xl font-bold">99 </span>
             </div>
             <div className="valueRight">
-              <FaPercent className="dashboardCardIcon"/>
+              <FaPercent className="dashboardCardIcon" />
             </div>
           </div>
           <div className="completedServiceCards flex justify-between items-center  rounded-lg bg-[#03045e] text-white">
@@ -146,7 +145,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
           <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#f77f00] text-white">
             <div className="mr-5">
               <h3 className="xl:text-xl">Paid Services Bill</h3>
@@ -186,18 +185,19 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex sectionMargin lg:flex-nowrap flex-wrap">
+      <div className="flex flex-wrap sectionMargin  ">
         <MonthlyBarChart />
         <YearlyIncomeChart />
       </div>
-      <div className="hidden  lg:flex items-center justify-between px-10">
-        <h3 className="text-xl md:text-3xl font-semibold">Monthly Income Chart</h3>
+      <div className="hidden  lg:flex items-center justify-between px-10 mt-10">
+        <h3 className="text-xl md:text-3xl font-semibold">
+          Monthly Income Chart
+        </h3>
         <h3 className="text-xl md:text-3xl font-semibold monthlyTitle">
           Yearly Income Chart
         </h3>
       </div>
       <div className="profiteCardWrap flex-wrap flex items-center justify-between sectionMargin">
-      
         <div className="profitCard ">
           <div className="flex items-center justify-between">
             <b>Earnings</b>
@@ -264,9 +264,9 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex lg:flex-nowrap flex-wrap  gap-3  sectionMargin">
+      <div className="grid grid-cols-1  lg:grid-cols-2 gap-5  sectionMargin">
         <div
-          className="flex flex-wrap gap-4
+          className="grid grid-cols-1 lg:grid-cols-3 gap-4
         5"
         >
           {userData.map((data, i) => (
@@ -324,11 +324,11 @@ const Home = () => {
         Project Overview
       </h3>
 
-      <div className="recentCardWrap xl:flex justify-between sectionMargin">
-        <div className="recentCard">
+      <div className="recentCardWrap gap-5  xl:flex justify-between sectionMargin">
+        <div className="recentCard overflow-x-auto">
           <div className="flex items-center justify-between">
-          <h3 className="m-3 text-xl block font-semibold">Client</h3>
-          <Link to="/dashboard/customer-list">
+            <h3 className="m-3 text-xl block font-semibold">Client</h3>
+            <Link to="/dashboard/customer-list">
               <button className=" flex items-center mr-2  rounded-full px-3 py-1 bg-[#DDDDDD]  ">
                 <small className="">See More</small>
                 <HiOutlineArrowNarrowRight size={15} className="ml-1" />
@@ -336,7 +336,7 @@ const Home = () => {
             </Link>
           </div>
           <hr />
-          <table>
+          <table className="min-w-full">
             <thead>
               <th>Order Id </th>
               <th>Customer Name</th>
@@ -348,7 +348,7 @@ const Home = () => {
             </thead>
             <tbody>
               <tr>
-              <td>#TAS-1217</td>
+                <td>#TAS-1217</td>
                 <td>
                   <div className="flex items-center">
                     <img
@@ -372,12 +372,12 @@ const Home = () => {
                 </td>
                 <td>
                   <div>
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-1217</td>
+                <td>#TAS-1217</td>
                 <td>
                   <div className="flex items-center">
                     <img
@@ -401,12 +401,12 @@ const Home = () => {
                 </td>
                 <td>
                   <div>
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-1217</td>
+                <td>#TAS-1217</td>
                 <td>
                   <div className="flex items-center">
                     <img
@@ -430,12 +430,12 @@ const Home = () => {
                 </td>
                 <td>
                   <div>
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-1217</td>
+                <td>#TAS-1217</td>
                 <td>
                   <div className="flex items-center">
                     <img
@@ -459,28 +459,28 @@ const Home = () => {
                 </td>
                 <td>
                   <div>
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div className="recentCard">
-        <div className="flex items-center justify-between">
-        <h3 className="m-3 text-xl block font-semibold">Recent Projects</h3>
-          <Link to="/dashboard/quotaiton-list">
+        <div className="recentCard overflow-x-auto ">
+          <div className="flex items-center justify-between">
+            <h3 className="m-3 text-xl block font-semibold">Recent Projects</h3>
+            <Link to="/dashboard/quotaiton-list">
               <button className=" flex items-center mr-2  rounded-full px-3 py-1 bg-[#DDDDDD] ">
                 <small className="">See More</small>
                 <HiOutlineArrowNarrowRight size={15} className="ml-1" />
               </button>
             </Link>
           </div>
-          
+
           <hr />
-          <table>
+          <table className="min-w-full">
             <thead>
-            <th>Project Id</th>
+              <th>Project Id</th>
               <th>Project Name </th>
               <th>Date</th>
               <th>Progress</th>
@@ -488,7 +488,7 @@ const Home = () => {
             </thead>
             <tbody>
               <tr>
-              <td>#TAS-666</td>
+                <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -515,12 +515,12 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center justify-center mr-8">
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-666</td>
+                <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -547,12 +547,12 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center justify-center mr-8">
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-666</td>
+                <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -579,12 +579,12 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center justify-center mr-8">
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-666</td>
+                <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -611,12 +611,12 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center justify-center mr-8">
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-666</td>
+                <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -643,12 +643,12 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center justify-center mr-8">
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
               <tr>
-              <td>#TAS-666</td>
+                <td>#TAS-666</td>
                 <td>
                   <div>
                     <h4>Global Technologies </h4>
@@ -675,7 +675,7 @@ const Home = () => {
 
                 <td>
                   <div className="flex  items-center justify-center mr-8">
-                  <HiOutlineEye size={20} />
+                    <HiOutlineEye size={20} />
                   </div>
                 </td>
               </tr>
@@ -684,12 +684,12 @@ const Home = () => {
         </div>
       </div>
       <div className="xl:flex items-center justify-between mt-[30px]">
-        <div className="recentCard">
-         
-
+        <div className="recentCard overflow-x-auto ">
           <div className="flex items-center justify-between">
-          <h3 className="m-3 text-xl block font-semibold">Recent Quotation </h3>
-          <Link to="/dashboard/quotaiton-list">
+            <h3 className="m-3 text-xl block font-semibold">
+              Recent Quotation{" "}
+            </h3>
+            <Link to="/dashboard/quotaiton-list">
               <button className=" flex items-center mr-2  rounded-full px-3 py-1 bg-[#DDDDDD]">
                 <small className="">See More</small>
                 <HiOutlineArrowNarrowRight size={15} className="ml-1" />
@@ -698,7 +698,7 @@ const Home = () => {
           </div>
 
           <hr />
-          <table>
+          <table className="min-w-full">
             <thead>
               <th>Quotation ID</th>
               <th>Client</th>
@@ -754,12 +754,10 @@ const Home = () => {
             </tbody>
           </table>
         </div>
-        <div className="recentCard">
-         
-
+        <div className="recentCard overflow-x-auto ">
           <div className="flex items-center justify-between">
-          <h3 className="m-3 text-xl block font-semibold">Recent Invoice </h3>
-          <Link to="/dashboard/invoice-view">
+            <h3 className="m-3 text-xl block font-semibold">Recent Invoice </h3>
+            <Link to="/dashboard/invoice-view">
               <button className=" flex items-center mr-2  rounded-full px-3 py-1 bg-[#DDDDDD]">
                 <small className="">See More</small>
                 <HiOutlineArrowNarrowRight size={15} className="ml-1" />
@@ -768,7 +766,7 @@ const Home = () => {
           </div>
 
           <hr />
-          <table>
+          <table className="min-w-full">
             <thead>
               <th>Invoice ID</th>
               <th>Client</th>
@@ -828,7 +826,7 @@ const Home = () => {
       <div className=" xl:flex  justify-between mt-10">
         <div className="earningCardWrap ">
           <p className="mb-3 font-semibold">Employee Statistic</p>
-          <div className="grid grid-cols-2 justify-between gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 justify-between gap-5">
             <div className="flex items-center w-40 justify-between earningCard">
               <div>
                 <div style={{ width: 60, height: 60 }}>
@@ -932,6 +930,58 @@ const Home = () => {
                 <b className="text-sm ">Today Late </b>
               </div>
               <b> 5 / 45</b>
+            </div>
+            <div className="flex items-center w-40 justify-between earningCard">
+              <div>
+                <div style={{ width: 60, height: 60 }}>
+                  <CircularProgressbar
+                    value={70}
+                    text={`${50}%`}
+                    styles={{
+                      // Customize the root element (outer circle)
+                      path: {
+                        stroke: `#60BE6B`, // Set the color of the progress bar
+                      },
+                      // Customize the text
+                      text: {
+                        fill: "#3e98c7", // Set the color of the text
+                      },
+                      // Customize the trail (background)
+                      trail: {
+                        stroke: "#f4f4f4", // Set the color of the background
+                      },
+                    }}
+                  />
+                </div>
+                <b className="text-sm">Advance Salary </b>
+              </div>
+              <b className="">৳5984595</b>
+            </div>
+            <div className="flex items-center w-40 justify-between earningCard">
+              <div>
+                <div style={{ width: 60, height: 60 }}>
+                  <CircularProgressbar
+                    value={90}
+                    text={`${90}%`}
+                    styles={{
+                      // Customize the root element (outer circle)
+                      path: {
+                        stroke: `#EF4444`, // Set the color of the progress bar
+                      },
+                      // Customize the text
+                      text: {
+                        fill: "#3e98c7", // Set the color of the text
+                      },
+                      // Customize the trail (background)
+                      trail: {
+                        stroke: "#f4f4f4", // Set the color of the background
+                      },
+                    }}
+                  />
+                </div>
+                <b className="text-sm ">Due Salary </b>
+              </div>
+              <b className="">৳7595</b>
             </div>
           </div>
         </div>

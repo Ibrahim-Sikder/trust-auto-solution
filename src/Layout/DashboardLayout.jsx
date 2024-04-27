@@ -19,6 +19,7 @@ import {
   FaSearch,
   FaCarSide,
 } from "react-icons/fa";
+import { FaAnchorCircleCheck } from "react-icons/fa6";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -85,6 +86,7 @@ const DashboardLayout = () => {
       <div className="static w-full h-16">
         <div className="w-full h-16  bg-[#42A1DA] fixed z-10 ">
           <div className="flex items-center justify-between pr-8 pl-10 lg:pl-20 mt-2 lg:mt-3">
+          
             <div
               className={`${toggle ? `activeToggle` : `navActive`}`}
               ref={navRef}
@@ -94,16 +96,16 @@ const DashboardLayout = () => {
               <span className="bar" />
               <span className="bar" />
             </div>
-            <h3 className="text-xl lg:text-2xl font-semibold text-white ">
+            <h3 className="text-xl lg:text-2xl font-semibold text-white hidden md:block">
               Trust Auto Solution
             </h3>
-            <div className="flex items-center space-x-5 ">
-              <div className="dashboardSearchBar">
-                <input placeholder="Search here" type="text" />
+            <div className="flex items-center space-x-5 flex-end  ">
+              <div className="dashboardSearchBar lg:block hidden ">
+                <input placeholder="Search here" type="text" className="lg:block hidden "/>
                 <FaSearch size={20} className="text-[#fff]" />
               </div>
 
-              <div className="relative">
+              <div className="relative lg:block hidden ">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">
                   5
                 </div>
@@ -112,7 +114,7 @@ const DashboardLayout = () => {
                   size={30}
                 />
               </div>
-              <div className="relative">
+              <div className="relative lg:block hidden">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">
                   5
                 </div>
@@ -134,6 +136,7 @@ const DashboardLayout = () => {
                 </div>
               </div>
             </div>
+           
           </div>
         </div>
       </div>
@@ -353,7 +356,6 @@ const DashboardLayout = () => {
                   </NavLink>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
-                 
                   <NavLink to="/dashboard/complete-project">
                     <span className="flex items-center">
                       <HiOutlineCurrencyDollar size={22} className="mr-2" />
@@ -739,56 +741,115 @@ const DashboardLayout = () => {
             <div className="mt-14">
               <div>
                 <div className="toolTipWrap">
-                  <Home className="tooltipIcon" />
+                  <NavLink to="/">
+                    <Home className="tooltipIcon" />
+                  </NavLink>
                   <b className="toolTip">Dashboard </b>
                 </div>
               </div>
 
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaCarAlt className="tooltipIcon" />
+                  <NavLink to="/dashboard/addjob">
+                    {" "}
+                    <FaCarAlt className="tooltipIcon" />
+                  </NavLink>
+
                   <b className="toolTip">Job Card</b>
                 </div>
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaCarAlt className="tooltipIcon" />
-                  <b className="toolTip">Quotation Card</b>
+                  <NavLink to="/dashboard/qutation">
+                    {" "}
+                    <FaCarAlt className="tooltipIcon" />
+                  </NavLink>
+                  <b className="toolTip">Quotation</b>
                 </div>
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <Receipt className="tooltipIcon" />
+                  <NavLink to="/dashboard/invoice">
+                    {" "}
+                    <Receipt className="tooltipIcon" />
+                  </NavLink>
                   <b className="toolTip">Invoice Card</b>
                 </div>
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaProjectDiagram className="tooltipIcon" />
+                  <NavLink to="/dashboard/money-receive">
+                    {" "}
+                    <CurrencyExchange className="tooltipIcon" />
+                  </NavLink>
+                  <b className="toolTip text-sm">Money Receipt </b>
+                </div>
+              </div>
+              <div className="mt-[14px]">
+                <div className="toolTipWrap">
+                  <NavLink to="/dashboard/running-project">
+                    {" "}
+                    <FaProjectDiagram className="tooltipIcon" />
+                  </NavLink>
+
                   <b className="toolTip">Project</b>
                 </div>
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaProductHunt className="tooltipIcon" />
+                  <NavLink to="/dashboard/add-product">
+                    <FaProductHunt className="tooltipIcon" />
+                  </NavLink>
+
                   <b className="toolTip">Product</b>
                 </div>
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaUserTie className="tooltipIcon" />
+                  <NavLink to="/dashboard/add-customer">
+                    <FaUserTie className="tooltipIcon" />
+                  </NavLink>
                   <b className="toolTip">Customer</b>
                 </div>
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaCriticalRole className="tooltipIcon" />
+                  <NavLink to="/dashboard/add-supplier">
+                    <FaHospitalUser className="tooltipIcon" />
+                  </NavLink>
+                  <b className="toolTip">Suppliers </b>
+                </div>
+              </div>
+              <div className="mt-[14px]">
+                <div className="toolTipWrap">
+                  <NavLink to="/dashboard/add-employee">
+                    <FaUsers className="tooltipIcon" />
+                  </NavLink>
+                  <b className="toolTip">Employee </b>
+                </div>
+              </div>
+              <div className="mt-[14px]">
+                <div className="toolTipWrap">
+                  <NavLink to="/dashboard/add-attendance">
+                    <FaRegListAlt className="tooltipIcon" />
+                  </NavLink>
+                  <b className="toolTip">Attendance </b>
+                </div>
+              </div>
+
+              <div className="mt-[14px]">
+                <div className="toolTipWrap">
+                  <NavLink to="/dashboard/add-expense">
+                    <FaCriticalRole className="tooltipIcon" />
+                  </NavLink>
                   <b className="toolTip">Expense </b>
                 </div>
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaCriticalRole className="tooltipIcon" />
+                  <NavLink to="/dashboard/add-expense">
+                    <FaAnchorCircleCheck className="tooltipIcon" />
+                  </NavLink>
                   <b className="toolTip">Role </b>
                 </div>
               </div>
@@ -800,19 +861,9 @@ const DashboardLayout = () => {
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaUsers className="tooltipIcon" />
-                  <b className="toolTip">Employee </b>
-                </div>
-              </div>
-              <div className="mt-[14px]">
-                <div className="toolTipWrap">
-                  <FaRegListAlt className="tooltipIcon" />
-                  <b className="toolTip">Attendance </b>
-                </div>
-              </div>
-              <div className="mt-[14px]">
-                <div className="toolTipWrap">
-                  <FaUsersCog className="tooltipIcon" />
+                  <NavLink to="/dashboard/profile">
+                    <FaUsersCog className="tooltipIcon" />
+                  </NavLink>
                   <b className="toolTip">Profile </b>
                 </div>
               </div>
@@ -839,12 +890,11 @@ const DashboardLayout = () => {
         </aside>
       </div>
 
-     <button onClick={scrollToTop} id="button">
-       <div className="scrollBtn">
-       <FaAngleDoubleUp size={25} />
-       </div>
+      <button onClick={scrollToTop} id="button">
+        <div className="scrollBtn">
+          <FaAngleDoubleUp size={25} />
+        </div>
       </button>
-
     </main>
   );
 };

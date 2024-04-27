@@ -1145,15 +1145,10 @@ const AddJobCard = () => {
                  disabled
                 className="ownerInput"
                 o
-                {...register("technician_signature", { required: true })}
+                {...register("technician_signature")}
                 label="Technician Signature (T) "
               />
-              <br />
-              {errors.technician_signature && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )}
+              
             </div>
             <div>
               <input
@@ -1175,15 +1170,10 @@ const AddJobCard = () => {
               <TextField
                  disabled
                 className="ownerInput"
-                {...register("vehicle_owner", { required: true })}
+                {...register("vehicle_owner",)}
                 label="Vehicle Owner (T) "
               />
-              <br />
-              {errors.vehicle_owner && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )}
+             
             </div>
           </div>
           <div className="mt-3">

@@ -1170,30 +1170,20 @@ const UpdateJobCard = () => {
             <div>
               <TextField
                 className="ownerInput"
-                {...register("technician_name", { required: true })}
+                {...register("technician_name",)}
                 label="Technician Name (T) "
               />
-              <br />
-              {errors.technician_name && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )}
+              
             </div>
             <div>
               <TextField
                 // disabled
                 className="ownerInput"
                 o
-                {...register("technician_signature", { required: true })}
+                {...register("technician_signature",)}
                 label="Technician Signature (T) "
               />
-              <br />
-              {errors.technician_signature && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )}
+             
             </div>
             <div>
               <input
