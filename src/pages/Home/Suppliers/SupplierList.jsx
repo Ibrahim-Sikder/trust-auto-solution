@@ -26,32 +26,7 @@ const SupplierList = () => {
     },
   }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -313,7 +288,7 @@ const SupplierList = () => {
           <FaUserGear size={30} />
         </div>
       </div>
-      <div className="flex items-center justify-between my-3 mb-8">
+      <div className="md:flex items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />
           <div className="ml-2">
@@ -328,15 +303,10 @@ const SupplierList = () => {
         </div>
       </div>
       <div className="mt-20 overflow-x-auto">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="mb-3 text-3xl font-bold">Suppliers List:</h3>
+        <div className="md:flex items-center justify-between mb-5">
+          <h3 className="mb-3 text-xl md:text-3xl font-bold">Suppliers List:</h3>
           <div className="flex items-center searcList">
-            <div
-              onClick={handleAllSuppliers}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </div>
+           
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}
