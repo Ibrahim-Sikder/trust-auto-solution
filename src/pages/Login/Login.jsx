@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import './Login.css'
 import Swal from "sweetalert2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import car from '../../../public/assets/auto-car.jpg'
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [defaultEmail, setDefaultEmail] = useState('');
@@ -32,7 +32,7 @@ const Login = () => {
     } else {
       Swal.fire({
         icon: "error",
-        position: 'center',
+        position: 'top',
         title: 'Invalid Email & Password',
         showConfirmButton: false,
         timer: 1500
@@ -52,11 +52,13 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className="py-5 bg-[#42A1DA] min-h-screen flex items-center justify-center">
-        <div>
-          <h2 className="text-4xl capitalize mb-8 font-bold text-white text-center">
-            Login Now!
+    <div className="loginWrap">
+      <div className="py-5  min-h-screen flex items-center 
+      ">
+      
+        <div className="loginFormWraps">
+          <h2 className="text-lg sm:text-2xl md:text-4xl capitalize mb-8 font-bold text-white text-center">
+          Welcome to back !
           </h2>
           <div className="signUnWrap">
             <form onSubmit={handleLogin}>
