@@ -275,20 +275,22 @@ const UpdateQuotation = () => {
                   onChange={(e) =>
                     setSpecificInvoice({
                       ...specificInvoice,
-                      customerId: e.target.value,
+                      Id: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.customerId,
+                    shrink: !!specificInvoice.Id,
                   }}
                 />
               </div>
 
               <div className="mt-3">
+               
                 <TextField
                   className="addJobInputField"
-                  label="Company"
+                  label="Company Name "
                   value={specificInvoice?.company_name}
+                  {...register("company_name")}
                   onChange={(e) =>
                     setSpecificInvoice({
                       ...specificInvoice,
@@ -298,7 +300,6 @@ const UpdateQuotation = () => {
                   InputLabelProps={{
                     shrink: !!specificInvoice.company_name,
                   }}
-                  {...register("company_name")}
                 />
               </div>
               <div className="mt-3">

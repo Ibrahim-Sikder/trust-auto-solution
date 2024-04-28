@@ -200,7 +200,7 @@ const AddCustomer = () => {
       <table className="table">
         <thead className="tableWrap">
           <tr>
-            <th>SL No</th>
+            <th>Customer ID </th>
             <th>Customer Name</th>
             <th>Order Number </th>
             <th>Car Number </th>

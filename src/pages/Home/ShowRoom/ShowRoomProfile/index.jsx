@@ -20,9 +20,13 @@ import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
 const ShowRoomProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
+  console.log(profileData)
   const [jobCardData, setJobCardData] = useState([]);
+  console.log(jobCardData)
   const [quotationData, setQuotationData] = useState([]);
+  console.log(quotationData)
   const [invoiceData, setInvoiceData] = useState([]);
+  console.log(invoiceData)
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");

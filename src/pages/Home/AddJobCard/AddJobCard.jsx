@@ -23,6 +23,7 @@ import {
 } from "../../../constant";
 import Cookies from "js-cookie";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
+import { formatDate } from "../../../utils/formateDate";
 
 const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
@@ -563,18 +564,18 @@ const AddJobCard = () => {
             </div>
             <div>
               <div>
-                <div>
+                <div className="cursor-pointer">
                   <b>
                     Date <span className="requiredStart">*</span>
                   </b>
                   <input
-                    className="outline-none"
+                    className="outline-none curs"
                     onChange={handleDateChange}
                     autoComplete="off"
                     type="date"
                     placeholder="Date"
                     max={currentDate}
-                    defaultValue={formattedDate}
+                    defaultValue={ formattedDate ? formatDate(formattedDate) : ''}
                   />
                 </div>
 

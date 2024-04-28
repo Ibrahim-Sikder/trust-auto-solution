@@ -20,14 +20,18 @@ import { useLocation } from "react-router-dom";
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
+  console.log(profileData);
   const [jobCardData, setJobCardData] = useState([]);
+  console.log(jobCardData);
   const [quotationData, setQuotationData] = useState([]);
+  console.log(quotationData);
   const [invoiceData, setInvoiceData] = useState([]);
+  console.log(invoiceData);
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
+  console.log(moneyReceiptData);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
-  
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -39,9 +43,6 @@ const CompanyProfile = () => {
         });
     }
   }, [id]);
-
-
- 
 
   useEffect(() => {
     if (id) {
@@ -133,15 +134,15 @@ const CompanyProfile = () => {
                 <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>45996-0789777</span>
+                    <span>{profileData.company_contact}</span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>customer@gmail.com </span>
+                    <span>{profileData.company_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span> Kuril Bishawroad, Dhaka-1212 </span>
+                    <span>{profileData.company_address} </span>
                   </div>
                 </div>
               </div>

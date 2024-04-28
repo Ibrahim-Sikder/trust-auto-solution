@@ -10,7 +10,7 @@ const CompanyAccount = ({
   moneyReceiptData,
 }) => {
   
-  console.log(profileData)
+  console.log(jobCardData)
   return (
     <div className="customerProfileWrap">
       <div className="justify-between block mt-5 md:flex">
@@ -19,31 +19,33 @@ const CompanyAccount = ({
           <div className="flex items-center justify-between">
             <div>
               <div>
-                Supplier Name: <b>Mr. Rahat </b>
+                Supplier Name: <b>{profileData.company_name} </b>
               </div>
               <div>
-                Phone Number: <b>0657899444</b>
+                Phone Number: <b>{profileData.company_contact} </b>
               </div>
             </div>
             
             <div>
               <div>
-                Shop Name: <b>Auto Solution </b>
+                Shop Name: <b>{profileData.company_name}</b>
               </div>
               <span>
-                Email Address: <b>supplier@gmail.com</b>
+                Email Address: <b>{profileData.company_email}</b>
               </span>
             </div>
           </div>
         </Card>
         <Card>
           <h3 className="text-xl font-semibold">Address Details </h3>
-          <span>
-            Country : <b>Bangladesh </b>
+         <div className="flex items-center justify-between">
+         <span>
+            Country : <b>{profileData.company_address}</b>
           </span>
           <span>
-            City <b>Dhaka </b>
+            City : <b>Dhaka </b>
           </span>
+         </div>
         </Card>
       </div>
       <div className="justify-between block mt-5 md:flex">
@@ -83,7 +85,7 @@ const CompanyAccount = ({
                 <b>30</b>
               </div>
               <div className="ml-3">
-                <b>TSA056888</b>
+                <b>{jobCardData.dd}</b>
                 <p>Bangladesh </p>
               </div>
             </div>

@@ -281,7 +281,7 @@ const ViewInvoice = () => {
             <button> Add Job </button>
           </Link>
           <Link to="/dashboard/qutation">
-            <button>Qutation </button>
+            <button>Quotation </button>
           </Link>
           <Link to="/dashboard/invoice">
             <button>Invoice </button>

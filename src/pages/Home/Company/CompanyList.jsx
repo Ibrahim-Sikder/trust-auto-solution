@@ -11,6 +11,7 @@ import Loading from "../../../components/Loading/Loading";
 const CompanyList = () => {
   const [filterType, setFilterType] = useState("");
   const [companyData, setCompanyData] = useState([]);
+  console.log(companyData)
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -131,6 +132,7 @@ const CompanyList = () => {
         <thead className="tableWrap">
           <tr>
             <th>SL No</th>
+            <th>Company ID</th>
             <th>Customer Name</th>
             <th>Order Number </th>
             <th>Car Number </th>
@@ -143,8 +145,8 @@ const CompanyList = () => {
           {companyData?.map((card, index) => (
             <tr key={card._id}>
               <td>{index + 1}</td>
+              <td>{card.companyId}</td>
               <td>{card.company_name}</td>
-
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
               <td>{card.date}</td>

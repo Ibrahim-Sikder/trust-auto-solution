@@ -7,6 +7,7 @@ import { usePDF } from "react-to-pdf";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Invoice.css";
 import "./DetailPrint.css";
+import { formatDate } from "../../../utils/formateDate";
 
 const Detail = () => {
   const componentRef = useRef();
@@ -229,11 +230,17 @@ const Detail = () => {
                   {page === 1 && (
                     <div className="px-10">
                     <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
-                      <span>  <b>Customer ID:</b> TSA001</span>
+                      <span>  <b>Customer ID:</b>{invoicePreview.Id}</span>
                       <b className="mr-5 uppercase">Invoice</b>
-                      <b>Date: {invoicePreview?.date} </b>
+                      <b>
+                          Date:
+                          {invoicePreview?.date
+                            ? formatDate(invoicePreview.date)
+                            : ""}
+                        </b>
                     </div>
                    
+
                     <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
                     <div className="flex justify-between w-[40%]">
                       <div className="invoiceCustomerInfo">

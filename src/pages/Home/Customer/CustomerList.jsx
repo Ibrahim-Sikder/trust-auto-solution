@@ -12,49 +12,10 @@ import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 import { HiOutlineSearch } from "react-icons/hi";
 const CustomerList = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
   const [filterType, setFilterType] = useState("");
   const [customerData, setCustomerData] = useState([]);
+  console.log(customerData)
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -178,7 +139,7 @@ const CustomerList = () => {
       <table className="table">
         <thead className="tableWrap">
           <tr>
-            <th>SL No</th>
+            <th>Customer ID </th>
             <th>Customer Name</th>
             <th>Order Number </th>
             <th>Car Number </th>
@@ -190,7 +151,7 @@ const CustomerList = () => {
         <tbody>
           {customerData?.map((card, index) => (
             <tr key={card._id}>
-              <td>{index + 1}</td>
+              <td>{card.customerId}</td>
               <td>{card.customer_name}</td>
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>

@@ -142,6 +142,17 @@ const UpdateShowRoom = () => {
                     on
                     label="Show Room Name (T)"
                     {...register("showRoom_name")}
+                    defaultValue={showRoomData.showRoom_name}
+                    value={showRoomData.showRoom_name}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        showRoom_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.showRoom_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -150,6 +161,17 @@ const UpdateShowRoom = () => {
                     onC
                     label="Vehicle User Name (T)"
                     {...register("username")}
+                    defaultValue={showRoomData.username}
+                    value={showRoomData.username}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        username: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.username,
+                    }}
                   />
                 </div>
                 <div>
@@ -158,6 +180,17 @@ const UpdateShowRoom = () => {
                     on
                     label="Show Room Address (T)"
                     {...register("showRoom_address")}
+                    defaultValue={showRoomData.showRoom_address}
+                    value={showRoomData.showRoom_address}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        showRoom_address: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.showRoom_address,
+                    }}
                   />
                 </div>
 
@@ -167,6 +200,17 @@ const UpdateShowRoom = () => {
                     onC
                     label="Company Name (T)"
                     {...register("company_name")}
+                    defaultValue={showRoomData.company_name}
+                    value={showRoomData.company_name}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        company_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.company_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -179,6 +223,17 @@ const UpdateShowRoom = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
+                    defaultValue={showRoomData.company_contact}
+                    value={showRoomData.company_contact}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        company_contact: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.company_contact,
+                    }}
                   />
                   {errors.company_contact && (
                     <span className="text-sm text-red-400">
@@ -192,6 +247,17 @@ const UpdateShowRoom = () => {
                     label="Company Email Address (N)"
                     {...register("company_email")}
                     type="email"
+                    defaultValue={showRoomData.company_email}
+                    value={showRoomData.company_email}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        company_email: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.company_email,
+                    }}
                   />
                 </div>
                 <div>
@@ -199,6 +265,17 @@ const UpdateShowRoom = () => {
                     className="productField"
                     label="Company Address (T) "
                     {...register("company_address")}
+                    defaultValue={showRoomData.company_address}
+                    value={showRoomData.company_address}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        company_address: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.company_address,
+                    }}
                   />
                 </div>
                 <div>
@@ -207,6 +284,17 @@ const UpdateShowRoom = () => {
                     o
                     label="Driver Name (T)"
                     {...register("driver_name")}
+                    defaultValue={showRoomData.driver_name}
+                    value={showRoomData.driver_name}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        driver_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.driver_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -219,6 +307,17 @@ const UpdateShowRoom = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
+                    defaultValue={showRoomData.driver_contact}
+                    value={showRoomData.driver_contact}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        driver_contact: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.driver_contact,
+                    }}
                   />
                   {errors.driver_contact && (
                     <span className="text-sm text-red-400">
@@ -231,6 +330,17 @@ const UpdateShowRoom = () => {
                     className="productField"
                     label="Reference Name (T) "
                     {...register("reference_name")}
+                    defaultValue={showRoomData.reference_name}
+                    value={showRoomData.reference_name}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        reference_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.reference_name,
+                    }}
                   />
                 </div>
               </div>
@@ -240,25 +350,37 @@ const UpdateShowRoom = () => {
                   Vehicle Information{" "}
                 </h3>
                 <div className="flex items-center mt-1 productField">
+                  
                   <Autocomplete
-                    className="jobCardSelect"
-                    id="reg"
-                    Car
-                    Registration
-                    No
-                    options={cmDmOptions.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Car Reg No"
-                        {...register("carReg_no")}
-                      />
-                    )}
-                  />
+                  className="addJobInputField"
+                  value={showRoomData?.carReg_no || ""}
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Car Reg No "
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!showRoomData?.carReg_no,
+                      }}
+                    />
+                  )}
+                />
                   <TextField
                     className="carRegNumbers"
                     label="Car R (T&N)"
                     {...register("car_registration_no")}
+                    defaultValue={showRoomData.car_registration_no}
+                    value={showRoomData.car_registration_no}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        car_registration_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.car_registration_no,
+                    }}
                   />
                 </div>
 
@@ -267,6 +389,17 @@ const UpdateShowRoom = () => {
                     className="productField"
                     label="Chassis No (T&N)"
                     {...register("chassis_no")}
+                    defaultValue={showRoomData.chassis_no}
+                    value={showRoomData.chassis_no}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        chassis_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.chassis_no,
+                    }}
                   />
                 </div>
                 <div>
@@ -274,30 +407,53 @@ const UpdateShowRoom = () => {
                     className="productField"
                     label="ENGINE NO & CC (T&N) "
                     {...register("engine_no")}
+                    defaultValue={showRoomData.engine_no}
+                    value={showRoomData.engine_no}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        engine_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.engine_no,
+                    }}
                   />
                 </div>
 
                 <div>
                   <Autocomplete
-                    className="productField"
-                    id="free-solo-demo"
-                    Vehicle
-                    Brand
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Brand"
-                        {...register("vehicle_brand")}
-                      />
-                    )}
-                  />
+                  className="addJobInputField"
+                  value={showRoomData?.vehicle_brand || ""}
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Brand "
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!showRoomData?.vehicle_brand,
+                      }}
+                    />
+                  )}
+                />
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Vehicle Name "
                     {...register("vehicle_name")}
+                    defaultValue={showRoomData.vehicle_name}
+                    value={showRoomData.vehicle_name}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        vehicle_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.vehicle_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -310,6 +466,17 @@ const UpdateShowRoom = () => {
                         message: "Please enter a valid model number.",
                       },
                     })}
+                    defaultValue={showRoomData.vehicle_model}
+                    value={showRoomData.vehicle_model}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        company_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.vehicle_model,
+                    }}
                   />
                   {errors.vehicle_model && (
                     <span className="text-sm text-red-400">
@@ -319,24 +486,37 @@ const UpdateShowRoom = () => {
                 </div>
                 <div>
                   <Autocomplete
-                    className="productField"
-                    Vehicle
-                    Types
-                    options={vehicleTypes.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=" Vehicle Categories "
-                        {...register("vehicle_category")}
-                      />
-                    )}
-                  />
+                  className="addJobInputField"
+                  value={showRoomData?.vehicle_category || ""}
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Category "
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!showRoomData?.vehicle_category,
+                      }}
+                    />
+                  )}
+                />
                 </div>
                 <div>
                   <TextField
                     className="productField"
                     label="Color & Code (T&N) "
                     {...register("color_code")}
+                    defaultValue={showRoomData.color_code}
+                    value={showRoomData.color_code}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        color_code: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.color_code,
+                    }}
                   />
                 </div>
                 <div>
@@ -349,6 +529,18 @@ const UpdateShowRoom = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
+                    defaultValue={showRoomData.mileage}
+                    value={showRoomData.mileage}
+                    onChange={(e) =>
+                      setShowRoomData({
+                        ...showRoomData,
+                        mileage: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!showRoomData.mileage,
+                    }}
+
                   />
                   {errors.mileage && (
                     <span className="text-sm text-red-400">
@@ -358,18 +550,21 @@ const UpdateShowRoom = () => {
                 </div>
                 <div>
                   <Autocomplete
-                    className="productField"
-                    Fuel
-                    Type
-                    options={fuelType.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=" Fuel Type"
-                        {...register("fuel_type")}
-                      />
-                    )}
-                  />
+                  className="addJobInputField"
+                  value={showRoomData?.fuel_type || ""}
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Fuel Type "
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!showRoomData?.fuel_type,
+                      }}
+                    />
+                  )}
+                />
+                  
                 </div>
               </div>
             </div>
