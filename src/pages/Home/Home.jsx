@@ -103,7 +103,7 @@ const Home = () => {
       <h3 className="text-3xl font-bold">Welcome Admin !</h3>
       <span>Home / Dashboard</span>
 
-      <div className="dashBoardRight  ">
+      <div className="dashBoardRight mt-5 lg:mt-0 ">
         <div className="md:flex items-center justify-between md:p-[0px] lg:p-[18px]"></div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 place-content-center gap-10  mb-5">
@@ -264,7 +264,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1  lg:grid-cols-2 gap-5  sectionMargin">
+      <div className="grid grid-cols-1  xl:grid-cols-2 gap-5  sectionMargin place-content-center justify-content-center ">
         <div
           className="grid grid-cols-1 md:grid-cols-3 gap-4
         5"

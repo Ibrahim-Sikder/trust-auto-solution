@@ -540,7 +540,7 @@ const AddJobCard = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div>
-          <div className="flex flex-wrap items-center justify-between my-5 ">
+          <div className=" flex md:flex-row flex-col items-center justify-between my-5 ">
             <div>
               <div>
                 <b>
@@ -781,7 +781,7 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex items-center mt-3 ">
+              <div className="flex flex-wrap md:gap-0 gap-4 items-center mt-3 ">
                 <Autocomplete
                   className="jobCardSelect"
                   id="free-solo-demo"

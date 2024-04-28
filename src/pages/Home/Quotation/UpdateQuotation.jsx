@@ -222,25 +222,27 @@ const UpdateQuotation = () => {
 
   return (
     <div className="px-5 py-10">
-      <div className="flex items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
-        <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
-        <div>
-          <h2 className=" trustAutoTitle trustAutoTitleQutation">
-            Trust Auto Solution{" "}
-          </h2>
-          <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+       <div className=" addJobCardHeads">
+          <img src={logo} alt="logo" className=" addJobLogoImg" />
+          <div>
+            <h2 className=" trustAutoTitle trustAutoTitleQutation">
+              Trust Auto Solution{" "}
+            </h2>
+            <span className="text-[12px] lg:text-xl">
+              Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
+            </span>
+          </div>
+          <div className="space-y-1 text-justify jobCardContactInfo">
+            <span className="block">
+              <span className="font-bold">Mobile:</span> 345689789666
+            </span>
+            <span className="block">
+              <small className="font-bold">Email:</small>{" "}
+              trustautosolution@gmail.com
+            </span>
+            <span className="block font-bold ">trustautosolution.com</span>
+          </div>
         </div>
-        <div className="space-y-1 text-justify">
-          <span className="block">
-            <span className="font-bold">Mobile:</span> 345689789666
-          </span>
-          <span className="block">
-            <small className="font-bold">Email:</small>{" "}
-            trustautosolution@gmail.com
-          </span>
-          <span className="block font-bold ">trustautosolution.com</span>
-        </div>
-      </div>
 
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>

@@ -622,6 +622,8 @@ const AddQuotation = () => {
   return (
     <div className="px-5 py-10">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
+
+      
         <div className=" addJobCardHeads">
           <img src={logo} alt="logo" className=" addJobLogoImg" />
           <div>
@@ -643,6 +645,7 @@ const AddQuotation = () => {
             <span className="block font-bold ">trustautosolution.com</span>
           </div>
         </div>
+
       </div>
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -851,11 +854,11 @@ const AddQuotation = () => {
           })}
           <div className="discountFieldWrap">
             <div className="flex items-center ">
-              <b className="mr-2"> Total Amount: </b>
+              <b className="mr-2 hideAmountText"> Total Amount: </b>
               <span>{grandTotal}</span>
             </div>
             <div>
-              <b className="mr-2"> Discount: </b>
+              <b className="mr-2 hideAmountText "> Discount: </b>
               <input
                 className="py-1 text-center"
                 onChange={(e) => handleDiscountChange(e.target.value)}
@@ -865,7 +868,7 @@ const AddQuotation = () => {
               />
             </div>
             <div>
-              <b className="mr-2">Vat: </b>
+              <b className="mr-2 hideAmountText">Vat: </b>
               <input
                 className="text-center"
                 onChange={(e) => handleVATChange(e.target.value)}
@@ -876,14 +879,14 @@ const AddQuotation = () => {
             </div>
             <div>
               <div className="flex items-center ml-3 ">
-                <b className="mr-2">Final Total: </b>
+                <b className="mr-2 ">Final Total: </b>
                 <span>{calculateFinalTotal()}</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 buttonGroup">
-            <div>
+          <div className="mt-8 buttonGroup buttonMargin">
+            <div className="flex flex-col justify-end">
               {/* <Link to={}> */}
               <button onClick={() => setPreview("preview")}>Preview</button>
               {/* </Link> */}
@@ -904,14 +907,8 @@ const AddQuotation = () => {
       </div>
       <div className="mt-20 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="mb-3 text-3xl font-bold">Quotation List:</h3>
+          <h3 className="mb-3 text-md md:text-3xl font-bold">Quotation List:</h3>
           <div className="flex items-center searcList">
-            <div
-              onClick={handleAllQuotation}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </div>
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

@@ -397,10 +397,9 @@
   .vehicleCard {
     font-size: 15px;
     width: 11rem;
-    margin-right: 10px;
   }
   .ownerInput {
-    width: 400px !important;
+    width: 358px !important;
     margin-bottom: 10px !important;
     margin: 0 auto;
   }
@@ -412,7 +411,13 @@
 
 @media only screen and (max-width: 375px) {
   .ownerInput {
-    width: 230px !important;
+    width: 310px !important;
+  }
+
+}
+@media only screen and (max-width: 275px) {
+  .ownerInput {
+    width: 200px !important;
   }
 
 }

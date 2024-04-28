@@ -703,7 +703,7 @@ const UpdateJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex items-center mt-3 ">
+              <div className="flex flex-wrap gap-4 md:gap-0 items-center mt-3 ">
               <Autocomplete
                   className="addJobInputField"
                   value={singleCard?.carReg_no || ""}
@@ -721,22 +721,7 @@ const UpdateJobCard = () => {
                   )}
                 />
 
-                {/* <Autocomplete
-                  className="jobCardSelect"
-                  id="free-solo-demo"
-                  Car
-                  Registration
-                  No
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Reg No"
-                      {...register("carReg_no")}
-                      value={singleCard?.carReg_no}
-                    />
-                  )}
-                /> */}
+               
                 <TextField
                   className="jobCardSelect2"
                   label="Car R (T&N)"
@@ -1115,24 +1100,13 @@ const UpdateJobCard = () => {
               <div className="mt-2 imgWrap">
                 <img src={car} alt="car" />
               </div>
-              <div className="mt-3">
-                <h4 className="text-xl font-bold capitalize">Legend</h4>
-                <div className="legend">
-                  <ol>
-                    <li>Scratch</li>
-                    <li>Chip</li>
-                    <li>Respainted</li>
-                    <li>New Panel Filter </li>
-                    <li>Scratch</li>
-                  </ol>
-                  <ol>
-                    <li>Scratch</li>
-                    <li>Chip</li>
-                    <li>Respainted</li>
-                    <li>New Panel Filter </li>
-                    <li>Scratch</li>
-                  </ol>
-                </div>
+              <div className="mt-5">
+                <b className="block mb-1 "> Note  </b>
+                <textarea
+                  onChange={(e) => setVehicleBody(e.target.value)}
+                  required
+                  autoComplete="off"
+                ></textarea>
               </div>
               <div className="mt-5">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
