@@ -12,7 +12,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Loading from "../../../components/Loading/Loading";
 import {
   carBrands,
   cmDmOptions,
@@ -23,28 +22,23 @@ import {
 } from "../../../constant";
 import Cookies from "js-cookie";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
-
+import { Controller } from "react-hook-form";
 const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
   const [allJobCard, setAllJobCard] = useState([]);
 
   const [singleCard, setSingleCard] = useState({});
-
-
+  console.log(singleCard);
 
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);
-
- 
-  
 
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
 
   const [vehicleBody, setVehicleBody] = useState(null);
- 
 
   const [error, setError] = useState(null);
   const [select, setSelect] = useState("SL No");
@@ -102,7 +96,8 @@ const UpdateJobCard = () => {
         driver_contact: data.driver_contact || singleCard.driver_contact,
         reference_name: data.reference_name || singleCard.reference_name,
         carReg_no: data.carReg_no || singleCard.carReg_no,
-        car_registration_no: data.car_registration_no || singleCard.car_registration_no,
+        car_registration_no:
+          data.car_registration_no || singleCard.car_registration_no,
         chassis_no: data.chassis_no || singleCard.chassis_no,
         engine_no: data.engine_no || singleCard.engine_no,
         vehicle_brand: data.vehicle_brand || singleCard.vehicle_brand,
@@ -117,7 +112,8 @@ const UpdateJobCard = () => {
         reported_action: value3 || singleCard.reported_action,
         vehicle_body_report: vehicleBody || singleCard.vehicle_body_report,
         technician_name: data.technician_name || singleCard.technician_name,
-        technician_signature: data.technician_signature || singleCard.technician_signature,
+        technician_signature:
+          data.technician_signature || singleCard.technician_signature,
         technician_date: data.technician_date || singleCard.technician_date,
         vehicle_owner: data.vehicle_owner || singleCard.vehicle_owner,
       };
@@ -146,7 +142,6 @@ const UpdateJobCard = () => {
   const handleFuelChange = (_, newInputValue) => {
     setGetFuelType(newInputValue);
   };
- 
 
   // const handlePreview = async (e) => {
   //   e.preventDefault();
@@ -364,7 +359,6 @@ const UpdateJobCard = () => {
     setFormattedDate(formattedDate);
   };
 
-   
   const currentDate = new Date().toISOString().split("T")[0];
   useEffect(() => {
     const currentDate = new Date();
@@ -384,54 +378,7 @@ const UpdateJobCard = () => {
     setFormattedDate(currentDate);
   }, []);
 
-  // const currentDate = new Date().toISOString().split("T")[0];
-  // useEffect(() => {
-  //   // Get the current date in the format YYYY-MM-DD
-  //   const currentDate = new Date().toISOString().split("T")[0];
-  //   setFormattedDate(currentDate);
-  // }, []);
 
-  // const Search = styled("div")(({ theme }) => ({
-  //   position: "relative",
-  //   borderRadius: theme.shape.borderRadius,
-  //   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  //   "&:hover": {
-  //     backgroundColor: alpha(theme.palette.common.white, 0.25),
-  //   },
-  //   marginLeft: 0,
-  //   width: "100%",
-  //   [theme.breakpoints.up("sm")]: {
-  //     marginLeft: theme.spacing(1),
-  //     width: "auto",
-  //   },
-  // }));
-
-  // const SearchIconWrapper = styled("div")(({ theme }) => ({
-  //   padding: theme.spacing(0, 2),
-  //   height: "100%",
-  //   position: "absolute",
-  //   pointerEvents: "none",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // }));
-
-  // const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  //   color: "inherit",
-  //   width: "100%",
-  //   "& .MuiInputBase-input": {
-  //     padding: theme.spacing(1, 1, 1, 0),
-  //     // vertical padding + font size from searchIcon
-  //     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-  //     transition: theme.transitions.create("width"),
-  //     [theme.breakpoints.up("sm")]: {
-  //       width: "12ch",
-  //       "&:focus": {
-  //         width: "20ch",
-  //       },
-  //     },
-  //   },
-  // }));
 
   return (
     <div className="mb-20 addJobCardWraps">
@@ -757,7 +704,24 @@ const UpdateJobCard = () => {
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
               <div className="flex items-center mt-3 ">
-                <Autocomplete
+              <Autocomplete
+                  className="addJobInputField"
+                  value={singleCard?.carReg_no || ""}
+                  onChange={handleBrandChange}
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Car Reg No "
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!singleCard?.carReg_no,
+                      }}
+                    />
+                  )}
+                />
+
+                {/* <Autocomplete
                   className="jobCardSelect"
                   id="free-solo-demo"
                   Car
@@ -772,7 +736,7 @@ const UpdateJobCard = () => {
                       value={singleCard?.carReg_no}
                     />
                   )}
-                />
+                /> */}
                 <TextField
                   className="jobCardSelect2"
                   label="Car R (T&N)"
@@ -844,49 +808,36 @@ const UpdateJobCard = () => {
               <div className="mt-3">
                 <Autocomplete
                   className="addJobInputField"
-                  id="free-solo-demo"
-                  Vehicle
-                  Brand
-                  onInputChange={handleBrandChange}
+                  value={singleCard?.vehicle_brand || ""}
+                  onChange={handleBrandChange}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Brand"
-                      {...register("vehicle_brand")}
-                      value={singleCard?.vehicle_brand}
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!singleCard?.vehicle_brand,
+                      }}
                     />
                   )}
                 />
-                {/* {errors.vehicle_brand && !brand && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
+               
               </div>
 
               <div className="mt-3">
-                <Autocomplete
+              <Autocomplete
                   className="addJobInputField"
-                  id="free-solo-demo"
-                  Vehicle
-                  Brand
-                  onInputChange={handleBrandChange}
-                  options={vehicleName.map((option) => option.label)}
+                  value={singleCard?.vehicle_name || ""}
+                  onChange={handleBrandChange}
+                  options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Name "
-                      {...register("vehicle_name")}
-                      value={singleCard?.vehicle_name}
-                      onChange={(e) =>
-                        setSingleCard({
-                          ...singleCard,
-                          vehicle_name: e.target.value,
-                        })
-                      }
+                      // Handle input props manually
                       InputLabelProps={{
-                        shrink: !!singleCard.vehicle_name,
+                        shrink: !!singleCard?.vehicle_name,
                       }}
                     />
                   )}
@@ -950,22 +901,23 @@ const UpdateJobCard = () => {
               </div>
 
               <div className="mt-3">
-                <Autocomplete
+              <Autocomplete
                   className="addJobInputField"
-                  id="free-solo-demo"
-                  Vehicle
-                  Types
-                  onInputChange={handleCategoryChange}
-                  options={vehicleTypes.map((option) => option.label)}
+                  value={singleCard?.vehicle_category || ""}
+                  onChange={handleBrandChange}
+                  options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label=" Vehicle Categories "
-                      {...register("vehicle_category")}
-                      value={singleCard?.vehicle_category}
+                      label="Vehicle Category "
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!singleCard?.vehicle_category,
+                      }}
                     />
                   )}
                 />
+                
                 {/* {errors.vehicle_category && !category && (
                   <span className="text-sm text-red-400">
                     This field is required.
@@ -1023,7 +975,24 @@ const UpdateJobCard = () => {
                 )} */}
               </div>
               <div className="mt-3">
-                <Autocomplete
+              <Autocomplete
+                  className="addJobInputField"
+                  value={singleCard?.fuel_type || ""}
+                  onChange={handleBrandChange}
+                  options={carBrands.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Fuel Type "
+                      // Handle input props manually
+                      InputLabelProps={{
+                        shrink: !!singleCard?.fuel_type,
+                      }}
+                    />
+                  )}
+                />
+
+                {/* <Autocomplete
                   className="addJobInputField"
                   value={singleCard?.fuel_type}
                   focused={singleCard?.fuel_type}
@@ -1040,7 +1009,7 @@ const UpdateJobCard = () => {
                       value={singleCard?.fuel_type}
                     />
                   )}
-                />
+                /> */}
                 {/* {errors.fuel_type && !getFuelType && (
                   <span className="text-sm text-red-400">
                     This field is required.
@@ -1058,72 +1027,84 @@ const UpdateJobCard = () => {
                   Vehicle Interior Parts, Papers, Tools, Meter Light & Others{" "}
                 </b>
                 <ReactQuill
-                value={singleCard.vehicle_interior_parts}
-                className="textEditor"
-                onChange={(content) => setSingleCard(prevState => ({ ...prevState, vehicle_interior_parts: content }))}
-                modules={{
-                  toolbar: [
-                    [{ font: [] }],
-                    [{ size: ["small", false, "large", "huge"] }],
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    [{ color: [] }, { background: [] }],
-                    [{ align: [] }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    ["bold", "italic", "underline"],
-                    [{ align: [] }],
-                    ["link", "image"],
-                    ["video"],
-                    ["clean"],
-                    ["blockquote", "code-block"],
-                    ["direction"],
-                    ["formula"],
-                    ["strike"],
-                  ],
-                }}
-              />
-              
+                  value={singleCard.vehicle_interior_parts}
+                  className="textEditor"
+                  onChange={(content) =>
+                    setSingleCard((prevState) => ({
+                      ...prevState,
+                      vehicle_interior_parts: content,
+                    }))
+                  }
+                  modules={{
+                    toolbar: [
+                      [{ font: [] }],
+                      [{ size: ["small", false, "large", "huge"] }],
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      [{ color: [] }, { background: [] }],
+                      [{ align: [] }],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["bold", "italic", "underline"],
+                      [{ align: [] }],
+                      ["link", "image"],
+                      ["video"],
+                      ["clean"],
+                      ["blockquote", "code-block"],
+                      ["direction"],
+                      ["formula"],
+                      ["strike"],
+                    ],
+                  }}
+                />
               </div>
               <div className="mt-5">
                 <b className="block mb-1"> Reported Defect </b>
                 <ReactQuill
-                value={singleCard.reported_defect}
-                className="textEditor"
-                onChange={(content) => setSingleCard(prevState => ({ ...prevState, reported_defect: content }))}
-                modules={{
-                  toolbar: [
-                    [{ font: [] }],
-                    [{ size: ["small", false, "large", "huge"] }],
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    [{ color: [] }, { background: [] }],
-                    [{ align: [] }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    ["bold", "italic", "underline"],
-                    [{ align: [] }],
-                  ],
-                }}
-              />
-              
+                  value={singleCard.reported_defect}
+                  className="textEditor"
+                  onChange={(content) =>
+                    setSingleCard((prevState) => ({
+                      ...prevState,
+                      reported_defect: content,
+                    }))
+                  }
+                  modules={{
+                    toolbar: [
+                      [{ font: [] }],
+                      [{ size: ["small", false, "large", "huge"] }],
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      [{ color: [] }, { background: [] }],
+                      [{ align: [] }],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["bold", "italic", "underline"],
+                      [{ align: [] }],
+                    ],
+                  }}
+                />
               </div>
               <div className="mt-5">
                 <b className="block mb-1"> Reported Action </b>
                 <ReactQuill
-                value={singleCard.reported_action}
-                className="textEditor"
-                onChange={(content) => setSingleCard(prevState => ({ ...prevState, reported_action: content }))}
-                modules={{
-                  toolbar: [
-                    [{ font: [] }],
-                    [{ size: ["small", false, "large", "huge"] }],
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    [{ color: [] }, { background: [] }],
-                    [{ align: [] }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    ["bold", "italic", "underline"],
-                    [{ align: [] }],
-                  ],
-                }}
-              />
-              
+                  value={singleCard.reported_action}
+                  className="textEditor"
+                  onChange={(content) =>
+                    setSingleCard((prevState) => ({
+                      ...prevState,
+                      reported_action: content,
+                    }))
+                  }
+                  modules={{
+                    toolbar: [
+                      [{ font: [] }],
+                      [{ size: ["small", false, "large", "huge"] }],
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      [{ color: [] }, { background: [] }],
+                      [{ align: [] }],
+                      [{ list: "ordered" }, { list: "bullet" }],
+                      ["bold", "italic", "underline"],
+                      [{ align: [] }],
+                    ],
+                  }}
+                />
               </div>
             </div>
             <div className="vehicleReportRightSide">
@@ -1156,13 +1137,17 @@ const UpdateJobCard = () => {
               <div className="mt-5">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
                 <textarea
-                className="p-5"
-                value={singleCard.vehicle_body_report}
-                onChange={(e) => setSingleCard(prevState => ({ ...prevState, vehicle_body_report: e.target.value }))}
-                required
-                autoComplete="off"
-              ></textarea>
-              
+                  className="p-5"
+                  value={singleCard.vehicle_body_report}
+                  onChange={(e) =>
+                    setSingleCard((prevState) => ({
+                      ...prevState,
+                      vehicle_body_report: e.target.value,
+                    }))
+                  }
+                  required
+                  autoComplete="off"
+                ></textarea>
               </div>
             </div>
           </div>
@@ -1170,24 +1155,22 @@ const UpdateJobCard = () => {
             <div>
               <TextField
                 className="ownerInput"
-                {...register("technician_name",)}
+                {...register("technician_name")}
                 label="Technician Name (T) "
               />
-              
             </div>
             <div>
               <TextField
                 // disabled
                 className="ownerInput"
                 o
-                {...register("technician_signature",)}
+                {...register("technician_signature")}
                 label="Technician Signature (T) "
               />
-             
             </div>
             <div>
               <input
-                {...register("technician_date",)}
+                {...register("technician_date")}
                 required
                 autoComplete="off"
                 type="date"
@@ -1205,7 +1188,7 @@ const UpdateJobCard = () => {
               <TextField
                 disabled
                 className="ownerInput"
-                {...register("vehicle_owner",)}
+                {...register("vehicle_owner")}
                 label="Vehicle Owner (T) "
               />
               <br />
