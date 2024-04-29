@@ -715,9 +715,9 @@ const DashboardLayout = () => {
                 </div>
               </NavLink>
               <div className="flex items-center dashboardItems">
-                  <FaDatabase size={22} />
-                  <span className="ml-2"> Data Backup </span>
-                </div>
+                <FaDatabase size={22} />
+                <span className="ml-2"> Data Backup </span>
+              </div>
               <NavLink to="/dashboard/support">
                 <div className="flex items-center dashboardItems">
                   <FaHeadset size={22} />
@@ -855,7 +855,10 @@ const DashboardLayout = () => {
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaAlipay className="tooltipIcon" />
+                  <NavLink to="/dashboard/bill-pay">
+                    <FaAlipay className="tooltipIcon" />
+                  </NavLink>
+
                   <b className="toolTip">Bill Pay </b>
                 </div>
               </div>
@@ -875,7 +878,10 @@ const DashboardLayout = () => {
               </div>
               <div className="mt-[14px]">
                 <div className="toolTipWrap">
-                  <FaHeadset className="tooltipIcon" />
+                  <NavLink to="/dashboard/support">
+                    <FaHeadset className="tooltipIcon" />
+                  </NavLink>
+
                   <b className="toolTip">Support </b>
                 </div>
               </div>
