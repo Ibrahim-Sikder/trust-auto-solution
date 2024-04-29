@@ -17,7 +17,7 @@ const UpdateEmployee = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getSingleEmployee, setGetSingleEmployee] = useState({});
-console.log(getSingleEmployee.image)
+ 
   const [reload, setReload] = useState(false);
 
   const location = useLocation();

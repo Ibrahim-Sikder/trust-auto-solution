@@ -19,7 +19,7 @@ import { HiOfficeBuilding } from "react-icons/hi";
 
 const UpdateShowRoom = () => {
   const [showRoomData, setShowRoomData] = useState({});
-  console.log(showRoomData);
+ 
 
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -91,7 +91,7 @@ const UpdateShowRoom = () => {
         reset();
       }
     } catch (error) {
-      console.log(error);
+       
       toast.error(error.message);
       setLoading(false);
     }

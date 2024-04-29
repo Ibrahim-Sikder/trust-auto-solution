@@ -22,7 +22,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
-  console.log(invoicePreview);
+
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -203,8 +203,6 @@ const Detail = () => {
   };
 
   const totalAmountInWords = amountInWords(invoicePreview?.total_amount);
-
- 
 
   return (
     <div ref={componentRef} className="h-screen">
@@ -400,29 +398,31 @@ const Detail = () => {
                       )}
                     </tbody>
                   </table>
-                  <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
-                    <div className="mt-5 text-[12px]">
-                      <b className="">In words:</b> {totalAmountInWords}
-                    </div>
-                    <div className="flex netTotalAmounts">
-                      <div className="">
-                        <b> Total Amount </b>
-                        <b> Discount </b>
-                        <b> VAT </b>
-                        <b> Net Total </b>
-                        <b> Advance</b>
-                        <b> Due </b>
+                  {page === lastValue && (
+                    <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
+                      <div className="mt-5 text-[12px]">
+                        <b className="">In words:</b> {totalAmountInWords}
                       </div>
-                      <div>
-                        <small> : 57896</small>
-                        <small> : 5</small>
-                        <small> : 5%</small>
-                        <small> : 57896</small>
-                        <small> : 57896</small>
-                        <small> : 57896</small>
+                      <div className="flex netTotalAmounts">
+                        <div className="">
+                          <b> Total Amount </b>
+                          <b> Discount </b>
+                          <b> VAT </b>
+                          <b> Net Total </b>
+                          {/* <b> Advance</b>
+                          <b> Due </b> */}
+                        </div>
+                        <div>
+                          <small> : {invoicePreview.total_amount}</small>
+                          <small> : {invoicePreview.discount}</small>
+                          <small> : {invoicePreview.vat}%</small>
+                          <small> : {invoicePreview.net_total}</small>
+                          {/* <small> : {invoicePreview.advance}</small>
+                          <small> : {invoicePreview.due}</small> */}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 <div>

@@ -15,7 +15,7 @@ const CustomerList = () => {
 
   const [filterType, setFilterType] = useState("");
   const [customerData, setCustomerData] = useState([]);
-  console.log(customerData)
+  
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -32,7 +32,7 @@ const CustomerList = () => {
       .then((res) => res.json())
       .then((data) => {
         setCustomerData(data);
-        console.log(data);
+        
         setLoading(false);
       });
   }, [reload]);

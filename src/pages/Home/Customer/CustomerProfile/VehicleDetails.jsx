@@ -11,6 +11,7 @@ import VehicleDetailsModal from "./VehicleDetailsModal";
 import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const VehicleDetails = () => {
    
@@ -42,7 +43,7 @@ const VehicleDetails = () => {
         .then((res) => res.json())
         .then((data) => setVehicleList(data));
     } catch (error) {
-      console.log(error);
+      toast.error(error.message)
     }
   }, [id]);
 

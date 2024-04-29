@@ -59,7 +59,7 @@ const AddAttendance = () => {
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
+    
   };
   const handleChange2 = (selectedOption2) => {
     setSelectedOption2(selectedOption2);
@@ -162,7 +162,7 @@ const AddAttendance = () => {
     });
   };
   const handleAttendanceOvertime = (index, value) => {
-    console.log(value);
+   
     const newOvertime = [...overtime];
     newOvertime[index] = value;
     setOvertime(newOvertime);

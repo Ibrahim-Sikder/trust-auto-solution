@@ -39,7 +39,7 @@ const UpdateJobCard = () => {
 
 
 
- console.log(singleCard)
+ 
 
   const onSubmit = async (data) => {
     const values = {

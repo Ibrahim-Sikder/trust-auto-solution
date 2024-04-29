@@ -29,7 +29,7 @@ const UpdateJobCard = () => {
   const [allJobCard, setAllJobCard] = useState([]);
 
   const [singleCard, setSingleCard] = useState({});
-  console.log(singleCard);
+  
 
   const [noMatching, setNoMatching] = useState(null);
   const [customerId, setCustomerId] = useState(null);

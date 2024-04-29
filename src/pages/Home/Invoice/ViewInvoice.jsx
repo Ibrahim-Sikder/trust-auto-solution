@@ -164,9 +164,9 @@ const ViewInvoice = () => {
                     onClick={() => handleIconPreview(card._id)}
                     className="editIconWrap edit2"
                   >
-                    {/* <Link to="/dashboard/preview"> */}
+                    
                     <FaEye className="editIcon" />
-                    {/* </Link> */}
+                   
                   </div>
                 </td>
                 <td>

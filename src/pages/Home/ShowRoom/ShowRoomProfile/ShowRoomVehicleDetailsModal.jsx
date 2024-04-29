@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { IoCloseSharp } from "react-icons/io5";
@@ -11,7 +12,7 @@ const ShowRoomVehicleDetailsModal = ({ handleVehicleDetailsClose, getId }) => {
       .then((data) => setShowDataOnModal(data));
   }, [getId]);
 
-  console.log(showDataOnModal);
+ 
   return (
     <div className="fixed top-0 left-0 z-50 w-screen h-screen bg-black/60 ">
       <div className="relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[420px] sm:max-w-[600px] lg:max-w-[500px] p-4 max-h-[90vh] overflow-auto">

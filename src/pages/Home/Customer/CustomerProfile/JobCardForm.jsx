@@ -33,7 +33,7 @@ const JobCardForm = ({ onClose }) => {
         "http://localhost:5000/api/v1/vehicle",
         data
       );
-      console.log(response);
+    
       if (response.data.message === "Successfully add to vehicle post") {
         toast.success("Successfully add to vehicle post");
         onClose();
@@ -41,7 +41,7 @@ const JobCardForm = ({ onClose }) => {
         reset();
       }
     } catch (error) {
-      console.log(error);
+     
       toast.error(error.message);
       setLoading(false);
     }

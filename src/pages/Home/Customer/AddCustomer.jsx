@@ -95,7 +95,7 @@ const AddCustomer = () => {
   }, [reload]);
 
   const handleIconPreview = async (e) => {
-    console.log(e);
+    
     navigate(`/dashboard/customer-profile?id=${e}`);
   };
 
@@ -300,7 +300,7 @@ const AddCustomer = () => {
     );
   }
 
-  console.log(filterType);
+ 
   const handleFilterType = async () => {
     try {
       const data = {

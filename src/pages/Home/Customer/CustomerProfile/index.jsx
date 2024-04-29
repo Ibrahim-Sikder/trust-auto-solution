@@ -19,7 +19,7 @@ const CustomerProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
   const [jobCardData, setJobCardData] = useState([]);
-console.log(jobCardData)
+ 
   const [quotationData, setQuotationData] = useState([]);
 
   const [invoiceData, setInvoiceData] = useState([]);

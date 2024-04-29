@@ -15,6 +15,7 @@ import Loading from "../../../../components/Loading/Loading";
 import { useLocation } from "react-router-dom";
 import ShowRoomVehicleDetailsModal from "./ShowRoomVehicleDetailsModal";
 import ShowRoomAddVehicleModal from "./ShowRoomAddVehicleModal";
+import { toast } from "react-toastify";
 
 const CompanyVehicleDetails = () => {
   const Search = styled("div")(({ theme }) => ({
@@ -88,7 +89,7 @@ const location = useLocation();
         .then((res) => res.json())
         .then((data) => setVehicleList(data));
     } catch (error) {
-      console.log(error);
+       toast.error(error.message);
     }
   }, [id]);
 

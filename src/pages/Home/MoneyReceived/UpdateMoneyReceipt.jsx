@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -16,7 +17,7 @@ const UpdateMoneyReceipt = () => {
       fetch(`http://localhost:5000/api/v1/money_receipt/${id}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+       
           setSpecificMoneyReceipt(data);
         });
     }
@@ -46,7 +47,7 @@ const UpdateMoneyReceipt = () => {
         values
       );
 
-      console.log(response);
+     
       if (
         response.data.message ===
         "Successfully update card."
@@ -55,7 +56,7 @@ const UpdateMoneyReceipt = () => {
         navigate("/dashboard/money-receipt-list");
       }
     } catch (error) {
-      console.log(error);
+       toast.error(error.message);
     }
   };
 

@@ -177,7 +177,7 @@ const UpdateInvoice = () => {
     axios
       .put(`http://localhost:5000/api/v1/invoice/${id}`, { index: i })
       .then((response) => {
-        console.log(response);
+       
         if (response.data.message === "Deleted successful") {
           setReload(!reload);
         }

@@ -15,7 +15,7 @@ const LeaveModal = ({ onClose }) => {
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
+    
   };
 
   return (

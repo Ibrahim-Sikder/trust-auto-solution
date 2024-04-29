@@ -123,7 +123,7 @@ const UpdateAttendance = () => {
     });
   };
   const handleAttendanceOvertime = (index, value) => {
-    console.log(value);
+   
     const newOvertime = [...overtime];
     newOvertime[index] = value;
     setOvertime(newOvertime);
