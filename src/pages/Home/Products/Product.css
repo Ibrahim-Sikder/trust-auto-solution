@@ -175,7 +175,14 @@
 @media only screen and (max-width: 1024px) {
 	.addProductWrap {
 		width: 100%;
+		background:#fff;
+		padding:0px
 	}
+	.addProductWraps {
+		background: #fff;
+		padding: 0px 0;
+	}
+
 	.productHeadWrap {
 		padding: 10px 35px;
 	}
@@ -205,9 +212,7 @@
 	.topProductBtn button {
 		display: none;
 	}
-	.addProductWrap {
-		padding: 30px 0px;
-	}
+
 
 }
 

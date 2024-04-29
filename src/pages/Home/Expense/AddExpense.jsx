@@ -372,11 +372,11 @@ const AddExpense = () => {
     <section>
       <div className="addProductWraps">
         <div className="productHeadWrap">
-          <div className="flex items-center justify-center ">
+          <div className="flex items-center md:justify-center ">
             <FaFileInvoice className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold">Add Expense </h3>
-              <span>Dashboard / Expense </span>
+              <h3 className="md:text-2xl font-bold">Add Expense </h3>
+              <span className="text-sm">Dashboard / Expense </span>
             </div>
           </div>
         </div>
@@ -719,12 +719,7 @@ const AddExpense = () => {
               Expense List:
             </h3>
             <div className="flex items-center searcList">
-              <div
-                onClick={handleAllExpense}
-                className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-              >
-                All
-              </div>
+             
               <div className="searchGroup">
                 <input
                   onChange={(e) => setFilterType(e.target.value)}
