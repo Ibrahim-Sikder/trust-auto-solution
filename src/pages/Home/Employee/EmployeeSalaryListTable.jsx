@@ -59,23 +59,14 @@ const EmployeeSalaryListTable = ({
 
   return (
     <div className="mt-10 table-container">
-      <h3 className="mt-5 mb-8 text-2xl font-semibold">
+      <h3 className="mt-5 mb-8 md:text-2xl font-semibold">
         Employee Salary Sheet :{" "}
         {selectedOption.value ? selectedOption.value : currentMonth}{" "}
         {currentYear}
       </h3>
 
-      <div className="grid grid-cols-5 gap-5 mt-5 mb-8">
-        {/* <div className="relative rounded-sm w-max">
-          <input
-            className="peer employeeInput w-[300px h-[60px]]"
-            type="text"
-            placeholder=""
-          />
-          <label className="employeeLavel" htmlFor="">
-            Employee ID
-          </label>
-        </div> */}
+      <div className="flex flex-wrap gap-5 mt-5 mb-8">
+        
         <div>
           <Select
             value={selectedOption}

@@ -2,6 +2,7 @@ import { FaRegTrashAlt, FaUsers } from "react-icons/fa";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import avatar from "../../../../public/assets/avatar.jpg";
+import { TextField } from "@mui/material";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 
@@ -59,36 +60,9 @@ const EmployeeOvertime = () => {
       </div>
       <div className="employeeCardWraps">
         <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-5 gap-5 my-8">
-          <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput w-[300px h-[60px]]"
-              type="text"
-              placeholder=""
-            />
-            <label className="employeeLavel" htmlFor="">
-              Employee ID
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput w-[300px h-[60px]]"
-              type="text"
-              placeholder=""
-            />
-            <label className="employeeLavel" htmlFor="">
-              Employee Name
-            </label>
-          </div>
-          <div className="relative rounded-sm w-max">
-            <input
-              className="peer employeeInput w-[300px h-[60px]]"
-              type="text"
-              placeholder=""
-            />
-            <label className="employeeLavel" htmlFor="">
-              Hours
-            </label>
-          </div>
+        <TextField id="outlined-basic" label="Employee ID" variant="outlined" />
+          <TextField id="outlined-basic" label="Employee Name" variant="outlined" />
+          <TextField id="outlined-basic" label="Hours " variant="outlined" />
           <div className="relative rounded-sm w-max">
             <button className="employeeBtn employeeInput">Search</button>
           </div>

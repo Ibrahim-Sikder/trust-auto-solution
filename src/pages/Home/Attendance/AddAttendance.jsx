@@ -392,9 +392,9 @@ const AddAttendance = () => {
           </div>
         </div>
       </div>
-      <div className=" attendanceWraps">
+      <div className=" attendanceWraps overflow-x-auto">
         <table className="attendanceInputTable">
-          <thead>
+          <thead >
             <tr>
               <th>SL No</th>
               <th>Name</th>
@@ -488,7 +488,7 @@ const AddAttendance = () => {
       </div>
       <div className="mt-14 table-container">
         <h3 className="mt-5 mb-8 text-2xl font-semibold">Today Attendance</h3>
-        <table className="attendanceTable">
+        <table className="attendanceTable min-w-full divide-y divide-gray-200 ">
           <thead>
             <tr>
               <th>Date</th>

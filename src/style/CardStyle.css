@@ -20,7 +20,7 @@
   width: 100%;
 }
 .employeeInput {
-  @apply rounded-sm border border-[#ddd] px-4 py-2 text-[#ddd] focus:outline-none w-[330px] h-[48px];
+  @apply rounded-sm border border-[#ddd] px-4 py-2 text-[#ddd] focus:outline-none w-[200px] mx-auto md:w-[330px] h-[48px];
 }
 .employeeLavel {
   @apply absolute -top-2 left-[10px] bg-white px-2 text-xs text-slate-400 duration-300 peer-placeholder-shown:left-[14px] peer-placeholder-shown:top-3  peer-placeholder-shown:bg-transparent peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:left-[10px] peer-focus:bg-white peer-focus:text-xs peer-focus:text-[#ddd];

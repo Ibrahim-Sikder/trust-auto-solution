@@ -50,7 +50,7 @@ const EmployeeLeave = () => {
           <FaUserGear size={30} />{" "}
         </div>{" "}
       </div>{" "}
-      <div className="flex items-center justify-between my-3 mb-8">
+      <div className="flex flex-wrap items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />
           <div className="ml-2">
