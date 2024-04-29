@@ -34,7 +34,7 @@ const AddExpense = () => {
   const handlePaymentChange = (e) => {
     setPayment(e.target.value);
   };
-  console.log(payment);
+  
 
   const {
     register,
@@ -65,7 +65,7 @@ const AddExpense = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data)
+ 
     setError("");
 
     // const randomNumber = Math.floor(Math.random() * 1000);

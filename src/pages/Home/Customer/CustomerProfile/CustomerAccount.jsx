@@ -11,7 +11,7 @@ const CustomerAccount = ({
   moneyReceiptData,
   invoiceData
 }) => {
-  console.log( jobCardData);
+  
   return (
     <div className="customerProfileWrap">
       <div className="justify-between block mt-5 md:flex">

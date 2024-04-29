@@ -72,10 +72,10 @@ const AddAttendance = () => {
 
   const [presentPercentage, setPresentPercentage] = useState(null);
   const [presentNumber, setPresentNumber] = useState(null);
-  console.log(presentNumber)
+   
   const [absentPercentage, setAbsentPercentage] = useState(null);
   const [absentNumber, setAbsentNumber] = useState(null);
-  console.log(absentNumber)
+  
   const [latePercentage, setLatePercentage] = useState(null);
   const [lateNumber, setLateNumber] = useState(null);
 
@@ -234,7 +234,7 @@ const AddAttendance = () => {
     });
   };
   const handleAttendanceOvertime = (index, value) => {
-    console.log(value);
+     
     const newOvertime = [...overtime];
     newOvertime[index] = value;
     setOvertime(newOvertime);
@@ -305,11 +305,11 @@ const AddAttendance = () => {
 
   const [filteredDate, setFilteredDate] = useState(null);
 
-  const [fPresentNumber, setFPresentNumber] = useState(null);
+  const [fPresentNumber, setFPresentNumber] = useState(0);
 
-  const [fAbsentNumber, setFAbsentNumber] = useState(null);
+  const [fAbsentNumber, setFAbsentNumber] = useState(0);
 
-  const [fLateNumber, setFLateNumber] = useState(null);
+  const [fLateNumber, setFLateNumber] = useState(0);
 
   const handleDateSearch = (e) => {
     const parsedDate = new Date(e.$d);

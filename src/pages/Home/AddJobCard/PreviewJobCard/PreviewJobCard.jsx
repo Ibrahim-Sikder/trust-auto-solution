@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext, useEffect, useState } from "react";
 import logo from "../../../../../public/assets/logo.png";
 import "./PreviewJobCard.css";
@@ -10,7 +11,7 @@ import { formatDate } from "../../../../utils/formateDate";
 const PreviewJobCard = () => {
   const { componentRef, targetRef } = useContext(PrintContext);
   const [previewData, setPreviewData] = useState({});
-  console.log(previewData);
+ 
   // const componentRef = useRef();
   // const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
   // const handlePrint = useReactToPrint({
@@ -23,7 +24,7 @@ const PreviewJobCard = () => {
         .then((res) => res.json())
         .then((data) => {
           setPreviewData(data);
-          // console.log(data)
+           
         });
     }
   }, [id]);

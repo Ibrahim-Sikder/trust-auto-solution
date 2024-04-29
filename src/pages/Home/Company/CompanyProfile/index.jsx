@@ -20,15 +20,15 @@ import { useLocation } from "react-router-dom";
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
-  console.log(profileData);
+ 
   const [jobCardData, setJobCardData] = useState([]);
-  console.log(jobCardData);
+ 
   const [quotationData, setQuotationData] = useState([]);
-  console.log(quotationData);
+ 
   const [invoiceData, setInvoiceData] = useState([]);
-  console.log(invoiceData);
+ 
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-  console.log(moneyReceiptData);
+ 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -119,7 +119,7 @@ const CompanyProfile = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(profileData);
+ 
   return (
     <div>
       <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">

@@ -76,11 +76,7 @@ const Invoice = () => {
   };
 
   //  add to invoice
-
-  // const [descriptions, setDescriptions] = useState([]);
-  // const [quantity, setQuantity] = useState([]);
-  // const [rate, setRate] = useState([]);
-  // const [total, setTotal] = useState([]);
+ 
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
@@ -90,10 +86,7 @@ const Invoice = () => {
     { description: "", quantity: "", rate: "", total: "" },
   ]);
 
-  // useEffect(() => {
-  //   const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
-  //   setGrandTotal(totalSum);
-  // }, [items]);
+  
 
   useEffect(() => {
     const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
@@ -123,27 +116,9 @@ const Invoice = () => {
     // newItems[index].total = Number(value) * newItems[index].rate;
     // setItems(newItems);
   };
+ 
 
-  // const handleQuantityChange = (index, value) => {
-  //   const newItems = [...items];
-
-  //   // Round the value to the nearest integer
-  //   const roundedValue = Math.round(value);
-
-  //   newItems[index].quantity = roundedValue;
-  //   newItems[index].total = roundedValue * newItems[index].rate;
-
-  //   setItems(newItems);
-  // };
-
-  // const handleRateChange = (index, value) => {
-  //   const newItems = [...items];
-  //   newItems[index].rate = value;
-  //   // Convert rate to a number and calculate total
-  //   newItems[index].total = newItems[index].quantity * Number(value);
-  //   setItems(newItems);
-  // };
-
+ 
   const handleRateChange = (index, value) => {
     const newItems = [...items];
 
@@ -158,47 +133,7 @@ const Invoice = () => {
 
     setItems(newItems);
   };
-
-  // const handleDescriptionChange = (index, value) => {
-  //   if (value === "") {
-  //     const newDescriptions = [...descriptions];
-  //     newDescriptions[index] = "";
-  //     setDescriptions(newDescriptions);
-  //   } else {
-  //     const newDescriptions = [...descriptions];
-  //     newDescriptions[index] = value;
-  //     setDescriptions(newDescriptions);
-  //   }
-  // };
-  // const handleQuantityChange = (index, value) => {
-  //   const parsedValue = value === "" ? "" : parseFloat(value);
-
-  //   if (!isNaN(parsedValue)) {
-  //     const newQuantity = [...quantity];
-  //     newQuantity[index] = parsedValue;
-  //     setQuantity(newQuantity);
-  //     updateTotal(index, parsedValue, rate[index]);
-  //   }
-  // };
-  // const handleRateChange = (index, value) => {
-  //   const parsedValue = value === "" ? "" : parseFloat(value);
-
-  //   if (!isNaN(parsedValue)) {
-  //     const newRate = [...rate];
-  //     newRate[index] = parsedValue;
-  //     setRate(newRate);
-  //     updateTotal(index, quantity[index], parsedValue);
-  //   }
-  // };
-
-  // const updateTotal = (index, quantityValue, rateValue) => {
-  //   const newTotal = [...total];
-  //   // const rateAsPercentage = rateValue / 100; // Convert rate to percentage
-  //   newTotal[index] = quantityValue * rateValue;
-  //   setTotal(newTotal);
-  //   const newGrandTotal = newTotal.reduce((sum, value) => sum + value, 0);
-  //   setGrandTotal(newGrandTotal);
-  // };
+ 
 
   const handleDiscountChange = (value) => {
     const parsedValue = value === "" ? 0 : parseFloat(value);
@@ -269,15 +204,7 @@ const Invoice = () => {
         advance: advance,
         due: calculateDue(),
       };
-      // const hasPreviewNullValues = Object.values(values).some(
-      //   (val) => val === null
-      // );
-
-      // if (hasPreviewNullValues) {
-      //   setError("Please fill in all the required fields.");
-      //   setPostError("");
-      //   return;
-      // }
+       
       setLoading(true);
       const response = await axios.post(
         "http://localhost:5000/api/v1/invoice",
@@ -309,82 +236,7 @@ const Invoice = () => {
       }
     }
   };
-
-  // const handlePreview = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!trust_auto_id) {
-  //     return toast.error("No account found.");
-  //   }
-
-  //   const values = {
-  //     username: jobCardData?.username,
-  //     // serial_no: formattedSerialNo,
-  //     customerId: customerId,
-  //     companyId: customerId,
-  //     showRoomId: customerId,
-  //     job_no: job_no,
-  //     date: jobCardData.date,
-  //     car_registration_no: jobCardData.car_registration_no,
-  //     customer_name: jobCardData.customer_name,
-  //     contact_number: jobCardData.contact_number,
-  //     mileage: jobCardData.mileage,
-  //     // descriptions: descriptions,
-  //     // quantity: quantity,
-  //     // rate: rate,
-  //     // amount: total,
-  //     total_amount: grandTotal,
-  //     discount: discount,
-  //     vat: vat,
-  //     net_total: calculateFinalTotal(),
-  //     input_data: items,
-  //   };
-  //   const hasPreviewNullValues = Object.values(values).some(
-  //     (val) => val === null
-  //   );
-
-  //   if (hasPreviewNullValues) {
-  //     setError("Please fill in all the required fields.");
-  //     return;
-  //   }
-  //   const response = await axios.post(
-  //     "http://localhost:5000/api/v1/invoice",
-  //     values
-  //   );
-  //   if (response.data.message === "Successfully Invoice post") {
-  //     fetch("http://localhost:5000/api/v1/invoice")
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         if (data) {
-  //           navigate(`/dashboard/detail?id=${data._id}`);
-  //         }
-  //       });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       let apiUrl = "";
-  //       apiUrl =
-  //         "http://localhost:5000/api/v1/customer" ||
-  //         "http://localhost:5000/api/v1/company" ||
-  //         "http://localhost:5000/api/v1/showRoom";
-
-  //       const response = await fetch(apiUrl);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch data");
-  //       }
-
-  //       const data = await response.json();
-  //       setShowCustomerData(data);
-  //     } catch (error) {
-  //       setError(error.message);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [customerId]);
+ 
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
@@ -658,59 +510,7 @@ const Invoice = () => {
       </div>
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/** 
-          <div className="qutationForm invoicForm">
-            <div>
-              <label className="block">Order Number </label>
-              <input
-                onChange={(e) => setJob_no(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Order Number"
-                defaultValue={orderNo}
-                className="orderNumber"
-              />
-            </div>
-            <div>
-              <label className="block">Customer Name </label>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder="Customer Name"
-                defaultValue={jobCardData?.customer_name}
-              />
-            </div>
-
-            <div>
-              <label className="block">Car Number </label>
-              <input
-                defaultValue={jobCardData?.car_registration_no}
-                autoComplete="off"
-                type="text"
-                placeholder="Car Number"
-              />
-            </div>
-            <div>
-              <label className="block">Mobile Number </label>
-              <input
-                autoComplete="off"
-                type="text"
-                placeholder="Mobile Number "
-                defaultValue={jobCardData?.contact_number}
-              />
-            </div>
-            <div>
-              <label className="block">Date</label>
-              <input
-                defaultValue={jobCardData?.date}
-                autoComplete="off"
-                placeholder="Date"
-                className="orderNumber"
-                // onChange={handleDateChange}
-              />
-            </div>
-          </div>
-         */}
+           
           <div className="vehicleCard">Create Invoice </div>
 
           <div className="mb-10 jobCardFieldWraps">
@@ -1067,21 +867,7 @@ const Invoice = () => {
         )}
       </div>
 
-      {/* <div className="pagination">
-        <div className="paginationBtn">
-          <button>
-            <FaArrowLeft className="arrowLeft" />
-          </button>
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>
-            <FaArrowRight className="arrowRight" />
-          </button>
-        </div>
-      </div> */}
+      
     </div>
   );
 };

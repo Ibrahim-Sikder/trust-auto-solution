@@ -156,39 +156,41 @@ const AddJobCard = () => {
     setGetFuelType(newInputValue);
   };
 
+   
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let apiUrl = "";
-        apiUrl =
-          `http://localhost:5000/api/v1/customer/${customerId}` ||
-          `http://localhost:5000/api/v1/company/${customerId}` ||
-          `http://localhost:5000/api/v1/showRoom/${customerId}`;
-
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
+        const apiEndpoints = [
+          `http://localhost:5000/api/v1/customer/${customerId}`,
+          `http://localhost:5000/api/v1/company/${customerId}`,
+          `http://localhost:5000/api/v1/showRoom/${customerId}`
+        ];
+  
+        let data = null;
+        
+        for (const apiUrl of apiEndpoints) {
+          const response = await fetch(apiUrl);
+          if (response.ok) {
+            data = await response.json();
+            // Check if data exists and break the loop if found
+            if (data) break;
+          }
+        }
+  
+        if (!data) {
           throw new Error("Failed to fetch data");
         }
-
-        const data = await response.json();
-      
+  
         setShowCustomerData(data);
-        // const selectedCustomer = data.find((customer) => {
-        //   return (
-        //     customer.customerId === customerId ||
-        //     customer.companyId === customerId ||
-        //     customer.showRoomId === customerId
-        //   );
-        // });
-
-        // setShowCustomerData(selectedCustomer);
       } catch (error) {
         setError(error.message);
       }
     };
-
+  
     fetchData();
   }, [customerId]);
+  
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
@@ -271,7 +273,7 @@ const AddJobCard = () => {
   useEffect(() => {
     sessionStorage.setItem("job", currentPage.toString());
   }, [currentPage]);
-  // ...
+  
 
   useEffect(() => {
     const storedPage = Number(sessionStorage.getItem("job")) || 1;
@@ -284,7 +286,7 @@ const AddJobCard = () => {
     );
   }, [pageNumberLimit]);
 
-  // ...
+ 
 
   const handleClick = (e) => {
     const pageNumber = Number(e.target.id);

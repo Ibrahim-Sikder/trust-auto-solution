@@ -26,7 +26,7 @@ const PdfGenerator = () => {
       fetch(`http://localhost:5000/api/v1/money_receipt/${id}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+         
           setSpecificMoneyReceipt(data);
         });
     }

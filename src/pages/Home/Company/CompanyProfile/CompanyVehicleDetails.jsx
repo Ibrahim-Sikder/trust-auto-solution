@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable no-unused-vars */
 import { FaCarSide, FaEye, FaUserTie } from "react-icons/fa";
 import { styled, alpha } from "@mui/material/styles";
@@ -48,9 +49,7 @@ const location = useLocation();
       fetch( `http://localhost:5000/api/v1/vehicle/${id}`)
         .then((res) => res.json())
         .then((data) => setVehicleList(data));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [id]);
 
   // pagination

@@ -16,7 +16,7 @@ const ShowRoomList = () => {
 
   const [filterType, setFilterType] = useState("");
   const [showRoomData, setShowRoomData] = useState([]);
-  console.log(showRoomData)
+  
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -34,7 +34,7 @@ const ShowRoomList = () => {
       .then((data) => {
         setShowRoomData(data);
 
-        console.log(data);
+       
         setLoading(false);
       });
   }, [reload]);
@@ -237,7 +237,7 @@ const ShowRoomList = () => {
     );
   }
 
-  console.log(filterType);
+ 
   const handleFilterType = async () => {
     try {
       const data = {

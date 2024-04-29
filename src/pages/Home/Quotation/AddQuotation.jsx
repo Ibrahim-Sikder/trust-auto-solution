@@ -617,7 +617,7 @@ const AddQuotation = () => {
     },
   }));
 
-  console.log(jobCardData);
+ 
 
   return (
     <div className="px-5 py-10">

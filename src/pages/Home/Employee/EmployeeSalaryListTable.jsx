@@ -29,7 +29,7 @@ const EmployeeSalaryListTable = ({
   //   initialSelectedOption2
   // );
 
-  console.log(selectedOption);
+  
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);

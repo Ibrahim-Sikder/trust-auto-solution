@@ -25,7 +25,7 @@ const UpdateExpense = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getSingleExpense, setGetSingleExpense] = useState({});
-  console.log(getSingleExpense.category);
+ 
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
@@ -155,7 +155,7 @@ const UpdateExpense = () => {
     }
   };
 
-  console.log(getSingleExpense);
+ 
   return (
     <section>
       <div className="addProductWraps">

@@ -17,7 +17,7 @@ const UpdateSupplier = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getSingleSuppliers, setGetSingleSuppliers] = useState({});
-  console.log(getSingleSuppliers);
+ 
   const [reload, setReload] = useState(false);
 
   const location = useLocation();

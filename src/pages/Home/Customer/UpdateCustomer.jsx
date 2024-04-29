@@ -43,7 +43,7 @@ const UpdateCustomer = () => {
     }
   }, [id]);
 
-  console.log(singleCard);
+ 
 
   const onSubmit = async (data) => {
     setLoading(true);

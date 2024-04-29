@@ -8,16 +8,8 @@ import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
-  console.log("quotation data ", specificInvoice);
-  // const [orderNo, setOrderNo] = useState(null);
-  // const [customerName, setCustomerName] = useState(null);
-  // const [carNumber, setCarNumber] = useState(null);
-  // const [mobileNumber, setMobileNumber] = useState(null);
-  // const [date, setDate] = useState(null);
-  // const [descriptions, setDescriptions] = useState([]);
-  // const [quantity, setQuantity] = useState([]);
-  // const [rate, setRate] = useState([]);
-  // const [total, setTotal] = useState([]);
+   
+   
   const [grandTotal, setGrandTotal] = useState(0);
 
   const [discount, setDiscount] = useState(0);
@@ -218,7 +210,7 @@ const UpdateQuotation = () => {
     }
   };
 
-  console.log(removeButton);
+ 
 
   return (
     <div className="px-5 py-10">

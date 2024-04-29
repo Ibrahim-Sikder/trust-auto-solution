@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { FaUsers } from "react-icons/fa";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
@@ -40,7 +41,7 @@ const Attendance = () => {
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);
-    console.log(`Option selected:`, selectedOption);
+     
   };
   const handleChange2 = (selectedOption2) => {
     setSelectedOption2(selectedOption2);

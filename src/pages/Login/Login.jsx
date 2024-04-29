@@ -19,7 +19,7 @@ const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    console.log(email.current.value, password.current.value);
+    
     if (email.current.value === 'trust@gmail.com' && password.current.value === 'trust123') {
       Swal.fire({
         position: 'center',

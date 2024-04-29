@@ -41,7 +41,6 @@ const Detail = () => {
     }
   }, [id]);
 
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 20;
@@ -199,7 +198,7 @@ const Detail = () => {
     };
 
     const takaInWords = convert(amount);
-    return `${takaInWords} only`
+    return `${takaInWords} only`;
   };
 
   const totalAmountInWords = amountInWords(invoicePreview.total_amount);
@@ -212,78 +211,91 @@ const Detail = () => {
             <div>
               <div className="pb-5 px-14 invoicePrint">
                 <div>
-                <div className=" mb-2 mx-auto text-center border-b-2 border-[#351E98] pb-2">
-                <div className="flex items-center justify-between w-full mt-5 mb-2">
-                  <img className="w-[120px] " src={logo} alt="logo" />
-                  <div>
-                  <h2 className="trustAutoTitle qoutationTitle">Trust Auto Solution </h2>
-                    <small className="block">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</small>
+                  <div className=" mb-2 mx-auto text-center border-b-2 border-[#351E98] pb-2">
+                    <div className="flex items-center justify-between w-full mt-5 mb-2">
+                      <img className="w-[120px] " src={logo} alt="logo" />
+                      <div>
+                        <h2 className="trustAutoTitle qoutationTitle">
+                          Trust Auto Solution{" "}
+                        </h2>
+                        <small className="block">
+                          Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
+                        </small>
+                      </div>
+                      <div className="text-left">
+                        <small className="block">
+                          <small className="font-bold">Mobile:</small>{" "}
+                          345689789666
+                        </small>
+                        <small className="block">
+                          <small className="font-bold">Email:</small>{" "}
+                          trustautosolution@gmail.com
+                        </small>
+                        <small className="block font-bold ">
+                          trustautosolution.com
+                        </small>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <small className="block"><small className="font-bold">Mobile:</small> 345689789666</small>
-                    <small className="block"><small className="font-bold">Email:</small> trustautosolution@gmail.com</small>
-                    <small className="block font-bold ">trustautosolution.com</small>
-                  </div>
-                </div>
-                
-              </div>
                   {page === 1 && (
                     <div className="px-10">
-                    <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
-                      <span>  <b>Customer ID:</b>{invoicePreview.Id}</span>
-                      <b className="mr-5 uppercase">Invoice</b>
-                      <b>
+                      <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
+                        <span>
+                          {" "}
+                          <b>Customer ID:</b>
+                          {invoicePreview.Id}
+                        </span>
+                        <b className="mr-5 uppercase">Invoice</b>
+                        <b>
                           Date:
                           {invoicePreview?.date
                             ? formatDate(invoicePreview.date)
                             : ""}
                         </b>
-                    </div>
-                   
+                      </div>
 
-                    <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
-                    <div className="flex justify-between w-[40%]">
-                      <div className="invoiceCustomerInfo">
-                        <b>SL NO</b>
-                        <b>Company</b>
-                        <b>Customer</b>
-                        <b>Phone</b>
-                        <b>Address</b>
-                      </div>
-                      <div className="invoiceCustomerInfo">
-                        <small>: {invoicePreview.job_no}</small>
-                      <small>: {invoicePreview.company_name}</small>
-                      <small>: {invoicePreview.customer_name}</small>
-                      <small>: {invoicePreview.customer_contact}</small>
-                      <small>: {invoicePreview.customer_address}</small>
+                      <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
+                        <div className="flex justify-between w-[40%]">
+                          <div className="invoiceCustomerInfo">
+                            <b>SL NO</b>
+                            <b>Company</b>
+                            <b>Customer</b>
+                            <b>Phone</b>
+                            <b>Address</b>
+                          </div>
+                          <div className="invoiceCustomerInfo">
+                            <small>: {invoicePreview.job_no}</small>
+                            <small>: {invoicePreview.company_name}</small>
+                            <small>: {invoicePreview.customer_name}</small>
+                            <small>: {invoicePreview.customer_contact}</small>
+                            <small>: {invoicePreview.customer_address}</small>
+                          </div>
+                        </div>
+                        <div className="invoiceLine"></div>
+                        <div className="flex w-[40%] justify-between ">
+                          <div className="invoiceCustomerInfo">
+                            <b>Registration No </b>
+                            <b>Chassis No </b>
+                            <b>Engine & CC </b>
+                            <b>Vehicle Name </b>
+                            <b>Mileage </b>
+                          </div>
+                          <div className="invoiceCustomerInfo">
+                            <small>
+                              : {invoicePreview.car_registration_no}
+                            </small>
+                            <small>: {invoicePreview.chassis_no}</small>
+                            <small>: {invoicePreview.engine_no}</small>
+                            <small>: {invoicePreview.vehicle_name}</small>
+                            <small>: {invoicePreview.mileage}</small>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="invoiceLine"></div>
-                    <div className="flex w-[40%] justify-between ">
-                      <div className="invoiceCustomerInfo">
-                        <b>Registration No </b>
-                        <b>Chassis No </b>
-                        <b>Engine & CC </b>
-                        <b>Vehicle Name </b>
-                        <b>Mileage </b>
-                      </div>
-                      <div className="invoiceCustomerInfo">
-                      <small>: {invoicePreview.car_registration_no}</small>
-                      <small>: {invoicePreview.chassis_no}</small>
-                      <small>: {invoicePreview.engine_no}</small>
-                      <small>: {invoicePreview.vehicle_name}</small>
-                      <small>: {invoicePreview.mileage}</small>
-                      </div>
-                    </div>
-
-                    </div>
-                   
-
-                  </div>
                   )}
 
                   <table className="mt-5 invoiceTable2 qutationTables">
-                    <thead className="tableWrap">                    
+                    <thead className="tableWrap">
                       <tr>
                         <th className="serialNo">SL No</th>
                         <th>Description</th>
@@ -383,48 +395,47 @@ const Detail = () => {
                             ))}
                         </>
                       )}
-                      
                     </tbody>
                   </table>
-                 <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
-                 <div className="mt-5 text-[12px]">
-                      <b className="">In words:</b>{" "}
-                      {totalAmountInWords}
-                    </div>
-                    <div className="flex netTotalAmounts">
-                      <div className="">
-                        <b> Total Amount </b>
-                        <b> Discount </b>
-                        <b> VAT </b>
-                        <b> Net Total </b>
-                        <b> Advance</b>
-                        <b> Due </b>
+                  {page === lastValue && (
+                    <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
+                      <div className="mt-5 text-[12px]">
+                        <b className="">In words:</b> {totalAmountInWords}
                       </div>
-                      <div>
-                        <small> : 57896</small>
-                        <small> : 5</small>
-                        <small> : 5%</small>
-                        <small> : 57896</small>
-                        <small> : 57896</small>
-                        <small> : 57896</small>
+                      <div className="flex netTotalAmounts">
+                        <div className="">
+                          <b> Total Amount </b>
+                          <b> Discount </b>
+                          <b> VAT </b>
+                          <b> Net Total </b>
+                          <b> Advance</b>
+                          <b> Due </b>
+                        </div>
+                        <div>
+                          <small> : {invoicePreview.total_amount}</small>
+                          <small> : {invoicePreview.discount}</small>
+                          <small> : {invoicePreview.vat}%</small>
+                          <small> : {invoicePreview.net_total}</small>
+                          <small> : {invoicePreview.advance}</small>
+                          <small> : {invoicePreview.due}</small>
+                        </div>
                       </div>
                     </div>
-                 </div>
+                  )}
                 </div>
 
-                
-                  <div>
-                    {page === lastValue && (
-                      <div className="customerSignatureWrap">
-                        <b className="text-sm customerSignatur">
-                          Customer Signature :{" "}
-                        </b>
-                        <b className="text-sm customerSignatur">Trust Auto Solution</b>
-                      </div>
-                    )}
-                    
-                  </div>
-               
+                <div>
+                  {page === lastValue && (
+                    <div className="customerSignatureWrap">
+                      <b className="text-sm customerSignatur">
+                        Customer Signature :{" "}
+                      </b>
+                      <b className="text-sm customerSignatur">
+                        Trust Auto Solution
+                      </b>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             {page === lastValue && (

@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import AddMoneyReceiptList from "./AddMoneyReceiptList";
+import { toast } from "react-toastify";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const MoneyReceiptView = () => {
         navigate("/dashboard/money-receipt-list");
       }
     } catch (error) {
-      console.log(error);
+       toast.error(error.message);
     }
   };
 

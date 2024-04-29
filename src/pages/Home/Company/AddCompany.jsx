@@ -70,7 +70,7 @@ const AddCompany = () => {
         reset();
       }
     } catch (error) {
-      console.log(error);
+      
       toast.error(error.message);
       setLoading(false);
     }
@@ -92,7 +92,7 @@ const AddCompany = () => {
       .then((res) => res.json())
       .then((data) => {
         setCompanyData(data);
-        console.log(data);
+       
         setLoading(false);
       });
   }, [reload]);
@@ -202,7 +202,7 @@ const AddCompany = () => {
       <table className="table">
         <thead className="tableWrap">
           <tr>
-            <th>SL No</th>
+            <th>Company Id</th>
             <th>Customer Name</th>
             <th>Order Number </th>
             <th>Car Number </th>
@@ -213,7 +213,7 @@ const AddCompany = () => {
         <tbody>
           {companyData?.map((card, index) => (
             <tr key={card._id}>
-              <td>{index + 1}</td>
+              <td>{card.companyId}</td>
               <td>{card?.company_name}</td>
 
               <td>{card.car_registration_no}</td>
@@ -295,7 +295,7 @@ const AddCompany = () => {
     );
   }
 
-  console.log(filterType);
+ 
   const handleFilterType = async () => {
     try {
       const data = {

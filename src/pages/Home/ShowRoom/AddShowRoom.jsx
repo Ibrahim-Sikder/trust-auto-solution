@@ -66,7 +66,7 @@ const AddShowRoom = () => {
         reset();
       }
     } catch (error) {
-      console.log(error);
+       
       toast.error(error.message);
       setLoading(false);
     }
@@ -77,7 +77,7 @@ const AddShowRoom = () => {
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
-        console.log(data);
+       
         setLoading(false);
       });
   }, [reload]);
@@ -196,7 +196,7 @@ const AddShowRoom = () => {
         <tbody>
           {showRoomData?.map((card, index) => (
             <tr key={card._id}>
-              <td>{index + 1}</td>
+              <td>{card.showRoomId}</td>
               <td>{card?.company_name}</td>
 
               <td>{card.car_registration_no}</td>
@@ -280,7 +280,7 @@ const AddShowRoom = () => {
     );
   }
 
-  console.log(filterType);
+  
   const handleFilterType = async () => {
     try {
       const data = {

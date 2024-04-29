@@ -11,7 +11,7 @@ import Loading from "../../../components/Loading/Loading";
 const CompanyList = () => {
   const [filterType, setFilterType] = useState("");
   const [companyData, setCompanyData] = useState([]);
-  console.log(companyData)
+  
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
