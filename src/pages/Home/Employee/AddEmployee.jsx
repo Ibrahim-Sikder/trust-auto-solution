@@ -379,12 +379,12 @@ const AddEmployee = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex">
+            <div className="addEmployeeFieldWraps space-y-3">
               <div>
                 <h3 className="text-xl font-bold">Personal Info </h3>
                 <TextField
                   className="productField"
-                  fullWidth
+                  
                   label="Full Name "
                   id="Full Name "
                   {...register("full_name")}
@@ -392,32 +392,32 @@ const AddEmployee = () => {
 
                 <TextField
                   className="productField"
-                  fullWidth
+                  
                   label="Date of Birth"
                   {...register("date_of_birth")}
                 />
                 <TextField
                   className="productField"
-                  fullWidth
+                  
                   label="NID Number"
                   {...register("nid_number")}
                 />
                 <TextField
                   className="productField"
-                  fullWidth
+                  
                   label="Blood Group "
                   {...register("blood_group")}
                 />
                 <TextField
                   className="productField"
-                  fullWidth
+                  
                   label="Phone Number "
                   id="Phone Number "
                   {...register("phone_number")}
                 />
                 <TextField
                   className="productField"
-                  fullWidth
+                  
                   label="Email Address "
                   id="Email Address "
                   {...register("email")}

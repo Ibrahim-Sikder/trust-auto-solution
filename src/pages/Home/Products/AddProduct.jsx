@@ -12,7 +12,6 @@ import {
   FaReddit,
   FaTrashAlt,
 } from "react-icons/fa";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import img from "../../../../public/assets/service2.png";
@@ -56,8 +55,8 @@ const AddProduct = () => {
           <div className="flex items-center justify-center ">
             <FaFileInvoice className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold"> New Product </h3>
-              <span>Add New Product </span>
+              <h3 className=" md:text-2xl font-bold"> New Product </h3>
+              <span className="text-sm">Add New Product </span>
             </div>
           </div>
           <div className="productHome">
@@ -194,7 +193,7 @@ const AddProduct = () => {
               />
             </div>
             <div className="supplierBox mt-8">
-              <div className="flex items-center justify-between px-5">
+              <div className="flex items-center justify-between px-0 md:px-5 md:text-xl text-sm">
                 <b>Supplier </b>
                 <b className="ml-5">Supplier Price</b>
                 <b>Action </b>

@@ -213,14 +213,14 @@
 
 @media only screen and (max-width: 375px) {
 
-	.productField {
+	/* .productField {
 		width: 350px !important;
-	}
+	} */
 }
 
 @media only screen and (max-width: 300px) {
 
-	.productField {
-		width: 280px !important;
-	}
+	/* .productField {
+		width: 220px !important;
+	} */
 }
