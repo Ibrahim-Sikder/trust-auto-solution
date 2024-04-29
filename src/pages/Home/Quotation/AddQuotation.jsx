@@ -886,7 +886,7 @@ const AddQuotation = () => {
           </div>
 
           <div className="mt-8 buttonGroup buttonMargin">
-            <div className="flex flex-col justify-end">
+            <div className="flex md:flex-row flex-col justify-end">
               {/* <Link to={}> */}
               <button onClick={() => setPreview("preview")}>Preview</button>
               {/* </Link> */}

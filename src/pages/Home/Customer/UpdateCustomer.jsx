@@ -168,15 +168,15 @@ const UpdateCustomer = () => {
                     on
                     label="Company Address (T)"
                     {...register("company_address")}
-                    value={singleCard.customer_name}
+                    value={singleCard.company_address}
                     onChange={(e) =>
                       setSingleCard({
                         ...singleCard,
-                        customer_name: e.target.value,
+                        company_address: e.target.value,
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.customer_name,
+                      shrink: !!singleCard.company_address,
                     }}
                   />
                 </div>
@@ -187,7 +187,7 @@ const UpdateCustomer = () => {
                     onC
                     label="Customer Name (T)"
                     {...register("customer_name")}
-                    value={singleCard.username}
+                    value={singleCard.customer_name}
                     onChange={(e) =>
                       setSingleCard({
                         ...singleCard,

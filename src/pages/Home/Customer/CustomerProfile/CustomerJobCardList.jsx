@@ -8,38 +8,7 @@ import swal from "sweetalert";
 import axios from "axios";
 
 const CustomerJobCardList = ({ jobCardData, setJobCardData, id }) => {
-  // const jobData = [
-  //   {
-  //     id: 1,
-  //     customerName: "Rahim Ullah",
-  //     carNumber: "33566",
-  //   },
-  //   {
-  //     id: 1,
-  //     customerName: "Rahim Ullah",
-  //     carNumber: "33566",
-  //   },
-  //   {
-  //     id: 1,
-  //     customerName: "Rahim Ullah",
-  //     carNumber: "33566",
-  //   },
-  //   {
-  //     id: 1,
-  //     customerName: "Rahim Ullah",
-  //     carNumber: "33566",
-  //   },
-  //   {
-  //     id: 1,
-  //     customerName: "Rahim Ullah",
-  //     carNumber: "33566",
-  //   },
-  //   {
-  //     id: 1,
-  //     customerName: "Rahim Ullah",
-  //     carNumber: "33566",
-  //   },
-  // ];
+console.log(jobCardData)
   const [noMatching, setNoMatching] = useState(null);
   const [filterType, setFilterType] = useState("");
   const [loading, setLoading] = useState(false);

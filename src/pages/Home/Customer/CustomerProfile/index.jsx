@@ -19,13 +19,12 @@ const CustomerProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
   const [jobCardData, setJobCardData] = useState([]);
-  console.log(jobCardData);
+console.log(jobCardData)
   const [quotationData, setQuotationData] = useState([]);
-  console.log(quotationData);
+
   const [invoiceData, setInvoiceData] = useState([]);
-  console.log(invoiceData);
+
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-  console.log(moneyReceiptData);
 
   const [error, setError] = useState("");
 
@@ -43,7 +42,7 @@ const CustomerProfile = () => {
     }
   }, [id]);
 
-  console.log(profileData);
+
 
   useEffect(() => {
     if (id) {
@@ -131,8 +130,15 @@ const CustomerProfile = () => {
                 <ImUserTie size="80" className="text-white" />
               </div>
               <div className="text-sm">
-                <h3 className="text-2xl">Trust Auto Solution </h3>
+              <div className="flex items-center">
+                  <span> Customer ID : </span>{" "}
+                  <span className="ml-3 font-semibold ">
+                    {profileData.customerId}
+                  </span>
+                </div>
+                
                 <div className=" mt-3 space-y-2">
+               
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
                     <span>{profileData.customer_contact}</span>

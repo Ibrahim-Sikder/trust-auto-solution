@@ -105,7 +105,7 @@ const MoneyReceiptView = () => {
             <div className="flex receivedField">
               <label className="advance">
                 <input type="checkbox" /> Advance <input type="checkbox" />{" "}
-                Final Payment / against bill no:{" "}
+                Final Payment / against bill no
               </label>
               <input
                 {...register("against_bill_no", { required: true })}
