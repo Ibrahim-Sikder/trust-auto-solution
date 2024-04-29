@@ -148,6 +148,7 @@
 	padding: 7px;
 	border-radius: 3px;
 	display: flex;
+	width:150px;
 }
 
 .topProductBtn button {

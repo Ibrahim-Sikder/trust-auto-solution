@@ -18,7 +18,6 @@ import AddProduct from "../pages/Home/Products/AddProduct";
 import Profile from "../pages/Home/Profile/Profile";
 import UpdateJobCard from "../pages/Home/AddJobCard/UpdateJobCard";
 import AddJobCard from "../pages/Home/AddJobCard/AddJobCard";
-import Services from "../pages/Home/Services";
 import PreviewJobCard from "../pages/Home/AddJobCard/PreviewJobCard/PreviewJobCard";
 import UpdateProduct from "../pages/Home/Products/UpdateProduct";
 import UpdateRole from "../pages/Home/Role/UpdateRole";
@@ -64,6 +63,8 @@ import EmployeeOvertime from "../pages/Home/Employee/EmployeeOvertime";
 import RunningProject from "../pages/Home/Projects/RunningProject";
 import CompletedProject from "../pages/Home/Projects/CompletedProject";
 import ViewEmployeeAttendance from "../pages/Home/Attendance/ViewEmployeeAttendance";
+import BillPay from "../pages/BillPay/BillPay";
+import Support from "../pages/Support/Support";
 
 export const router = createBrowserRouter([
   {
@@ -84,10 +85,7 @@ export const router = createBrowserRouter([
         path: "/dashboard",
         element: <Home />,
       },
-      {
-        path: "services",
-        element: <Services />,
-      },
+      
       {
         path: "addjob",
         element: <AddJobCard />,
@@ -347,6 +345,15 @@ export const router = createBrowserRouter([
         path: "view-attendance",
         element: <ViewEmployeeAttendance />,
       },
+      {
+        path: "bill-pay",
+        element: <BillPay />,
+      },
+      {
+        path: "support",
+        element: <Support />,
+      },
+
     ],
   },
 ]);

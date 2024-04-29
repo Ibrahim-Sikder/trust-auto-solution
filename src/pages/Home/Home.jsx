@@ -43,18 +43,21 @@ import LinearProgress, {
 import ExpanseIncomeChart from "../../components/Chart/ExpanseIncomeChart";
 import client from "../../../public/assets/avatar.jpg";
 import { Link } from "react-router-dom";
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+
+
+const BorderLinearProgress = styled(LinearProgress)(({ theme, color }) => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor:
-      theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
+    backgroundColor: theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: theme.palette.mode === "light" ? "#1a90ff" : "#308fe8",
+    backgroundColor: color || (theme.palette.mode === "light" ? "#1a90ff" : "#308fe8"), // Default to existing color if no color prop
   },
 }));
+
+
 const Home = () => {
   const [expanded, setExpanded] = React.useState(false);
   const [salesData, setSalesData] = useState([]);
@@ -197,7 +200,7 @@ const Home = () => {
           Yearly Income Chart
         </h3>
       </div>
-      <div className="profiteCardWrap flex-wrap flex items-center justify-between sectionMargin">
+      <div className="profiteCardWrap lg:flex-nowrap flex-wrap flex items-center justify-between sectionMargin">
         <div className="profitCard ">
           <div className="flex items-center justify-between">
             <b>Earnings</b>

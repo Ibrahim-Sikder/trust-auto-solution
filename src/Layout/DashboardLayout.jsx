@@ -95,7 +95,7 @@ const DashboardLayout = () => {
               <span className="bar" />
               <span className="bar" />
             </div>
-            <h3 className="text-xl lg:text-2xl font-semibold text-white hidden lg:block">
+            <h3 className="ml-5 text-xl lg:text-2xl font-semibold text-white hidden lg:block">
               Trust Auto Solution
             </h3>
             <div className="flex items-center space-x-5 flex-end  ">
@@ -701,7 +701,7 @@ const DashboardLayout = () => {
             </Accordion>
 
             <div className="pl-3 space-y-3 mt-3 flex flex-col">
-              <NavLink to="/dashboard/services">
+              <NavLink to="/dashboard/bill-pay">
                 <div className="flex items-center dashboardItems">
                   <FaAlipay size={22} />
                   <span className="ml-2"> Bill Pay</span>
@@ -714,13 +714,11 @@ const DashboardLayout = () => {
                   <span className="ml-2"> Profile</span>
                 </div>
               </NavLink>
-              <NavLink to="/dashboard/services">
-                <div className="flex items-center dashboardItems">
+              <div className="flex items-center dashboardItems">
                   <FaDatabase size={22} />
                   <span className="ml-2"> Data Backup </span>
                 </div>
-              </NavLink>
-              <NavLink to="/dashboard/services">
+              <NavLink to="/dashboard/support">
                 <div className="flex items-center dashboardItems">
                   <FaHeadset size={22} />
                   <span className="ml-2">Support</span>

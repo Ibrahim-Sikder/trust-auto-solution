@@ -1,12 +1,12 @@
-import { FaArrowRight, FaArrowLeft, FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 const Role = () => {
   return (
     <div className="mt-5 mb-24 w-full">
-      <div className="flex items-center justify-between px-8 mb-5">
+      <div className="md:flex block space-y-3 items-center justify-between md:px-8 mb-5">
         <TextField id="outlined-basic" label="Search " variant="outlined" />
-        <h3 className="text-3xl font-bold">Make Role </h3>
+        <h3 className="text-xl md:text-3xl font-bold">Make Role </h3>
         <div className='addHotel'>
           <Link to='/dashboard/add-role'>
             <button>
@@ -166,22 +166,7 @@ const Role = () => {
           </tbody>
         </table>
       </div>
-      <div className='pagination'>
-        <div className='paginationBtn'>
-          <button>
-            <FaArrowLeft className='arrowLeft' />
-          </button>
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
-          <button>4</button>
-          <button>5</button>
-          <button>
-            <FaArrowRight className='arrowRight' />
-
-          </button>
-        </div>
-      </div>
+     
     </div>
   );
 };
