@@ -15,7 +15,6 @@ const Detail = () => {
   const componentRef = useRef();
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
-  const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
