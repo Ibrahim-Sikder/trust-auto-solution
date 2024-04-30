@@ -111,25 +111,40 @@ th {
   }
 }
 
-@media screen and (min-width: 1100px) and (max-width: 1400px) {
+.profileCards{
+  height:210px;
+
+}
+@media screen and (min-width: 1100px) and (max-width: 1440px) {
   .employeeCard,
   .presentCard {
     width: 257px;
   }
+
 }
 
-@media screen and (max-width: 1200px) {
+
+
+
+@media only screen and (max-width: 1200px) {
   table {
     max-width: 100%; 
   }
-}
-
-@media screen and (max-width: 1200px) {
+  .employeeProfileCard {
+    width: 100%;
+  }
   .employeeCard,
   .presentCard {
     width: 100%;
     text-align: center;
   }
+  .employeeCard, .presentCard {
+    width: 100% !important;
+}
+.profileCards {
+  height: auto;
+}
+
 }
 
 @media screen and (max-width: 768px) {
@@ -137,4 +152,11 @@ th {
     display: block;
   
   }
+  .employeeProfileCard {
+    width: 100% !important;
+}
+.profileCardsWraps{
+  font-size: 10px;
+}
+
 }

@@ -95,9 +95,9 @@ const DashboardLayout = () => {
               <span className="bar" />
               <span className="bar" />
             </div>
-            <h3 className="ml-5 text-xl lg:text-2xl font-semibold text-white hidden lg:block">
+           <Link to='/dashboard'> <h3 className="ml-5 text-xl lg:text-2xl font-semibold text-white hidden lg:block">
               Trust Auto Solution
-            </h3>
+            </h3></Link>
             <div className="flex items-center space-x-5 flex-end  ">
               <div className="dashboardSearchBar lg:block hidden ">
                 <input
@@ -247,7 +247,7 @@ const DashboardLayout = () => {
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
                     <NavLink to="/dashboard/quotaiton-list">
-                       Quotation List
+                      Quotation List
                     </NavLink>
                   </span>
                 </Typography>
@@ -283,9 +283,7 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    <NavLink to="/dashboard/invoice-view">
-                       Invoice List
-                    </NavLink>
+                    <NavLink to="/dashboard/invoice-view">Invoice List</NavLink>
                   </span>
                 </Typography>
               </AccordionDetails>
@@ -314,7 +312,7 @@ const DashboardLayout = () => {
                   <span className="flex items-center">
                     <FaPlus className="mr-2" />
                     <NavLink to="/dashboard/money-receive">
-                       Money Receipt Add
+                      Money Receipt Add
                     </NavLink>
                   </span>
                 </Typography>
@@ -402,7 +400,10 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <div className="flex items-center">
                     <FaPlus className="mr-2" />
-                    <NavLink to="/dashboard/add-purchase"> Purchase Add </NavLink>
+                    <NavLink to="/dashboard/add-purchase">
+                      {" "}
+                      Purchase Add{" "}
+                    </NavLink>
                   </div>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
@@ -440,16 +441,14 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <HiOutlineUserAdd className="mr-2" />
-                    <NavLink to="/dashboard/add-customer">
-                       Customer Add 
-                    </NavLink>
+                    <NavLink to="/dashboard/add-customer">Customer Add</NavLink>
                   </span>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
                     <NavLink to="/dashboard/customer-list">
-                       Customer List
+                      Customer List
                     </NavLink>
                   </span>
                 </Typography>
@@ -468,7 +467,9 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <HiOutlineUserAdd className="mr-2" />
-                    <NavLink to="/dashboard/add-show-room"> Show Room Add 
+                    <NavLink to="/dashboard/add-show-room">
+                      {" "}
+                      Show Room Add
                     </NavLink>
                   </span>
                 </Typography>
@@ -505,9 +506,7 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <div className="flex items-center">
                     <FaPlus className="mr-2" />
-                    <NavLink to="/dashboard/add-supplier">
-                       Supplier Add
-                    </NavLink>
+                    <NavLink to="/dashboard/add-supplier">Supplier Add</NavLink>
                   </div>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
@@ -545,13 +544,18 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaPlus className="mr-2" />
-                    <NavLink to="/dashboard/add-employee"> Employee Add </NavLink>
+                    <NavLink to="/dashboard/add-employee">
+                      {" "}
+                      Employee Add{" "}
+                    </NavLink>
                   </span>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    <NavLink to="/dashboard/employee-list">Employee List </NavLink>
+                    <NavLink to="/dashboard/employee-list">
+                      Employee List{" "}
+                    </NavLink>
                   </span>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
@@ -612,7 +616,7 @@ const DashboardLayout = () => {
                   <div className="flex items-center">
                     <FaPlus className="mr-2" />
                     <NavLink to="/dashboard/add-attendance">
-                       Attendance Add 
+                      Attendance Add
                     </NavLink>
                   </div>
                 </Typography>

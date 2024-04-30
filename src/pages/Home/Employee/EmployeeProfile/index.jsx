@@ -11,16 +11,16 @@ import EmployeeHoliday from "./EmployeeHoliday";
 
 const CustomerProfile = () => {
   return (
-    <div>
+    <div className="profileCardsWraps">
       <div className="p-5 bg-[#F7F7F7] ">
         <div className="my-5">
           <h3 className="text-2xl font-semibold ">Profile</h3>
           <span>Dashboard / Profile </span>
         </div>
-        <div className="flex items-center justify-between w-full mt-10 text-black h-52 ">
-          <div className="items-center bg-[#fff] flex justify-between w-full rounded-sm  border py-5">
-            <div className="w-[50%]">
-              <div className="flex p-5 ">
+        <div className="flex flex-wrap items-center justify-between w-full mt-10 text-black  profileCards ">
+          <div className="items-center flex-wrap  px-5 bg-[#fff] flex justify-center md:justify-between w-full rounded-sm  border py-5">
+            <div className="w-full lg:w-[50%]">
+              <div className="flex flex-wrap gap-3 p-5 ">
                 <img
                   src={avatar}
                   className="object-cover w-24 h-24 mr-3 rounded-full"
@@ -47,9 +47,9 @@ const CustomerProfile = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[200px] border border-dashed  "></div>
-            <div className="w-[30%] max-auto mr-10 ">
-              <div className="flex items-center justify-between ">
+            <div className=" h-auto lg:h-[200px] hidden border border-dashed  "></div>
+            <div className=" w-full lg:w-[30%] max-auto mr-0 lg:mr-10 ">
+              <div className="flex items-center md:flex-nowrap flex-wrap gap-4 justify-between ">
                 <div className="overTimeCard employeeCard ">
                   <div className="flex items-center">
                     <div className="">

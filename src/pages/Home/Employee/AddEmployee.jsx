@@ -29,8 +29,6 @@ const AddEmployee = () => {
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
 
- 
-
   const {
     register,
     handleSubmit,
@@ -53,13 +51,11 @@ const AddEmployee = () => {
       });
   }, [reload]);
 
- 
-
   const handleImageUpload = async (e) => {
     try {
-      const file = e.target.files[0];  
+      const file = e.target.files[0];
       const formData = new FormData();
-      formData.append("image", file);  
+      formData.append("image", file);
       setImageLoading(true);
       const response = await fetch("http://localhost:5000/api/v1/uploads", {
         method: "POST",
@@ -118,7 +114,7 @@ const AddEmployee = () => {
       if (response.data.message === "Successfully employee post") {
         toast.success("Successfully employee added.");
         setLoading(false);
-       
+
         setReload(!reload);
         reset();
         setError("");
@@ -131,8 +127,7 @@ const AddEmployee = () => {
     }
   };
 
- 
-// pagination 
+  // pagination
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(
     Number(sessionStorage.getItem("supplier")) || 1
@@ -384,7 +379,6 @@ const AddEmployee = () => {
                 <h3 className="text-xl font-bold">Personal Info </h3>
                 <TextField
                   className="productField"
-                  
                   label="Full Name "
                   id="Full Name "
                   {...register("full_name")}
@@ -392,32 +386,27 @@ const AddEmployee = () => {
 
                 <TextField
                   className="productField"
-                  
                   label="Date of Birth"
                   {...register("date_of_birth")}
                 />
                 <TextField
                   className="productField"
-                  
                   label="NID Number"
                   {...register("nid_number")}
                 />
                 <TextField
                   className="productField"
-                  
                   label="Blood Group "
                   {...register("blood_group")}
                 />
                 <TextField
                   className="productField"
-                  
                   label="Phone Number "
                   id="Phone Number "
                   {...register("phone_number")}
                 />
                 <TextField
                   className="productField"
-                  
                   label="Email Address "
                   id="Email Address "
                   {...register("email")}
@@ -455,7 +444,7 @@ const AddEmployee = () => {
                   {...register("designation")}
                 />
 
-                <FormControl fullWidth>
+                {/* <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     Select Status
                   </InputLabel>
@@ -471,6 +460,22 @@ const AddEmployee = () => {
                     <MenuItem>Select</MenuItem>
                     <MenuItem value="Active">Active</MenuItem>
                     <MenuItem value="Inactive">Inactive</MenuItem>
+                  </Select>
+                </FormControl> */}
+                <FormControl className="productField">
+                  <InputLabel htmlFor="grouped-native-select">
+                    Select Status 
+                  </InputLabel>
+                  <Select
+                   className="productField"
+                    native
+                    id="grouped-native-select"
+                    label="Select Status "
+                    {...register("status")}
+                  >
+                    <option>Select</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
                   </Select>
                 </FormControl>
 
@@ -505,23 +510,23 @@ const AddEmployee = () => {
                   {...register("mother_name")}
                 />
                 <TextField
-                className="productField"
-                fullWidth
-                label="New Field "
-                {...register("guardian_name")}
-              />
-              <TextField
-              className="productField"
-              fullWidth
-              label="New Field "
-              {...register("guardian_contact")}
-            />
-            <TextField
-            className="productField"
-            fullWidth
-            label="New Field "
-            {...register("relationship")}
-          />
+                  className="productField"
+                  fullWidth
+                  label="New Field "
+                  {...register("guardian_name")}
+                />
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="New Field "
+                  {...register("guardian_contact")}
+                />
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="New Field "
+                  {...register("relationship")}
+                />
                 <TextField
                   className="productField"
                   fullWidth
@@ -598,32 +603,32 @@ const AddEmployee = () => {
         </div>
       </div>
       <div className="w-full mt-5 mb-24">
-        
-
         <div className="mt-20 overflow-x-auto">
-        <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="mb-3 text-sm font-bold lg:text-3xl">Employee List:</h3>
-          <div className="flex items-center searcList">
-            <div
-              onClick={handleAllEmployee}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
+          <div className="flex flex-wrap items-center justify-between mb-5">
+            <h3 className="mb-3 text-sm font-bold lg:text-3xl">
+              Employee List:
+            </h3>
+            <div className="flex items-center searcList">
+              <div
+                onClick={handleAllEmployee}
+                className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+              >
+                All
+              </div>
+              <div className="searchGroup">
+                <input
+                  onChange={(e) => setFilterType(e.target.value)}
+                  autoComplete="off"
+                  type="text"
+                  placeholder="Search"
+                />
+              </div>
+              <button onClick={handleFilterType} className="SearchBtn ">
+                Search{" "}
+              </button>
             </div>
-            <div className="searchGroup">
-              <input
-                onChange={(e) => setFilterType(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Search"
-              />
-            </div>
-            <button onClick={handleFilterType} className="SearchBtn ">
-              Search{" "}
-            </button>
           </div>
         </div>
-      </div>
         {loading ? (
           <div className="flex items-center justify-center text-xl">
             Loading...
