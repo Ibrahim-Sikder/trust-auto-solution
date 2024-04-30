@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-dupe-else-if */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
@@ -66,7 +67,6 @@ const Detail = () => {
       return 28;
     }
 
-    // For subsequent pages, calculate items based on available height
     return Math.floor(availableHeight / itemHeight);
   };
 
