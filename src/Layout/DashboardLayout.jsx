@@ -133,6 +133,7 @@ const DashboardLayout = () => {
                 <div className="adminProfile space-y-2">
                   <Link to="/dashboard/profile">
                     <p>My Profile</p>
+                    
                   </Link>
                   <p>Settings</p>
                   <p>Logout</p>
