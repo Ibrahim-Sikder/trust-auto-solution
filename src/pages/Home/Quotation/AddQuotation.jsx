@@ -176,59 +176,7 @@ const AddQuotation = () => {
     }
   };
 
-  // const handlePreview = async (e) => {
-  //   e.preventDefault();
-  //   if (!jobCardData.customerId) {
-  //     return toast.error("No account found.");
-  //   }
-  //   const values = {
-  //     username: jobCardData?.username,
-  //     customerId: customerId,
-  //     companyId: customerId,
-  //     showRoomId: customerId,
-  //     // serial_no: formattedSerialNo,
-  //     job_no: job_no,
-  //     date: jobCardData.date,
-
-  //     company_name: jobCardData.company_name,
-  //     customer_name: jobCardData.customer_name,
-  //     contact_contact: jobCardData.contact_number,
-  //     customer_address: jobCardData.customer_address,
-
-  //     car_registration_no: jobCardData.car_registration_no,
-  //     chassis_no: jobCardData.chassis_no,
-  //     engine_no: jobCardData.engine_no,
-  //     vehicle_name: jobCardData.vehicle_name,
-  //     mileage: jobCardData.mileage,
-
-  //     total_amount: grandTotal,
-  //     discount: discount,
-  //     vat: vat,
-  //     net_total: calculateFinalTotal(),
-  //     input_data: items,
-  //   };
-  //   const hasPreviewNullValues = Object.values(values).some(
-  //     (val) => val === null
-  //   );
-
-  //   if (hasPreviewNullValues) {
-  //     setError("Please fill in all the required fields.");
-  //     return;
-  //   }
-  //   const response = await axios.post(
-  //     "http://localhost:5000/api/v1/quotation",
-  //     values
-  //   );
-  //   if (response.data.message === "Successfully quotation post") {
-  //     fetch("http://localhost:5000/api/v1/quotation")
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         if (data) {
-  //           navigate(`/dashboard/quotation-view?id=${data._id}`);
-  //         }
-  //       });
-  //   }
-  // };
+   
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/quotation-view?id=${e}`);
@@ -244,52 +192,7 @@ const AddQuotation = () => {
       });
   }, [reload]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       let apiUrl = "";
-  //       switch (customer_type) {
-  //         case "customer":
-  //           apiUrl = "http://localhost:5000/api/v1/customer";
-  //           break;
-  //         case "company":
-  //           apiUrl = "http://localhost:5000/api/v1/company";
-  //           break;
-  //         case "show_room":
-  //           apiUrl = "http://localhost:5000/api/v1/showRoom";
-  //           break;
-  //         default:
-  //           throw new Error("Invalid customer type");
-  //       }
-
-  //       const response = await fetch(apiUrl);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch data");
-  //       }
-
-  //       const data = await response.json();
-  //       setCustomerDetails(data);
-
-  //       const selectedCustomer = data.find((customer) => {
-  //         switch (customer_type) {
-  //           case "customer":
-  //             return customer.customerId === customerId;
-  //           case "company":
-  //             return customer.companyId === customerId;
-  //           case "show_room":
-  //             return customer.showRoomId === customerId;
-  //           default:
-  //             return false;
-  //         }
-  //       });
-  //       setShowCustomerData(selectedCustomer);
-  //     } catch (error) {
-  //       setError(error.message);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [customerId, customer_type]);
+   
 
   // pagination
 
@@ -552,13 +455,7 @@ const AddQuotation = () => {
     setItems(newItems);
   };
 
-  // const handleRateChange = (index, value) => {
-  //   const newItems = [...items];
-  //   newItems[index].rate = value;
-  //   // Convert rate to a number and calculate total
-  //   newItems[index].total = newItems[index].quantity * Number(value);
-  //   setItems(newItems);
-  // };
+  
 
   const handleRateChange = (index, value) => {
     const newItems = [...items];
@@ -575,47 +472,7 @@ const AddQuotation = () => {
     setItems(newItems);
   };
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+   
 
  
 
@@ -909,6 +766,9 @@ const AddQuotation = () => {
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-md md:text-3xl font-bold">Quotation List:</h3>
           <div className="flex items-center searcList">
+          <button onClick={handleAllQuotation} className="SearchBtn mr-2">
+              All{" "}
+            </button>
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}
