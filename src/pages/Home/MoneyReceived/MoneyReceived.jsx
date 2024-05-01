@@ -292,15 +292,16 @@ const MoneyReceiptView = () => {
               <label className="totalAmountText2">Total Amount Tk:</label>
               <input
                 {...register("total_amount", { required: true })}
-                className="moneyViewInputField"
+                className="moneyViewInputField totalAmountInput"
                 type="text"
+                
               />
             </div>
             <div className="flex ">
               <label>Advance:</label>
               <input
                 {...register("advance", { required: true })}
-                className="moneyViewInputField"
+                className="moneyViewInputField totalAmountInput"
                 type="text"
                 onChange={(e) => setAdvance(e.target.value)}
               />
@@ -309,7 +310,7 @@ const MoneyReceiptView = () => {
               <label>Remaining:</label>
               <input
                 {...register("remaining", { required: true })}
-                className="moneyViewInputField"
+                className="moneyViewInputField totalAmountInput"
                 type="text"
               />
             </div>

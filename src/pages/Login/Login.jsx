@@ -20,7 +20,7 @@ const Login = () => {
   const handleLogin = (event) => {
     event.preventDefault();
     
-    if (email.current.value === 'trust@gmail.com' && password.current.value === 'trust123') {
+    if (email.current.value === 'trustautosolution@gmail.com' && password.current.value === 'trust@#Auto33') {
       Swal.fire({
         position: 'center',
         icon: 'success',
@@ -96,7 +96,7 @@ const Login = () => {
                 </div>
               </div>
             </form>
-            <table className="loginTable mt-3">
+            <table className="loginTable mt-3 hidden ">
               <thead>
                 <tr>
                   <th>Email</th>
@@ -104,10 +104,10 @@ const Login = () => {
                   <th>Role</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
                 <tr onClick={() => handleRowClick('trust@gmail.com', 'trust123')}>
-                  <td><span>trust@gmail.com</span></td>
-                  <td><span>trust123</span></td>
+                  <td><span>trustautosolution@gmail.com</span></td>
+                  <td><span>trust@#Auto33</span></td>
                   <td><span>Admin</span></td>
                 </tr>
               </tbody>

@@ -22,12 +22,14 @@
 	opacity: 0;
 	
 }
+
 .activeToggle .bar:nth-child(1) {
-	transform: translateY(8px) rotate(45deg);
-	-webkit-transform: translateY(8px) rotate(45deg);
-	-moz-transform: translateY(8px) rotate(45deg);
-	-ms-transform: translateY(8px) rotate(45deg);
-	-o-transform: translateY(8px) rotate(45deg);
+    transform: translateY(8px) rotate(44deg) !important;
+    -webkit-transform: translateY(8px) rotate(45deg);
+    -moz-transform: translateY(8px) rotate(45deg);
+    -ms-transform: translateY(8px) rotate(45deg);
+    -o-transform: translateY(8px) rotate(45deg);
+    margin-top: 6px;
 }
 .activeToggle .bar:nth-child(3) {
 	transform: translateY(-8px) rotate(-45deg);
@@ -56,7 +58,7 @@
 
 .activeToggle {
     position: fixed;
-	left: 0px;
+	left: 32px;
     transition: all .5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
 }
 .activeRightSideBarWrap {

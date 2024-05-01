@@ -8,7 +8,6 @@ import { useReactToPrint } from "react-to-print";
 import { usePDF } from "react-to-pdf";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Invoice.css";
-import "./DetailPrint.css";
 import { formatDate } from "../../../utils/formateDate";
  
 

@@ -188,7 +188,7 @@ const UpdateMoneyReceipt = () => {
             <label className="totalAmountText2">Total Amount Tk:</label>
             <input
               defaultValue={specificMoneyReceipt.total_amount}
-              className="moneyViewInputField"
+              className="moneyViewInputField  totalAmountInput"
               type="text"
               {...register("total_amount" )}
             />
@@ -197,7 +197,7 @@ const UpdateMoneyReceipt = () => {
             <label>Advance:</label>
             <input
               defaultValue={specificMoneyReceipt.advance}
-              className="moneyViewInputField"
+              className="moneyViewInputField totalAmountInput"
               type="text"
               {...register("advance" )}
             />
@@ -206,7 +206,7 @@ const UpdateMoneyReceipt = () => {
             <label>Remaining:</label>
             <input
               defaultValue={specificMoneyReceipt.remaining}
-              className="moneyViewInputField"
+              className="moneyViewInputField totalAmountInput"
               type="text"
               {...register("remaining" )}
             />

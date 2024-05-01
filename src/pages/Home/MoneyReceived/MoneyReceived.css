@@ -1,350 +1,359 @@
 .moneyReceivedWrap {
-	padding: 10px 50px;
+  padding: 10px 50px;
 }
 .moneyReceptWrap {
-	padding: 20px 50px;
-	border: 1px solid #11111183;
-	margin: 30px 20px;
-	border-radius: 5px;
+  padding: 20px 50px;
+  border: 1px solid #11111183;
+  margin: 30px 20px;
+  border-radius: 5px;
 }
 .viewMoneyReceiptWrap {
-	background-color: #dddddd;
-	padding: 30px 0;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-
+  background-color: #dddddd;
+  padding: 30px 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 .moneyFormWrap {
-	border: 1px solid black;
-	padding: 10px 18px;
-	border-radius: 5px;
-	width: 760px;
-	background: #fff;
-	margin: 0 auto;
+  border: 1px solid black;
+  padding: 10px 18px;
+  border-radius: 5px;
+  width: 760px;
+  background: #fff;
+  margin: 0 auto;
 }
 .logoWrap {
-	width: 175px;
+  width: 175px;
 }
 .logoWrap2 {
-	height: auto;
+  height: auto;
 }
 .tkText {
-	width: 100px;
+  width: 100px;
 }
 
 .logoWrap img {
-	width: 100%;
-	object-fit: cover;
+  width: 100%;
+  object-fit: cover;
 }
 .moneyRecieved {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .moneyHead {
-	width: 570px;
-	text-align: center;
-	color: #0950a1;
+  width: 570px;
+  text-align: center;
+  color: #0950a1;
 }
 .moneyHead2 {
-	width: 600px;
+  width: 600px;
 }
 .moneyHead2 span {
-	font-size: 11px !important;
+  font-size: 11px !important;
 }
 .hotlineIcon {
-	margin-right: 5px;
-	color: #0950a1 !important;
-	font-size: 14px !important;
+  margin-right: 5px;
+  color: #0950a1 !important;
+  font-size: 14px !important;
 }
 .receivedBtn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .receivedBtn button {
-	background: #82017f;
-	color: #fff;
-	width: 200px;
-	height: 35px;
-	border-radius: 20px;
-	margin-top: 5px;
+  background: #82017f;
+  color: #fff;
+  width: 200px;
+  height: 35px;
+  border-radius: 20px;
+  margin-top: 5px;
 }
 
 .receivedTitle {
-	font-size: 45px;
-	font-weight: bold;
+  font-size: 45px;
+  font-weight: bold;
 }
 .receivedTitle2 {
-	font-size: 38px;
-	font-family: 'Merriweather', serif;
-	color:#110255;
+  font-size: 38px;
+  font-family: "Merriweather", serif;
+  color: #110255;
 }
 .moneyHead span {
-	line-height: 15px;
-	display: block;
-	width: 377px;
-	margin: 0px auto;
-	margin-top: -9px;
+  line-height: 15px;
+  display: block;
+  width: 377px;
+  margin: 0px auto;
+  margin-top: -9px;
 }
 
 .receivedField {
-	width: 100%;
+  width: 100%;
 }
 .receivedField b {
-	font-style: italic;
+  font-style: italic;
 }
 .receivedField span {
-	width: 100%;
-	border-bottom: 1px dashed;
-	border-color: #81027e;
+  width: 100%;
+  border-bottom: 1px dashed;
+  border-color: #81027e;
 }
 
 .payAdvance {
-	width: 100%;
+  width: 100%;
 }
 .receivedMoneyText {
-	width: 280px;
+  width: 280px;
 }
 .receivedMoneyText2 {
-	width: 192px;
+  width: 192px;
 }
 .allInputWraps label {
-	font-size: 11px;
+  font-size: 11px;
 }
 .advance {
-	width: 670px;
+  width: 670px;
 }
 .advance2 {
-	width: 448px;
+  width: 448px;
 }
 .payAdvance {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 .vehicleText {
-	width: 122px;
+  width: 122px;
 }
 .vehicleText2 {
-	width: 124px;
+  width: 124px;
 }
 .checqueText {
-	width: 228px;
+  width: 228px;
 }
 .checqueText2 {
-	width: 206px;
+  width: 206px;
 }
 
 .date {
-	width: 54px;
-	font-style: italic;
+  width: 54px;
+  font-style: italic;
 }
 .date2 {
-	width: 40px;
+  width: 40px;
 }
 .backText {
-	width: 56px;
+  width: 56px;
 }
 .backText2 {
-	width: 39px;
+  width: 39px;
 }
 
 .dateInput {
-	width: 100%;
+  width: 100%;
 }
 .amount,
 .amount2 {
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 .totalAmountText {
-	width: 168px;
+  width: 168px;
 }
 .totalAmountText2 {
-	width: 220px;
+  width: 140px;
 }
-.totalAmountInput {
-	width: 140px !important;
-}
+
 .amount2 label,
 .amount label,
 .wordTaka label,
 .receivedField label {
-	font-style: italic;
-	font-weight: 600;
-	margin-right: 5px;
+  font-style: italic;
+  font-weight: 600;
+  margin-right: 5px;
 }
 .amount input {
-	width: 160px;
-	border-radius: 3px;
-	height: 35px;
-	padding-left: 6px;
-	border-bottom: 1px dashed;
+  width: 160px;
+  border-radius: 3px;
+  height: 35px;
+  padding-left: 6px;
+  border-bottom: 1px dashed;
 }
 .amount2 input {
-	width: 100%;
+  width: 100%;
 }
 .moneyReceiptAmount input {
-	border: 1px solid #ddd !important;
+  border: 1px solid #ddd !important;
 }
 .wordTaka input {
-	border-bottom: 1px dashed;
-	width: 400px;
+  border-bottom: 1px dashed;
+  width: 400px;
 }
 .signature,
 .customerSignature b {
-	display: flex;
-	justify-content: end;
-	position: relative;
-	font-style: italic;
+  display: flex;
+  justify-content: end;
+  position: relative;
+  font-style: italic;
 }
 .signature:after,
 .customerSignature b:after {
-	position: absolute;
-	content: "";
-	width: 134px;
-	height: 1px;
-	background-color: #82017f;
+  position: absolute;
+  content: "";
+  width: 134px;
+  height: 1px;
+  background-color: #82017f;
 }
 .customerSignature b:after {
-	width: 170px;
+  width: 170px;
 }
 .moneyViewInputField {
-	border: 1px solid black !important;
-	border-radius: 3px;
-	background: #d9d9d9;
-	margin-right: 5px;
-	height: 35px;
-	padding-left: 5px;
-	width: 100%;
+  border: 1px solid black !important;
+  border-radius: 3px;
+  background: #d9d9d9;
+  margin-right: 5px;
+  height: 35px;
+  padding-left: 5px;
+  width: 100%;
 }
 .receiptMoneyWrap {
-	background-color: #ddd;
-	padding-bottom: 30px;
+  background-color: #ddd;
+  padding-bottom: 30px;
 }
 
 .moneyReceiptBtnGroup {
-    margin-left: 506px;
-
+  margin-left: 506px;
 }
 .moneyReceiptBtnGroup button {
-	width: 85px;
-	background: #82017f;
-	margin-right: 5px;
-	border-radius: 20px;
-	color: #fff;
-	font-size: 14px;
-	height: 30px;
+  width: 85px;
+  background: #82017f;
+  margin-right: 5px;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 14px;
+  height: 30px;
 }
 .allInputWraps input {
-	background: transparent;
+  background: transparent;
 }
 .hotlineWrap small {
-	font-size: 11px;
+  font-size: 11px;
 }
 .amountTextBG {
-	background: #d9d9d9 !important;
-	width: 100% !important;
-	margin-right: 5px;
-	border-radius: 3px;
+  background: #d9d9d9 !important;
+  width: 100% !important;
+  margin-right: 5px;
+  border-radius: 3px;
 }
 .wordInTk {
-	width: 90%;
+  width: 90%;
 }
 
 .receivedBtn2 button {
-	width: 156px;
-	height: 30px;
-	font-size: 14px;
-	background: #82017f;
-	color: #fff;
-	border-radius: 20px;
-	margin: 0 auto;
-	text-align: center;
-	display: grid;
-	place-content: center;
-	place-items: center;
+  width: 156px;
+  height: 30px;
+  font-size: 14px;
+  background: #82017f;
+  color: #fff;
+  border-radius: 20px;
+  margin: 0 auto;
+  text-align: center;
+  display: grid;
+  place-content: center;
+  place-items: center;
+}
+@media only screen and (min-width: 1441px) {
+  .totalAmountInput {
+    width: 488px !important;
+  }
+}
+@media only screen and (max-width: 1441px) {
+  .totalAmountInput {
+    width: 276px !important;
+  }
 }
 
 @media only screen and (max-width: 1024px) {
-	.moneyHead {
-		width: 432px;
-	}
-	.receivedTitle {
-		font-size: 35px;
-	}
-	.moneyReceivedWrap {
-		padding: 10px 5px;
-	}
+  .moneyHead {
+    width: 432px;
+  }
+  .receivedTitle {
+    font-size: 35px;
+  }
+  .moneyReceivedWrap {
+    padding: 10px 5px;
+  }
+  
+  .totalAmountInput {
+	width: 100% !important;
 
-	.amount input {
-		width: 250px;
-	}
-	.receivedMoneyText {
-		width: 297px;
-	}
-	.vehicleText {
-		width: 188px;
-	}
-	.checqueText {
-		width: 315px;
-	}
-	.date2 {
-		width: 47px;
-		margin-left: 15px;
-	}
-	.totalAmountText2 {
-		width: 236px;
-	}
+}
 
-
+  .amount input {
+    width: 250px;
+  }
+  .receivedMoneyText {
+    width: 297px;
+  }
+  .vehicleText {
+    width: 188px;
+  }
+  .checqueText {
+    width: 315px;
+  }
+  .date2 {
+    width: 47px;
+    margin-left: 15px;
+  }
+  .totalAmountText2 {
+    width: 236px;
+  }
 }
 @media only screen and (max-width: 768px) {
-	.advance {
-		width: 351px;
-	}
-	.amount input {
-		width: 100%;
-	}
-	.receivedTitle {
-		font-size: 27px;
-	}
+  .advance {
+    width: 351px;
+  }
+  .amount input {
+    width: 100%;
+  }
+  .receivedTitle {
+    font-size: 27px;
+  }
 
-	.moneyHead span {
-		font-size: 12px;
-	}
-	.moneyHead {
-		margin: 0 10px;
-	}
+  .moneyHead span {
+    font-size: 12px;
+  }
+  .moneyHead {
+    margin: 0 10px;
+  }
 
-	.moneyFormWrap {
-		margin-left: 23px;
-	}
-	.moneyRecieved {
-		flex-wrap: wrap;
-	}
-	.logoWrap {
-		width: 149px;
-	}
-	.receivedField {
-		display: block;
-	}
-
+  .moneyFormWrap {
+    margin-left: 23px;
+  }
+  .moneyRecieved {
+    flex-wrap: wrap;
+  }
+  .logoWrap {
+    width: 149px;
+  }
+  .receivedField {
+    display: block;
+  }
 }
-@media only screen and (max-width:500px) {
-	.amount, .amount2 {
-		flex-wrap: wrap;
-		row-gap: 5px;
-	}
-	.wordTaka input {
-		width: 100%;
-	}
-	.logoWrap {
-		width: 80px;
-	}
-	.receivedTitle {
-		font-size: 25px;
-	}
+@media only screen and (max-width: 500px) {
+  .amount,
+  .amount2 {
+    flex-wrap: wrap;
+    row-gap: 5px;
+  }
+  .wordTaka input {
+    width: 100%;
+  }
+  .logoWrap {
+    width: 80px;
+  }
+  .receivedTitle {
+    font-size: 25px;
+  }
 }
