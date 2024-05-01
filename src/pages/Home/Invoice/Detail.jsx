@@ -10,7 +10,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Invoice.css";
 import "./DetailPrint.css";
 import { formatDate } from "../../../utils/formateDate";
- 
 
 const Detail = () => {
   const componentRef = useRef();
@@ -34,45 +33,49 @@ const Detail = () => {
         .then((data) => {
           setInvoicePreview(data);
           setLoading(false);
-           
         });
     }
   }, [id]);
-
-  
 
   const [totalPages, setTotalPages] = useState(1);
   const [pagesData, setPagesData] = useState([]);
 
   const calculateItemsPerPage = (pageNumber) => {
-    const itemHeight = 50;  
-    const pageHeight = 1800;  
+    const itemHeight = 50;
+    const pageHeight = 1800;
     const marginHeight = 50;
     const headerHeight = 100;
-    const footerHeight = 100;
+    let footerHeight;
+    if (pageNumber === 1) {
+      footerHeight = 250;
+    } else {
+      footerHeight = 100;
+    }
 
     const availableHeight =
       pageHeight - marginHeight - headerHeight - footerHeight;
 
-    if (pageNumber === 1 && invoicePreview?.input_data?.length === 25) {
-      return 23;
-    } 
-    else if (pageNumber === 1 && invoicePreview?.input_data?.length < 28) {
-      return 25;
-    }
-    else if (pageNumber === 1 && invoicePreview?.input_data?.length < 30) {
-      return 26;
-    }
-    else if (pageNumber === 1 && invoicePreview?.input_data?.length > 30) {
-      return 28;
-    }
+    // if (pageNumber === 1 && invoicePreview?.input_data?.length === 25) {
+    //   return 23;
+    // }
+    // else if (pageNumber === 1 && invoicePreview?.input_data?.length < 28) {
+    //   return 25;
+    // }
+    // else if (pageNumber === 1 && invoicePreview?.input_data?.length < 30) {
+    //   return 26;
+    // }
+    // else if (pageNumber === 1 && invoicePreview?.input_data?.length > 30) {
+    //   return 28;
+    // }
 
     return Math.floor(availableHeight / itemHeight);
   };
 
   useEffect(() => {
     const itemsPerPage = calculateItemsPerPage();
-    const totalPagesCount = Math.ceil(invoicePreview?.input_data?.length / itemsPerPage);
+    const totalPagesCount = Math.ceil(
+      invoicePreview?.input_data?.length / itemsPerPage
+    );
     setTotalPages(totalPagesCount || 1);
   }, [invoicePreview.input_data]);
 
@@ -389,12 +392,6 @@ const Detail = () => {
 };
 
 export default Detail;
-
-
-
-
-
-
 
 // /* eslint-disable no-unused-vars */
 // /* eslint-disable react/no-unescaped-entities */
