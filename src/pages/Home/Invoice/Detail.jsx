@@ -8,7 +8,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Invoice.css";
 import "./DetailPrint.css";
 import { formatDate } from "../../../utils/formateDate";
-import PageShow from "./PageShow";
 
 const Detail = () => {
   const componentRef = useRef();
