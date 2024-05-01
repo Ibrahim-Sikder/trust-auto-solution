@@ -187,48 +187,9 @@ input:focus {
 
 
 
-  .labelWrap label:nth-child(2) {
-	left: -266px !important;
-  }
-
-.drawer-content .labelWrap label:nth-child(2) {
-	left: -231px !important;
-
-  }
-
-  .labelWrap label:nth-child(3) {
-	left: 468px !important;
-  }
-
-  .drawer-content .labelWrap label:nth-child(3) {
-	left: 415px !important;
-  }
-  .labelWrap label:nth-child(4) {
-    left: 225px !important;
-  }
-  .drawer-content .labelWrap label:nth-child(4) {
-	left: 180px !important;
-  }
-
-  .labelWrap label:nth-child(5) {
-    left: 60px !important;
-  }
-  .drawer-content .labelWrap label:nth-child(5) {
-	left: 40px !important;
-  }
 
 
-
-  .jobCardSelect {
-	width: 200px !important;
-  }
-  .jobCardSelect2 {
-	width: 644px !important;
-  }
-
-  .drawer-content .jobCardSelect2 {
-	width: 570px !important;
-  }
+  
   .sectionMargin{
 	margin-top:80px;
   }
@@ -243,14 +204,81 @@ input:focus {
 	margin-bottom:10px;
   }
 
-  @media only screen and (min-width: 1440px) {
+  @media only screen and (min-width: 1441px) {
+
+	.labelWrap label:nth-child(1) {
+		left: -60px !important;
+	  }
+	.drawer-content .labelWrap label:nth-child(1) {
+		left: -47px !important;
+	  }
+
+	.labelWrap label:nth-child(2) {
+		left: -308px !important;
+	  }
+	
+	.drawer-content .labelWrap label:nth-child(2) {
+		left: -261px !important;
+	
+	  }
+	
+	  .labelWrap label:nth-child(3) {
+		left: 550px !important;
+	  }
+	
+	  .drawer-content .labelWrap label:nth-child(3) {
+		left: 468px !important;
+	  }
+
+	  .labelWrap label:nth-child(4) {
+		left: 273px !important;
+	  }
+	  .drawer-content .labelWrap label:nth-child(4) {
+		left: 225px !important;
+	  }
+	
+	  .labelWrap label:nth-child(5) {
+		left: 80px !important;
+	  }
+	  .drawer-content .labelWrap label:nth-child(5) {
+		left: 65px !important;
+	  }
+
+	  
+	
 	.secondInputField {
-	  width: 1105px;
+        width: 1260px;
+    }
+	
+	.drawer-content .secondInputField {
+		width: 1100px;
+	  }
+
+
+	.recentCard {
+		width: 966px;
+	  }
+	  .drawer-content  .recentCard {
+		width: 885px;
+	  }
+
+	   .earningCardWrap {
+		width: 639px;
+	}
+	  .drawer-content .earningCardWrap {
+		width: 580px;
 	}
 
-	.drawer-content .secondInputField {
-		width: 975px;
+	.jobCardSelect2{
+		width:210px !important;
 	  }
+	  .carRegField{
+		width:76% !important;
+	  }
+	  .drawer-content .carRegField{
+		width:74% !important;
+	  }
+	  
 	
 }
 

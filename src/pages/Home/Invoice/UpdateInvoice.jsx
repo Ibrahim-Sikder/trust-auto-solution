@@ -4,16 +4,11 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
 import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 const UpdateInvoice = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
-  // const [orderNo, setOrderNo] = useState(null);
-  // const [customerName, setCustomerName] = useState(null);
-  // const [carNumber, setCarNumber] = useState(null);
-  // const [mobileNumber, setMobileNumber] = useState(null);
-  // const [date, setDate] = useState(null);
+
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
@@ -34,24 +29,28 @@ const UpdateInvoice = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-  const [inputList, setinputList] = useState([
-    { flyingFrom: "", flyingTo: "", date: "" },
+  // const [inputList, setinputList] = useState([
+  //   { flyingFrom: "", flyingTo: "", date: "" },
+  // ]);
+
+  const [items, setItems] = useState([
+    { description: "", quantity: "", rate: "", total: "" },
   ]);
 
   const handleRemove = (index) => {
     if (!index) {
-      const list = [...inputList];
+      const list = [...items];
 
-      setinputList(list);
+      setItems(list);
     } else {
-      const list = [...inputList];
+      const list = [...items];
       list.splice(index, 1);
-      setinputList(list);
+      setItems(list);
     }
   };
 
   const handleAddClick = () => {
-    setinputList([...inputList, { flyingFrom: "", flyingTo: "", date: "" }]);
+    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
   };
 
   useEffect(() => {
@@ -64,61 +63,82 @@ const UpdateInvoice = () => {
       });
   }, [id, reload]);
 
-  const [items, setItems] = useState([
-    { description: "", quantity: "", rate: "", total: "" },
-  ]);
-
+  // useEffect(() => {
+  //   const totalSum = items?.reduce((sum, item) => sum + Number(item.total), 0);
+  //   setGrandTotal(totalSum);
+  // }, [items]);
   useEffect(() => {
-    const totalSum = items?.reduce((sum, item) => sum + Number(item.total), 0);
-    setGrandTotal(totalSum);
-  }, [items]);
+    const totalSum = specificInvoice.input_data?.reduce(
+      (sum, item) => sum + Number(item.total),
+      0
+    );
+
+    const totalSum2 = items.reduce((sum, item) => sum + Number(item.total), 0);
+
+    const newTotalSum = isNaN(totalSum) ? 0 : totalSum;
+    const newTotalSum2 = isNaN(totalSum2) ? 0 : totalSum2;
+
+    const newGrandTotal = newTotalSum + newTotalSum2;
+
+    setGrandTotal(newGrandTotal);
+  }, [items, specificInvoice.input_data]);
 
   const handleDescriptionChange = (index, value) => {
-    const newItems = [...specificInvoice.input_data];
+    const newItems = items ? [...items] : [...specificInvoice.input_data];
     newItems[index].description = value;
     setItems(newItems);
   };
 
   // const handleQuantityChange = (index, value) => {
   //   const newItems = [...specificInvoice.input_data];
-  //   newItems[index].quantity = Number(value);
-  //   // Convert quantity to a number and calculate total
-  //   newItems[index].total = Number(value) * newItems[index].rate;
+  //   const roundedValue = Math.round(value);
+  //   newItems[index].quantity = roundedValue;
+
+  //   newItems[index].total = roundedValue * newItems[index].rate;
+
   //   setItems(newItems);
   // };
   const handleQuantityChange = (index, value) => {
     const newItems = [...specificInvoice.input_data];
-    const roundedValue = Math.round(value);
-    newItems[index].quantity = roundedValue;
-    // newItems[index].quantity = value;
-    // Convert quantity to a number and calculate total
-
-    newItems[index].total = roundedValue * newItems[index].rate;
-
-    setItems(newItems);
-    // newItems[index].total = Number(value) * newItems[index].rate;
-    // setItems(newItems);
+    newItems[index] = {
+      ...newItems[index],
+      quantity: Number(value),
+      total: Number(value) * newItems[index].rate,
+    };
+    setSpecificInvoice((prevState) => ({
+      ...prevState,
+      input_data: newItems,
+    }));
   };
 
-  // const handleRateChange = (index, value) => {
-  //   const newItems = [...specificInvoice.input_data];
-  //   newItems[index].rate = Number(value);
-  //   // Convert rate to a number and calculate total
-  //   newItems[index].total = newItems[index].quantity * Number(value);
-  //   setItems(newItems);
-  // };
+  const handleQuantityChange2 = (index, value) => {
+    const newItems = [...items];
+    const roundedValue = Math.round(value);
+    newItems[index].quantity = Number(roundedValue);
+
+    newItems[index].total = Number(value) * newItems[index].rate;
+    setItems(newItems);
+  };
+
+   
   const handleRateChange = (index, value) => {
     const newItems = [...specificInvoice.input_data];
+    newItems[index] = {
+      ...newItems[index],
+      rate: Number(value),
+      total: newItems[index].quantity * Number(value),
+    };
+    setSpecificInvoice((prevState) => ({
+      ...prevState,
+      input_data: newItems,
+    }));
+  };
 
-    // Convert rate to a number
+  const handleRateChange2 = (index, value) => {
+    const newItems = [...items];
     newItems[index].rate = parseFloat(value);
-
-    // Calculate total with the updated rate
     newItems[index].total = newItems[index].quantity * newItems[index].rate;
-
-    // Round total to two decimal places
     newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-
     setItems(newItems);
   };
 
@@ -164,8 +184,11 @@ const UpdateInvoice = () => {
   };
 
   const calculateDue = () => {
-    if (advance !== 0) {
+    if (advance && advance !== 0) {
       const due = calculateFinalTotal() - advance;
+      return due;
+    } else {
+      const due = calculateFinalTotal() - specificInvoice.advance;
       return due;
     }
   };
@@ -177,13 +200,24 @@ const UpdateInvoice = () => {
     axios
       .put(`http://localhost:5000/api/v1/invoice/${id}`, { index: i })
       .then((response) => {
-       
         if (response.data.message === "Deleted successful") {
           setReload(!reload);
         }
       })
       .catch((error) => {});
   };
+
+  const input_data = [
+    ...(specificInvoice?.input_data || []),
+    ...items
+      .filter((item) => item.total !== undefined && item.total !== "")
+      .map((item) => ({
+        description: item.description,
+        quantity: item.quantity,
+        rate: item.rate,
+        total: item.total,
+      })),
+  ];
 
   const onSubmit = async (data) => {
     if (!specificInvoice.Id) {
@@ -211,7 +245,7 @@ const UpdateInvoice = () => {
         vehicle_name: data.vehicle_name || specificInvoice.vehicle_name,
         mileage: data.mileage || specificInvoice.mileage,
 
-        // contact_number: mobileNumber || specificInvoice?.contact_number,
+      
         total_amount: grandTotal || specificInvoice?.total_amount,
         discount: discount || specificInvoice?.discount,
 
@@ -220,22 +254,9 @@ const UpdateInvoice = () => {
         due: calculateDue() || specificInvoice.due,
 
         net_total: calculateFinalTotal(),
-        input_data: specificInvoice?.input_data.map((item) => ({
-          description: item.description,
-          quantity: item.quantity,
-          rate: item.rate,
-          total: item.total,
-        })),
+        input_data: input_data,
       };
-      // const hasPreviewNullValues = Object.values(values).some(
-      //   (val) => val === null
-      // );
 
-      // if (hasPreviewNullValues) {
-      //   setError("Please fill in all the required fields.");
-
-      //   return;
-      // }
       if (removeButton === "") {
         const response = await axios.put(
           `http://localhost:5000/api/v1/invoice/one/${id}`,
@@ -256,7 +277,9 @@ const UpdateInvoice = () => {
       }
     }
   };
-
+  const handleOnSubmit = () => {
+    handleSubmit(onSubmit)();
+  };
   return (
     <div className="px-5 py-10">
       <div className="flex items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
@@ -402,9 +425,9 @@ const UpdateInvoice = () => {
             <label>Amount </label>
           </div>
           <div>
-            {specificInvoice?.input_data ? (
+            {specificInvoice?.input_data?.length > 0 && (
               <>
-                {specificInvoice?.input_data.map((item, i) => {
+                {specificInvoice?.input_data?.map((item, i) => {
                   return (
                     <div key={i}>
                       <div className="qutationForm">
@@ -480,235 +503,156 @@ const UpdateInvoice = () => {
                           />
                         </div>
                       </div>
-
-                      {/* <div className="addInvoiceItem">
-                        {specificInvoice?.input_data.length - 1 === i && (
-                          <div
-                            onClick={handleAddClick}
-                            className="flex justify-end mt-2"
-                          >
-                            <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white">
-                              Add
-                            </button>
-                          </div>
-                        )}
-                      </div> */}
-                    </div>
-                  );
-                })}
-              </>
-            ) : (
-              <>
-                {items.map((item, i) => {
-                  return (
-                    <div key={i}>
-                      <div className="qutationForm">
-                        <div>
-                          {items.length !== 0 && (
-                            <button
-                              onClick={() => handleRemove(i)}
-                              className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
-                            >
-                              Remove
-                            </button>
-                          )}
-                        </div>
-                        <div>
-                          <input
-                            className="firstInputField"
-                            autoComplete="off"
-                            type="text"
-                            placeholder="SL No "
-                            defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
-                            required
-                          />
-                        </div>
-                        <div>
-                          <input
-                            className="secondInputField"
-                            autoComplete="off"
-                            type="text"
-                            placeholder="Description"
-                            onChange={(e) =>
-                              handleDescriptionChange(i, e.target.value)
-                            }
-                            required
-                          />
-                        </div>
-                        <div>
-                          <input
-                            className="firstInputField"
-                            autoComplete="off"
-                            type="number"
-                            placeholder="Quantity"
-                            onChange={(e) =>
-                              handleQuantityChange(i, e.target.value)
-                            }
-                            required
-                          />
-                        </div>
-                        <div>
-                          <input
-                            className="thirdInputField"
-                            autoComplete="off"
-                            type="number"
-                            placeholder="Rate"
-                            onChange={(e) =>
-                              handleRateChange(i, e.target.value)
-                            }
-                            required
-                          />
-                        </div>
-                        <div>
-                          <input
-                            className="thirdInputField"
-                            autoComplete="off"
-                            type="text"
-                            placeholder="Amount"
-                            value={item.total}
-                            readOnly
-                          />
-                        </div>
-                      </div>
-
-                      <div className="addInvoiceItem">
-                        {items.length - 1 === i && (
-                          <div
-                            onClick={handleAddClick}
-                            className="flex justify-end mt-2"
-                          >
-                            <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white">
-                              Add
-                            </button>
-                          </div>
-                        )}
-                      </div>
                     </div>
                   );
                 })}
               </>
             )}
-            <div className="discountFieldWrap">
-              <div className="flex items-center">
-                <b className="mr-2"> Total Amount: </b>
-                <span>
-                  {grandTotal ? grandTotal : specificInvoice.total_amount}
-                </span>
-              </div>
-              <div>
-                <b className="mr-2"> Discount: </b>
-                <input
-                  className="py-1 text-center"
-                  onChange={(e) => handleDiscountChange(e.target.value)}
-                  autoComplete="off"
-                  type="text"
-                  placeholder="Discount"
-                  defaultValue={specificInvoice.discount}
-                />
-              </div>
-              <div>
-                <b className="mr-2">Vat: </b>
-                <input
-                  className="text-center"
-                  onChange={(e) => handleVATChange(e.target.value)}
-                  autoComplete="off"
-                  type="text"
-                  placeholder="Vat"
-                  defaultValue={specificInvoice.vat}
-                />
-              </div>
-              <div className="flex items-center ">
-                <b className="mr-3">Final Total: </b>
-                <span>
-                  {calculateFinalTotal()
-                    ? calculateFinalTotal()
-                    : specificInvoice.net_total}
-                </span>
-                {/* <b>Net Total: </b> */}
-              </div>
-              <div>
-                <b className="mr-2">Advance: </b>
-                <input
-                  className="text-center"
-                  onChange={(e) => handleAdvance(e.target.value)}
-                  autoComplete="off"
-                  type="text"
-                  placeholder="Advance"
-                  defaultValue={specificInvoice.advance}
-                />
-              </div>
-              {/* <div>
-               
-                <input
-                  className="text-center"
-                  // onChange={(e) => handleVATChange(e.target.value)}
-                  autoComplete="off"
-                  type="text"
-                  placeholder="Vat"
-                  defaultValue={
-                    calculateDue() ? calculateDue() : specificInvoice.due
-                  }
-                />
-              </div> */}
-              <div className="flex items-center ">
-                <b className="mr-2">Due: </b>
-                <span>
-                  {calculateDue() ? calculateDue() : specificInvoice.due}
-                </span>
-              </div>
-            </div>
           </div>
-          {/* <div className="discountFieldWrap">
-          <div className="flex items-center">
-              <b> Total Amount: </b>
-              <span>{grandTotal ? grandTotal : specificInvoice.total_amount}</span>
-            </div>
-            <div>
-              <b> Discount: </b>
-              <input
-                className="py-1 text-center"
-                onChange={(e) => handleDiscountChange(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Discount"
-                defaultValue={specificInvoice.discount}
-              />
-            </div>
-            <div>
-              <b>Vat: </b>
-              <input
-                className="text-center"
-                onChange={(e) => handleVATChange(e.target.value)}
-                autoComplete="off"
-                type="text"
-                placeholder="Vat"
-                defaultValue={specificInvoice.vat}
-              />
-            </div>
-            <div>
-              <form className="ml-3">
-                <strong>
-                  Final Total:{" "}
-                  <span>
-                  {calculateFinalTotal()
-                        ? calculateFinalTotal()
-                        : specificInvoice.net_total}
-                  </span>
-                </strong>
-                {/* <b>Net Total: </b> */}
-          {/* <input autoComplete="off" type="text" placeholder="Net" /> */}
-          {/* </div>
-            </div>
-          </div> */}
-
-          <div className="mb-12">
-            <button className="addJobBtn">Update Invoice </button>
-          </div>
-
-          {error && (
-            <div className="pt-6 text-center text-red-400">{error}</div>
-          )}
         </form>
+        {items.map((item, i) => {
+          return (
+            <div key={i}>
+              <div className="qutationForm">
+                <div>
+                  {items.length !== 0 && (
+                    <button
+                      onClick={() => handleRemove(i)}
+                      className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                <div>
+                  <input
+                    className="firstInputField"
+                    autoComplete="off"
+                    type="text"
+                    placeholder="SL No "
+                    defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    className="secondInputField"
+                    autoComplete="off"
+                    type="text"
+                    placeholder="Description"
+                    onChange={(e) => handleDescriptionChange(i, e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    className="firstInputField"
+                    autoComplete="off"
+                    type="number"
+                    placeholder="Quantity"
+                    onChange={(e) => handleQuantityChange2(i, e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    className="thirdInputField"
+                    autoComplete="off"
+                    type="number"
+                    placeholder="Rate"
+                    onChange={(e) => handleRateChange2(i, e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    className="thirdInputField"
+                    autoComplete="off"
+                    type="text"
+                    placeholder="Amount"
+                    value={item.total}
+                    readOnly
+                  />
+                </div>
+              </div>
+
+              <div className="addInvoiceItem">
+                {items.length - 1 === i && (
+                  <div
+                    onClick={handleAddClick}
+                    className="flex justify-end mt-2"
+                  >
+                    <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
+                      Add
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+        <div className="discountFieldWrap">
+          <div className="flex items-center">
+            <b className="mr-2"> Total Amount: </b>
+            <span>
+              {grandTotal ? grandTotal : specificInvoice.total_amount}
+            </span>
+          </div>
+          <div>
+            <b className="mr-2"> Discount: </b>
+            <input
+              className="py-1 text-center"
+              onChange={(e) => handleDiscountChange(e.target.value)}
+              autoComplete="off"
+              type="text"
+              placeholder="Discount"
+              defaultValue={specificInvoice.discount}
+            />
+          </div>
+          <div>
+            <b className="mr-2">Vat: </b>
+            <input
+              className="text-center"
+              onChange={(e) => handleVATChange(e.target.value)}
+              autoComplete="off"
+              type="text"
+              placeholder="Vat"
+              defaultValue={specificInvoice.vat}
+            />
+          </div>
+          <div className="flex items-center ">
+            <b className="mr-3">Final Total: </b>
+            <span>
+              {calculateFinalTotal()
+                ? calculateFinalTotal()
+                : specificInvoice.net_total}
+            </span>
+            {/* <b>Net Total: </b> */}
+          </div>
+          <div>
+            <b className="mr-2">Advance: </b>
+            <input
+              className="text-center"
+              onChange={(e) => handleAdvance(e.target.value)}
+              autoComplete="off"
+              type="text"
+              placeholder="Advance"
+              defaultValue={specificInvoice.advance}
+            />
+          </div>
+
+          <div className="flex items-center ">
+            <b className="mr-2">Due: </b>
+            <span>{calculateDue() ? calculateDue() : specificInvoice.due}</span>
+          </div>
+        </div>
+        <div className="mb-12">
+          <button onClick={handleOnSubmit} className="addJobBtn">
+            Update Invoice{" "}
+          </button>
+        </div>
+
+        {error && <div className="pt-6 text-center text-red-400">{error}</div>}
       </div>
     </div>
   );

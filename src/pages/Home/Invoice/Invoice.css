@@ -181,9 +181,7 @@
     position: absolute;
   }
 
-  .labelWrap label:nth-child(1) {
-    left: -50px !important;
-  }
+  
 }
 
 @media only screen and (max-width: 1440px) {
@@ -430,7 +428,7 @@
 .netTotalAmounts b,
 .netTotalAmounts small {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
 }
 .netTotalAmounts b,
 .netTotalAmounts small {

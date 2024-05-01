@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import logo from "../../../../public/assets/logo.png";
 import { useReactToPrint } from "react-to-print";
 import { usePDF } from "react-to-pdf";
@@ -42,52 +43,99 @@ const Detail = () => {
     }
   }, [id]);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 20;
-  const itemsPerPages = 24;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const secondEndIndex = startIndex + itemsPerPages;
+  // const itemsPerPage = 20;
+  // const itemsPerPages = 24;
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const endIndex = startIndex + itemsPerPage;
+  // const secondEndIndex = startIndex + itemsPerPages;
 
-  const firstPageData = invoicePreview?.input_data?.slice(startIndex, endIndex);
+  // const firstPageData = invoicePreview?.input_data?.slice(startIndex, endIndex);
 
-  // Calculate the start index for the second page
-  const secondPageStartIndex = endIndex;
-  const secondPageData = invoicePreview?.input_data?.slice(
-    secondPageStartIndex,
-    secondPageStartIndex + itemsPerPages
-  );
+  // // Calculate the start index for the second page
+  // const secondPageStartIndex = endIndex;
+  // const secondPageData = invoicePreview?.input_data?.slice(
+  //   secondPageStartIndex,
+  //   secondPageStartIndex + itemsPerPages
+  // );
 
-  // Calculate the start index for the third page
-  const thirdPageStartIndex = secondPageStartIndex + itemsPerPage;
-  const thirdPageData = invoicePreview?.input_data?.slice(
-    thirdPageStartIndex,
-    thirdPageStartIndex + itemsPerPages
-  );
+  // // Calculate the start index for the third page
+  // const thirdPageStartIndex = secondPageStartIndex + itemsPerPage;
+  // const thirdPageData = invoicePreview?.input_data?.slice(
+  //   thirdPageStartIndex,
+  //   thirdPageStartIndex + itemsPerPages
+  // );
 
-  // Calculate the start index for the fourth page
-  const fourthPageStartIndex = thirdPageStartIndex + itemsPerPage;
-  const fourthPageData = invoicePreview?.input_data?.slice(
-    fourthPageStartIndex,
-    fourthPageStartIndex + itemsPerPages
-  );
+  // // Calculate the start index for the fourth page
+  // const fourthPageStartIndex = thirdPageStartIndex + itemsPerPage;
+  // const fourthPageData = invoicePreview?.input_data?.slice(
+  //   fourthPageStartIndex,
+  //   fourthPageStartIndex + itemsPerPages
+  // );
 
-  // Calculate the start index for the fifth page
-  const fifthPageStartIndex = fourthPageStartIndex + itemsPerPage;
-  const fifthPageData = invoicePreview?.input_data?.slice(
-    fifthPageStartIndex,
-    fifthPageStartIndex + itemsPerPages
-  );
+  // // Calculate the start index for the fifth page
+  // const fifthPageStartIndex = fourthPageStartIndex + itemsPerPage;
+  // const fifthPageData = invoicePreview?.input_data?.slice(
+  //   fifthPageStartIndex,
+  //   fifthPageStartIndex + itemsPerPages
+  // );
 
-  // Calculate the start index for the sixth page
-  const sixthPageStartIndex = fifthPageStartIndex + itemsPerPage;
-  const sixthPageData = invoicePreview?.input_data?.slice(
-    sixthPageStartIndex,
-    sixthPageStartIndex + itemsPerPage
-  );
+  // // Calculate the start index for the sixth page
+  // const sixthPageStartIndex = fifthPageStartIndex + itemsPerPage;
+  // const sixthPageData = invoicePreview?.input_data?.slice(
+  //   sixthPageStartIndex,
+  //   sixthPageStartIndex + itemsPerPage
+  // );
 
-  const lastValue = pages[pages.length - 1];
+  const [totalPages, setTotalPages] = useState(1);
+  const [pagesData, setPagesData] = useState([]);
+
+  const calculateItemsPerPage = useCallback((pageNumber) => {
+    const itemHeight = 50;
+    const pageHeight = 1800;
+    const marginHeight = 50;
+    const headerHeight = 100;
+    const footerHeight = 100;
+
+    const availableHeight =
+      pageHeight - marginHeight - headerHeight - footerHeight;
+
+    if (pageNumber === 1 && invoicePreview?.input_data?.length === 25) {
+      return 23;
+    } else if (pageNumber === 1 && invoicePreview?.input_data?.length < 28) {
+      return 25;
+    } else if (pageNumber === 1 && invoicePreview?.input_data?.length < 30) {
+      return 26;
+    } else if (pageNumber === 1 && invoicePreview?.input_data?.length > 30) {
+      return 28;
+    }
+
+    return Math.floor(availableHeight / itemHeight);
+  });
+
+  useEffect(() => {
+    const itemsPerPage = calculateItemsPerPage();
+    const totalPagesCount = Math.ceil(
+      invoicePreview?.input_data?.length / itemsPerPage
+    );
+    setTotalPages(totalPagesCount || 1);
+  }, [calculateItemsPerPage, invoicePreview?.input_data]);
+
+  useEffect(() => {
+    const allPagesData = [];
+    let startIndex = 0;
+
+    for (let i = 1; i <= totalPages; i++) {
+      const itemsPerPage = calculateItemsPerPage(i);
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = invoicePreview?.input_data?.slice(startIndex, endIndex);
+      allPagesData.push(pageData);
+      startIndex = endIndex;
+    }
+
+    setPagesData(allPagesData);
+  }, [totalPages, invoicePreview.input_data]);
 
   const amountInWords = (amount) => {
     const numberWords = [
@@ -202,13 +250,13 @@ const Detail = () => {
     return `${takaInWords} only`;
   };
 
-  const totalAmountInWords = amountInWords(invoicePreview?.total_amount);
+  const totalAmountInWords = amountInWords(invoicePreview?.net_total);
 
   return (
     <div ref={componentRef} className="h-screen">
-      {pages.length > 0 &&
-        pages.map((page) => (
-          <main ref={targetRef} key={page} className="invoicePrintWrap">
+      {pagesData.length > 0 &&
+        pagesData.map((pageData, index) => (
+          <main ref={targetRef} key={index} className="invoicePrintWrap">
             <div>
               <div className="pb-5 px-14 invoicePrint">
                 <div>
@@ -239,7 +287,7 @@ const Detail = () => {
                     </div>
                   </div>
 
-                  {page === 1 && (
+                  {index === 0 && (
                     <div className="px-10">
                       <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
                         <span>
@@ -306,101 +354,22 @@ const Detail = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {page === 1 && (
-                        <>
-                          {firstPageData
-                            ?.slice(startIndex, endIndex)
-                            .map((data, index) => (
-                              <tr key={data._id}>
-                                <td>{startIndex + index + 1}</td>
-                                <td>{data.description}</td>
-                                <td>{data.quantity}</td>
-                                <td>{data.rate}</td>
-                                <td>{data.total}</td>
-                              </tr>
-                            ))}
-                        </>
-                      )}
-                      {page === 2 && (
-                        <>
-                          {secondPageData
-                            ?.slice(startIndex, secondEndIndex)
-                            .map((data, index) => (
-                              <tr key={data._id}>
-                                <td>{index + 21}</td>
-                                <td>{data.description}</td>
-                                <td>{data.quantity}</td>
-                                <td>{data.rate}</td>
-                                <td>{data.total}</td>
-                              </tr>
-                            ))}
-                        </>
-                      )}
-                      {page === 3 && (
-                        <>
-                          {thirdPageData
-                            ?.slice(startIndex, secondEndIndex)
-                            .map((data, index) => (
-                              <tr key={data._id}>
-                                <td>{index + 45}</td>
-                                <td>{data.description}</td>
-                                <td>{data.quantity}</td>
-                                <td>{data.rate}</td>
-                                <td>{data.total}</td>
-                              </tr>
-                            ))}
-                        </>
-                      )}
-                      {page === 4 && (
-                        <>
-                          {fourthPageData
-                            ?.slice(startIndex, secondEndIndex)
-                            .map((data, index) => (
-                              <tr key={data._id}>
-                                <td>{index + 69}</td>
-                                <td>{data.description}</td>
-                                <td>{data.quantity}</td>
-                                <td>{data.rate}</td>
-                                <td>{data.total}</td>
-                              </tr>
-                            ))}
-                        </>
-                      )}
-                      {page === 5 && (
-                        <>
-                          {fifthPageData
-                            ?.slice(startIndex, secondEndIndex)
-                            .map((data, index) => (
-                              <tr key={data._id}>
-                                <td>{index + 93}</td>
-                                <td>{data.description}</td>
-                                <td>{data.quantity}</td>
-                                <td>{data.rate}</td>
-                                <td>{data.total}</td>
-                              </tr>
-                            ))}
-                        </>
-                      )}
-                      {page === 6 && (
-                        <>
-                          {sixthPageData
-                            ?.slice(startIndex, endIndex)
-                            .map((data, index) => (
-                              <tr key={data._id}>
-                                <td>{index + 113}</td>
-                                <td>{data.description}</td>
-                                <td>{data.quantity}</td>
-                                <td>{data.rate}</td>
-                                <td>{data.total}</td>
-                              </tr>
-                            ))}
-                        </>
-                      )}
+                      <>
+                        {pageData?.map((data, index) => (
+                          <tr key={data._id}>
+                            <td> {index + 1}</td>
+                            <td>{data.description}</td>
+                            <td>{data.quantity}</td>
+                            <td>{data.rate}</td>
+                            <td>{data.total}</td>
+                          </tr>
+                        ))}
+                      </>
                     </tbody>
                   </table>
-                  {page === lastValue && (
+                  {index === pagesData?.length - 1 && (
                     <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
-                      <div className="mt-5 text-[12px]">
+                      <div className="mt-5 text-[12px] invisible">
                         <b className="">In words:</b> {totalAmountInWords}
                       </div>
                       <div className="flex netTotalAmounts">
@@ -423,10 +392,15 @@ const Detail = () => {
                       </div>
                     </div>
                   )}
+                  {index === pagesData?.length - 1 && (
+                    <div className="mt-5 text-[12px]">
+                      <b className="">In words:</b> {totalAmountInWords}
+                    </div>
+                  )}
                 </div>
 
                 <div>
-                  {page === lastValue && (
+                  {index === pagesData?.length - 1 && (
                     <div className="customerSignatureWrap">
                       <b className="text-sm customerSignatur">
                         Customer Signature :{" "}
@@ -439,7 +413,7 @@ const Detail = () => {
                 </div>
               </div>
             </div>
-            {page === lastValue && (
+            {index === pagesData?.length - 1 && (
               <div className="printInvoiceBtnGroup">
                 <button onClick={handlePrint}>Print </button>
                 <button onClick={() => toPDF()}>Pdf </button>
