@@ -18,6 +18,7 @@ const UpdateInvoice = () => {
   const [reload, setReload] = useState(false);
 
   const [removeButton, setRemoveButton] = useState("");
+  const [addButton, setAddButton] = useState(false);
 
   const {
     register,
@@ -84,20 +85,24 @@ const UpdateInvoice = () => {
   }, [items, specificInvoice.input_data]);
 
   const handleDescriptionChange = (index, value) => {
-    const newItems = items ? [...items] : [...specificInvoice.input_data];
+    const newItems = [...specificInvoice.input_data];
+    newItems[index] = {
+      ...newItems[index],
+      description: value,
+    };
+    setSpecificInvoice((prevState) => ({
+      ...prevState,
+      input_data: newItems,
+    }));
+  };
+  const handleDescriptionChange2 = (index, value) => {
+    const newItems = [...items];
+
     newItems[index].description = value;
+
     setItems(newItems);
   };
 
-  // const handleQuantityChange = (index, value) => {
-  //   const newItems = [...specificInvoice.input_data];
-  //   const roundedValue = Math.round(value);
-  //   newItems[index].quantity = roundedValue;
-
-  //   newItems[index].total = roundedValue * newItems[index].rate;
-
-  //   setItems(newItems);
-  // };
   const handleQuantityChange = (index, value) => {
     const newItems = [...specificInvoice.input_data];
     newItems[index] = {
@@ -120,7 +125,6 @@ const UpdateInvoice = () => {
     setItems(newItems);
   };
 
-   
   const handleRateChange = (index, value) => {
     const newItems = [...specificInvoice.input_data];
     newItems[index] = {
@@ -245,7 +249,6 @@ const UpdateInvoice = () => {
         vehicle_name: data.vehicle_name || specificInvoice.vehicle_name,
         mileage: data.mileage || specificInvoice.mileage,
 
-      
         total_amount: grandTotal || specificInvoice?.total_amount,
         discount: discount || specificInvoice?.discount,
 
@@ -510,87 +513,111 @@ const UpdateInvoice = () => {
             )}
           </div>
         </form>
-        {items.map((item, i) => {
-          return (
-            <div key={i}>
-              <div className="qutationForm">
-                <div>
-                  {items.length !== 0 && (
-                    <button
-                      onClick={() => handleRemove(i)}
-                      className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-                <div>
-                  <input
-                    className="firstInputField"
-                    autoComplete="off"
-                    type="text"
-                    placeholder="SL No "
-                    defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
-                    required
-                  />
-                </div>
-                <div>
-                  <input
-                    className="secondInputField"
-                    autoComplete="off"
-                    type="text"
-                    placeholder="Description"
-                    onChange={(e) => handleDescriptionChange(i, e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <input
-                    className="firstInputField"
-                    autoComplete="off"
-                    type="number"
-                    placeholder="Quantity"
-                    onChange={(e) => handleQuantityChange2(i, e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <input
-                    className="thirdInputField"
-                    autoComplete="off"
-                    type="number"
-                    placeholder="Rate"
-                    onChange={(e) => handleRateChange2(i, e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <input
-                    className="thirdInputField"
-                    autoComplete="off"
-                    type="text"
-                    placeholder="Amount"
-                    value={item.total}
-                    readOnly
-                  />
-                </div>
-              </div>
-
-              <div className="addInvoiceItem">
-                {items.length - 1 === i && (
-                  <div
-                    onClick={handleAddClick}
-                    className="flex justify-end mt-2"
-                  >
-                    <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
-                      Add
-                    </button>
+        {!addButton && (
+          <button
+            onClick={() => setAddButton(!addButton)}
+            className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
+          >
+            Add new
+          </button>
+        )}
+        {addButton && (
+          <button
+            onClick={() => setAddButton(!addButton)}
+            className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
+          >
+            Cancel
+          </button>
+        )}
+        {addButton && (
+          <>
+            {items.map((item, i) => {
+              return (
+                <div key={i}>
+                  <div className="qutationForm">
+                    <div>
+                      {items.length !== 0 && (
+                        <button
+                          onClick={() => handleRemove(i)}
+                          className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        className="firstInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="SL No "
+                        defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="secondInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="Description"
+                        onChange={(e) =>
+                          handleDescriptionChange2(i, e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="firstInputField"
+                        autoComplete="off"
+                        type="number"
+                        placeholder="Quantity"
+                        onChange={(e) =>
+                          handleQuantityChange2(i, e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="thirdInputField"
+                        autoComplete="off"
+                        type="number"
+                        placeholder="Rate"
+                        onChange={(e) => handleRateChange2(i, e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="thirdInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="Amount"
+                        value={item.total}
+                        readOnly
+                      />
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
+
+                  <div className="addInvoiceItem">
+                    {items.length - 1 === i && (
+                      <div
+                        onClick={handleAddClick}
+                        className="flex justify-end mt-2"
+                      >
+                        <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
+                          Add
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
         <div className="discountFieldWrap">
           <div className="flex items-center">
             <b className="mr-2"> Total Amount: </b>
