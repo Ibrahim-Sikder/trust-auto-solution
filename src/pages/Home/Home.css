@@ -127,15 +127,11 @@
 }
 
 @media only screen and (min-width: 1441px) {
-  .earningCardWrap {
-    width: 550px;
-  }
   .earningCard {
     width: 250px;
   }
-  .recentCard {
-    width: 870px;
-  }
+
+ 
   .dashboardCardIcon {
     font-size: 70px;
   }
@@ -182,7 +178,7 @@
   }
   .dashboardCard {
     width: 100%;
-}
+  }
 }
 
 @media only screen and (max-width: 768px) {

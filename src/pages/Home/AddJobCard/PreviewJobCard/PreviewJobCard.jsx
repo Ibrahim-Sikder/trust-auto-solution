@@ -287,7 +287,7 @@ const PreviewJobCard = () => {
                 <label className="block ">Technician Name</label>
                 <input
                   // defaultValue={previewData.technician_name}
-                  // disabled
+                  disabled
                   type="text"
                   // placeholder="Technician Name"
                 />
@@ -296,7 +296,7 @@ const PreviewJobCard = () => {
                 <label className="block">Technician Signature </label>
                 <input
                   // defaultValue={previewData.technician_signature}
-               
+               disabled
                   type="text"
                   // placeholder="Technician Signature"
                 />
@@ -314,7 +314,7 @@ const PreviewJobCard = () => {
                 <label className="block">For Vehicle Owner </label>
                 <input
                   // defaultValue={previewData.vehicle_owner}
-                  // disabled
+                  disabled
                   type="text"
                 />
               </div>

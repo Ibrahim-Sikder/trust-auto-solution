@@ -783,9 +783,9 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex flex-wrap md:gap-0 gap-4 items-center mt-3 ">
+              <div className="flex  md:gap-0 gap-4 items-center mt-3 ">
                 <Autocomplete
-                  className="jobCardSelect"
+                 className="jobCardSelect2"
                   id="free-solo-demo"
                   Car
                   Registration
@@ -801,8 +801,9 @@ const AddJobCard = () => {
                     />
                   )}
                 />
+
                 <TextField
-                  className="jobCardSelect2"
+                 className="carRegField"
                   label="Car R (T&N)"
                   {...register("car_registration_no")}
                   value={showCustomerData?.car_registration_no}

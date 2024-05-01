@@ -10,6 +10,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Invoice.css";
 import "./DetailPrint.css";
 import { formatDate } from "../../../utils/formateDate";
+ 
 
 const Detail = () => {
   const componentRef = useRef();

@@ -13,12 +13,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
-  carBrands,
-  cmDmOptions,
-  fuelType,
-  totalYear,
-  vehicleName,
-  vehicleTypes,
+  carBrands
 } from "../../../constant";
 import Cookies from "js-cookie";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
@@ -703,9 +698,9 @@ const UpdateJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex flex-wrap gap-4 md:gap-0 items-center mt-3 ">
+              <div className="flex flex-wrap  gap-4 md:gap-0 items-center mt-3 ">
               <Autocomplete
-                  className="addJobInputField"
+                  className="jobCardSelect2"
                   value={singleCard?.carReg_no || ""}
                   onChange={handleBrandChange}
                   options={carBrands.map((option) => option.label)}
@@ -723,7 +718,7 @@ const UpdateJobCard = () => {
 
                
                 <TextField
-                  className="jobCardSelect2"
+                   className="carRegField"
                   label="Car R (T&N)"
                   {...register("car_registration_no")}
                   value={singleCard?.car_registration_no}

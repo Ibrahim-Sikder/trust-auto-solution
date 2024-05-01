@@ -12,98 +12,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const EmployeeList = () => {
-  const employeeData = [
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Staff",
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-    {
-      id: 1,
-      name: "Rahatul Islam",
-      designation: "Software Engineer",
-      image: avatar,
-    },
-  ];
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getAllEmployee, setGetAllEmployee] = useState([]);
@@ -221,7 +129,7 @@ const EmployeeList = () => {
     return (
       <div className="grid grid-cols-1 xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2  gap-5">
         {getAllEmployee.map((employee) => (
-          <Link key={employee.id}>
+          <Link key={employee._id} to={`/dashboard/employee-profile?id=${employee._id}`}>
             <div className="employeeCard">
               <div>
                 <img className="employeeCardImg" src={employee?.image} alt="" />

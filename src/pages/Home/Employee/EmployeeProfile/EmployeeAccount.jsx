@@ -4,7 +4,7 @@ const EmployeeAccount = () => {
   return (
     <div className="customerProfileWrap">
       <div>
-        <div className="grid grid-cols-5 gap-5 mt-14">
+        <div className="grid grid-cols-1  xl:grid-cols-5 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
           <div className=" employeeCard">
             <div className="flex items-center justify-between w-full px-5 py-3">
               <div className="flex items-center">
@@ -146,10 +146,10 @@ const EmployeeAccount = () => {
             </div>
           </div>
         </div>
-        <div className="justify-between block mt-10 md:flex">
+        <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-5 mt-10 place-items-center  place-content-center  ">
           <div className="employeeProfileCard">
             <h3 className="text-xl font-semibold">Personal Information </h3>
-            <div className="flex items-center justify-between mt-5 w-[400px]">
+            <div className="flex items-center justify-between mt-5">
                 <div className="space-y-3">
                   <b className="block">Name</b>
                   <b className="block">Email </b>
