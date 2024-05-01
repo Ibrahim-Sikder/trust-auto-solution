@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/no-unescaped-entities */
 import "./MoneyReceived.css";
 import logo from "../../../../public/assets/logo.png";
@@ -8,9 +9,126 @@ import { useNavigate } from "react-router-dom";
 
 import AddMoneyReceiptList from "./AddMoneyReceiptList";
 import { toast } from "react-toastify";
+import { useState } from "react";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
+  const [advance, setAdvance] = useState(null);
   const navigate = useNavigate();
+
+  const amountInWords = (amount) => {
+    const numberWords = [
+      "Zero",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ];
+
+    const tensWords = [
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ];
+
+    const convertLessThanOneThousand = (num) => {
+      if (num === 0) {
+        return "";
+      }
+
+      let result = "";
+
+      if (num >= 100) {
+        result += numberWords[Math.floor(num / 100)] + " Hundred ";
+        num %= 100;
+      }
+
+      if (num >= 20) {
+        result += tensWords[Math.floor(num / 10)] + " ";
+        num %= 10;
+      }
+
+      if (num > 0) {
+        result += numberWords[num] + " ";
+      }
+
+      return result;
+    };
+
+    const convert = (num) => {
+      if (num === 0) {
+        return "Zero";
+      }
+
+      let result = "";
+
+      let integerPart = Math.floor(num);
+      const decimalPart = Math.round((num - integerPart) * 100);
+
+      if (integerPart >= 10000000) {
+        result +=
+          convertLessThanOneThousand(Math.floor(integerPart / 10000000)) +
+          "Crore ";
+        integerPart %= 10000000;
+      }
+
+      if (integerPart >= 100000) {
+        result +=
+          convertLessThanOneThousand(Math.floor(integerPart / 100000)) +
+          "Lakh ";
+        integerPart %= 100000;
+      }
+
+      if (integerPart >= 1000) {
+        result +=
+          convertLessThanOneThousand(Math.floor(integerPart / 1000)) +
+          "Thousand ";
+        integerPart %= 1000;
+      }
+
+      result += convertLessThanOneThousand(integerPart);
+
+      if (decimalPart > 0) {
+        result +=
+          "Taka " +
+          " " +
+          "and" +
+          " " +
+          convertLessThanOneThousand(decimalPart) +
+          "Paisa ";
+      } else {
+        result += "Taka";
+      }
+
+      return result;
+    };
+
+    const takaInWords = convert(amount);
+    return `${takaInWords} only`;
+  };
+
+  const totalAmountInWords = amountInWords(advance);
 
   const onSubmit = async (data) => {
     const values = {
@@ -26,7 +144,7 @@ const MoneyReceiptView = () => {
       total_amount: data.total_amount,
       advance: data.advance,
       remaining: data.remaining,
-      taka_in_word: data.taka_in_word,
+      taka_in_word: data.taka_in_word || totalAmountInWords,
     };
     try {
       const response = await axios.post(
@@ -42,7 +160,7 @@ const MoneyReceiptView = () => {
         navigate("/dashboard/money-receipt-list");
       }
     } catch (error) {
-       toast.error(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -184,6 +302,7 @@ const MoneyReceiptView = () => {
                 {...register("advance", { required: true })}
                 className="moneyViewInputField"
                 type="text"
+                onChange={(e) => setAdvance(e.target.value)}
               />
             </div>
             <div className="flex">
@@ -197,15 +316,15 @@ const MoneyReceiptView = () => {
           </div>
           <div className="mt-5 wordTaka">
             <label>in word (taka) </label>
-            <input
+            {/* <input
               {...register("taka_in_word", { required: true })}
               className="moneyViewInputField"
               type="text"
-            />
+              defaultValue={totalAmountInWords}
+            /> */}
+            {totalAmountInWords}
           </div>
-          {/* <div className="flex justify-end my-10">
-        <button className="w-full btn btn-primary">submit</button>
-      </div> */}
+
           <div className="my-5 receivedBtn">
             <button type="submit">Submit</button>
           </div>
