@@ -24,7 +24,7 @@ const JobCardList = () => {
   const username = "683231669175";
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/jobCard/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
@@ -54,7 +54,7 @@ const JobCardList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/jobCard/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/jobCard/one/${id}`,
           {
             method: "DELETE",
           }
@@ -240,7 +240,7 @@ const JobCardList = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/jobCard/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`,
         data
       );
 
@@ -257,7 +257,7 @@ const JobCardList = () => {
     }
   };
   const handleAllAddToJobCard = () => {
-    fetch(`http://localhost:5000/api/v1/jobCard/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
       .then((res) => res.json())
       .then((data) => {
         setAllJobCard(data);

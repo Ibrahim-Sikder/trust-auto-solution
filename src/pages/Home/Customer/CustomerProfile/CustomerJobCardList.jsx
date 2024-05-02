@@ -37,7 +37,7 @@ const CustomerJobCardList = ({ jobCardData, setJobCardData, id }) => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/jobCard/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/jobCard/one/${id}`,
           {
             method: "DELETE",
           }
@@ -221,7 +221,7 @@ const CustomerJobCardList = ({ jobCardData, setJobCardData, id }) => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/jobCard/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`,
         data
       );
 
@@ -240,7 +240,7 @@ const CustomerJobCardList = ({ jobCardData, setJobCardData, id }) => {
 
   const handleAllAddToJobCard = () => {
     if (id) {
-      fetch(`http://localhost:5000/api/v1/jobCard/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())

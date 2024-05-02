@@ -54,7 +54,7 @@ const AddCustomer = () => {
     data.customerId = uniqueId;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/customer",
+        `${import.meta.env.VITE_API_URL}/api/v1/customer`,
         data
       );
 
@@ -85,7 +85,7 @@ const AddCustomer = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/customer`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer`)
       .then((res) => res.json())
       .then((data) => {
         setCustomerData(data);
@@ -95,7 +95,6 @@ const AddCustomer = () => {
   }, [reload]);
 
   const handleIconPreview = async (e) => {
-    
     navigate(`/dashboard/customer-profile?id=${e}`);
   };
 
@@ -122,7 +121,7 @@ const AddCustomer = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/customer/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/customer/one/${id}`,
           {
             method: "DELETE",
           }
@@ -219,17 +218,14 @@ const AddCustomer = () => {
               <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>
-
-              <div 
-              onClick={() => handleIconPreview(card.customerId)}
-              className="flex items-center justify-center ">
-              <Link to="/dashboard/employee-profile">
-                <FaUserTie size={25} className="" />
-              </Link>
-            </div>
-
-
-               
+                <div
+                  onClick={() => handleIconPreview(card.customerId)}
+                  className="flex items-center justify-center "
+                >
+                  <Link to="/dashboard/employee-profile">
+                    <FaUserTie size={25} className="" />
+                  </Link>
+                </div>
               </td>
 
               <td>
@@ -240,7 +236,6 @@ const AddCustomer = () => {
                 </div>
               </td>
               <td>
-
                 <div
                   onClick={() => deletePackage(card._id)}
                   className="editIconWrap"
@@ -300,7 +295,6 @@ const AddCustomer = () => {
     );
   }
 
- 
   const handleFilterType = async () => {
     try {
       const data = {
@@ -308,7 +302,7 @@ const AddCustomer = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/customer/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/customer/all`,
         data
       );
 
@@ -327,7 +321,7 @@ const AddCustomer = () => {
   };
 
   const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/customer`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer`)
       .then((res) => res.json())
       .then((data) => {
         setCustomerData(data);
@@ -620,6 +614,12 @@ const AddCustomer = () => {
             Customer List:{" "}
           </h3>
           <div className="flex flex-wrap items-center">
+            <button
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-full mr-1"
+              onClick={handleAllCustomer}
+            >
+              All
+            </button>
             <input
               onChange={(e) => setFilterType(e.target.value)}
               type="text"

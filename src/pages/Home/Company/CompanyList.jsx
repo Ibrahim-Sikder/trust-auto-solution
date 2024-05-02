@@ -24,7 +24,7 @@ const CompanyList = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/company`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/company`)
       .then((res) => res.json())
       .then((data) => {
         setCompanyData(data);
@@ -53,7 +53,7 @@ const CompanyList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/company/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
           {
             method: "DELETE",
           }
@@ -237,7 +237,7 @@ const CompanyList = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/company/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/company/all`,
         data
       );
 
@@ -256,7 +256,7 @@ const CompanyList = () => {
   };
 
   const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/company`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/company`)
       .then((res) => res.json())
       .then((data) => {
         setCompanyData(data);

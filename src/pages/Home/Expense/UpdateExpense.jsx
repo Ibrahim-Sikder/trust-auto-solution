@@ -43,7 +43,7 @@ const UpdateExpense = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/expense/one/${id}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/expense/one/${id}`)
       .then((response) => {
         setGetSingleExpense(response.data.expense);
       })
@@ -58,7 +58,7 @@ const UpdateExpense = () => {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch("http://localhost:5000/api/v1/uploads", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
         method: "POST",
         body: formData,
       });
@@ -135,7 +135,7 @@ const UpdateExpense = () => {
 
       setLoading(true);
       const response = await axios.put(
-        `http://localhost:5000/api/v1/expense/one/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/expense/one/${id}`,
         values
       );
 

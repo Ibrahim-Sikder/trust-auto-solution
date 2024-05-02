@@ -7,7 +7,7 @@ const ShowRoomVehicleDetailsModal = ({ handleVehicleDetailsClose, getId }) => {
   const [showDataOnModal, setShowDataOnModal] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/v1/vehicle/${getId}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/vehicle/${getId}`)
       .then((res) => res.json())
       .then((data) => setShowDataOnModal(data));
   }, [getId]);

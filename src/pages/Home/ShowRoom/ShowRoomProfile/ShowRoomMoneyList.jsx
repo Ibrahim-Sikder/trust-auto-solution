@@ -37,7 +37,7 @@ const ShowRoomMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/money_receipt/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`,
           {
             method: "DELETE",
           }
@@ -223,7 +223,7 @@ const ShowRoomMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
         filterType,
       };
       const response = await axios.post(
-        `http://localhost:5000/api/v1/money_receipt/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/all`,
         data
       );
 
@@ -241,7 +241,7 @@ const ShowRoomMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
   };
 
   const handleAllMoneyReceipt = () => {
-    fetch(`http://localhost:5000/api/v1/money_receipt/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`, {
       method: "POST",
     })
       .then((res) => res.json())

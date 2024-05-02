@@ -85,7 +85,7 @@ const location = useLocation();
 
   useEffect(() => {
     try {
-      fetch( `http://localhost:5000/api/v1/vehicle/${id}`)
+      fetch( `${import.meta.env.VITE_API_URL}/api/v1/vehicle/${id}`)
         .then((res) => res.json())
         .then((data) => setVehicleList(data));
     } catch (error) {
@@ -114,7 +114,7 @@ const location = useLocation();
   //   if (willDelete) {
   //     try {
   //       const res = await fetch(
-  //         `http://localhost:5000/api/v1/company/one/${id}`,
+  //         `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
   //         {
   //           method: "DELETE",
   //         }
@@ -287,7 +287,7 @@ const location = useLocation();
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/vehicle/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/vehicle/all`,
         data
       );
 
@@ -306,7 +306,7 @@ const location = useLocation();
   };
 
   const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/vehicle/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/vehicle/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setVehicleList(data);

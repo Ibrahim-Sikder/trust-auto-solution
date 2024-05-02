@@ -33,7 +33,7 @@ const UpdateEmployee = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/employee/one/${id}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee/one/${id}`)
       .then((response) => {
         setGetSingleEmployee(response.data.employee);
       })
@@ -58,7 +58,7 @@ function getFileName(url) {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch("http://localhost:5000/api/v1/uploads", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
         method: "POST",
         body: formData,
       });
@@ -105,7 +105,7 @@ function getFileName(url) {
 
       setLoading(true);
       const response = await axios.put(
-        `http://localhost:5000/api/v1/employee/one/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/one/${id}`,
         values
       );
 

@@ -38,7 +38,7 @@ const Invoice = () => {
   useEffect(() => {
     if (job_no) {
       setLoading(true);
-      fetch(`http://localhost:5000/api/v1/jobCard/invoice/${job_no}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/invoice/${job_no}`)
         .then((res) => res.json())
         .then((data) => {
           setJobCardData(data);
@@ -255,7 +255,7 @@ const Invoice = () => {
       }
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/v1/invoice",
+        `${import.meta.env.VITE_API_URL}/api/v1/invoice`,
         values
       );
 
@@ -312,11 +312,11 @@ const Invoice = () => {
       return;
     }
     const response = await axios.post(
-      "http://localhost:5000/api/v1/invoice",
+      `${import.meta.env.VITE_API_URL}/api/v1/invoice`,
       values
     );
     if (response.data.message === "Successfully Invoice post") {
-      fetch("http://localhost:5000/api/v1/invoice")
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice`)
         .then((res) => res.json())
         .then((data) => {
           if (data) {
@@ -332,13 +332,13 @@ const Invoice = () => {
         let apiUrl = "";
         switch (customer_type) {
           case "customer":
-            apiUrl = "http://localhost:5000/api/v1/customer";
+            apiUrl = `${import.meta.env.VITE_API_URL}/api/v1/customer`;
             break;
           case "company":
-            apiUrl = "http://localhost:5000/api/v1/company";
+            apiUrl = `${import.meta.env.VITE_API_URL}/api/v1/company`;
             break;
           case "show_room":
-            apiUrl = "http://localhost:5000/api/v1/showRoom";
+            apiUrl = `${import.meta.env.VITE_API_URL}/api/v1/showRoom`;
             break;
           default:
             throw new Error("Invalid customer type");
@@ -379,7 +379,7 @@ const Invoice = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/invoice/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/all`)
       .then((res) => res.json())
       .then((data) => {
         setGetAllInvoice(data);
@@ -408,7 +408,7 @@ const Invoice = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/invoice/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/invoice/one/${id}`,
           {
             method: "DELETE",
           }
@@ -592,7 +592,7 @@ const Invoice = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/invoice/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/invoice/all`,
         data
       );
       if (response.data.message === "Filter successful") {
@@ -610,7 +610,7 @@ const Invoice = () => {
 
   const handleAllInvoice = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/invoice/all`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/all`)
         .then((res) => res.json())
         .then((data) => {
           setGetAllInvoice(data);

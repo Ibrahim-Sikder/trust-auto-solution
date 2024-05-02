@@ -29,7 +29,7 @@ const ShowRoomList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/showRoom`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom`)
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
@@ -63,7 +63,7 @@ const ShowRoomList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/showRoom/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/showRoom/one/${id}`,
           {
             method: "DELETE",
           }
@@ -245,7 +245,7 @@ const ShowRoomList = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/showRoom/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/showRoom/all`,
         data
       );
 
@@ -264,7 +264,7 @@ const ShowRoomList = () => {
   };
 
   const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/showRoom`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom`)
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);

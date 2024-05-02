@@ -37,7 +37,7 @@ const UpdateShowRoom = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/showRoom/one/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom/one/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
@@ -79,7 +79,7 @@ const UpdateShowRoom = () => {
       };
 
       const response = await axios.put(
-        `http://localhost:5000/api/v1/showRoom/one/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/showRoom/one/${id}`,
         values
       );
 

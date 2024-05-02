@@ -42,7 +42,7 @@ const AddEmployee = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         setGetAllEmployee(response.data.employee);
       })
@@ -57,7 +57,7 @@ const AddEmployee = () => {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch("http://localhost:5000/api/v1/uploads", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
         method: "POST",
         body: formData,
       });
@@ -107,7 +107,7 @@ const AddEmployee = () => {
 
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/v1/employee",
+        `${import.meta.env.VITE_API_URL}/api/v1/employee`,
         values
       );
 
@@ -147,7 +147,7 @@ const AddEmployee = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/employee/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/employee/one/${id}`,
           {
             method: "DELETE",
           }
@@ -323,7 +323,7 @@ const AddEmployee = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/employee/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
         data
       );
 
@@ -343,7 +343,7 @@ const AddEmployee = () => {
 
   const handleAllEmployee = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/employee`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
         .then((res) => res.json())
         .then((data) => {
           setGetAllEmployee(data.employee);

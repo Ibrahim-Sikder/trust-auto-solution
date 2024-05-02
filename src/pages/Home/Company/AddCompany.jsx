@@ -55,22 +55,20 @@ const AddCompany = () => {
     const uniqueId = `${companyNamePrefix}${paddedNumber}`;
     data.companyId = uniqueId;
     try {
-      
       const response = await axios.post(
-        "http://localhost:5000/api/v1/company",
+        `${import.meta.env.VITE_API_URL}/api/v1/company`,
         data
       );
       if (response.data.message === "Successfully add to company post") {
         setReload(!reload);
         toast.success("Successfully add to company post");
         Cookies.set("trust_auto_id", response.data.result.companyId);
-        Cookies.set("customer_type", "company")
+        Cookies.set("customer_type", "company");
         navigate("/dashboard/company-list");
         setLoading(false);
         reset();
       }
     } catch (error) {
-      
       toast.error(error.message);
       setLoading(false);
     }
@@ -88,11 +86,11 @@ const AddCompany = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/company`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/company`)
       .then((res) => res.json())
       .then((data) => {
         setCompanyData(data);
-       
+
         setLoading(false);
       });
   }, [reload]);
@@ -124,7 +122,7 @@ const AddCompany = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/company/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
           {
             method: "DELETE",
           }
@@ -224,7 +222,7 @@ const AddCompany = () => {
                   onClick={() => handleIconPreview(card.companyId)}
                   className="flex items-center justify-center"
                 >
-                <FaUserTie size={25} className="" />
+                  <FaUserTie size={25} className="" />
                 </div>
               </td>
 
@@ -295,7 +293,6 @@ const AddCompany = () => {
     );
   }
 
- 
   const handleFilterType = async () => {
     try {
       const data = {
@@ -303,7 +300,7 @@ const AddCompany = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/company/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/company/all`,
         data
       );
 
@@ -321,8 +318,8 @@ const AddCompany = () => {
     }
   };
 
-  const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/company`)
+  const handleAllCompany = () => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/company`)
       .then((res) => res.json())
       .then((data) => {
         setCompanyData(data);
@@ -345,19 +342,19 @@ const AddCompany = () => {
           </Link>
         </div>
         <div className="productHeadWrap">
-        <div className="flex flex-wrap items-center justify-center">
-          <HiOutlineUserGroup className="invoicIcon" />
-          <div className="ml-2">
-            <h3 className="text-sm font-bold md:text-2xl"> New Company </h3>
-            <span>Update New Company </span>
+          <div className="flex flex-wrap items-center justify-center">
+            <HiOutlineUserGroup className="invoicIcon" />
+            <div className="ml-2">
+              <h3 className="text-sm font-bold md:text-2xl"> New Company </h3>
+              <span>Update New Company </span>
+            </div>
+          </div>
+          <div className="productHome">
+            <span>Home / </span>
+            <span>Product / </span>
+            <span>New Company </span>
           </div>
         </div>
-        <div className="productHome">
-          <span>Home / </span>
-          <span>Product / </span>
-          <span>New Company </span>
-        </div>
-      </div>
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -450,7 +447,9 @@ const AddCompany = () => {
               </div>
 
               <div className="mt-5 lg:mt-0">
-                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">Vehicle Information </h3>
+                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
+                  Vehicle Information{" "}
+                </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
                     className="jobCardSelect"
@@ -594,16 +593,27 @@ const AddCompany = () => {
       </div>
       <div className="w-full mt-5 mb-24">
         <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="ml-2 font-bold text-center md:ml-0 tex2t-sm md:text-3xl"> Company List: </h3>
+          <h3 className="ml-2 font-bold text-center md:ml-0 tex2t-sm md:text-3xl">
+            {" "}
+            Company List:{" "}
+          </h3>
           <div className="flex items-center">
-          
+            <button
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm mr-1"
+              onClick={handleAllCompany}
+            >
+              All
+            </button>
             <input
               type="text"
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
-              onChange={(e)=> setFilterType(e.target.value)}
+              onChange={(e) => setFilterType(e.target.value)}
             />
-            <button onClick={handleFilterType} className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+            <button
+              onClick={handleFilterType}
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1"
+            >
               {" "}
               <HiOutlineSearch size={22} />
             </button>

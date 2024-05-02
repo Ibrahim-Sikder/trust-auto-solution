@@ -23,7 +23,7 @@ const PdfGenerator = () => {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/v1/money_receipt/${id}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`)
         .then((res) => res.json())
         .then((data) => {
          

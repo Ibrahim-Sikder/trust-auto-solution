@@ -51,7 +51,7 @@ const UpdateQuotation = () => {
     setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
   };
   useEffect(() => {
-    fetch(`http://localhost:5000/api/v1/quotation/one/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/one/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setSpecificInvoice(data);
@@ -177,7 +177,7 @@ const UpdateQuotation = () => {
       return toast.error("Unauthorized");
     }
     axios
-      .put(`http://localhost:5000/api/v1/quotation/${id}`, { index: i })
+      .put(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, { index: i })
       .then((response) => {
         if (response.data.message === "Deleted successful") {
           setReload(!reload);
@@ -236,7 +236,7 @@ const UpdateQuotation = () => {
 
       if (removeButton === "") {
         const response = await axios.put(
-          `http://localhost:5000/api/v1/quotation/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/quotation/one/${id}`,
           values
         );
 
