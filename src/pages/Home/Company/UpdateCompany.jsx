@@ -38,7 +38,7 @@ const UpdateCompany = () => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetch(`http://localhost:5000/api/v1/company/one/${id}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setSingleCard(data);
@@ -77,7 +77,7 @@ const UpdateCompany = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/company/one/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
         values
       );
       if (response.data.message === "Successfully update card.") {

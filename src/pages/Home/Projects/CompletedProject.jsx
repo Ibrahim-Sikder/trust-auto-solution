@@ -30,7 +30,7 @@ const CompletedProject = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/invoice/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/all`)
       .then((res) => res.json())
       .then((data) => {
         setGetAllInvoice(data);
@@ -59,7 +59,7 @@ const CompletedProject = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/invoice/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/invoice/one/${id}`,
           {
             method: "DELETE",
           }
@@ -238,7 +238,7 @@ const CompletedProject = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/invoice/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/invoice/all`,
         data
       );
 
@@ -257,7 +257,7 @@ const CompletedProject = () => {
 
   const handleAllInvoice = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/invoice/all`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/all`)
         .then((res) => res.json())
         .then((data) => {
           setGetAllInvoice(data);

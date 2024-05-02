@@ -56,7 +56,7 @@ const AddQuotation = () => {
   useEffect(() => {
     if (job_no) {
       setJobLoading(true);
-      fetch(`http://localhost:5000/api/v1/jobCard/invoice/${job_no}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/invoice/${job_no}`)
         .then((res) => res.json())
         .then((data) => {
           setJobCardData(data);
@@ -146,7 +146,7 @@ const AddQuotation = () => {
 
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/v1/quotation",
+        `${import.meta.env.VITE_API_URL}/api/v1/quotation`,
         values
       );
 
@@ -158,7 +158,7 @@ const AddQuotation = () => {
         }
         setReload(!reload);
         if (preview === "preview") {
-          fetch("http://localhost:5000/api/v1/quotation")
+          fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation`)
             .then((res) => res.json())
             .then((data) => {
               if (data) {
@@ -184,7 +184,7 @@ const AddQuotation = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/quotation/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/all`)
       .then((res) => res.json())
       .then((data) => {
         setGetAllQuotation(data);
@@ -215,7 +215,7 @@ const AddQuotation = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/quotation/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/quotation/one/${id}`,
           {
             method: "DELETE",
           }
@@ -398,7 +398,7 @@ const AddQuotation = () => {
         filterType,
       };
       const response = await axios.post(
-        `http://localhost:5000/api/v1/quotation/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/quotation/all`,
         data
       );
 
@@ -416,7 +416,7 @@ const AddQuotation = () => {
   };
 
   const handleAllQuotation = () => {
-    fetch(`http://localhost:5000/api/v1/quotation/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/all`)
       .then((res) => res.json())
       .then((data) => {
         setGetAllQuotation(data);

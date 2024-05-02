@@ -47,7 +47,7 @@ const AddExpense = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/expense")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/expense`)
       .then((response) => {
         setGetAllExpense(response.data.expense);
       })
@@ -62,7 +62,7 @@ const AddExpense = () => {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch("http://localhost:5000/api/v1/uploads", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
         method: "POST",
         body: formData,
       });
@@ -118,7 +118,7 @@ const AddExpense = () => {
 
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/v1/expense",
+        `${import.meta.env.VITE_API_URL}/api/v1/expense`,
         values
       );
 
@@ -157,7 +157,7 @@ const AddExpense = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/expense/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/expense/one/${id}`,
           {
             method: "DELETE",
           }
@@ -337,7 +337,7 @@ const AddExpense = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/expense/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/expense/all`,
         data
       );
 
@@ -357,7 +357,7 @@ const AddExpense = () => {
 
   const handleAllExpense = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/expense`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/expense`)
         .then((res) => res.json())
         .then((data) => {
           setGetAllExpense(data.expense);

@@ -40,7 +40,7 @@ const EmployeeSalaryListTable = ({
 
   const handleFilterData = () => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         const salaryData = response.data.employee.map(
           (data) => data.salary_details

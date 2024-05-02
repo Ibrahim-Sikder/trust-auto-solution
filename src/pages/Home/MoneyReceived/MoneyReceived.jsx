@@ -144,11 +144,11 @@ const MoneyReceiptView = () => {
       total_amount: data.total_amount,
       advance: data.advance,
       remaining: data.remaining,
-      taka_in_word: data.taka_in_word || totalAmountInWords,
+      taka_in_word: totalAmountInWords,
     };
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/money_receipt",
+        `${import.meta.env.VITE_API_URL}/api/v1/money_receipt`,
         values
       );
 

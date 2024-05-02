@@ -33,7 +33,7 @@ const UpdateSupplier = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/v1/supplier/one/${id}`)
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/supplier/one/${id}`)
       .then((response) => {
         setGetSingleSuppliers(response.data.supplier);
       })
@@ -48,7 +48,7 @@ const UpdateSupplier = () => {
       const formData = new FormData();
       formData.append("image", file); // Use "image" as the key for single image upload
       setImageLoading(true);
-      const response = await fetch("http://localhost:5000/api/v1/uploads", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
         method: "POST",
         body: formData,
       });
@@ -80,7 +80,7 @@ const UpdateSupplier = () => {
 
       setLoading(true);
       const response = await axios.put(
-        `http://localhost:5000/api/v1/supplier/one/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/supplier/one/${id}`,
         values
       );
 

@@ -93,7 +93,7 @@ const AddAttendance = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         setGetAllEmployee(response.data.employee);
 
@@ -267,7 +267,7 @@ const AddAttendance = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/employee/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
         newAttendanceData
       );
       if (response.status === 200) {
@@ -289,7 +289,7 @@ const AddAttendance = () => {
         };
       });
       const response = await axios.put(
-        `http://localhost:5000/api/v1/employee/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
         newAttendanceData
       );
       if (response.status === 200) {
@@ -322,7 +322,7 @@ const AddAttendance = () => {
 
   const handleFilterData = () => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         const attendanceData = response.data.employee.map(
           (data) => data.attendance
@@ -370,7 +370,7 @@ const AddAttendance = () => {
         };
       });
       const response = await axios.put(
-        `http://localhost:5000/api/v1/employee/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
         newAttendanceData
       );
       if (response.status === 200) {

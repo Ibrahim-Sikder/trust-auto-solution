@@ -12,12 +12,128 @@ const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   const [specificMoneyReceipt, setSpecificMoneyReceipt] = useState({});
+  const [advance, setAdvance] = useState(null);
+
+  const amountInWords = (amount) => {
+    const numberWords = [
+      "Zero",
+      "One",
+      "Two",
+      "Three",
+      "Four",
+      "Five",
+      "Six",
+      "Seven",
+      "Eight",
+      "Nine",
+      "Ten",
+      "Eleven",
+      "Twelve",
+      "Thirteen",
+      "Fourteen",
+      "Fifteen",
+      "Sixteen",
+      "Seventeen",
+      "Eighteen",
+      "Nineteen",
+    ];
+
+    const tensWords = [
+      "",
+      "",
+      "Twenty",
+      "Thirty",
+      "Forty",
+      "Fifty",
+      "Sixty",
+      "Seventy",
+      "Eighty",
+      "Ninety",
+    ];
+
+    const convertLessThanOneThousand = (num) => {
+      if (num === 0) {
+        return "";
+      }
+
+      let result = "";
+
+      if (num >= 100) {
+        result += numberWords[Math.floor(num / 100)] + " Hundred ";
+        num %= 100;
+      }
+
+      if (num >= 20) {
+        result += tensWords[Math.floor(num / 10)] + " ";
+        num %= 10;
+      }
+
+      if (num > 0) {
+        result += numberWords[num] + " ";
+      }
+
+      return result;
+    };
+
+    const convert = (num) => {
+      if (num === 0) {
+        return "Zero";
+      }
+
+      let result = "";
+
+      let integerPart = Math.floor(num);
+      const decimalPart = Math.round((num - integerPart) * 100);
+
+      if (integerPart >= 10000000) {
+        result +=
+          convertLessThanOneThousand(Math.floor(integerPart / 10000000)) +
+          "Crore ";
+        integerPart %= 10000000;
+      }
+
+      if (integerPart >= 100000) {
+        result +=
+          convertLessThanOneThousand(Math.floor(integerPart / 100000)) +
+          "Lakh ";
+        integerPart %= 100000;
+      }
+
+      if (integerPart >= 1000) {
+        result +=
+          convertLessThanOneThousand(Math.floor(integerPart / 1000)) +
+          "Thousand ";
+        integerPart %= 1000;
+      }
+
+      result += convertLessThanOneThousand(integerPart);
+
+      if (decimalPart > 0) {
+        result +=
+          "Taka " +
+          " " +
+          "and" +
+          " " +
+          convertLessThanOneThousand(decimalPart) +
+          "Paisa ";
+      } else {
+        result += "Taka";
+      }
+
+      return result;
+    };
+
+    const takaInWords = convert(amount);
+    return `${takaInWords} only`;
+  };
+
+  const totalAmountInWords = amountInWords(advance);
+
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/v1/money_receipt/${id}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`)
         .then((res) => res.json())
         .then((data) => {
-       
           setSpecificMoneyReceipt(data);
         });
     }
@@ -27,36 +143,31 @@ const UpdateMoneyReceipt = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-     
     const values = {
-      thanks_from: data.thanks_from || specificMoneyReceipt.thanks_from ,
-      against_bill_no: data.against_bill_no || specificMoneyReceipt.against_bill_no ,
-      vehicle_no: data.vehicle_no || specificMoneyReceipt.vehicle_no ,
+      thanks_from: data.thanks_from || specificMoneyReceipt.thanks_from,
+      against_bill_no:
+        data.against_bill_no || specificMoneyReceipt.against_bill_no,
+      vehicle_no: data.vehicle_no || specificMoneyReceipt.vehicle_no,
       cheque_no: data.cheque_no || specificMoneyReceipt.cheque_no,
-      date_one: data.date_one ||  specificMoneyReceipt.date_one,
-      bank: data.bank || specificMoneyReceipt.bank ,
-      date_two:data.date_two || specificMoneyReceipt.date_two ,
+      date_one: data.date_one || specificMoneyReceipt.date_one,
+      bank: data.bank || specificMoneyReceipt.bank,
+      date_two: data.date_two || specificMoneyReceipt.date_two,
       total_amount: data.total_amount || specificMoneyReceipt.total_amount,
-      advance: data.advance || specificMoneyReceipt.advance ,
-      remaining: data.remaining || specificMoneyReceipt.remaining ,
-      taka_in_word: data.taka_in_word || specificMoneyReceipt.taka_in_word ,
+      advance: data.advance || specificMoneyReceipt.advance,
+      remaining: data.remaining || specificMoneyReceipt.remaining,
+      taka_in_word: totalAmountInWords || specificMoneyReceipt.taka_in_word,
     };
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/money_receipt/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`,
         values
       );
 
-     
-      if (
-        response.data.message ===
-        "Successfully update card."
-      ) {
-        
+      if (response.data.message === "Successfully update card.") {
         navigate("/dashboard/money-receipt-list");
       }
     } catch (error) {
-       toast.error(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -68,7 +179,7 @@ const UpdateMoneyReceipt = () => {
         </div>
         <div className="moneyHead ">
           <h2 className="receivedTitle ">Trust Auto Solution </h2>
-          <small >
+          <small>
             It's trusted computerized Organization for all kinds of vehicle
             check up & maintenance such as computerized Engine Analysis, Engine
             tune up, Denting, Painting, Engine, AC, Electrical Works & Car Wash.{" "}
@@ -125,7 +236,7 @@ const UpdateMoneyReceipt = () => {
               className=" moneyViewInputField"
               type="text"
               autoComplete="off"
-              {...register("against_bill_no" )}
+              {...register("against_bill_no")}
             />
           </div>
           <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
@@ -135,7 +246,7 @@ const UpdateMoneyReceipt = () => {
               className=" moneyViewInputField"
               type="text"
               autoComplete="off"
-              {...register("vehicle_no" )}
+              {...register("vehicle_no")}
             />
           </div>
         </div>
@@ -147,17 +258,17 @@ const UpdateMoneyReceipt = () => {
               className="cashInput moneyViewInputField"
               type="text"
               autoComplete="off"
-              {...register("cheque_no" )}
+              {...register("cheque_no")}
             />
           </div>
           <div className="flex mt-6 receivedField md:mt-0">
             <b className="date">Date: </b>
             <input
-              defaultValue={specificMoneyReceipt?.date_one }
+              defaultValue={specificMoneyReceipt?.date_one}
               className="dateInput moneyViewInputField"
               type="text"
               autoComplete="off"
-              {...register("date_one" )}
+              {...register("date_one")}
             />
           </div>
         </div>
@@ -169,7 +280,7 @@ const UpdateMoneyReceipt = () => {
               className=" moneyViewInputField"
               type="text"
               autoComplete="off"
-              {...register("bank" )}
+              {...register("bank")}
             />
           </div>
           <div className="flex receivedField">
@@ -179,7 +290,7 @@ const UpdateMoneyReceipt = () => {
               className=" moneyViewInputField"
               type="text"
               autoComplete="off"
-              {...register("date_two" )}
+              {...register("date_two")}
             />
           </div>
         </div>
@@ -190,7 +301,7 @@ const UpdateMoneyReceipt = () => {
               defaultValue={specificMoneyReceipt.total_amount}
               className="moneyViewInputField"
               type="text"
-              {...register("total_amount" )}
+              {...register("total_amount")}
             />
           </div>
           <div className="flex ">
@@ -199,7 +310,8 @@ const UpdateMoneyReceipt = () => {
               defaultValue={specificMoneyReceipt.advance}
               className="moneyViewInputField"
               type="text"
-              {...register("advance" )}
+              {...register("advance")}
+              onChange={(e) => setAdvance(e.target.value)}
             />
           </div>
           <div className="flex ">
@@ -208,25 +320,28 @@ const UpdateMoneyReceipt = () => {
               defaultValue={specificMoneyReceipt.remaining}
               className="moneyViewInputField"
               type="text"
-              {...register("remaining" )}
+              {...register("remaining")}
             />
           </div>
         </div>
         <div className="mt-5 wordTaka">
           <label>in word (taka) </label>
-          <input
+          {/* <input
             defaultValue={specificMoneyReceipt.taka_in_word}
             className="moneyViewInputField"
             type="text"
             {...register("taka_in_word")}
-          />
+          /> */}
+          {advance
+            ? totalAmountInWords
+            : specificMoneyReceipt?.taka_in_word}
         </div>
         {/* <div>
             <button className="w-full my-10 btn btn-warning"> Update</button>
         </div> */}
-         <div className="my-5 receivedBtn">
-        <button type='submit'>Update</button>
-      </div>
+        <div className="my-5 receivedBtn">
+          <button type="submit">Update</button>
+        </div>
       </form>
       <div className="">
         <small className="signature">Authorized Signature</small>

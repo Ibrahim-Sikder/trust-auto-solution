@@ -73,7 +73,7 @@ const CustomerQoutationList = ({ quotationData, setQuotationData, id }) => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/quotation/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/quotation/one/${id}`,
           {
             method: "DELETE",
           }
@@ -257,7 +257,7 @@ const CustomerQoutationList = ({ quotationData, setQuotationData, id }) => {
         filterType,
       };
       const response = await axios.post(
-        `http://localhost:5000/api/v1/quotation/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/quotation/all`,
         data
       );
 
@@ -276,7 +276,7 @@ const CustomerQoutationList = ({ quotationData, setQuotationData, id }) => {
 
   const handleAllQuotation = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/quotation/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())

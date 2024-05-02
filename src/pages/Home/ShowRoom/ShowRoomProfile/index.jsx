@@ -33,7 +33,7 @@ const ShowRoomProfile = () => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetch(`http://localhost:5000/api/v1/showRoom/${id}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setProfileData(data);
@@ -46,7 +46,7 @@ const ShowRoomProfile = () => {
   
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/v1/jobCard/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())
@@ -64,7 +64,7 @@ const ShowRoomProfile = () => {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/v1/quotation/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())
@@ -81,7 +81,7 @@ const ShowRoomProfile = () => {
   }, [id]);
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/v1/invoice/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())
@@ -99,7 +99,7 @@ const ShowRoomProfile = () => {
 
   useEffect(() => {
     if (id) {
-      fetch(`http://localhost:5000/api/v1/money_receipt/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())

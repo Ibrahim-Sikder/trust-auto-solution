@@ -26,7 +26,7 @@ const ViewExpense = () => {
   useEffect(() => {
     if (id) {
       setLoading(true);
-      fetch(`http://localhost:5000/api/v1/invoice/${id}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setInvoicePreview(data);

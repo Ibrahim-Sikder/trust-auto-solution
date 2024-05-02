@@ -28,7 +28,7 @@ const CustomerList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/customer`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer`)
       .then((res) => res.json())
       .then((data) => {
         setCustomerData(data);
@@ -61,7 +61,7 @@ const CustomerList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/customer/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/customer/one/${id}`,
           {
             method: "DELETE",
           }
@@ -242,7 +242,7 @@ const CustomerList = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/customer/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/customer/all`,
         data
       );
 
@@ -261,7 +261,7 @@ const CustomerList = () => {
   };
 
   const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/customer`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer`)
       .then((res) => res.json())
       .then((data) => {
         setCustomerData(data);

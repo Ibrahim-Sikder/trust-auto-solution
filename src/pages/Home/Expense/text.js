@@ -49,7 +49,7 @@ const AddExpense = () => {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch("http://localhost:5000/api/v1/uploads", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
         method: "POST",
         body: formData,
       });
@@ -99,26 +99,7 @@ const AddExpense = () => {
       };
 
       setLoading(true);
-      // const response = await Axios.post(
-      //   "http://localhost:5000/api/v1/employee",
-      //   values
-      // );
-
-    //   if (response.data.message === "Successfully employee post") {
-    //     toast.success("Successfully employee added.");
-    //     setLoading(false);
-    //     // const newId = empId + 1;
-    //     // setEmpId(newId);
-    //     setReload(!reload);
-    //     reset();
-    //     setError("");
-    //   }
-    // } catch (error) {
-    //   if (error.response) {
-    //     setLoading(false);
-    //     setError(error.response.data.message);
-    //   }
-    // }
+       
   };
 
   return (

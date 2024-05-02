@@ -36,7 +36,7 @@ const AttendanceList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         setGetAllEmployee(response.data.employee);
 
@@ -84,7 +84,7 @@ const AttendanceList = () => {
         };
       });
       const response = await axios.put(
-        `http://localhost:5000/api/v1/employee/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
         newAttendanceData
       );
       if (response.status === 200) {
@@ -117,7 +117,7 @@ const AttendanceList = () => {
 
   const handleFilterData = () => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         const attendanceData = response.data.employee.map(
           (data) => data.attendance
@@ -165,7 +165,7 @@ const AttendanceList = () => {
         };
       });
       const response = await axios.put(
-        `http://localhost:5000/api/v1/employee/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
         newAttendanceData
       );
       if (response.status === 200) {

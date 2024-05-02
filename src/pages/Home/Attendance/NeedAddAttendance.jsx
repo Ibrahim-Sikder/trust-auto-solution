@@ -100,7 +100,7 @@ const AddAttendance = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         setGetAllEmployee(response.data.employee);
       })
@@ -187,35 +187,10 @@ const AddAttendance = () => {
       };
     });
     setAttendanceData(newAttendanceData);
-
-    // getAllEmployee.forEach(async (attendanceRecord) => {
-    //   try {
-    //     // Send a PUT request to update the attendance for the employee
-    //      console.log(attendanceRecord._id)
-    //      console.log(attendanceRecord)
-    //      console.log(attendanceData)
-    //     const response = await axios.put(
-    //       `http://localhost:5000/api/v1/employee/one/${attendanceRecord._id}`, // Include employee ID in the URL
-    //       attendanceData
-    //     );
-    //     console.log(
-    //       `Attendance response ${response}`
-    //     );
-    //     console.log(
-    //       `Attendance updated for employee with ID ${attendanceRecord._id}`
-    //     );
-    //   } catch (error) {
-    //     console.error(
-    //       `Error updating attendance for employee with ID ${attendanceRecord._id}`
-    //     );
-    //     console.error(error);
-    //   }
-    // });
-    // Set the state with the array of objects
+ 
   };
 
-  // console.log(selectedTime);
-  // console.log(attendanceData);
+   
 
   return (
     <div className="pt-8 pb-20">

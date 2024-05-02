@@ -37,7 +37,7 @@ const AddSuppliers = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/supplier")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/supplier`)
       .then((response) => {
         // Handle the response data here
         setGetAllSuppliers(response.data.allSupplier); // For example, you can log the response data to the console
@@ -55,7 +55,7 @@ const AddSuppliers = () => {
       const formData = new FormData();
       formData.append("image", file); // Use "image" as the key for single image upload
       setImageLoading(true);
-      const response = await fetch("http://localhost:5000/api/v1/uploads", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
         method: "POST",
         body: formData,
       });
@@ -87,7 +87,7 @@ const AddSuppliers = () => {
 
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/v1/supplier",
+        `${import.meta.env.VITE_API_URL}/api/v1/supplier`,
         values
       );
 
@@ -127,7 +127,7 @@ const AddSuppliers = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/supplier/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/supplier/one/${id}`,
           {
             method: "DELETE",
           }
@@ -298,7 +298,7 @@ const AddSuppliers = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/supplier/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/supplier/all`,
         data
       );
        
@@ -318,7 +318,7 @@ const AddSuppliers = () => {
 
   const handleAllSuppliers = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/supplier`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/supplier`)
         .then((res) => res.json())
         .then((data) => {
           setGetAllSuppliers(data.allSupplier);

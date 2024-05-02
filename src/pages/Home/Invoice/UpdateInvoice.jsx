@@ -55,7 +55,7 @@ const UpdateInvoice = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/v1/invoice/one/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/one/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setSpecificInvoice(data);
@@ -202,7 +202,7 @@ const UpdateInvoice = () => {
       return toast.error("Unauthorized");
     }
     axios
-      .put(`http://localhost:5000/api/v1/invoice/${id}`, { index: i })
+      .put(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, { index: i })
       .then((response) => {
         if (response.data.message === "Deleted successful") {
           setReload(!reload);
@@ -262,7 +262,7 @@ const UpdateInvoice = () => {
 
       if (removeButton === "") {
         const response = await axios.put(
-          `http://localhost:5000/api/v1/invoice/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/invoice/one/${id}`,
           values
         );
 

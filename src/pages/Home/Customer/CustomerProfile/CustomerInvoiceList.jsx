@@ -72,7 +72,7 @@ const CustomerInvoiceList = ({ invoiceData, setInvoiceData, id }) => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/invoice/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/invoice/one/${id}`,
           {
             method: "DELETE",
           }
@@ -257,7 +257,7 @@ const CustomerInvoiceList = ({ invoiceData, setInvoiceData, id }) => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/invoice/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/invoice/all`,
         data
       );
 
@@ -276,7 +276,7 @@ const CustomerInvoiceList = ({ invoiceData, setInvoiceData, id }) => {
 
   const handleAllInvoice = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/invoice/${id}`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, {
         method: "POST",
       })
         .then((res) => res.json())

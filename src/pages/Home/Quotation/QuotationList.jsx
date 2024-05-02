@@ -30,7 +30,7 @@ const QuotationList = () => {
   };
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/quotation/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/all`)
       .then((res) => res.json())
       .then((data) => {
         setGetAllQuotation(data);
@@ -59,7 +59,7 @@ const QuotationList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/quotation/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/quotation/one/${id}`,
           {
             method: "DELETE",
           }
@@ -243,7 +243,7 @@ const QuotationList = () => {
   // const handleFilterType = async () => {
   //   if (select === "SL No") {
   //     fetch(
-  //       `http://localhost:5000/api/v1/quotation/all `
+  //       `${import.meta.env.VITE_API_URL}/api/v1/quotation/all `
   //     )
   //       .then((res) => res.json())
   //       .then((data) => {
@@ -256,7 +256,7 @@ const QuotationList = () => {
   //       filterType,
   //     };
   //     const response = await axios.post(
-  //       `http://localhost:5000/api/v1/quotation/all `,
+  //       `${import.meta.env.VITE_API_URL}/api/v1/quotation/all `,
   //       data
   //     );
   //     console.log(response.data);
@@ -279,7 +279,7 @@ const QuotationList = () => {
         filterType,
       };
       const response = await axios.post(
-        `http://localhost:5000/api/v1/quotation/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/quotation/all`,
         data
       );
     
@@ -298,7 +298,7 @@ const QuotationList = () => {
 
   const handleAllQuotation = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/quotation/all`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/all`)
       .then((res) => res.json())
       .then((data) => {
        

@@ -26,7 +26,7 @@ const AddMoneyReceiptList = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/v1/money_receipt`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt`)
       .then((res) => res.json())
       .then((data) => {
         setGetMoneyReceipt(data.moneyReceipt);
@@ -54,7 +54,7 @@ const AddMoneyReceiptList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/money_receipt/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`,
           {
             method: "DELETE",
           }
@@ -239,7 +239,7 @@ const AddMoneyReceiptList = () => {
         filterType,
       };
       const response = await axios.post(
-        `http://localhost:5000/api/v1/money_receipt/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/all`,
         data
       );
     
@@ -257,7 +257,7 @@ const AddMoneyReceiptList = () => {
   };
 
   const handleAllMoneyReceipt = () => {
-    fetch(`http://localhost:5000/api/v1/money_receipt`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt`)
       .then((res) => res.json())
       .then((data) => {
         setGetMoneyReceipt(data.moneyReceipt);

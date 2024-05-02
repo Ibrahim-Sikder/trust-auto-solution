@@ -21,7 +21,6 @@ import {
   vehicleName,
   vehicleTypes,
 } from "../../../constant";
-import Cookies from "js-cookie";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
 import { formatDate } from "../../../utils/formateDate";
 
@@ -35,7 +34,7 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
- 
+
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
@@ -63,7 +62,6 @@ const AddJobCard = () => {
   const formRef = useRef();
   const navigate = useNavigate();
 
-  // const customer_type = Cookies.get("customer_type");
 
   const onSubmit = async (data) => {
     try {
@@ -112,7 +110,7 @@ const AddJobCard = () => {
 
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/api/v1/jobCard",
+        `${import.meta.env.VITE_API_URL}/api/v1/jobCard`,
         values
       );
 
@@ -122,7 +120,7 @@ const AddJobCard = () => {
         setJobNo(newJobNo);
         setReload(!reload);
         if (clickControl === "preview") {
-          fetch("http://localhost:5000/api/v1/jobCard/recent")
+          fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/recent`)
             .then((res) => res.json())
             .then((data) => {
               if (data) {
@@ -156,19 +154,17 @@ const AddJobCard = () => {
     setGetFuelType(newInputValue);
   };
 
-   
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const apiEndpoints = [
-          `http://localhost:5000/api/v1/customer/${customerId}`,
-          `http://localhost:5000/api/v1/company/${customerId}`,
-          `http://localhost:5000/api/v1/showRoom/${customerId}`
+          `${import.meta.env.VITE_API_URL}/api/v1/customer/${customerId}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/company/${customerId}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/showRoom/${customerId}`,
         ];
-  
+
         let data = null;
-        
+
         for (const apiUrl of apiEndpoints) {
           const response = await fetch(apiUrl);
           if (response.ok) {
@@ -177,20 +173,19 @@ const AddJobCard = () => {
             if (data) break;
           }
         }
-  
+
         if (!data) {
           throw new Error("Failed to fetch data");
         }
-  
+
         setShowCustomerData(data);
       } catch (error) {
         setError(error.message);
       }
     };
-  
+
     fetchData();
   }, [customerId]);
-  
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
@@ -198,7 +193,7 @@ const AddJobCard = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/jobCard`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard`)
       .then((res) => res.json())
       .then((data) => {
         setPreviousPostData(data);
@@ -214,7 +209,7 @@ const AddJobCard = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/jobCard/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
@@ -253,7 +248,7 @@ const AddJobCard = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/jobCard/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/jobCard/one/${id}`,
           {
             method: "DELETE",
           }
@@ -273,7 +268,6 @@ const AddJobCard = () => {
   useEffect(() => {
     sessionStorage.setItem("job", currentPage.toString());
   }, [currentPage]);
-  
 
   useEffect(() => {
     const storedPage = Number(sessionStorage.getItem("job")) || 1;
@@ -285,8 +279,6 @@ const AddJobCard = () => {
       Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
     );
   }, [pageNumberLimit]);
-
- 
 
   const handleClick = (e) => {
     const pageNumber = Number(e.target.id);
@@ -439,7 +431,7 @@ const AddJobCard = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/jobCard/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`,
         data
       );
 
@@ -458,7 +450,7 @@ const AddJobCard = () => {
   };
 
   const handleAllAddToJobCard = () => {
-    fetch(`http://localhost:5000/api/v1/jobCard/all`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
       .then((res) => res.json())
       .then((data) => {
         setAllJobCard(data);
@@ -577,7 +569,9 @@ const AddJobCard = () => {
                     type="date"
                     placeholder="Date"
                     max={currentDate}
-                    defaultValue={ formattedDate ? formatDate(formattedDate) : ''}
+                    defaultValue={
+                      formattedDate ? formatDate(formattedDate) : ""
+                    }
                   />
                 </div>
 
@@ -1110,7 +1104,7 @@ const AddJobCard = () => {
                 <img src={car} alt="car" />
               </div>
               <div className="mt-5">
-                <b className="block mb-1 "> Note  </b>
+                <b className="block mb-1 "> Note </b>
                 <textarea
                   onChange={(e) => setVehicleBody(e.target.value)}
                   required
@@ -1131,7 +1125,6 @@ const AddJobCard = () => {
           <div className="flex flex-wrap items-center justify-between mt-5 mb-10">
             <div>
               <TextField
-        
                 className="ownerInput"
                 {...register("technician_name", { required: true })}
                 label="Technician Name (T) "
@@ -1145,13 +1138,12 @@ const AddJobCard = () => {
             </div>
             <div>
               <TextField
-                 disabled
+                disabled
                 className="ownerInput"
                 o
                 {...register("technician_signature")}
                 label="Technician Signature (T) "
               />
-              
             </div>
             <div>
               <input
@@ -1171,12 +1163,11 @@ const AddJobCard = () => {
             </div>
             <div>
               <TextField
-                 disabled
+                disabled
                 className="ownerInput"
-                {...register("vehicle_owner",)}
+                {...register("vehicle_owner")}
                 label="Vehicle Owner (T) "
               />
-             
             </div>
           </div>
           <div className="mt-3">
@@ -1224,7 +1215,7 @@ const AddJobCard = () => {
               </button>
             </div>
           </div>
-          <div className="pt-6 text-center text-red-400">{error}</div>
+          {/* <div className="pt-6 text-center text-red-400">{error}</div> */}
         </div>
       </form>
       <div className="mt-20 overflow-x-auto">

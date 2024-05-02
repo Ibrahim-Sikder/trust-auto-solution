@@ -113,7 +113,7 @@ const EmployeeList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/employee")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
       .then((response) => {
         setGetAllEmployee(response.data.employee);
       })
@@ -143,7 +143,7 @@ const EmployeeList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/employee/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/employee/one/${id}`,
           {
             method: "DELETE",
           }
@@ -294,7 +294,7 @@ const EmployeeList = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/employee/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
         data
       );
 
@@ -314,7 +314,7 @@ const EmployeeList = () => {
 
   const handleAllEmployee = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/employee`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
         .then((res) => res.json())
         .then((data) => {
           setGetAllEmployee(data.employee);
@@ -353,7 +353,7 @@ const EmployeeList = () => {
               Employee List:
             </h3>
             <div className="flex items-center searcList">
-             
+             <button onClick={handleAllEmployee} className="btn btn-sm mr-1">All</button>
               <div className="searchGroup">
                 <input
                   onChange={(e) => setFilterType(e.target.value)}

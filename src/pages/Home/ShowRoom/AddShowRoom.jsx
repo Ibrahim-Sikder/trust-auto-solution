@@ -53,7 +53,7 @@ const AddShowRoom = () => {
     data.showRoomId = uniqueId;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/showRoom",
+        `${import.meta.env.VITE_API_URL}/api/v1/showRoom`,
         data
       );
 
@@ -73,7 +73,7 @@ const AddShowRoom = () => {
   };
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/api/v1/showRoom`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom`)
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
@@ -106,7 +106,7 @@ const AddShowRoom = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/showRoom/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/showRoom/one/${id}`,
           {
             method: "DELETE",
           }
@@ -288,7 +288,7 @@ const AddShowRoom = () => {
       };
       setSearchLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/showRoom/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/showRoom/all`,
         data
       );
 
@@ -307,7 +307,7 @@ const AddShowRoom = () => {
   };
 
   const handleAllCustomer = () => {
-    fetch(`http://localhost:5000/api/v1/showRoom`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom`)
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);

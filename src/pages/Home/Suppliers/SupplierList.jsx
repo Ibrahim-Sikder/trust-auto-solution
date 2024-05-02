@@ -37,7 +37,7 @@ const SupplierList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/v1/supplier")
+      .get(`${import.meta.env.VITE_API_URL}/api/v1/supplier`)
       .then((response) => {
         // Handle the response data here
         setGetAllSuppliers(response.data.allSupplier);  
@@ -68,7 +68,7 @@ const SupplierList = () => {
     if (willDelete) {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/v1/supplier/one/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/v1/supplier/one/${id}`,
           {
             method: "DELETE",
           }
@@ -239,7 +239,7 @@ const SupplierList = () => {
       };
       setLoading(true);
       const response = await axios.post(
-        `http://localhost:5000/api/v1/supplier/all`,
+        `${import.meta.env.VITE_API_URL}/api/v1/supplier/all`,
         data
       );
       if (response.data.message === "Filter successful") {
@@ -258,7 +258,7 @@ const SupplierList = () => {
 
   const handleAllSuppliers = () => {
     try {
-      fetch(`http://localhost:5000/api/v1/supplier`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/supplier`)
         .then((res) => res.json())
         .then((data) => {
           setGetAllSuppliers(data.allSupplier);
