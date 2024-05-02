@@ -11,6 +11,7 @@ import { formatDate } from "../../../../utils/formateDate";
 const PreviewJobCard = () => {
   const { componentRef, targetRef } = useContext(PrintContext);
   const [previewData, setPreviewData] = useState({});
+  console.log(previewData)
  
   // const componentRef = useRef();
   // const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
@@ -71,7 +72,7 @@ const PreviewJobCard = () => {
                     Job No: <span>{previewData.job_no}</span>
                   </b>
                   <div>
-                    <b>Customer ID:</b> TAS000
+                    <b>Customer ID:</b> {previewData.Id}
                   </div>
                 </div>
                 <div>
@@ -81,8 +82,7 @@ const PreviewJobCard = () => {
                 </div>
                 <div>
                   <b>
-                    Date: <span>{previewData.date}</span>
-                   
+                    Date: <span>{formatDate(previewData.date)}</span>
                   </b>
                 </div>
               </div>

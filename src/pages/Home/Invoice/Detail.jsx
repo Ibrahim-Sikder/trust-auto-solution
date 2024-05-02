@@ -230,7 +230,7 @@ const Detail = () => {
                     <div className="text-left">
                       <small className="block">
                         <small className="font-bold">Mobile:</small>{" "}
-                        345689789666
+                       +880 1710-700324
                       </small>
                       <small className="block">
                         <small className="font-bold">Email:</small>{" "}

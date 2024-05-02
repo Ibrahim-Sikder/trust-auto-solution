@@ -137,10 +137,7 @@
   color: #fff;
 }
 
-.printInvoiceBtnGroup {
-  margin-left: 210px;
-  margin-top: 30px;
-}
+
 
 .printInvoiceBtnGroup button {
   background: #42a1da;
@@ -173,6 +170,11 @@
   top: 0;
   background: black;
   left: 0;
+}
+
+.printInvoiceBtnGroup {
+  margin-left: 580px;
+  margin-top: 30px;
 }
 
 @media only screen and (min-width: 1440px) {

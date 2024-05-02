@@ -925,7 +925,7 @@ const UpdateJobCard = () => {
                 <b className="block mb-1 "> Note  </b>
                 <textarea
                   onChange={(e) => setVehicleBody(e.target.value)}
-                  required
+                 
                   autoComplete="off"
                 ></textarea>
               </div>
