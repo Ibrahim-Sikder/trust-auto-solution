@@ -313,7 +313,7 @@ const AddQuotation = () => {
               <td>{card.customer_name}</td>
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
-              <td> {card.contact_number} </td>
+              <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>
                 <div
@@ -766,9 +766,7 @@ const AddQuotation = () => {
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-md md:text-3xl font-bold">Quotation List:</h3>
           <div className="flex items-center searcList">
-          <button onClick={handleAllQuotation} className="SearchBtn mr-2">
-              All{" "}
-            </button>
+        
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

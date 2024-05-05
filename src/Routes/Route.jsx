@@ -65,6 +65,7 @@ import CompletedProject from "../pages/Home/Projects/CompletedProject";
 import ViewEmployeeAttendance from "../pages/Home/Attendance/ViewEmployeeAttendance";
 import BillPay from "../pages/BillPay/BillPay";
 import Support from "../pages/Support/Support";
+import Practice from "../pages/Practice";
 
 export const router = createBrowserRouter([
   {
@@ -353,7 +354,12 @@ export const router = createBrowserRouter([
         path: "support",
         element: <Support />,
       },
+      {
+        path: "practice",
+        element: <Practice />,
+      },
 
     ],
   },
 ]);
+  

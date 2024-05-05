@@ -614,12 +614,7 @@ const AddCustomer = () => {
             Customer List:{" "}
           </h3>
           <div className="flex flex-wrap items-center">
-            <button
-              className="bg-[#42A1DA] text-white px-2 py-2 rounded-full mr-1"
-              onClick={handleAllCustomer}
-            >
-              All
-            </button>
+           
             <input
               onChange={(e) => setFilterType(e.target.value)}
               type="text"
@@ -628,7 +623,7 @@ const AddCustomer = () => {
             />
             <button
               onClick={handleFilterType}
-              className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
             >
               {" "}
               <HiOutlineSearch size={25} />

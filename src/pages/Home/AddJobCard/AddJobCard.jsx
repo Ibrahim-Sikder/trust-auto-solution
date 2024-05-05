@@ -34,7 +34,18 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
+  const inputRef = useRef(null); // Create a ref for the input element
+  const [inputValue, setInputValue] = useState(''); // Controlled input value state
 
+  // Effect to manage focus when showCustomerData.carReg_no changes and is non-empty
+  useEffect(() => {
+    if (showCustomerData?.carReg_no && inputRef.current) {
+      inputRef.current.focus();  // Focus the input element if data is present
+      setInputValue(showCustomerData.carReg_no);  // Set the input value to the loaded data
+    }
+  }, [showCustomerData]);
+
+  
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
@@ -778,23 +789,22 @@ const AddJobCard = () => {
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
               <div className="flex  md:gap-0 gap-4 items-center mt-3 ">
-                <Autocomplete
-                 className="jobCardSelect2"
-                  id="free-solo-demo"
-                  Car
-                  Registration
-                  No
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Reg No"
-                      {...register("carReg_no")}
-                      value={showCustomerData?.carReg_no}
-                      focused={showCustomerData?.carReg_no}
-                    />
-                  )}
-                />
+              <Autocomplete
+      className="jobCardSelect2"
+      id="free-solo-demo"
+      inputValue={inputValue}
+      onInputChange={(event, newValue) => setInputValue(newValue)}
+      options={cmDmOptions.map(option => option.label)}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Vehicle Reg No"
+          {...register("carReg_no")}
+          inputRef={inputRef}  // Attach the ref to the TextField
+          value={inputValue}
+        />
+      )}
+    />
 
                 <TextField
                  className="carRegField"

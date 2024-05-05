@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { HiOutlinePlus, HiOutlineSearch } from "react-icons/hi";
 import CompanyAddVehicleModal from "./CompanyAddVehicleModal";
 import CompanyVehicleDetailsModal from "./CompanyVehicleDetailsModal";
-import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
 import { useLocation } from "react-router-dom";

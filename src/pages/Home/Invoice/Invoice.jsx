@@ -27,6 +27,7 @@ const Invoice = () => {
   const [error, setError] = useState("");
   const [postError, setPostError] = useState("");
   const [getAllInvoice, setGetAllInvoice] = useState([]);
+  console.log(getAllInvoice)
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
@@ -371,7 +372,7 @@ const Invoice = () => {
               <td>{card.customer_name}</td>
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
-              <td> {card.contact_number} </td>
+              <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>
                 <div
@@ -788,12 +789,7 @@ const Invoice = () => {
         <div className="flex items-center justify-between mb-5">
           <h3 className="mb-3 text-3xl font-bold">Invoice List:</h3>
           <div className="flex items-center searcList">
-            <div
-              onClick={handleAllInvoice}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </div>
+           
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

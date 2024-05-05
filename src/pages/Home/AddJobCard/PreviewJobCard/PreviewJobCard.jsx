@@ -12,10 +12,7 @@ const PreviewJobCard = () => {
   const { componentRef, targetRef } = useContext(PrintContext);
   const [previewData, setPreviewData] = useState({});
   console.log(previewData)
- 
-  // const componentRef = useRef();
-  // const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
-  // const handlePrint = useReactToPrint({
+
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -196,11 +193,11 @@ const PreviewJobCard = () => {
                         />
                       </div>
                       <div>
-                        <label className="block">Contact No</label>
+                        <label className="block">Driver Contact No</label>
                         <input
                           type="text"
                           placeholder="Contact No"
-                          defaultValue={previewData.contact_number}
+                          defaultValue={previewData.driver_contact}
                           disabled
                         />
                       </div>
@@ -220,7 +217,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Phone"
-                          defaultValue={previewData.phone_number}
+                          defaultValue={previewData.customer_contact}
                           disabled
                         />
                       </div>
@@ -229,15 +226,16 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Reference Number"
-                          defaultValue={previewData.reference_number}
+                          defaultValue={previewData.reference_name}
                           disabled
                         />
                       </div>
                       <div>
-                        <label className="block">Car Driver Name </label>
+                        <label className="block">Customer Email </label>
                         <input
                           type="text"
                           placeholder="Customer Address "
+                          defaultValue={previewData.customer_email}
                           disabled
                         />
                       </div>

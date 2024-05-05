@@ -18,7 +18,6 @@ import { Autocomplete } from "@mui/material";
 import { HiOutlineUserGroup } from "react-icons/hi";
 
 const UpdateCustomer = () => {
-
   const {
     register,
     handleSubmit,
@@ -42,8 +41,6 @@ const UpdateCustomer = () => {
         });
     }
   }, [id]);
-
- 
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -105,20 +102,19 @@ const UpdateCustomer = () => {
           </Link>
         </div>
         <div className="productHeadWrap">
-        <div className="flex flex-wrap items-center justify-center">
-          <HiOutlineUserGroup className="invoicIcon" />
-          <div className="ml-2">
-            <h3 className="text-sm font-bold md:text-2xl"> New Company </h3>
-            <span>Update New Company </span>
+          <div className="flex flex-wrap items-center justify-center">
+            <HiOutlineUserGroup className="invoicIcon" />
+            <div className="ml-2">
+              <h3 className="text-sm font-bold md:text-2xl"> New Company </h3>
+              <span>Update New Company </span>
+            </div>
+          </div>
+          <div className="productHome">
+            <span>Home / </span>
+            <span>Product / </span>
+            <span>New Company </span>
           </div>
         </div>
-        <div className="productHome">
-          <span>Home / </span>
-          <span>Product / </span>
-          <span>New Company </span>
-        </div>
-      </div>
-
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -132,16 +128,16 @@ const UpdateCustomer = () => {
                     className="productField"
                     label="Company Name (T)"
                     {...register("company_name")}
-                   value={singleCard?.company_name}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      company_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard?.company_name,
-                  }}
+                    value={singleCard?.company_name}
+                    onChange={(e) =>
+                      setSingleCard({
+                        ...singleCard,
+                        company_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!singleCard?.company_name,
+                    }}
                   />
                 </div>
                 <div>
@@ -291,7 +287,7 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.driver_contact
+                      shrink: !!singleCard.driver_contact,
                     }}
                   />
                 </div>
@@ -308,18 +304,17 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.reference_name
+                      shrink: !!singleCard.reference_name,
                     }}
                   />
                 </div>
               </div>
 
-              <div className="mt-5 lg:mt-0" >
+              <div className="mt-5 lg:mt-0">
                 <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
-                  <Autocomplete
+                  {/* <Autocomplete
                     className="jobCardSelect"
-                    id="reg"
                     Car
                     Registration
                     No
@@ -339,9 +334,26 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.carReg_no
+                      shrink: !!singleCard.carReg_no,
                     }}
+                  /> */}
+
+                  <Autocomplete
+                    className="customerSelect"
+                    value={singleCard?.carReg_no || ""}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Car Reg No "
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.carReg_no,
+                        }}
+                      />
+                    )}
                   />
+
                   <TextField
                     className="carRegNumbers"
                     label="Car R (T&N)"
@@ -354,7 +366,7 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.car_registration_no
+                      shrink: !!singleCard.car_registration_no,
                     }}
                   />
                 </div>
@@ -372,7 +384,7 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.chassis_no
+                      shrink: !!singleCard.chassis_no,
                     }}
                   />
                 </div>
@@ -389,35 +401,27 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.engine_no
+                      shrink: !!singleCard.engine_no,
                     }}
                   />
                 </div>
 
                 <div>
+                  
                   <Autocomplete
-                    className="productField"
-                    id="free-solo-demo"
-                    Vehicle
-                    Brand
+                     className="productField"
+                    value={singleCard?.vehicle_brand || ""}
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Vehicle Brand"
-                        {...register("vehicle_brand")}
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.vehicle_brand,
+                        }}
                       />
                     )}
-                    value={singleCard.vehicle_brand}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        vehicle_brand: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.vehicle_brand
-                    }}
                   />
                 </div>
                 <div>
@@ -433,7 +437,7 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.vehicle_name
+                      shrink: !!singleCard.vehicle_name,
                     }}
                   />
                 </div>
@@ -455,34 +459,29 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.vehicle_model
+                      shrink: !!singleCard.vehicle_model,
                     }}
                   />
                 </div>
                 <div>
-                  <Autocomplete
-                    className="productField"
-                    Vehicle
-                    Types
+              
+                    
+                    <Autocomplete
+                     className="productField"
+                    value={singleCard?.vehicle_category || ""}
                     options={vehicleTypes.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label=" Vehicle Categories "
-                        {...register("vehicle_category")}
+                        label="Vehicle Category"
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.vehicle_category,
+                        }}
                       />
                     )}
-                    value={singleCard.vehicle_category}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        vehicle_category: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.vehicle_category
-                    }}
                   />
+
                 </div>
                 <div>
                   <TextField
@@ -497,7 +496,7 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.color_code
+                      shrink: !!singleCard.color_code,
                     }}
                   />
                 </div>
@@ -519,34 +518,28 @@ const UpdateCustomer = () => {
                       })
                     }
                     InputLabelProps={{
-                      shrink: !!singleCard.mileage
+                      shrink: !!singleCard.mileage,
                     }}
                   />
                 </div>
                 <div>
-                  <Autocomplete
-                    className="productField"
-                    Fuel
-                    Type
-                    options={fuelType.map((option) => option.label)}
+                  
+                   <Autocomplete
+                     className="productField"
+                    value={singleCard?.fuel_type || ""}
+                    options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label=" Fuel Type"
-                        {...register("fuel_type")}
+                        label="Fuel Type "
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.fuel_type,
+                        }}
                       />
                     )}
-                    value={singleCard.fuel_type}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        fuel_type: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.fuel_type
-                    }}
                   />
+
                 </div>
               </div>
             </div>

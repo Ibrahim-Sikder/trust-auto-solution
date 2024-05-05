@@ -11,6 +11,7 @@ const CustomerAccount = ({
   moneyReceiptData,
   invoiceData
 }) => {
+  console.log(profileData)
   
   return (
     <div className="customerProfileWrap">
@@ -20,7 +21,7 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div>
               <div>
-                Supplier Name: <b>{profileData.company_name} </b>
+                Customer Name: <b>{profileData.company_name} </b>
               </div>
               <div>
                 Phone Number: <b>0657899444</b>
