@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import "./MoneyReceived.css";
 import logo from "../../../../public/assets/logo.png";
-import { Email, Home, WhatsApp, LocalPhone } from "@mui/icons-material";
+import { Email, Home, WhatsApp } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import AddMoneyReceiptList from "./AddMoneyReceiptList";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { FaGlobe } from "react-icons/fa";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
   const [advance, setAdvance] = useState(null);
@@ -181,15 +182,15 @@ const MoneyReceiptView = () => {
             </small>
           </div>
           <div>
-            <div className="flex items-center mt-1">
-              <LocalPhone className="hotlineIcon" />
-              <b className="ml-1">+880 1821-216465</b>
+          <div className="flex items-center mt-1">
+              <FaGlobe className="hotlineIcon" />
+              <small className="ml-1">trustautosolution.com</small>
             </div>
             <div className="flex items-center mt-1">
               <Email className="hotlineIcon" />
               <small className="ml-1">trustautosolution@gmail.com</small>
             </div>
-            <div className="flex items-center mt-1">
+            <div className="flex  mt-1">
               <Home className="hotlineIcon"> </Home>
               <small className="ml-1">
                 Ka-93/4/C Kuril Bishawroad, <br /> Dhaka-1212

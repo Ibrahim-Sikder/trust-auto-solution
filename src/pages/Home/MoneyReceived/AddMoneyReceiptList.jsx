@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { NotificationAdd } from "@mui/icons-material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
@@ -15,8 +14,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 const AddMoneyReceiptList = () => {
- 
   const [getMoneyReceipt, setGetMoneyReceipt] = useState([]);
+  console.log(getMoneyReceipt)
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const navigate = useNavigate();
@@ -138,10 +137,10 @@ const AddMoneyReceiptList = () => {
             <th>SL No</th>
             <th>Received with thanks from</th>
             <th>Final Payment against bill no</th>
-            <th>Vehicle No </th>
-            <th>Check Number </th>
-            <th>Bank</th>
-            <th>Total Amount</th>
+            <th>Total Amount </th>
+            <th>Advance </th>
+            <th>Due</th>
+            <th>Date</th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>
@@ -151,9 +150,9 @@ const AddMoneyReceiptList = () => {
               <td>{index + 1}</td>
               <td>{card.thanks_from}</td>
               <td>{card.against_bill_no}</td>
-              <td>{card.vehicle_no}</td>
-              <td> {card.cheque_no} </td>
-              <td> {card.bank} </td>
+              <td>{card.total_amount}</td>
+              <td> {card.advance} </td>
+              <td> {card.remaining} </td>
               <td>{card.date_one}</td>
               <td>
                 <div
@@ -233,7 +232,6 @@ const AddMoneyReceiptList = () => {
   }
 
   const handleFilterType = async () => {
-    
     try {
       const data = {
         filterType,
@@ -242,17 +240,17 @@ const AddMoneyReceiptList = () => {
         `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/all`,
         data
       );
-    
+
       if (response.data.message === "Filter successful") {
         setGetMoneyReceipt(response.data.result);
         setNoMatching(null);
       }
       if (response.data.message === "No matching found") {
-        setGetMoneyReceipt([])
+        setGetMoneyReceipt([]);
         setNoMatching(response.data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   };
 
@@ -267,11 +265,10 @@ const AddMoneyReceiptList = () => {
 
   return (
     <div className="mt-5 overflow-x-auto">
-     
-     
-
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-        <h3 className="mb-3 text-xl font-bold md:text-3xl">Money Receipt List:</h3>
+        <h3 className="mb-3 text-xl font-bold md:text-3xl">
+          Money Receipt List:
+        </h3>
         <div className="flex items-center searcList">
           <div
             onClick={handleAllMoneyReceipt}
@@ -279,13 +276,12 @@ const AddMoneyReceiptList = () => {
           >
             All
           </div>
-           
+
           <div className="searchGroup">
             <input
               onChange={(e) => setFilterType(e.target.value)}
               autoComplete="off"
               type="text"
-             
             />
           </div>
           <button onClick={handleFilterType} className="SearchBtn ">
