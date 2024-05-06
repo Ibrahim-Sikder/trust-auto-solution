@@ -172,6 +172,12 @@ export const cmDmOptions = [
     { label: "Small Cars", value: "Small Cars" },
     { label: "CPO", value: "CPO" },
   ];
+  export const vehicleModels = [];
+
+for (let year = 2024; year <= 2030; year++) {
+  vehicleModels.push({ label: year.toString(), value: year.toString() });
+}
+
 
  export  const fuelType = [
     { label: "Octen", value: "Octen" },

@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import {
   FaTrashAlt,
   FaEdit,
-  FaArrowRight,
-  FaArrowLeft,
   FaEye,
   FaFileInvoice,
 } from "react-icons/fa";
@@ -15,9 +13,11 @@ import Loading from "../../../components/Loading/Loading";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import { toast } from "react-toastify";
+import { formatDate } from "../../../utils/formateDate";
 const ViewInvoice = () => {
   const [select, setSelect] = useState(null);
   const [getAllInvoice, setGetAllInvoice] = useState([]);
+  console.log(getAllInvoice)
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -157,8 +157,8 @@ const ViewInvoice = () => {
                 <td>{card.customer_name}</td>
                 <td>{card.job_no}</td>
                 <td>{card.car_registration_no}</td>
-                <td> {card.contact_number} </td>
-                <td>{card.date}</td>
+                <td> {card.customer_contact} </td>
+                <td>{formatDate(card.date)}</td>
                 <td>
                   <div
                     onClick={() => handleIconPreview(card._id)}
@@ -303,8 +303,8 @@ const ViewInvoice = () => {
         </div>
         <div className="productHome">
           <span>Home / </span>
-          <span>Product / </span>
-          <span>New Product </span>
+          <span>Invoice / </span>
+          <span>  Invoice List </span>
         </div>
       </div>
       <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">

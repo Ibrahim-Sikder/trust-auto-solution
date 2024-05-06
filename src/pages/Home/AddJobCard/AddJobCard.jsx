@@ -18,6 +18,7 @@ import {
   cmDmOptions,
   fuelType,
   totalYear,
+  vehicleModels,
   vehicleName,
   vehicleTypes,
 } from "../../../constant";
@@ -922,6 +923,28 @@ const AddJobCard = () => {
                     <TextField {...params} label=" Vehicle Model" />
                   )}
                 /> */}
+
+
+
+                <div className="mt-3">
+                <Autocomplete
+                  className="addJobInputField"
+                  Vehicle
+                  Types
+                  onInputChange={handleCategoryChange}
+                  options={vehicleModels.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label=" Vehicle Model "
+                      {...register("vehicle_model")}
+                      value={showCustomerData?.vehicle_model}
+                     focused={showCustomerData?.vehicle_model}
+                    />
+                  )}
+                />
+              </div>
+
                 <TextField
                   className="addJobInputField"
                   label="Vehicle Model (N)"

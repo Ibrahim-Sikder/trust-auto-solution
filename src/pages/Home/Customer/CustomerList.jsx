@@ -12,10 +12,10 @@ import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 import { HiOutlineSearch } from "react-icons/hi";
 const CustomerList = () => {
-
   const [filterType, setFilterType] = useState("");
   const [customerData, setCustomerData] = useState([]);
-  
+  console.log(customerData)
+
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -32,7 +32,7 @@ const CustomerList = () => {
       .then((res) => res.json())
       .then((data) => {
         setCustomerData(data);
-        
+
         setLoading(false);
       });
   }, [reload]);
@@ -141,10 +141,8 @@ const CustomerList = () => {
           <tr>
             <th>Customer ID </th>
             <th>Customer Name</th>
-            <th>Order Number </th>
-            <th>Car Number </th>
             <th>Mobile Number</th>
-            <th>Date</th>
+            <th>Vehicle Name </th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>
@@ -153,19 +151,17 @@ const CustomerList = () => {
             <tr key={card._id}>
               <td>{card.customerId}</td>
               <td>{card.customer_name}</td>
-              <td>{card.job_no}</td>
-              <td>{card.car_registration_no}</td>
-              <td> {card.contact_number} </td>
-              <td>{card.date}</td>
+              <td>{card.customer_contact}</td>
+              <td> {card.vehicle_name} </td>
               <td>
-              <div 
-              onClick={() => handleIconPreview(card.customerId)}
-              className="flex items-center justify-center ">
-              <Link to="/dashboard/employee-profile">
-                <FaUserTie size={25} className="" />
-              </Link>
-            </div>
-                
+                <div
+                  onClick={() => handleIconPreview(card.customerId)}
+                  className="flex items-center justify-center "
+                >
+                  <Link to="/dashboard/employee-profile">
+                    <FaUserTie size={25} className="" />
+                  </Link>
+                </div>
               </td>
 
               <td>
@@ -297,38 +293,27 @@ const CustomerList = () => {
           </div>
         </div>
         <div className="mt-2 productHome md:mt-0 ">
-          <span>Home / </span>
+          <span>Dashboard / </span>
           <span>Customer / </span>
-          <span>New Customer </span>
+          <span> Customer List</span>
         </div>
       </div>
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <h3 className="mb-3 text-3xl font-bold"> Customer List:</h3>
         <div className="flex items-center">
-        {/** 
-          <button
-            onClick={handleAllCustomer}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </button>
-*/}
           <input
-          onChange={(e) => setFilterType(e.target.value)}
-          type="text"
-          placeholder="Search"
-          className="border py-2 px-3 rounded-md border-[#ddd]"
-        />
-        <button
-          onClick={handleFilterType}
-          className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
-        >
-          {" "}
-          <HiOutlineSearch size={25} />
-        </button>
-
-
-
+            onChange={(e) => setFilterType(e.target.value)}
+            type="text"
+            placeholder="Search"
+            className="border py-2 px-3 rounded-md border-[#ddd]"
+          />
+          <button
+            onClick={handleFilterType}
+            className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
+          >
+            {" "}
+            <HiOutlineSearch size={25} />
+          </button>
         </div>
       </div>
 

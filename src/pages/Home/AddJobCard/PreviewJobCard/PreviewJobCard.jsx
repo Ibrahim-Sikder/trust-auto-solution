@@ -163,7 +163,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Color"
-                          defaultValue={previewData.color}
+                          defaultValue={previewData.color_code}
                           disabled
                         />
                       </div>

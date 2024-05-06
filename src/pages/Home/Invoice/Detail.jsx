@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import logo from "../../../../public/assets/logo.png";
 import { useReactToPrint } from "react-to-print";
 import { usePDF } from "react-to-pdf";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Invoice.css";
 import { formatDate } from "../../../utils/formateDate";
  
@@ -23,6 +23,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
+  console.log(invoicePreview)
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -230,7 +231,7 @@ const Detail = () => {
                     <div className="text-left">
                       <small className="block">
                         <small className="font-bold">Mobile:</small>{" "}
-                       +880 1710-700324
+                        01821-216465
                       </small>
                       <small className="block">
                         <small className="font-bold">Email:</small>{" "}
@@ -263,7 +264,7 @@ const Detail = () => {
                     <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
                       <div className="flex justify-between w-[40%]">
                         <div className="invoiceCustomerInfo">
-                          <b>SL NO</b>
+                          <b>Job No</b>
                           <b>Company</b>
                           <b>Customer</b>
                           <b>Phone</b>

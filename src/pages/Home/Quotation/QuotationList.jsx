@@ -333,9 +333,9 @@ const QuotationList = () => {
 					</div>
 				</div>
 				<div className="productHome">
-					<span>Home / </span>
-					<span>Product / </span>
-					<span>New Product </span>
+					<span>Dashboard / </span>
+					<span>Quotation / </span>
+					<span>Quotation List </span>
 				</div>
 			</div>
 			

@@ -9,46 +9,43 @@ const CustomerAccount = ({
   jobCardData,
   quotationData,
   moneyReceiptData,
-  invoiceData
+  invoiceData,
 }) => {
-  console.log(profileData)
-  
+  console.log(profileData);
+
   return (
     <div className="customerProfileWrap">
       <div className="justify-between block mt-5 md:flex">
         <Card>
           <h3 className="mb-2 text-xl font-semibold"> Contact Info </h3>
           <div className="flex items-center justify-between">
-            <div>
+            <div className="space-y-2">
               <div>
                 Customer Name: <b>{profileData.company_name} </b>
               </div>
               <div>
-                Phone Number: <b>0657899444</b>
+               Vehicle Name: <b>{profileData.vehicle_name} </b>
               </div>
+              <div>
+               Registration No : <b>{profileData.car_registration_no}</b>
+              </div>
+              
             </div>
 
-            <div>
+            <div className="space-y-2" >
               <div>
-                Shop Name: <b>Auto Solution </b>
+                chassis No: <b>{profileData.chassis_no} </b>
               </div>
-              <span>
-                Email Address: <b>supplier@gmail.com</b>
-              </span>
+              <div>
+                Engine & CC: <b>{profileData.engine_no}</b>
+              </div>
+              <div>
+               Mileage: <b>{profileData.mileage}</b>
+              </div>
             </div>
+           
           </div>
         </Card>
-        <Card>
-          <h3 className="text-xl font-semibold">Address Details </h3>
-          <span>
-            Country : <b>Bangladesh </b>
-          </span>
-          <span>
-            City <b>Dhaka </b>
-          </span>
-        </Card>
-      </div>
-      <div className="justify-between block mt-5 md:flex">
         <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Vehicles </h3>
@@ -73,6 +70,9 @@ const CustomerAccount = ({
             </div>
           </div>
         </Card>
+      </div>
+      <div className="justify-between block mt-5 md:flex">
+       
         <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Job Card </h3>
@@ -138,8 +138,6 @@ const CustomerAccount = ({
             </b>
           </div>
         </Card>
-      </div>
-      <div className="justify-between block mt-5 md:flex">
         <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Quotation </h3>
@@ -205,6 +203,9 @@ const CustomerAccount = ({
             </b>
           </div>
         </Card>
+      </div>
+      <div className="justify-between block mt-5 md:flex">
+        
         <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Invoice </h3>
@@ -268,6 +269,30 @@ const CustomerAccount = ({
               {" "}
               <HiOutlineEye size={35} />
             </b>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold">Recent Vehicles </h3>
+            <FaRegEdit size={30} />
+          </div>
+          <div className="flex items-center my-3">
+            <div className="cardIcon bg-[#42A1DA]">
+              <FaCarSide size={50} className="text-white" />
+            </div>
+            <div className="ml-3">
+              <b>Ferrari</b>
+              <p>Bangladesh </p>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <div className="cardIcon bg-[#0A9396]">
+              <FaCarSide size={50} className="text-white" />
+            </div>
+            <div className="ml-3">
+              <b>Ferrari</b>
+              <p>Bangladesh </p>
+            </div>
           </div>
         </Card>
       </div>

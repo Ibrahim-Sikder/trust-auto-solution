@@ -19,6 +19,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import Cookies from "js-cookie";
 import { Autocomplete, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import TADatePicker from "../../../components/form/TADatePicker";
+import { formatDate } from "../../../utils/formateDate";
 
 const AddQuotation = () => {
   const [select, setSelect] = useState(null);
@@ -176,8 +178,6 @@ const AddQuotation = () => {
     }
   };
 
-   
-
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/quotation-view?id=${e}`);
   };
@@ -191,8 +191,6 @@ const AddQuotation = () => {
         setLoading(false);
       });
   }, [reload]);
-
-   
 
   // pagination
 
@@ -314,7 +312,7 @@ const AddQuotation = () => {
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
               <td> {card.customer_contact} </td>
-              <td>{card.date}</td>
+              <td>{formatDate(card.date)}</td>
               <td>
                 <div
                   onClick={() => handleIconPreview(card._id)}
@@ -455,8 +453,6 @@ const AddQuotation = () => {
     setItems(newItems);
   };
 
-  
-
   const handleRateChange = (index, value) => {
     const newItems = [...items];
 
@@ -472,15 +468,9 @@ const AddQuotation = () => {
     setItems(newItems);
   };
 
-   
-
- 
-
   return (
     <div className="px-5 py-10">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
-
-      
         <div className=" addJobCardHeads">
           <img src={logo} alt="logo" className=" addJobLogoImg" />
           <div>
@@ -493,7 +483,8 @@ const AddQuotation = () => {
           </div>
           <div className="space-y-1 text-justify jobCardContactInfo">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 345689789666
+              <span className="font-bold">Mobile:</span> 01821-216465,
+              01972-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
@@ -502,19 +493,24 @@ const AddQuotation = () => {
             <span className="block font-bold ">trustautosolution.com</span>
           </div>
         </div>
-
       </div>
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="vehicleCard">Create Quotation </div>
+          <div className="flex justify-between items-center">
+            <div className="hidden"></div>
+            <div className="vehicleCard">Create Quotation </div>
 
+            <div>
+              <TADatePicker/>
+            </div>
+          </div>
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Serial No"
+                  label="Job No"
                   onChange={(e) => setJob_no(e.target.value)}
                   value={jobCardData?.job_no}
                   focused={jobCardData?.job_no}
@@ -764,9 +760,10 @@ const AddQuotation = () => {
       </div>
       <div className="mt-20 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="mb-3 text-md md:text-3xl font-bold">Quotation List:</h3>
+          <h3 className="mb-3 text-md md:text-3xl font-bold">
+            Quotation List:
+          </h3>
           <div className="flex items-center searcList">
-        
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

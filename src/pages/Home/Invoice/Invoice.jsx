@@ -16,6 +16,13 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { Autocomplete, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import TADatePicker from "../../../components/form/TADatePicker";
+import { formatDate } from "../../../utils/formateDate";
+
 const Invoice = () => {
   const [select, setSelect] = useState(null);
 
@@ -27,7 +34,7 @@ const Invoice = () => {
   const [error, setError] = useState("");
   const [postError, setPostError] = useState("");
   const [getAllInvoice, setGetAllInvoice] = useState([]);
-  console.log(getAllInvoice)
+  console.log(getAllInvoice);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
@@ -77,7 +84,7 @@ const Invoice = () => {
   };
 
   //  add to invoice
- 
+
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
@@ -86,8 +93,6 @@ const Invoice = () => {
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
   ]);
-
-  
 
   useEffect(() => {
     const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
@@ -117,9 +122,7 @@ const Invoice = () => {
     // newItems[index].total = Number(value) * newItems[index].rate;
     // setItems(newItems);
   };
- 
 
- 
   const handleRateChange = (index, value) => {
     const newItems = [...items];
 
@@ -134,7 +137,6 @@ const Invoice = () => {
 
     setItems(newItems);
   };
- 
 
   const handleDiscountChange = (value) => {
     const parsedValue = value === "" ? 0 : parseFloat(value);
@@ -205,7 +207,7 @@ const Invoice = () => {
         advance: advance,
         due: calculateDue(),
       };
-       
+
       setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/invoice`,
@@ -237,7 +239,6 @@ const Invoice = () => {
       }
     }
   };
- 
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
@@ -373,7 +374,7 @@ const Invoice = () => {
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
               <td> {card.customer_contact} </td>
-              <td>{card.date}</td>
+              <td>{formatDate(card.date)}</td>
               <td>
                 <div
                   onClick={() => handleIconPreview(card._id)}
@@ -499,7 +500,7 @@ const Invoice = () => {
           </div>
           <div className="space-y-1 text-justify">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 345689789666
+              <span className="font-bold">Mobile:</span> 01821-216465, 01972-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
@@ -511,8 +512,14 @@ const Invoice = () => {
       </div>
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-           
-          <div className="vehicleCard">Create Invoice </div>
+          <div className="flex justify-between items-center">
+            <div className="hidden"></div>
+            <div className="vehicleCard">Create Invoice </div>
+
+            <div>
+              <TADatePicker />
+            </div>
+          </div>
 
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
@@ -520,7 +527,7 @@ const Invoice = () => {
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Serial No"
+                  label="Job No"
                   onChange={(e) => setJob_no(e.target.value)}
                   value={jobCardData?.job_no}
                   focused={jobCardData?.job_no}
@@ -789,7 +796,6 @@ const Invoice = () => {
         <div className="flex items-center justify-between mb-5">
           <h3 className="mb-3 text-3xl font-bold">Invoice List:</h3>
           <div className="flex items-center searcList">
-           
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}
@@ -862,8 +868,6 @@ const Invoice = () => {
           </div>
         )}
       </div>
-
-      
     </div>
   );
 };

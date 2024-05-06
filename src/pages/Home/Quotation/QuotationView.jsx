@@ -279,7 +279,7 @@ const Detail = () => {
                       <div className="text-left">
                         <small className="block">
                           <small className="font-bold">Mobile:</small>{" "}
-                          +880 1710-700324
+                          +88 01821-216465
                         </small>
                         <small className="block">
                           <small className="font-bold">Email:</small>{" "}

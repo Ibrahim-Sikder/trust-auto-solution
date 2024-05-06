@@ -198,7 +198,7 @@ const MoneyReceiptView = () => {
             </div>
             <div className="flex items-center mt-1">
               <WhatsApp className="hotlineIcon" />
-              <small className="ml-1">+88 1972-216465</small>
+              <small className="ml-1">01821-216465</small>
             </div>
           </div>
         </div>
