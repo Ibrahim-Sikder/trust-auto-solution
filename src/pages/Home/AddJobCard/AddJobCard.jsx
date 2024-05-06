@@ -945,7 +945,7 @@ const AddJobCard = () => {
                 />
               </div>
 
-                <TextField
+                {/* <TextField
                   className="addJobInputField"
                   label="Vehicle Model (N)"
                   {...register("vehicle_model", {
@@ -957,7 +957,7 @@ const AddJobCard = () => {
                   })}
                   value={showCustomerData?.vehicle_model}
                   focused={showCustomerData?.vehicle_model}
-                />
+                /> */}
 
                 {/* {errors.vehicle_model && (
                   <span className="text-sm text-red-400">

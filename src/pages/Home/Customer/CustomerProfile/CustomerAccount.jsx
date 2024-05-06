@@ -21,10 +21,10 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <div>
-                Customer Name: <b>{profileData.company_name} </b>
+                Customer Name : <b className="capitalize ">{profileData.company_name} </b>
               </div>
               <div>
-               Vehicle Name: <b>{profileData.vehicle_name} </b>
+               Vehicle Name : <b>{profileData.vehicle_name} </b>
               </div>
               <div>
                Registration No : <b>{profileData.car_registration_no}</b>
@@ -34,13 +34,13 @@ const CustomerAccount = ({
 
             <div className="space-y-2" >
               <div>
-                chassis No: <b>{profileData.chassis_no} </b>
+                Company Name : <b className="capitalize">{profileData.company_name} </b>
               </div>
               <div>
-                Engine & CC: <b>{profileData.engine_no}</b>
+                Company Address : <b>{profileData.company_address}</b>
               </div>
               <div>
-               Mileage: <b>{profileData.mileage}</b>
+               Reference Name : <b> {profileData.reference_name}</b>
               </div>
             </div>
            
@@ -94,7 +94,7 @@ const CustomerAccount = ({
               <div className="ml-3">
                 {jobCardData && invoiceData.length > 0 && (
                   <div key={jobCardData[0].Id}>
-                    <b>{jobCardData[0].car_registration_no}</b>
+                    <b>{jobCardData[0].vehicle_name}</b>
                   </div>
                 )}
                 {jobCardData && jobCardData.length > 0 && (
@@ -105,24 +105,23 @@ const CustomerAccount = ({
               </div>
             </div>
             <b className="cursor-pointer">
-              <HiOutlineEye size={35} />
+            <Link to={`/dashboard/preview?id=${jobCardData._id}`}> <HiOutlineEye size={35} /></Link>
             </b>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <b className="block">Feb</b>
-                {jobCardData &&
-                  jobCardData.map((item) => (
-                    <div key={item.Id}>
-                      <b> {item.date.slice(0, 2)}</b>
-                    </div>
-                  ))}
+                {jobCardData && jobCardData.length > 0 && (
+                  <div key={jobCardData[1].Id}>
+                    <b>{jobCardData[1].date.slice(0, 2)}</b>
+                  </div>
+                )}
               </div>
               <div className="ml-3">
                 {jobCardData && jobCardData.length > 0 && (
                   <div key={jobCardData[1]?.Id}>
-                    <b>{jobCardData[1]?.job_no}</b>
+                    <b>{jobCardData[1]?.vehicle_name}</b>
                   </div>
                 )}
                 {jobCardData && jobCardData.length > 0 && (
@@ -133,8 +132,8 @@ const CustomerAccount = ({
               </div>
             </div>
             <b className="cursor-pointer">
-              {" "}
-              <HiOutlineEye size={35} />
+            
+             <Link to={`/dashboard/preview?id=${jobCardData._id}`}> <HiOutlineEye size={35} /></Link>
             </b>
           </div>
         </Card>
@@ -169,20 +168,22 @@ const CustomerAccount = ({
                 )}
               </div>
             </div>
+            <Link to={`/dashboard/quotation-view?id=${quotationData._id}`}>
             <b className="cursor-pointer">
               <HiOutlineEye size={35} />
             </b>
+            </Link>
+           
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <b className="block">Feb</b>
-                {jobCardData &&
-                  jobCardData.map((item) => (
-                    <div key={item.Id}>
-                      <b> {item.date.slice(0, 2)}</b>
-                    </div>
-                  ))}
+                {quotationData && quotationData.length > 0 && (
+                  <div key={quotationData[1].Id}>
+                    <b>{quotationData[1].date.slice(0, 2)}</b>
+                  </div>
+                )}
               </div>
               <div className="ml-3">
                 {quotationData && quotationData.length > 0 && (
@@ -197,10 +198,11 @@ const CustomerAccount = ({
                 )}
               </div>
             </div>
+            <Link to={`/dashboard/quotation-view?id=${quotationData._id}`}>
             <b className="cursor-pointer">
-              {" "}
               <HiOutlineEye size={35} />
             </b>
+            </Link>
           </div>
         </Card>
       </div>
@@ -225,12 +227,79 @@ const CustomerAccount = ({
                 )}
               </div>
               <div className="ml-3">
-                {quotationData && invoiceData.length > 0 && (
+                {invoiceData && invoiceData.length > 0 && (
                   <div key={invoiceData[0].Id}>
                     <b>{invoiceData[0].vehicle_name}</b>
                   </div>
                 )}
-                {quotationData && invoiceData.length > 0 && (
+                {invoiceData && invoiceData.length > 0 && (
+                  <div key={invoiceData[0].Id}>
+                    <b>৳{invoiceData[0].net_total}</b>
+                  </div>
+                )}
+              </div>
+            </div>
+            <Link to={`/dashboard/detail?id=${invoiceData._id}`}>
+            <b className="cursor-pointer">
+              <HiOutlineEye size={35} />
+            </b>
+            </Link>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center my-3">
+              <div className="cardIcon bg-[#48CAE4]">
+                <b className="block">Feb</b>
+                {invoiceData && invoiceData.length > 0 && (
+                  <div key={invoiceData[1]?.Id}>
+                    <b>{invoiceData[1]?.date.slice(0, 2)}</b>
+                  </div>
+                )}
+              </div>
+              <div className="ml-3">
+                {invoiceData && quotationData.length > 0 && (
+                  <div key={quotationData[1].Id}>
+                    <b>{quotationData[1].vehicle_name}</b>
+                  </div>
+                )}
+                {invoiceData && quotationData.length > 0 && (
+                  <div key={quotationData[1].Id}>
+                    <b>৳{quotationData[1].net_total}</b>
+                  </div>
+                )}
+              </div>
+            </div>
+            <Link to={`/dashboard/detail?id=${invoiceData._id}`}>
+            <b className="cursor-pointer">
+              <HiOutlineEye size={35} />
+            </b>
+            </Link>
+          </div>
+        </Card>
+        <Card>
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold">Recent Money Receipt </h3>
+            <Link to="/dashboard/money-receive">
+              {" "}
+              <FaRegEdit size={30} />
+            </Link>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center my-3">
+              <div className="cardIcon ">
+                <b className="block">Feb</b>
+                {invoiceData && invoiceData.length > 0 && (
+                  <div key={invoiceData[0].Id}>
+                    <b>{invoiceData[0].date.slice(0, 2)}</b>
+                  </div>
+                )}
+              </div>
+              <div className="ml-3">
+                {invoiceData && invoiceData.length > 0 && (
+                  <div key={invoiceData[0].Id}>
+                    <b>{invoiceData[0].vehicle_name}</b>
+                  </div>
+                )}
+                {invoiceData && invoiceData.length > 0 && (
                   <div key={invoiceData[0].Id}>
                     <b>৳{invoiceData[0].net_total}</b>
                   </div>
@@ -245,20 +314,19 @@ const CustomerAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <b className="block">Feb</b>
-                {jobCardData &&
-                  jobCardData.map((item) => (
-                    <div key={item.Id}>
-                      <b> {item.date.slice(0, 2)}</b>
-                    </div>
-                  ))}
+                {invoiceData && invoiceData.length > 0 && (
+                  <div key={invoiceData[1]?.Id}>
+                    <b>{invoiceData[1]?.date.slice(0, 2)}</b>
+                  </div>
+                )}
               </div>
               <div className="ml-3">
-                {quotationData && quotationData.length > 0 && (
+                {invoiceData && quotationData.length > 0 && (
                   <div key={quotationData[1].Id}>
                     <b>{quotationData[1].vehicle_name}</b>
                   </div>
                 )}
-                {quotationData && quotationData.length > 0 && (
+                {invoiceData && quotationData.length > 0 && (
                   <div key={quotationData[1].Id}>
                     <b>৳{quotationData[1].net_total}</b>
                   </div>
@@ -269,30 +337,6 @@ const CustomerAccount = ({
               {" "}
               <HiOutlineEye size={35} />
             </b>
-          </div>
-        </Card>
-        <Card>
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-semibold">Recent Vehicles </h3>
-            <FaRegEdit size={30} />
-          </div>
-          <div className="flex items-center my-3">
-            <div className="cardIcon bg-[#42A1DA]">
-              <FaCarSide size={50} className="text-white" />
-            </div>
-            <div className="ml-3">
-              <b>Ferrari</b>
-              <p>Bangladesh </p>
-            </div>
-          </div>
-          <div className="flex items-center">
-            <div className="cardIcon bg-[#0A9396]">
-              <FaCarSide size={50} className="text-white" />
-            </div>
-            <div className="ml-3">
-              <b>Ferrari</b>
-              <p>Bangladesh </p>
-            </div>
           </div>
         </Card>
       </div>

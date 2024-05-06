@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { FaCarSide, FaEye } from "react-icons/fa";
+import { FaCarSide, FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -14,8 +14,6 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const VehicleDetails = () => {
-   
-
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -31,7 +29,6 @@ const VehicleDetails = () => {
   };
   const handleVehicleDetailsClose = () => setVehicleDetails(false);
 
-
   const [vehicleList, setVehicleList] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [filterType, setFilterType] = useState("");
@@ -43,7 +40,7 @@ const VehicleDetails = () => {
         .then((res) => res.json())
         .then((data) => setVehicleList(data));
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
   }, [id]);
 
@@ -160,28 +157,31 @@ const VehicleDetails = () => {
             <tr key={card._id}>
               <td>{index + 1}</td>
               <td>{card.company_name}</td>
+              <td>{card.company_name}</td>
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
               <td>{card.date}</td>
               <td>
-                <div
-                  onClick={() => handVehicleDetailsOpen(card.customerId)}
-                  className="editIconWrap edit2"
-                >
-                  <FaEye />
+                <div className="flex justify-center items-center">
+                  <FaEye className="text-[#42A1DA]" size={24}/>
+             
                 </div>
               </td>
 
-              {/*               
-             <td>
-               <div
-                 onClick={() => deletePackage(card._id)}
-                 className="editIconWrap"
-               >
-                 <FaTrashAlt className="deleteIcon" />
-               </div>
-             </td> */}
+              <td>
+                <div className="flex justify-center items-center">
+                  <FaEdit className="text-[#22C55E]" size={24}/>
+                </div>
+              </td>
+            
+              <td>
+                <div className="flex justify-center items-center">
+                  <FaTrashAlt className="text-red-600" size={24}/>
+                
+                </div>
+              </td>
+       
             </tr>
           ))}
         </tbody>
@@ -273,9 +273,7 @@ const VehicleDetails = () => {
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <div className="flex items-center">
           <FormControl className="selectForm">
-            <InputLabel id="demo-simple-select-label">
-              Page
-            </InputLabel>
+            <InputLabel id="demo-simple-select-label">Page</InputLabel>
             <Select
               className="selectForm"
               labelId="demo-simple-select-label"
@@ -298,12 +296,6 @@ const VehicleDetails = () => {
           </div>
         </div>
         <div className="flex items-center mt-3 md:mt-0">
-          <button
-            onClick={handleAllCustomer}
-            className="hidden md:block none mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </button>
           <input
             type="text"
             placeholder="Search"
