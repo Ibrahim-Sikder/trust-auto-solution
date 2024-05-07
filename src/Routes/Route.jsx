@@ -66,6 +66,7 @@ import ViewEmployeeAttendance from "../pages/Home/Attendance/ViewEmployeeAttenda
 import BillPay from "../pages/BillPay/BillPay";
 import Support from "../pages/Support/Support";
 import Practice from "../pages/Practice";
+import Message from "../pages/Message/Message";
 
 export const router = createBrowserRouter([
   {
@@ -357,6 +358,10 @@ export const router = createBrowserRouter([
       {
         path: "practice",
         element: <Practice />,
+      },
+      {
+        path: "message",
+        element: <Message />,
       },
 
     ],
