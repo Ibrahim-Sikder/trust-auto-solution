@@ -577,14 +577,13 @@ const AddJobCard = () => {
                     label="Select Customer"
                     // onChange={handleChange}
                   >
-                   
                     <MenuItem value="Customer ID">Customer ID</MenuItem>
                     <MenuItem value="Show Room ID">Show Room ID </MenuItem>
                     <MenuItem value="Company ID">Company ID </MenuItem>
                   </Select>
                 </FormControl>
-                <input 
-                placeholder="Search Here"
+                <input
+                  placeholder="Search Here"
                   onChange={(e) => setCustomerId(e.target.value)}
                   type="text"
                   className="border-[#ddd] border w-40 h-10 p-2 rounded-sm"
@@ -659,17 +658,20 @@ const AddJobCard = () => {
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Company Name (T)"
-                  placeholder="Company Name"
                   {...register("company_name")}
-                  value={showCustomerData?.company_name}
+                  label="Company Name (T)"
                   focused={showCustomerData?.company_name}
+                  value={showCustomerData?.company_name}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      company_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.company_name,
+                  }}
                 />
-                {/* {errors.company_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -678,6 +680,15 @@ const AddJobCard = () => {
                   {...register("username")}
                   value={showCustomerData?.username}
                   focused={showCustomerData?.username}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      username: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.username,
+                  }}
                 />
                 {/* {errors.username && (
               <span className="text-sm text-red-400">
@@ -692,6 +703,15 @@ const AddJobCard = () => {
                   {...register("company_address")}
                   value={showCustomerData?.company_address}
                   focused={showCustomerData?.company_address}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      company_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.company_address,
+                  }}
                 />
                 {/* {errors.company_address && (
               <span className="text-sm text-red-400">
@@ -707,6 +727,15 @@ const AddJobCard = () => {
                   {...register("customer_name")}
                   value={showCustomerData?.customer_name}
                   focused={showCustomerData?.customer_name}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      customer_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.customer_name,
+                  }}
                 />
                 {/* {errors.customer_name && (
               <span className="text-sm text-red-400">
@@ -727,6 +756,15 @@ const AddJobCard = () => {
                   })}
                   value={showCustomerData?.customer_contact}
                   focused={showCustomerData?.customer_contact}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      customer_contact: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.customer_contact,
+                  }}
                 />
                 {/* {errors.customer_contact && (
               <span className="text-sm text-red-400">
@@ -742,6 +780,15 @@ const AddJobCard = () => {
                   type="email"
                   value={showCustomerData?.customer_email}
                   focused={showCustomerData?.customer_email}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      customer_email: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.customer_email,
+                  }}
                 />
                 {/* {errors.customer_email && (
               <span className="text-sm text-red-400">
@@ -756,6 +803,15 @@ const AddJobCard = () => {
                   {...register("customer_address")}
                   value={showCustomerData?.customer_address}
                   focused={showCustomerData?.customer_address}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      customer_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.customer_address,
+                  }}
                 />
                 {/* {errors.customer_address && (
               <span className="text-sm text-red-400">
@@ -770,6 +826,15 @@ const AddJobCard = () => {
                   {...register("driver_name")}
                   value={showCustomerData?.driver_name}
                   focused={showCustomerData?.driver_name}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      driver_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.driver_name,
+                  }}
                 />
                 {/* {errors.driver_name && (
               <span className="text-sm text-red-400">
@@ -790,6 +855,15 @@ const AddJobCard = () => {
                   })}
                   value={showCustomerData?.driver_contact}
                   focused={showCustomerData?.driver_contact}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      driver_contact: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.driver_contact,
+                  }}
                 />
                 {/* {errors.driver_contact && (
               <span className="text-sm text-red-400">
@@ -804,6 +878,15 @@ const AddJobCard = () => {
                   {...register("reference_name")}
                   value={showCustomerData?.reference_name}
                   focused={showCustomerData?.reference_name}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      reference_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.reference_name,
+                  }}
                 />
                 {/* {errors.reference_name && (
               <span className="text-sm text-red-400">
@@ -822,13 +905,24 @@ const AddJobCard = () => {
                   inputValue={inputValue}
                   onInputChange={(event, newValue) => setInputValue(newValue)}
                   options={cmDmOptions.map((option) => option.label)}
+                  value={showCustomerData?.carReg_no}
+                  focused={showCustomerData?.carReg_no}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Reg No"
                       {...register("carReg_no")}
-                      inputRef={inputRef} // Attach the ref to the TextField
-                      value={inputValue}
+                      // inputRef={inputRef}
+                      // value={inputValue}
+                      onChange={(e) =>
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          carReg_no: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!showCustomerData.carReg_no,
+                      }}
                     />
                   )}
                 />
@@ -839,6 +933,15 @@ const AddJobCard = () => {
                   {...register("car_registration_no")}
                   value={showCustomerData?.car_registration_no}
                   focused={showCustomerData?.car_registration_no}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      car_registration_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.car_registration_no,
+                  }}
                 />
               </div>
 
@@ -855,6 +958,15 @@ const AddJobCard = () => {
                   label="Chassis No (T&N)"
                   value={showCustomerData?.chassis_no}
                   focused={showCustomerData?.chassis_no}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      chassis_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.chassis_no,
+                  }}
                 />
                 {/* {errors.chassis_no && (
                   <span className="text-sm text-red-400">
@@ -869,6 +981,15 @@ const AddJobCard = () => {
                   label="ENGINE NO & CC (T&N) "
                   value={showCustomerData?.engine_no}
                   focused={showCustomerData?.engine_no}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      engine_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.engine_no,
+                  }}
                 />
                 {/* {errors.engine_no && (
                   <span className="text-sm text-red-400">
@@ -892,10 +1013,18 @@ const AddJobCard = () => {
                       {...register("vehicle_brand")}
                       value={showCustomerData?.vehicle_brand}
                       focused={showCustomerData?.vehicle_brand}
+                      onChange={(e) =>
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          vehicle_brand: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!showCustomerData.vehicle_brand,
+                      }}
                     />
                   )}
                 />
-           
               </div>
 
               <div className="mt-3">
@@ -913,16 +1042,21 @@ const AddJobCard = () => {
                       {...register("vehicle_name")}
                       value={showCustomerData?.vehicle_name}
                       focused={showCustomerData?.vehicle_name}
+                      onChange={(e) =>
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          vehicle_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!showCustomerData.vehicle_name,
+                      }}
                     />
                   )}
                 />
-             
               </div>
 
-
               <div className="mt-3">
-               
-
                 <div className="mt-3">
                   <Autocomplete
                     className="addJobInputField"
@@ -937,11 +1071,19 @@ const AddJobCard = () => {
                         {...register("vehicle_model")}
                         value={showCustomerData?.vehicle_model}
                         focused={showCustomerData?.vehicle_model}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            vehicle_model: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.vehicle_model,
+                        }}
                       />
                     )}
                   />
                 </div>
-                
               </div>
 
               <div className="mt-3">
@@ -978,6 +1120,15 @@ const AddJobCard = () => {
                     showCustomerData?.color_code !== "" &&
                     showCustomerData?.color_code
                   }
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      color_code: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.color_code,
+                  }}
                 />
                 {/* {errors.color_code && (
                   <span className="text-sm text-red-400">
@@ -998,6 +1149,15 @@ const AddJobCard = () => {
                   })}
                   value={showCustomerData?.mileage}
                   focused={showCustomerData?.mileage}
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      mileage: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.mileage,
+                  }}
                 />
                 {/* {errors.mileage && (
                   <span className="text-sm text-red-400">
@@ -1022,6 +1182,15 @@ const AddJobCard = () => {
                       {...register("fuel_type")}
                       value={showCustomerData?.fuel_type}
                       focused={showCustomerData?.fuel_type}
+                      onChange={(e) =>
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          fuel_type: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!showCustomerData.fuel_type,
+                      }}
                     />
                   )}
                 />
