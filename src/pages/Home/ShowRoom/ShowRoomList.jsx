@@ -295,27 +295,20 @@ const ShowRoomList = () => {
         <div className="flex items-center justify-center ">
           <FaUserTie className="invoicIcon" />
           <div className="ml-2">
-            <h3 className="text-2xl font-bold"> Customer </h3>
-            <span>Manage Customer </span>
+            <h3 className="text-2xl font-bold"> Dashboard </h3>
+            <span>Show Room List </span>
           </div>
         </div>
         <div className="productHome">
-          <span>Home / </span>
-          <span>Customer / </span>
-          <span>New Customer </span>
+          <span>Dashboard / </span>
+          <span>Show Room  / </span>
+          <span>Show Room List </span>
         </div>
       </div>
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3 ">
         <h3 className="mb-3 text-3xl font-bold"> Show Room List:</h3>
         <div className="flex items-center">
-          {/**
-          <button
-            onClick={handleAllCustomer}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </button>
-          */}
+          
           <input
             onChange={(e) => setFilterType(e.target.value)}
             type="text"
@@ -324,7 +317,7 @@ const ShowRoomList = () => {
           />
           <button
             onClick={handleFilterType}
-            className="bg-[#42A1DA] text-white px-2 py-2 rounded-full ml-1"
+            className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
           >
             {" "}
             <HiOutlineSearch size={25} />

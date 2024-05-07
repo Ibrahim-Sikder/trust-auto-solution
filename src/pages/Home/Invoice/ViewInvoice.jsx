@@ -310,12 +310,7 @@ const ViewInvoice = () => {
       <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <h3 className="mb-3 text-3xl font-bold">Invoice List:</h3>
         <div className="flex items-center searcList">
-          <div
-            onClick={handleAllInvoice}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </div>
+          
           <div className="searchGroup">
             <input
               onChange={(e) => setFilterType(e.target.value)}

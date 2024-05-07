@@ -3,9 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {
   FaTrashAlt,
-  FaEdit,
-  FaArrowRight,
-  FaArrowLeft,
   FaEye,
   FaFileInvoice,
 } from "react-icons/fa";
@@ -321,7 +318,7 @@ const RunningProject = () => {
 			<div className="flex items-center justify-between my-3 mb-8">
 				
 				<div className="productHome">
-					<span>Home / </span>
+					<span>Dashboard / </span>
 					<span>Running Project </span>
 				</div>
 			</div>

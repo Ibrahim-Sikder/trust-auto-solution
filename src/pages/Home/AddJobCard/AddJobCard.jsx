@@ -914,15 +914,7 @@ const AddJobCard = () => {
                       {...register("carReg_no")}
                       // inputRef={inputRef}
                       // value={inputValue}
-                      onChange={(e) =>
-                        setShowCustomerData({
-                          ...showCustomerData,
-                          carReg_no: e.target.value,
-                        })
-                      }
-                      InputLabelProps={{
-                        shrink: !!showCustomerData.carReg_no,
-                      }}
+                      
                     />
                   )}
                 />
@@ -1013,15 +1005,7 @@ const AddJobCard = () => {
                       {...register("vehicle_brand")}
                       value={showCustomerData?.vehicle_brand}
                       focused={showCustomerData?.vehicle_brand}
-                      onChange={(e) =>
-                        setShowCustomerData({
-                          ...showCustomerData,
-                          vehicle_brand: e.target.value,
-                        })
-                      }
-                      InputLabelProps={{
-                        shrink: !!showCustomerData.vehicle_brand,
-                      }}
+                      
                     />
                   )}
                 />
@@ -1042,15 +1026,7 @@ const AddJobCard = () => {
                       {...register("vehicle_name")}
                       value={showCustomerData?.vehicle_name}
                       focused={showCustomerData?.vehicle_name}
-                      onChange={(e) =>
-                        setShowCustomerData({
-                          ...showCustomerData,
-                          vehicle_name: e.target.value,
-                        })
-                      }
-                      InputLabelProps={{
-                        shrink: !!showCustomerData.vehicle_name,
-                      }}
+                      
                     />
                   )}
                 />
@@ -1071,18 +1047,22 @@ const AddJobCard = () => {
                         {...register("vehicle_model")}
                         value={showCustomerData?.vehicle_model}
                         focused={showCustomerData?.vehicle_model}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            vehicle_model: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.vehicle_model,
+                        onChange={(e) => {
+                          const input = e.target.value;
+                          // Only allow numbers and limit to 4 digits
+                          if (/^\d{0,4}$/.test(input)) {
+                            setShowCustomerData({
+                              ...showCustomerData,
+                              vehicle_model: input,
+                            });
+                          }
                         }}
                       />
                     )}
                   />
+
+
+                  
                 </div>
               </div>
 
@@ -1182,15 +1162,7 @@ const AddJobCard = () => {
                       {...register("fuel_type")}
                       value={showCustomerData?.fuel_type}
                       focused={showCustomerData?.fuel_type}
-                      onChange={(e) =>
-                        setShowCustomerData({
-                          ...showCustomerData,
-                          fuel_type: e.target.value,
-                        })
-                      }
-                      InputLabelProps={{
-                        shrink: !!showCustomerData.fuel_type,
-                      }}
+                      
                     />
                   )}
                 />
@@ -1403,12 +1375,7 @@ const AddJobCard = () => {
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-sm font-bold lg:text-3xl">Job Card List:</h3>
           <div className="flex items-center searcList">
-            <div
-              onClick={handleAllAddToJobCard}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </div>
+           
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

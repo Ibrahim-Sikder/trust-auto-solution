@@ -1,13 +1,14 @@
+/* eslint-disable react/no-unknown-property */
 import img from '../../../../public/assets/team.jpeg'
-import { FaCheckCircle } from "react-icons/fa";
+import { FaCheckCircle, FaCloudUploadAlt } from "react-icons/fa";
 const Profile = () => {
   return (
     <div>
       {/* new cosw */}
       <div className="border-gray-700 bg-opacity-25 mt-14">
         <div className="lg:w-full bg-[#42A1DA] mb-8">
-          <div className="flex flex-wrap items-center justify-evenly p-4 md:py-8">
-            <div className="md:w-3/12 md:ml-16">
+          <div className="flex w-[900px] mx-auto   items-center justify-center p-4 md:py-8">
+            <div className="">
               <img
                 className="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
                      border-2 border-[#fff] p-1"
@@ -19,13 +20,14 @@ const Profile = () => {
             <div className="w-8/12 md:w-7/12 ml-4">
               <div className="md:flex md:flex-wrap md:items-center mb-4">
                 <h2 className="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0 text-white">
-                  {/* {userInfo.name} */}
+                 
                 </h2>
                 <a href="#" className="text-white text-xl">
                   <FaCheckCircle></FaCheckCircle>
                 </a>
               </div>
               <div className="hidden md:block text-white">
+                <div className="space-y-3">
                 <h1 className="font-semibold">MD. ALAMIN</h1>
                 <span>Managing Director</span>
                 <p>
@@ -35,6 +37,7 @@ const Profile = () => {
                   it is the relationships we build that will endure. I look
                   forward to working closely with you and your team.
                 </p>
+                </div>
               </div>
             </div>
             <div className="md:hidden text-sm my-2">
@@ -75,22 +78,7 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="mt-6">
-                <label className="block text-sm font-medium text-gray-700 leading-5">
-                  {" "}
-                  Image{" "}
-                </label>
-
-                <div className="mt-1 rounded-md shadow-sm">
-                  <input
-                    id="text"
-                    type="file"
-                    name="image "
-                    className="file-input file-input-bordered  w-full  appearance-none block  border border-[#42A1DA]  rounded-md placeholder-gray-400 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                    autoComplete="off"
-                  />
-                </div>
-              </div>
+             
               <div className="mt-6">
                 <label className="block text-sm font-medium text-gray-700 leading-5">
                   {" "}
@@ -106,6 +94,18 @@ const Profile = () => {
                     autoComplete="off"
                   ></textarea>
                 </div>
+              </div>
+              <div className="mt-6">
+                <input type="file" id="files" className="hidden" />
+                <label
+                  for="files"
+                  className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                >
+                  <span>
+                    <FaCloudUploadAlt size={30} className="mr-2" />
+                  </span>
+                  Upload Image
+                </label>
               </div>
               <div className="mt-6">
                 <span className="block w-full rounded-md shadow-sm">

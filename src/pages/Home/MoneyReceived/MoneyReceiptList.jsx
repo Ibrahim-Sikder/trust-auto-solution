@@ -292,12 +292,7 @@ const MoneyReceiptList = () => {
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <h3 className="mb-3 text-xl font-bold md:text-3xl">Money Receipt List:</h3>
         <div className="flex items-center searcList">
-          <div
-            onClick={handleAllMoneyReceipt}
-            className="mx-6 font-semibold cursor-pointer"
-          >
-            All
-          </div>
+          
            
           <div className="searchGroup">
             <input

@@ -11,6 +11,7 @@ import AddMoneyReceiptList from "./AddMoneyReceiptList";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { FaGlobe } from "react-icons/fa";
+import TADatePicker from "../../../components/form/TADatePicker";
 const MoneyReceiptView = () => {
   const { register, handleSubmit, reset } = useForm();
   const [advance, setAdvance] = useState(null);
@@ -205,9 +206,10 @@ const MoneyReceiptView = () => {
         <div className="receivedBtn">
           <button>Receipt</button>
         </div>
-        <div className="flex justify-between mt-5 lg:mt-0 ">
-          <b>Serial No: 01</b>
-          <input type="date" />
+        <div className="flex justify-between items-center lg:mt-0  mb-5">
+          <b>Job No: 01</b>
+         
+          <TADatePicker/>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex mt-3 receivedField">

@@ -270,12 +270,7 @@ const AddMoneyReceiptList = () => {
           Money Receipt List:
         </h3>
         <div className="flex items-center searcList">
-          <div
-            onClick={handleAllMoneyReceipt}
-            className="mx-6 font-semibold cursor-pointer"
-          >
-            All
-          </div>
+         
 
           <div className="searchGroup">
             <input

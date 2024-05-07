@@ -298,8 +298,8 @@ const SupplierList = () => {
         </div>
         <div className="productHome">
           <span>Home / </span>
-          <span>Customer / </span>
-          <span>New Supplier </span>
+          <span>Supplier / </span>
+          <span> Supplier List </span>
         </div>
       </div>
       <div className="mt-20 overflow-x-auto">

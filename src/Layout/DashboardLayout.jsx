@@ -743,7 +743,7 @@ const DashboardLayout = () => {
             <div className="mt-14">
               <div>
                 <div className="toolTipWrap">
-                  <NavLink to="/">
+                  <NavLink to="/dashboard">
                     <Home className="tooltipIcon" />
                   </NavLink>
                   <b className="toolTip">Dashboard </b>

@@ -350,12 +350,7 @@ const QuotationList = () => {
               <option value="Car Number"> Car Number</option>
               <option value="Mobile Number"> Mobile Number</option>
             </select> */}
-            <div
-            onClick={handleAllQuotation}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </div>
+           
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

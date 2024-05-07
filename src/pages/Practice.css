@@ -1,0 +1,22 @@
+.options-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    position: absolute;
+    width: 200px;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .options-list li {
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  
+  .options-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
