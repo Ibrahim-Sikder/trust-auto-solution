@@ -11,7 +11,7 @@ import { formatDate } from "../../../../utils/formateDate";
 const PreviewJobCard = () => {
   const { componentRef, targetRef } = useContext(PrintContext);
   const [previewData, setPreviewData] = useState({});
-  console.log(previewData)
+  console.log(previewData);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -22,7 +22,6 @@ const PreviewJobCard = () => {
         .then((res) => res.json())
         .then((data) => {
           setPreviewData(data);
-           
         });
     }
   }, [id]);
@@ -261,6 +260,7 @@ const PreviewJobCard = () => {
                     <label> Reported Action</label>
                     <textarea defaultValue={reportedAction} readOnly></textarea>
                   </div>
+
                   <div className="mt-">
                     <label>
                       {/* Vehicle Interior Parts, */}
@@ -271,16 +271,25 @@ const PreviewJobCard = () => {
                       readOnly
                     ></textarea>
                   </div>
+                 
                 </div>
                 <div className="rightSide">
                   <div className="carImgWrap">
                     <img src={car} alt="car" />
                   </div>
+                  <div className="mt-">
+                    <label>Note</label>
+                    <textarea
+                      className="note"
+                      defaultValue={previewData.vehicle_body_report}
+                      readOnly
+                    ></textarea>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center mb-3 justify-between inputGroup2">
+            <div className="flex items-center  justify-between inputGroup2">
               <div>
                 <label className="block ">Technician Name</label>
                 <input
@@ -294,7 +303,7 @@ const PreviewJobCard = () => {
                 <label className="block">Technician Signature </label>
                 <input
                   // defaultValue={previewData.technician_signature}
-               disabled
+                  disabled
                   type="text"
                   // placeholder="Technician Signature"
                 />

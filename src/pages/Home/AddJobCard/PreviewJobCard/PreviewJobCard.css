@@ -38,7 +38,7 @@
 }
 .carImgWrap {
 	width: 270px;
-    height: 345px;
+    height: 290px;
     border: 1px solid black;
     padding: 5px;
     border-radius: 5px;
@@ -62,8 +62,12 @@
 	padding-left:5px;
 	padding-top:5px;
 	resize: none;
-	height: 95px;
+	height: 102px;
 	font-size: 13px;
+}
+.rightSide .note{
+	height:50px;
+	width:100%;
 }
 .fullTextArea textarea{
 	width:100%;
