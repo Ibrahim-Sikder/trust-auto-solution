@@ -144,11 +144,10 @@ const VehicleDetails = () => {
         <thead className="tableWrap">
           <tr>
             <th>SL No</th>
-            <th>Customer Name</th>
-            <th>Order Number </th>
-            <th>Car Number </th>
-            <th>Mobile Number</th>
-            <th>Date</th>
+            <th>Vehicle Reg No </th>
+            <th>Chassis No </th>
+            <th>Engine & CC </th>
+            <th>Vehicle Name</th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>
@@ -161,9 +160,9 @@ const VehicleDetails = () => {
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-              <td>{card.date}</td>
+          
               <td>
-                <div className="flex justify-center items-center">
+                <div onClick={handVehicleDetailsOpen} className="flex justify-center items-center">
                   <FaEye className="text-[#42A1DA]" size={24}/>
              
                 </div>

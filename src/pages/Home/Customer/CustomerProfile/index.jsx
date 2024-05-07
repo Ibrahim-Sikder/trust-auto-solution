@@ -171,7 +171,7 @@ const CustomerProfile = () => {
             <Tab>Jobs Card </Tab>
             <Tab>Quotation </Tab>
             <Tab>Invoice </Tab>
-            <Tab>Money Reciept </Tab>
+            <Tab>Money Receipt </Tab>
             <Tab>Payment</Tab>
             <Tab>Message</Tab>
           </TabList>

@@ -4,7 +4,14 @@ import car from "../../../../public/assets/car2.jpeg";
 import logo from "../../../../public/assets/logo.png";
 import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
-import { Autocomplete, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
@@ -36,17 +43,16 @@ const AddJobCard = () => {
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
   const inputRef = useRef(null); // Create a ref for the input element
-  const [inputValue, setInputValue] = useState(''); // Controlled input value state
+  const [inputValue, setInputValue] = useState(""); // Controlled input value state
 
   // Effect to manage focus when showCustomerData.carReg_no changes and is non-empty
   useEffect(() => {
     if (showCustomerData?.carReg_no && inputRef.current) {
-      inputRef.current.focus();  // Focus the input element if data is present
-      setInputValue(showCustomerData.carReg_no);  // Set the input value to the loaded data
+      inputRef.current.focus(); // Focus the input element if data is present
+      setInputValue(showCustomerData.carReg_no); // Set the input value to the loaded data
     }
   }, [showCustomerData]);
 
-  
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
@@ -73,7 +79,6 @@ const AddJobCard = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const formRef = useRef();
   const navigate = useNavigate();
-
 
   const onSubmit = async (data) => {
     try {
@@ -534,7 +539,8 @@ const AddJobCard = () => {
           </div>
           <div className="space-y-1 text-justify jobCardContactInfo">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 01821-216465, 01972-216465
+              <span className="font-bold">Mobile:</span> 01821-216465,
+              01972-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
@@ -559,11 +565,31 @@ const AddJobCard = () => {
                   <b>Customer ID:</b> TAS000
                 </span>
               </div>
-              <input
-                onChange={(e) => setCustomerId(e.target.value)}
-                type="text"
-                className="border-[#ddd] border w-56 h-10 mt-2 p-2 rounded-sm"
-              />
+              <div className="flex items-center mt-2">
+                <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
+                  <InputLabel id="demo-select-small-label">
+                    Select Customer
+                  </InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    // value={age}
+                    label="Select Customer"
+                    // onChange={handleChange}
+                  >
+                   
+                    <MenuItem value="Customer ID">Customer ID</MenuItem>
+                    <MenuItem value="Show Room ID">Show Room ID </MenuItem>
+                    <MenuItem value="Company ID">Company ID </MenuItem>
+                  </Select>
+                </FormControl>
+                <input 
+                placeholder="Search Here"
+                  onChange={(e) => setCustomerId(e.target.value)}
+                  type="text"
+                  className="border-[#ddd] border w-40 h-10 p-2 rounded-sm"
+                />
+              </div>
             </div>
             <div>
               <div className="vehicleCard">Vehicle Job Card </div>
@@ -790,25 +816,25 @@ const AddJobCard = () => {
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
               <div className="flex  md:gap-0 gap-4 items-center mt-3 ">
-              <Autocomplete
-      className="jobCardSelect2"
-      id="free-solo-demo"
-      inputValue={inputValue}
-      onInputChange={(event, newValue) => setInputValue(newValue)}
-      options={cmDmOptions.map(option => option.label)}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Vehicle Reg No"
-          {...register("carReg_no")}
-          inputRef={inputRef}  // Attach the ref to the TextField
-          value={inputValue}
-        />
-      )}
-    />
+                <Autocomplete
+                  className="jobCardSelect2"
+                  id="free-solo-demo"
+                  inputValue={inputValue}
+                  onInputChange={(event, newValue) => setInputValue(newValue)}
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Reg No"
+                      {...register("carReg_no")}
+                      inputRef={inputRef} // Attach the ref to the TextField
+                      value={inputValue}
+                    />
+                  )}
+                />
 
                 <TextField
-                 className="carRegField"
+                  className="carRegField"
                   label="Car R (T&N)"
                   {...register("car_registration_no")}
                   value={showCustomerData?.car_registration_no}
@@ -869,11 +895,7 @@ const AddJobCard = () => {
                     />
                   )}
                 />
-                {/* {errors.vehicle_brand && !brand && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
+           
               </div>
 
               <div className="mt-3">
@@ -894,76 +916,32 @@ const AddJobCard = () => {
                     />
                   )}
                 />
-                {/* {errors.vehicle_brand && !brand && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )} */}
+             
               </div>
 
-              {/** 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  onChange={(e) => setCarModel(e.target.value)}
-                  label="Vehicle Model (N)"
-                />
-              </div>
-              */}
 
               <div className="mt-3">
-                {/* <Autocomplete
-                className="addJobInputField"
-                  onChange={(e) => setCarModel(e.target.value)}
-                  id="free-solo-demo"
-                  Vehicle
-                  Brand
-                  options={totalYear.map((option) => option.title)}
-                  renderInput={(params) => (
-                    <TextField {...params} label=" Vehicle Model" />
-                  )}
-                /> */}
-
-
+               
 
                 <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  Vehicle
-                  Types
-                  onInputChange={handleCategoryChange}
-                  options={vehicleModels.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label=" Vehicle Model "
-                      {...register("vehicle_model")}
-                      value={showCustomerData?.vehicle_model}
-                     focused={showCustomerData?.vehicle_model}
-                    />
-                  )}
-                />
-              </div>
-
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Vehicle Model (N)"
-                  {...register("vehicle_model", {
-                    // required: "This field is required.",
-                    pattern: {
-                      value: /^\d+$/,
-                      message: "Please enter a valid model number.",
-                    },
-                  })}
-                  value={showCustomerData?.vehicle_model}
-                  focused={showCustomerData?.vehicle_model}
-                /> */}
-
-                {/* {errors.vehicle_model && (
-                  <span className="text-sm text-red-400">
-                    {errors.vehicle_model.message}
-                  </span>
-                )} */}
+                  <Autocomplete
+                    className="addJobInputField"
+                    Vehicle
+                    Types
+                    onInputChange={handleCategoryChange}
+                    options={vehicleModels.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=" Vehicle Model "
+                        {...register("vehicle_model")}
+                        value={showCustomerData?.vehicle_model}
+                        focused={showCustomerData?.vehicle_model}
+                      />
+                    )}
+                  />
+                </div>
+                
               </div>
 
               <div className="mt-3">
@@ -1137,7 +1115,7 @@ const AddJobCard = () => {
               <div className="mt-2 imgWrap">
                 <img src={car} alt="car" />
               </div>
-              <div className="mt-5">
+              <div className="mt-3">
                 <b className="block mb-1 "> Note </b>
                 <textarea
                   onChange={(e) => setVehicleBody(e.target.value)}
@@ -1145,7 +1123,7 @@ const AddJobCard = () => {
                   autoComplete="off"
                 ></textarea>
               </div>
-              <div className="mt-5">
+              <div className="mt-3">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
                 <textarea
                   onChange={(e) => setVehicleBody(e.target.value)}
