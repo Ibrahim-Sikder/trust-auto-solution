@@ -4,6 +4,64 @@ import { HiOutlineHome } from "react-icons/hi";
 import "./Notification.css";
 
 const EmployeeSalary = ({ open }) => {
+  const notificationData = [
+    {
+      id: 1,
+      notificationId: "#258",
+      timeStamps: "01 Dec, 2024 09:30 AM",
+      type: "Information New software update available",
+      content: "Click here to download.",
+      status: "Unread",
+    },
+    {
+      id: 1,
+      notificationId: "#258",
+      timeStamps: "01 Dec, 2024 09:30 AM",
+      type: "Information New software update available",
+      content: "Click here to download.",
+      status: "Read",
+    },
+    {
+      id: 1,
+      notificationId: "#258",
+      timeStamps: "01 Dec, 2024 09:30 AM",
+      type: "Information New software update available",
+      content: "Click here to download.",
+      status: "Unread",
+    },
+    {
+      id: 1,
+      notificationId: "#258",
+      timeStamps: "01 Dec, 2024 09:30 AM",
+      type: "Information New software update available",
+      content: "Click here to download.",
+      status: "Unread",
+    },
+    {
+      id: 1,
+      notificationId: "#258",
+      timeStamps: "01 Dec, 2024 09:30 AM",
+      type: "Information New software update available",
+      content: "Click here to download.",
+      status: "Read",
+    },
+    {
+      id: 1,
+      notificationId: "#258",
+      timeStamps: "01 Dec, 2024 09:30 AM",
+      type: "Information New software update available",
+      content: "Click here to download.",
+      status: "Read",
+    },
+    {
+      id: 1,
+      notificationId: "#258",
+      timeStamps: "01 Dec, 2024 09:30 AM",
+      type: "Information New software update available",
+      content: "Click here to download.",
+      status: "Read",
+    },
+  ];
   return (
     <>
       <div className="bg-[#EFF3F9] p-5 px-20">
@@ -19,8 +77,9 @@ const EmployeeSalary = ({ open }) => {
           </div>
         </div>
       </div>
-      <div className="table-container">
-        <table className="leaveTable">
+      <div className="table-container notificationTable ">
+      <h3 className="flex  text-2xl p-5 font-semibold ">Notifications </h3>
+        <table className="">
           <thead>
             <tr>
               <th>Notification ID</th>
@@ -31,17 +90,19 @@ const EmployeeSalary = ({ open }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td> #258</td>
-              <td>01 Dec, 2024 09:30 AM</td>
-              <td>Information New software update available</td>
-              <td>Click here to download.</td>
-              <td >
-                <div className="bg-[#EAFBF2] text-green-400 w-16 mx-auto p2 " >
-                Read
-                </div>
-              </td>
-            </tr>
+            {notificationData.map((data, i) => (
+              <tr key={data.id}>
+                <td> {data.notificationId}</td>
+                <td>{data.timeStamps}</td>
+                <td>{data.type}</td>
+                <td>{data.content}</td>
+                <td>
+                  <div className={data.status === 'Read' ? 'read' : 'unread'}>
+                   {data.status}
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
