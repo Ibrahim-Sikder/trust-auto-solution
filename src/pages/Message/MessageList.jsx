@@ -1,11 +1,12 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import AllMessageList from './AllMessageList';
-import GroupChat from './GroupChat';
+import * as React from "react";
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import AllMessageList from "./AllMessageList";
+import GroupChat from "./GroupChat";
+import Contacts from "./Contacts";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -36,7 +37,7 @@ CustomTabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -48,22 +49,26 @@ export default function MessageList() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
           <Tab label="All Message" {...a11yProps(0)} />
           <Tab label="Group Chat " {...a11yProps(1)} />
           <Tab label="Contacts" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-       <AllMessageList/>
+        <AllMessageList />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <GroupChat/>
+        <GroupChat />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Contact 
+       <Contacts/>
       </CustomTabPanel>
     </Box>
   );
