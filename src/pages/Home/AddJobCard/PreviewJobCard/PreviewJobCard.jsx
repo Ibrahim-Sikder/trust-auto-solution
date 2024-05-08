@@ -11,7 +11,7 @@ import { formatDate } from "../../../../utils/formateDate";
 const PreviewJobCard = () => {
   const { componentRef, targetRef } = useContext(PrintContext);
   const [previewData, setPreviewData] = useState({});
-  console.log(previewData);
+ 
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -78,7 +78,7 @@ const PreviewJobCard = () => {
                 </div>
                 <div>
                   <b>
-                    Date: <span>{formatDate(previewData.date)}</span>
+                    Date: <span>{previewData.date}</span>
                   </b>
                 </div>
               </div>
@@ -293,7 +293,7 @@ const PreviewJobCard = () => {
               <div>
                 <label className="block ">Technician Name</label>
                 <input
-                  // defaultValue={previewData.technician_name}
+                  defaultValue={previewData.technician_name}
                   disabled
                   type="text"
                   // placeholder="Technician Name"

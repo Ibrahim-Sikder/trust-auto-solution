@@ -2,37 +2,36 @@
 import "./AddJobCard.css";
 import car from "../../../../public/assets/car2.jpeg";
 import logo from "../../../../public/assets/logo.png";
-import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {
-  carBrands
-} from "../../../constant";
+import { carBrands, vehicleModels } from "../../../constant";
 import Cookies from "js-cookie";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
 import { Controller } from "react-hook-form";
+import { CalendarIcon } from "@mui/x-date-pickers";
 const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
-  const [allJobCard, setAllJobCard] = useState([]);
+  // const [allJobCard, setAllJobCard] = useState([]);
 
   const [singleCard, setSingleCard] = useState({});
-  
 
-  const [noMatching, setNoMatching] = useState(null);
+  const [technicianDateShow, setTechnicianDateShow] = useState(false);
+  const [showCalender, setShowCalender] = useState(false);
   const [customerId, setCustomerId] = useState(null);
 
+  const [model, setModel] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
 
+  const [note, setNote] = useState(null);
   const [vehicleBody, setVehicleBody] = useState(null);
 
   const [error, setError] = useState(null);
@@ -49,10 +48,10 @@ const UpdateJobCard = () => {
     formState: { errors },
   } = useForm();
   const [formattedDate, setFormattedDate] = useState("");
-  const [filterType, setFilterType] = useState("");
+  // const [filterType, setFilterType] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
+  // const [searchLoading, setSearchLoading] = useState(false);
   const formRef = useRef();
   const navigate = useNavigate();
 
@@ -78,7 +77,7 @@ const UpdateJobCard = () => {
       }
       const values = {
         Id: customerId || singleCard.Id,
-        job_no: jobNo || singleCard.job_no,
+        job_no: singleCard.job_no,
         date: formattedDate || singleCard.date,
         company_name: data.company_name || singleCard.company_name,
         username: data.username || singleCard.username,
@@ -105,11 +104,12 @@ const UpdateJobCard = () => {
         vehicle_interior_parts: value || singleCard.vehicle_interior_parts,
         reported_defect: value2 || singleCard.reported_defect,
         reported_action: value3 || singleCard.reported_action,
+        note: note || singleCard.note,
         vehicle_body_report: vehicleBody || singleCard.vehicle_body_report,
         technician_name: data.technician_name || singleCard.technician_name,
         technician_signature:
           data.technician_signature || singleCard.technician_signature,
-        technician_date: data.technician_date || singleCard.technician_date,
+        technician_date: technicianDateShow || singleCard.technician_date,
         vehicle_owner: data.vehicle_owner || singleCard.vehicle_owner,
       };
 
@@ -119,7 +119,7 @@ const UpdateJobCard = () => {
         values
       );
       if (response.data.message === "Successfully update card.") {
-        navigate("/dashboard/addjob");
+        navigate("/dashboard/jobcard-list");
         setLoading(false);
       }
     } catch (error) {
@@ -128,6 +128,9 @@ const UpdateJobCard = () => {
     }
   };
 
+  const handleModelChange = (_, newInputValue) => {
+    setModel(newInputValue);
+  };
   const handleBrandChange = (_, newInputValue) => {
     setBrand(newInputValue);
   };
@@ -138,11 +141,7 @@ const UpdateJobCard = () => {
     setGetFuelType(newInputValue);
   };
 
-   
-
-  const handleIconPreview = async (e) => {
-    navigate(`/dashboard/preview?id=${e}`);
-  };
+ 
 
   useEffect(() => {
     setLoading(true);
@@ -154,22 +153,6 @@ const UpdateJobCard = () => {
       });
   }, [jobNo, reload]);
 
-  useEffect(() => {
-    if (previousPostData.job_no && !jobNo) {
-      setJobNo(previousPostData.job_no + 1);
-    }
-  }, [previousPostData, jobNo, reload]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setAllJobCard(data);
-      });
-  }, [reload]);
-
   const handleDateChange = (event) => {
     const rawDate = event.target.value;
     const parsedDate = new Date(rawDate);
@@ -180,26 +163,17 @@ const UpdateJobCard = () => {
     setFormattedDate(formattedDate);
   };
 
+  const handleTechnicianDateChange = (event) => {
+    const rawDate = event.target.value;
+    const parsedDate = new Date(rawDate);
+    const day = parsedDate.getDate().toString().padStart(2, "0");
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = parsedDate.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+    setTechnicianDateShow(formattedDate);
+  };
+
   const currentDate = new Date().toISOString().split("T")[0];
-  useEffect(() => {
-    const currentDate = new Date();
-
-    // Set the day to 1 to get the first day of the month
-    currentDate.setDate(1);
-
-    // Get the current month and year
-    const currentMonth = currentDate.getMonth() + 1; // Note: January is 0
-    const currentYear = currentDate.getFullYear();
-
-    // Format the date string as "YYYY-MM-DD"
-    const formattedDate = `${currentYear}-${
-      currentMonth < 10 ? "0" : ""
-    }${currentMonth}-01`;
-
-    setFormattedDate(currentDate);
-  }, []);
-
-
 
   return (
     <div className="mb-20 addJobCardWraps">
@@ -238,7 +212,7 @@ const UpdateJobCard = () => {
               </div>
               <div>
                 <span>
-                  <b>Customer ID:</b> TAS000
+                  <b> ID:</b> {singleCard.Id}
                 </span>
               </div>
               <input
@@ -246,6 +220,7 @@ const UpdateJobCard = () => {
                 type="text"
                 className="border-[#ddd] border w-56 h-10 mt-2 p-2 rounded-sm"
                 defaultValue={singleCard.Id}
+                readOnly
               />
             </div>
             <div>
@@ -256,15 +231,26 @@ const UpdateJobCard = () => {
                 <b>
                   Date <span className="requiredStart">*</span>
                 </b>
-                <input
-                  className="outline-none"
-                  onChange={handleDateChange}
-                  autoComplete="off"
-                  type="date"
-                  placeholder="Date"
-                  max={currentDate}
-                  defaultValue={singleCard.date}
-                />
+
+                {!showCalender && (
+                  <>
+                    <span className="mr-2">{singleCard.date}</span>
+                    <CalendarIcon
+                      onClick={() => setShowCalender(!showCalender)}
+                      className="h-2 w-2"
+                    />
+                  </>
+                )}
+                {showCalender && (
+                  <input
+                    onChange={handleDateChange}
+                    autoComplete="on"
+                    type="date"
+                    placeholder="Date"
+                    max={currentDate}
+                    defaultValue={singleCard.date}
+                  />
+                )}
               </div>
               <div className="addCustomerRelative">
                 <div className="flex items-center w-40 h-10 mt-2 p-2 rounded-sm bg-[#42A1DA] text-white">
@@ -304,8 +290,8 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   {...register("company_name")}
                   label="Company Name (T)"
-                  defaultValue={singleCard.company_name}
                   value={singleCard.company_name}
+                  // value={singleCard.company_name}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
@@ -322,7 +308,7 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Vehicle User Name (T)"
                   {...register("username")}
-                  defaultValue={singleCard?.username}
+                  value={singleCard?.username}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
@@ -330,7 +316,7 @@ const UpdateJobCard = () => {
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!singleCard.username,
+                    shrink: !!singleCard?.username,
                   }}
                 />
               </div>
@@ -350,11 +336,6 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.company_address,
                   }}
                 />
-                {/* {errors.company_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
 
               <div className="mt-3">
@@ -373,18 +354,12 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.customer_name,
                   }}
                 />
-                {/* {errors.customer_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Customer Contact No (N)"
                   {...register("customer_contact", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d{11}$/,
                       message: "Please enter a valid number.",
@@ -419,11 +394,6 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.customer_email,
                   }}
                 />
-                {/* {errors.customer_email && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -441,11 +411,6 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.customer_address,
                   }}
                 />
-                {/* {errors.customer_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -463,11 +428,6 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.driver_name,
                   }}
                 />
-                {/* {errors.driver_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -491,11 +451,6 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.driver_contact,
                   }}
                 />
-                {/* {errors.driver_contact && (
-              <span className="text-sm text-red-400">
-                {errors.driver_contact.message}
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -513,28 +468,23 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.reference_name,
                   }}
                 />
-                {/* {errors.reference_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
               </div>
             </div>
 
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex flex-wrap  gap-4 md:gap-0 items-center mt-3 ">
-              <Autocomplete
+              <div className="flex gap-4 md:gap-0 items-center mt-3 ">
+                <Autocomplete
                   className="jobCardSelect2"
-                  value={singleCard?.carReg_no || ""}
-                  onChange={handleBrandChange}
+                  value={singleCard?.carReg_no}
+                  // onChange={handleBrandChange}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Car Reg No "
-                      // Handle input props manually
+                      {...register("carReg_no")}
                       InputLabelProps={{
                         shrink: !!singleCard?.carReg_no,
                       }}
@@ -542,9 +492,8 @@ const UpdateJobCard = () => {
                   )}
                 />
 
-               
                 <TextField
-                   className="carRegField"
+                  className="carRegField"
                   label="Car R (T&N)"
                   {...register("car_registration_no")}
                   value={singleCard?.car_registration_no}
@@ -559,12 +508,6 @@ const UpdateJobCard = () => {
                   }}
                 />
               </div>
-
-              {/* {errors.car_registration_no && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )} */}
 
               <div className="mt-3">
                 <TextField
@@ -582,11 +525,6 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.chassis_no,
                   }}
                 />
-                {/* {errors.chassis_no && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -604,132 +542,72 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.engine_no,
                   }}
                 />
-                {/* {errors.engine_no && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
 
               <div className="mt-3">
                 <Autocomplete
                   className="addJobInputField"
-                  value={singleCard?.vehicle_brand || ""}
+                  value={singleCard?.vehicle_brand}
                   onChange={handleBrandChange}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Brand"
-                      // Handle input props manually
+                      {...register("vehicle_brand")}
                       InputLabelProps={{
                         shrink: !!singleCard?.vehicle_brand,
                       }}
                     />
                   )}
                 />
-               
-               
               </div>
 
               <div className="mt-3">
-              <Autocomplete
+                <Autocomplete
                   className="addJobInputField"
-                  value={singleCard?.vehicle_name || ""}
-                  onChange={handleBrandChange}
-                  options={carBrands.map((option) => option.label)}
+                  onInputChange={handleModelChange}
+                  options={vehicleModels.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Vehicle Name "
-                      // Handle input props manually
-                      InputLabelProps={{
-                        shrink: !!singleCard?.vehicle_name,
+                      label=" Vehicle Model "
+                      {...register("vehicle_model")}
+                      value={singleCard?.vehicle_model}
+                      focused={singleCard?.vehicle_model}
+                      onChange={(e) => {
+                        const input = e.target.value;
+
+                        if (/^\d{0,4}$/.test(input)) {
+                          setSingleCard({
+                            ...singleCard,
+                            vehicle_model: input,
+                          });
+                        }
                       }}
                     />
                   )}
                 />
-                {/* {errors.vehicle_brand && !brand && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )} */}
-              </div>
-
-              {/** 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  onChange={(e) => setCarModel(e.target.value)}
-                  label="Vehicle Model (N)"
-                />
-              </div>
-              */}
-
-              <div className="mt-3">
-                {/* <Autocomplete
-                className="addJobInputField"
-                  onChange={(e) => setCarModel(e.target.value)}
-                  id="free-solo-demo"
-                  Vehicle
-                  Brand
-                  options={totalYear.map((option) => option.title)}
-                  renderInput={(params) => (
-                    <TextField {...params} label=" Vehicle Model" />
-                  )}
-                /> */}
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle Model (N)"
-                  {...register("vehicle_model", {
-                    // required: "This field is required.",
-                    pattern: {
-                      value: /^\d+$/,
-                      message: "Please enter a valid model number.",
-                    },
-                  })}
-                  value={singleCard?.vehicle_model}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      vehicle_model: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.vehicle_model,
-                  }}
-                />
-
-                {/* {errors.vehicle_model && (
-                  <span className="text-sm text-red-400">
-                    {errors.vehicle_model.message}
-                  </span>
-                )} */}
               </div>
 
               <div className="mt-3">
-              <Autocomplete
+                <Autocomplete
                   className="addJobInputField"
-                  value={singleCard?.vehicle_category || ""}
-                  onChange={handleBrandChange}
+                  value={singleCard?.vehicle_category}
+                  focused={singleCard?.vehicle_category}
+                  onInputChange={handleCategoryChange}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Category "
-                      // Handle input props manually
+                      {...register("vehicle_category")}
                       InputLabelProps={{
                         shrink: !!singleCard?.vehicle_category,
                       }}
                     />
                   )}
                 />
-                
-                {/* {errors.vehicle_category && !category && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -747,18 +625,12 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.color_code,
                   }}
                 />
-                {/* {errors.color_code && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Mileage (N) "
                   {...register("mileage", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d+$/,
                       message: "Please enter a valid number.",
@@ -775,31 +647,9 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.mileage,
                   }}
                 />
-                {/* {errors.mileage && (
-                  <span className="text-sm text-red-400">
-                    {errors.mileage.message}
-                  </span>
-                )} */}
               </div>
               <div className="mt-3">
-              <Autocomplete
-                  className="addJobInputField"
-                  value={singleCard?.fuel_type || ""}
-                  onChange={handleBrandChange}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Fuel Type "
-                      // Handle input props manually
-                      InputLabelProps={{
-                        shrink: !!singleCard?.fuel_type,
-                      }}
-                    />
-                  )}
-                />
-
-                {/* <Autocomplete
+                <Autocomplete
                   className="addJobInputField"
                   value={singleCard?.fuel_type}
                   focused={singleCard?.fuel_type}
@@ -807,21 +657,18 @@ const UpdateJobCard = () => {
                   Fuel
                   Type
                   onInputChange={handleFuelChange}
-                  options={fuelType.map((option) => option.label)}
+                  options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label=" Fuel Type"
+                      label="Fuel Type "
                       {...register("fuel_type")}
-                      value={singleCard?.fuel_type}
+                      InputLabelProps={{
+                        shrink: !!singleCard?.fuel_type,
+                      }}
                     />
                   )}
-                /> */}
-                {/* {errors.fuel_type && !getFuelType && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
+                />
               </div>
             </div>
           </div>
@@ -923,24 +770,19 @@ const UpdateJobCard = () => {
                 <img src={car} alt="car" />
               </div>
               <div className="mt-5">
-                <b className="block mb-1 "> Note  </b>
+                <b className="block mb-1 "> Note </b>
                 <textarea
-                  onChange={(e) => setVehicleBody(e.target.value)}
-                 
+                  onChange={(e) => setNote(e.target.value)}
                   autoComplete="off"
+                  defaultValue={singleCard.note}
                 ></textarea>
               </div>
               <div className="mt-5">
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
                 <textarea
                   className="p-5"
-                  value={singleCard.vehicle_body_report}
-                  onChange={(e) =>
-                    setSingleCard((prevState) => ({
-                      ...prevState,
-                      vehicle_body_report: e.target.value,
-                    }))
-                  }
+                  defaultValue={singleCard.vehicle_body_report}
+                  onChange={(e) => setVehicleBody(e.target.value)}
                   required
                   autoComplete="off"
                 ></textarea>
@@ -953,31 +795,54 @@ const UpdateJobCard = () => {
                 className="ownerInput"
                 {...register("technician_name")}
                 label="Technician Name (T) "
+                value={singleCard.technician_name}
+                onChange={(e) =>
+                  setSingleCard({
+                    ...singleCard,
+                    technician_name: e.target.value,
+                  })
+                }
+                InputLabelProps={{
+                  shrink: !!singleCard?.technician_name,
+                }}
               />
             </div>
             <div>
               <TextField
-                // disabled
                 className="ownerInput"
                 o
                 {...register("technician_signature")}
                 label="Technician Signature (T) "
+                disabled
               />
             </div>
             <div>
-              <input
-                {...register("technician_date")}
-                required
-                autoComplete="off"
-                type="date"
-                placeholder="Date"
-                min={currentDate}
-                className="p-3 border-2 ownerInput"
-              />
-              {errors.technician_date && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
+              {!technicianDateShow && (
+                <>
+                  {singleCard.technician_date}
+                  <CalendarIcon
+                    onClick={() => setTechnicianDateShow(!technicianDateShow)}
+                  />
+                </>
+              )}
+              {technicianDateShow && (
+                <>
+                  <input
+                    onChange={handleTechnicianDateChange}
+                    required
+                    autoComplete="off"
+                    type="date"
+                    placeholder="Date"
+                    min={currentDate}
+                    className="p-3 border-2 ownerInput"
+                    defaultValue={singleCard.technician_date}
+                  />
+                  {errors.technician_date && (
+                    <span className="text-sm text-red-400">
+                      This field is required.
+                    </span>
+                  )}
+                </>
               )}
             </div>
             <div>
@@ -997,12 +862,7 @@ const UpdateJobCard = () => {
           </div>
 
           <div className="mt-12">
-            <button
-              disabled={loading}
-              // onClick={handleAddToCard}
-              type="submit"
-              className="addJobBtn"
-            >
+            <button disabled={loading} type="submit" className="addJobBtn">
               Update Job Card{" "}
             </button>
           </div>
