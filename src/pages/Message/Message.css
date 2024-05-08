@@ -1,11 +1,7 @@
 
 
 
-.messageLeftSide{
-    background:red;
-    width:500px;
-    height:800px;
-}
+
 .messageRightSide{
     background-color: #fff;
     height: 800px;
@@ -63,4 +59,47 @@
     border-radius: 3px;
     margin: 0 10px;
     height: 55px;
+}
+
+/* rightSide chat styling */
+.messageLeftSide{
+    background:#FFFFFF;
+    width:600px;
+    height:800px;
+    border-radius: 10px;
+    padding:10px;
+}
+.searchChat{
+    width: 100%;
+    height: 50px;
+    background: #F4F6FC;
+    display: flex;
+    border-radius: 5px;
+    align-items: center;
+    padding: 5px;
+    justify-content: space-between;
+}
+.searchChat input{
+    background: transparent;
+    height: 100%;
+    width: 94%;
+    padding-left: 10px;
+}
+.messageList{
+    height:600px;
+    overflow-y: scroll;;
+}
+.userMessageList{
+    border-bottom:1px solid #f4f6fc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:12px 8px;
+    padding-right:16px;
+}
+.createGroup{
+    background: #0E74E9;
+    color: #fff;
+    justify-content: center;
+    padding: 18px;
 }

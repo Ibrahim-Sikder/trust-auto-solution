@@ -7,13 +7,15 @@ import {
   HiOutlineEmojiSad,
   HiOutlinePhone,
   HiOutlinePhotograph,
+  HiOutlineSearch,
 } from "react-icons/hi";
 import { HiOutlineVideoCamera } from "react-icons/hi";
 import { IoMdLink } from "react-icons/io";
 import { LuSendHorizonal } from "react-icons/lu";
+import MessageList from "./MessageList";
 const Message = () => {
   return (
-    <div className="bg-[#EFF3F9] p-5">
+    <div className="bg-[#EFF3F9] p-5 px-20">
       <div className="flex items-center justify-between">
         <h3 className="text-3xl font-semibold">Chat</h3>
         <div className="flex items-center space-x-3">
@@ -22,9 +24,17 @@ const Message = () => {
           <span>Chat</span>
         </div>
       </div>
-      <div className="messageWraps grid grid-cols-12 mt-5">
-        <div className="messageLeftSide col-span-4"> </div>
-        <div className="messageRightSide col-span-8 ">
+      <div className="messageWraps flex justify-between">
+        <div className="messageLeftSide ">
+          <h3 className="text-xl mb-2 font-semibold">Message</h3>
+          <div className="searchChat">
+            <HiOutlineSearch size={25} />{" "}
+            <input type="text" placeholder="Search" />
+          </div>
+
+          <MessageList />
+        </div>
+        <div className="messageRightSide">
           <div className="flex items-center justify-between p-8">
             <div className="flex items-center">
               <div className="relative">
@@ -138,8 +148,15 @@ const Message = () => {
                 <IoMdLink size={25} className="" />
                 <HiOutlinePhotograph size={25} className="" />
               </div>
-              <input type="text" placeholder="Typing here......" className="chatInput" />
-              <button className="chatBtn"> <LuSendHorizonal size={30}/> </button>
+              <input
+                type="text"
+                placeholder="Typing here......"
+                className="chatInput"
+              />
+              <button className="chatBtn">
+                {" "}
+                <LuSendHorizonal size={30} />{" "}
+              </button>
             </div>
           </div>
         </div>
