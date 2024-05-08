@@ -82,28 +82,58 @@ const DashboardLayout = () => {
     scroll.scrollToTop({ smooth: true });
   }
 
-  const notificationData = [
+  const messageData = [
     {
       id: 1,
-      notification: "You have requested to Withdrawal",
+      name: 'Mr John',
+      text: "Hi Arif! Could you please...",
       time: "2hrs ago",
     },
     {
       id: 2,
-      notification: "You have requested to Withdrawal",
-      time: "2hrs ago",
+      name: 'Mr John',
+      text: "Hi Arif! Could you please...",
+      time: "3hrs ago",
     },
     {
       id: 3,
-      notification: "You have requested to Withdrawal",
+      name: 'Mr John',
+      text: "Hi Arif! Could you please...",
       time: "2hrs ago",
     },
     {
       id: 4,
-      notification: "You have requested to Withdrawal",
-      time: "2hrs ago",
+      name: 'Mr John',
+      text: "Hi Arif! Could you please...",
+      time: "8hrs ago",
     },
   ];
+  
+	const notificationData = [
+		{
+		  id: 1,
+		  notification: "You have requested to Withdrawal",
+		  time: "2hrs ago",
+		},
+		{
+		  id: 2,
+		  notification: "A new user added in TAS ",
+		  time: "3hrs ago",
+		},
+		{
+		  id: 3,
+		  notification: "You have requested to Withdrawal",
+		  time: "5hrs ago",
+		},
+		{
+		  id: 4,
+		  notification: "You have requested to Withdrawal",
+		  time: "8hrs ago",
+		},
+	  ];
+
+
+
   return (
     <main>
       <div className="static w-full h-16">
@@ -134,7 +164,7 @@ const DashboardLayout = () => {
                 <FaSearch size={20} className="text-[#fff]" />
               </div>
 
-              <div className="relative lg:block hidden ">
+              <div className="relative lg:block hidden notificationIconsWraps cursor-pointer ">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">
                   5
                 </div>
@@ -150,27 +180,64 @@ const DashboardLayout = () => {
                   </div>
                   {notificationData.slice(0, 3).map((data) => (
                     <div key={data.id} className="">
-                      <div className="notificationMessage space-y-5">
-                        <div className="bg-[#EFF3F9] p-3 rounded-full hover:bg-[#0F79F3] hover:text-[#fff] transition-all">
-                          <FaRegMessage size={25} />
+                      <Link to="/dashboard/notification">
+                        <div className="notificationMessage space-y-5">
+                          <div className="bg-[#EFF3F9] p-3 rounded-full hover:bg-[#0F79F3] hover:text-[#fff] transition-all mr-3">
+                            <FaRegMessage size={25} />
+                          </div>
+                          <div>
+                            <p>{data.notification}</p>
+                            <small>{data.time}</small>
+                          </div>
                         </div>
-                        <div>
-                          <span>You have requested to </span>
-                          <p>Withdrawal </p>
-                          <small>2hr ago</small>
-                        </div>
-                      </div>
-                     
+                      </Link>
                     </div>
                   ))}
-                  <button className="text-[#0F79F3] border-b border-b-[#0F79F3] mt-8 text-center w-52 justify-center mx-auto flex ">See All Notifications</button>
+                  <Link to="/dashboard/notification">
+                    <button className="text-[#0F79F3] border-b border-b-[#0F79F3] mt-8 text-center w-52 justify-center mx-auto flex ">
+                      See All Notifications
+                    </button>
+                  </Link>
                 </div>
               </div>
-              <div className="relative lg:block hidden">
+              <div className="relative lg:block hidden messageIconsWraps cursor-pointer ">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">
                   5
                 </div>
                 <HiOutlineChat className="text-white " size={30} />
+
+
+                <div className=" messageModal">
+                  <div className="flex items-center justify-between">
+                    <h3>Notifications(5)</h3>
+                    <span className="text-[#0F79F3]">Mark all as read</span>
+                  </div>
+                  {messageData.slice(0, 4).map((data) => (
+                    <div key={data.id} className="">
+                      <Link to="/dashboard/message">
+                        <div className="notificationMessage space-y-5">
+                          <img src={user} className="h-10 w-10 rounded-full " alt="user" />
+                          <div>
+                            <div className="flex items-center">
+                            <h3 className="mr-2 font-semibold ">{data.name}</h3>
+                            <small >{data.time}</small>
+                            </div>
+                            <p className="text-[#A8A8A8]">{data.text}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                  <Link to="/dashboard/message">
+                    <button className="text-[#0F79F3] border-b border-b-[#0F79F3] mt-8 text-center w-52 justify-center mx-auto flex ">
+                      See All Message
+                    </button>
+                  </Link>
+                </div>
+
+
+
+
               </div>
 
               <div className="flex items-center adminProfileWrap">
