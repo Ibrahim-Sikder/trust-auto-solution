@@ -5,6 +5,7 @@ import user from "../../../public/assets/avatar.jpg";
 import {
   HiDotsVertical,
   HiOutlineEmojiSad,
+  HiOutlineHome,
   HiOutlinePhone,
   HiOutlinePhotograph,
   HiOutlineSearch,
@@ -19,7 +20,10 @@ const Message = () => {
       <div className="flex items-center justify-between">
         <h3 className="text-3xl font-semibold">Chat</h3>
         <div className="flex items-center space-x-3">
-          <span>Dashboard</span>
+          <div className="flex items-center">
+            <HiOutlineHome className="text-[#0F79F3] size-5 mr-1"/>
+            <span>Dashboard</span>
+          </div>
           <span>App</span>
           <span>Chat</span>
         </div>

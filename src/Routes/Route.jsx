@@ -67,6 +67,7 @@ import BillPay from "../pages/BillPay/BillPay";
 import Support from "../pages/Support/Support";
 import Practice from "../pages/Practice";
 import Message from "../pages/Message/Message";
+import Notification from "../pages/Notification/Notification";
 
 export const router = createBrowserRouter([
   {
@@ -362,6 +363,10 @@ export const router = createBrowserRouter([
       {
         path: "message",
         element: <Message />,
+      },
+      {
+        path: "notification",
+        element: <Notification />,
       },
 
     ],
