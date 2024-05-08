@@ -80,22 +80,19 @@ const AllMessageList = () => {
     <div>
       <div className="messageList">
         <div className="space-y-3">
-       
           {messageData.map((data, i) => (
             <div
               key={data.id}
-              className={`userMessageList ${
-                i === 0 ? "bg-[#F7F7F7]" : ""
-              }`}
+              className={`userMessageList ${i === 0 ? "bg-[#F7F7F7]" : ""}`}
             >
-              <div className="flex items-center">
+              <div className="flex  flex-wrap gap-3 items-center">
                 <img
                   src={data.image}
                   className="h-10 w-10 rounded-full"
                   alt="user"
                 />
                 <div className="ml-2">
-                  <h3>{data.name} </h3>
+                  <h3 className="text-sm">{data.name} </h3>
                   <small className="text-[#0DC143]">{data.message}</small>
                 </div>
               </div>

@@ -14,9 +14,9 @@ const SingleEmployeeLeaveList = () => {
   return (
     <div className="table-container">
       <div onClick={handleOpen} className="relative rounded-sm my-5 flex justify-end w-full ">
-          <button className="p-1 md:px-3 text-sm md:text-xl text-white duration-300 rounded-lg bg-sky-500 active:scale-95">
+          <button className="p-1 py-3 md:px-3 text-sm md:text-xl text-white duration-300 rounded-lg bg-sky-500 active:scale-95">
             {" "}
-            + Add Leave{" "}
+            + Request Leave
           </button>
         </div>
       <table className="leaveTable">

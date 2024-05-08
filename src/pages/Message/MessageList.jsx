@@ -49,12 +49,13 @@ export default function MessageList() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%",  }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
+          sx={{display:'block' }}
         >
           <Tab label="All Message" {...a11yProps(0)} />
           <Tab label="Group Chat " {...a11yProps(1)} />
