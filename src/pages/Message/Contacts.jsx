@@ -93,7 +93,7 @@ const Contacts = () => {
                     className="h-10 w-10 rounded-full"
                     alt="user"
                   />
-                  <div className="activeUsers"></div>
+                  <div className={`activeUsers ${i === 0 ? "bg-[#22C55E]"  : "bg-[#E74C3C]"}`}></div>
                 </div>
                 <div className="ml-2">
                   <h3>{data.name} </h3>

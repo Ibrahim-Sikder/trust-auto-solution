@@ -24,7 +24,7 @@ const Message = () => {
           <span>Chat</span>
         </div>
       </div>
-      <div className="messageWraps flex justify-between">
+      <div className="messageWraps flex justify-between mt-5">
         <div className="messageLeftSide ">
           <h3 className="text-xl mb-2 font-semibold">Message</h3>
           <div className="searchChat">
