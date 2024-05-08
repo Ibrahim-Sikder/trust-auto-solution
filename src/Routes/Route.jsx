@@ -68,6 +68,7 @@ import Support from "../pages/Support/Support";
 import Practice from "../pages/Practice";
 import Message from "../pages/Message/Message";
 import Notification from "../pages/Notification/Notification";
+import EmployeeHoliday from "../pages/Holiday/Holiday";
 
 export const router = createBrowserRouter([
   {
@@ -367,6 +368,10 @@ export const router = createBrowserRouter([
       {
         path: "notification",
         element: <Notification />,
+      },
+      {
+        path: "holiday",
+        element: <EmployeeHoliday/>,
       },
 
     ],
