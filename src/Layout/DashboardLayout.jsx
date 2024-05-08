@@ -250,8 +250,16 @@ const DashboardLayout = () => {
                   <Link to="/dashboard/profile">
                     <p>My Profile</p>
                   </Link>
+                  <Link to="/dashboard/support">
                   <p>Settings</p>
+                  </Link>
+                  <Link to="/dashboard/support">
+                  <p>Support</p>
+                  </Link>
+                  <Link to="/">
                   <p>Logout</p>
+                  </Link>
+                
                 </div>
               </div>
             </div>
