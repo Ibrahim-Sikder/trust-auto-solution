@@ -17,9 +17,8 @@ import {
   FaRegListAlt,
   FaHospitalUser,
   FaSearch,
-  FaCarSide,
 } from "react-icons/fa";
-import { FaAnchorCircleCheck } from "react-icons/fa6";
+import { FaAnchorCircleCheck, FaRegMessage } from "react-icons/fa6";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -41,10 +40,12 @@ import {
   HiOutlineChevronDown,
   HiOutlineCube,
   HiOutlineCurrencyDollar,
+  HiOutlineHome,
   HiOutlineUserAdd,
   HiOutlineUserGroup,
 } from "react-icons/hi";
 import admin from "../../public/assets/avatar.jpg";
+import user from "../../public/assets/chat.jpg";
 
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
@@ -81,6 +82,28 @@ const DashboardLayout = () => {
     scroll.scrollToTop({ smooth: true });
   }
 
+  const notificationData = [
+    {
+      id: 1,
+      notification: "You have requested to Withdrawal",
+      time: "2hrs ago",
+    },
+    {
+      id: 2,
+      notification: "You have requested to Withdrawal",
+      time: "2hrs ago",
+    },
+    {
+      id: 3,
+      notification: "You have requested to Withdrawal",
+      time: "2hrs ago",
+    },
+    {
+      id: 4,
+      notification: "You have requested to Withdrawal",
+      time: "2hrs ago",
+    },
+  ];
   return (
     <main>
       <div className="static w-full h-16">
@@ -95,9 +118,12 @@ const DashboardLayout = () => {
               <span className="bar" />
               <span className="bar" />
             </div>
-           <Link to='/dashboard'> <h3 className="ml-5 text-xl lg:text-2xl font-semibold text-white hidden lg:block">
-              Trust Auto Solution
-            </h3></Link>
+            <Link to="/dashboard">
+              {" "}
+              <h3 className="ml-5 text-xl lg:text-2xl font-semibold text-white hidden lg:block">
+                Trust Auto Solution
+              </h3>
+            </Link>
             <div className="flex items-center space-x-5 flex-end  ">
               <div className="dashboardSearchBar lg:block hidden ">
                 <input
@@ -116,6 +142,29 @@ const DashboardLayout = () => {
                   className="text-white notificationIcon"
                   size={30}
                 />
+
+                <div className="notificationModal">
+                  <div className="flex items-center justify-between">
+                    <h3>Notifications(5)</h3>
+                    <span className="text-[#0F79F3]">Clear all</span>
+                  </div>
+                  {notificationData.slice(0, 3).map((data) => (
+                    <div key={data.id} className="">
+                      <div className="notificationMessage space-y-5">
+                        <div className="bg-[#EFF3F9] p-3 rounded-full hover:bg-[#0F79F3] hover:text-[#fff] transition-all">
+                          <FaRegMessage size={25} />
+                        </div>
+                        <div>
+                          <span>You have requested to </span>
+                          <p>Withdrawal </p>
+                          <small>2hr ago</small>
+                        </div>
+                      </div>
+                     
+                    </div>
+                  ))}
+                  <button className="text-[#0F79F3] border-b border-b-[#0F79F3] mt-8 text-center w-52 justify-center mx-auto flex ">See All Notifications</button>
+                </div>
               </div>
               <div className="relative lg:block hidden">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">
@@ -133,7 +182,6 @@ const DashboardLayout = () => {
                 <div className="adminProfile space-y-2">
                   <Link to="/dashboard/profile">
                     <p>My Profile</p>
-                    
                   </Link>
                   <p>Settings</p>
                   <p>Logout</p>
@@ -168,7 +216,7 @@ const DashboardLayout = () => {
 
             <div className=" ">
               <NavLink to="/dashboard" className="z-10  flex p-4 items-center">
-                <FaCarSide size={25} />
+                <HiOutlineHome size={35} />
                 <h3 className="text-xl font-semibold ml-2">Dashboard</h3>
               </NavLink>
             </div>
