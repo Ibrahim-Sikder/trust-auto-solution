@@ -21,7 +21,7 @@ const Message = () => {
         <h3 className="text-3xl font-semibold">Chat</h3>
         <div className="flex items-center space-x-3">
           <div className="flex items-center">
-            <HiOutlineHome className="text-[#0F79F3] size-5 mr-1"/>
+            <HiOutlineHome className="text-[#0F79F3] size-5 mr-1" />
             <span>Dashboard</span>
           </div>
           <span>App</span>
