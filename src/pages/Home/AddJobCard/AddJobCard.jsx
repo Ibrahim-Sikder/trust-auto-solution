@@ -38,6 +38,8 @@ const AddJobCard = () => {
   const [allJobCard, setAllJobCard] = useState([]);
 
   const [noMatching, setNoMatching] = useState(null);
+  const [idType, setIdType] = useState(null);
+  const [showId, setShowId] = useState([]);
   const [customerId, setCustomerId] = useState(null);
 
   // const [customerDetails, setCustomerDetails] = useState([]);
@@ -57,6 +59,7 @@ const AddJobCard = () => {
   const [category, setCategory] = useState("");
   const [getFuelType, setGetFuelType] = useState("");
 
+  const [note, setNote] = useState(null);
   const [vehicleBody, setVehicleBody] = useState(null);
   const [clickControl, setClickControl] = useState(null);
 
@@ -72,8 +75,11 @@ const AddJobCard = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const [technicianDate, setTechnicianDate] = useState("")
   const [formattedDate, setFormattedDate] = useState("");
   const [filterType, setFilterType] = useState("");
+
 
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -118,10 +124,11 @@ const AddJobCard = () => {
         vehicle_interior_parts: value,
         reported_defect: value2,
         reported_action: value3,
+        note: note,
         vehicle_body_report: vehicleBody,
         technician_name: data.technician_name,
         technician_signature: data.technician_signature,
-        technician_date: data.technician_date,
+        technician_date: technicianDate,
         vehicle_owner: data.vehicle_owner,
       };
 
@@ -135,6 +142,7 @@ const AddJobCard = () => {
         setLoading(false);
         const newJobNo = jobNo + 1;
         setJobNo(newJobNo);
+        navigate("/dashboard/jobcard-list")
         setReload(!reload);
         if (clickControl === "preview") {
           fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/recent`)
@@ -204,6 +212,48 @@ const AddJobCard = () => {
     fetchData();
   }, [customerId]);
 
+  // get id
+ 
+  const getAndSetIds = (url, idExtractor) => {
+    setLoading(true);
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        const ids = data.map(idExtractor);
+        setShowId(ids);
+        setLoading(false);
+      });
+  };
+
+  const getIdWithIdType = (id) => {
+    setIdType(id);
+
+    switch (id) {
+      case "customerId":
+        getAndSetIds(
+          `${import.meta.env.VITE_API_URL}/api/v1/customer`,
+          (item) => item.customerId
+        );
+        break;
+      case "companyId":
+        getAndSetIds(
+          `${import.meta.env.VITE_API_URL}/api/v1/company`,
+          (item) => item.companyId
+        );
+        break;
+      case "showRoomId":
+        getAndSetIds(
+          `${import.meta.env.VITE_API_URL}/api/v1/showRoom`,
+          (item) => item.showRoomId
+        );
+        break;
+      default:
+        toast.error("Invalid id type");
+    }
+  };
+
+ 
+
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };
@@ -243,6 +293,24 @@ const AddJobCard = () => {
     const formattedDate = `${day}-${month}-${year}`;
     setFormattedDate(formattedDate);
   };
+  const handleTechnicianDateChange = (event) => {
+    const rawDate = event.target.value;
+    const parsedDate = new Date(rawDate);
+    const day = parsedDate.getDate().toString().padStart(2, "0");
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = parsedDate.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+    setTechnicianDate(formattedDate);
+  };
+
+  useEffect(() => {
+    const parsedDate = new Date();
+    const day = parsedDate.getDate().toString().padStart(2, "0");
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = parsedDate.getFullYear();
+    const currentDate = `${day}-${month}-${year}`;
+    setFormattedDate(currentDate);
+  }, []);
 
   // pagination
 
@@ -361,7 +429,7 @@ const AddJobCard = () => {
               <td>{card.customer_name}</td>
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
-              <td> {card.contact_number} </td>
+              <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>
                 <div
@@ -476,53 +544,9 @@ const AddJobCard = () => {
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
-  useEffect(() => {
-    // Get the current date in the format YYYY-MM-DD
-    const currentDate = new Date().toISOString().split("T")[0];
-    setFormattedDate(currentDate);
-  }, []);
+  
 
-  // const Search = styled("div")(({ theme }) => ({
-  //   position: "relative",
-  //   borderRadius: theme.shape.borderRadius,
-  //   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  //   "&:hover": {
-  //     backgroundColor: alpha(theme.palette.common.white, 0.25),
-  //   },
-  //   marginLeft: 0,
-  //   width: "100%",
-  //   [theme.breakpoints.up("sm")]: {
-  //     marginLeft: theme.spacing(1),
-  //     width: "auto",
-  //   },
-  // }));
-
-  // const SearchIconWrapper = styled("div")(({ theme }) => ({
-  //   padding: theme.spacing(0, 2),
-  //   height: "100%",
-  //   position: "absolute",
-  //   pointerEvents: "none",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // }));
-
-  // const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  //   color: "inherit",
-  //   width: "100%",
-  //   "& .MuiInputBase-input": {
-  //     padding: theme.spacing(1, 1, 1, 0),
-  //     // vertical padding + font size from searchIcon
-  //     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-  //     transition: theme.transitions.create("width"),
-  //     [theme.breakpoints.up("sm")]: {
-  //       width: "12ch",
-  //       "&:focus": {
-  //         width: "20ch",
-  //       },
-  //     },
-  //   },
-  // }));
+ 
 
   return (
     <div className="addJobCardWraps">
@@ -562,31 +586,52 @@ const AddJobCard = () => {
               </div>
               <div>
                 <span>
-                  <b>Customer ID:</b> TAS000
+                  {idType === "companyId" && <b>Company Id :</b>}
+                  {idType === "customerId" && <b>Customer Id :</b>}
+                  {idType === "showRoomId" && <b>Show room Id :</b>}
+                  {idType === null && <b>Select Id :</b>}
+
+                  {customerId ? customerId : "....."}
                 </span>
               </div>
               <div className="flex items-center mt-2">
-                <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
+                <FormControl sx={{ m: 1, minWidth: 150 }} size="small" >
                   <InputLabel id="demo-select-small-label">
                     Select Customer
                   </InputLabel>
                   <Select
                     labelId="demo-select-small-label"
                     id="demo-select-small"
-                    // value={age}
+                    className="py-1"
                     label="Select Customer"
-                    // onChange={handleChange}
+                    onChange={(e) => getIdWithIdType(e.target.value)}
                   >
-                    <MenuItem value="Customer ID">Customer ID</MenuItem>
-                    <MenuItem value="Show Room ID">Show Room ID </MenuItem>
-                    <MenuItem value="Company ID">Company ID </MenuItem>
+                    <MenuItem value="companyId">Company ID </MenuItem>
+                    <MenuItem value="customerId">Customer ID</MenuItem>
+                    <MenuItem value="showRoomId">Show Room ID </MenuItem>
                   </Select>
                 </FormControl>
-                <input
+                {/* <input
                   placeholder="Search Here"
                   onChange={(e) => setCustomerId(e.target.value)}
                   type="text"
                   className="border-[#ddd] border w-40 h-10 p-2 rounded-sm"
+                /> */}
+                 
+                <Autocomplete
+                  className="w-40 "
+                  id="free-solo-demo"
+                 
+                  options={showId.map((option) => option)}
+                  onChange={(e, value) => setCustomerId(value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Select Id"
+                      onChange={(e) => setCustomerId(e.target.value)}
+                      className="w-40"
+                    />
+                  )}
                 />
               </div>
             </div>
@@ -607,7 +652,7 @@ const AddJobCard = () => {
                     placeholder="Date"
                     max={currentDate}
                     defaultValue={
-                      formattedDate ? formatDate(formattedDate) : ""
+                      formattedDate ? formatDate(formattedDate) : currentDate
                     }
                   />
                 </div>
@@ -640,15 +685,7 @@ const AddJobCard = () => {
                   </div>
                 </div>
               </div>
-              {/* {customer_type === "customer" && (
-                <Link to="/dashboard/add-customer">
-                  {" "}
-                  <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-                    Add Customer
-                  </button>
-                </Link>
-              )}
-               */}
+               
             </div>
           </div>
 
@@ -912,9 +949,6 @@ const AddJobCard = () => {
                       {...params}
                       label="Vehicle Reg No"
                       {...register("carReg_no")}
-                      // inputRef={inputRef}
-                      // value={inputValue}
-                      
                     />
                   )}
                 />
@@ -1005,7 +1039,6 @@ const AddJobCard = () => {
                       {...register("vehicle_brand")}
                       value={showCustomerData?.vehicle_brand}
                       focused={showCustomerData?.vehicle_brand}
-                      
                     />
                   )}
                 />
@@ -1017,7 +1050,7 @@ const AddJobCard = () => {
                   id="free-solo-demo"
                   Vehicle
                   Brand
-                  onInputChange={handleBrandChange}
+                  // onInputChange={handleBrandChange}
                   options={vehicleName.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
@@ -1026,7 +1059,6 @@ const AddJobCard = () => {
                       {...register("vehicle_name")}
                       value={showCustomerData?.vehicle_name}
                       focused={showCustomerData?.vehicle_name}
-                      
                     />
                   )}
                 />
@@ -1060,9 +1092,6 @@ const AddJobCard = () => {
                       />
                     )}
                   />
-
-
-                  
                 </div>
               </div>
 
@@ -1162,7 +1191,6 @@ const AddJobCard = () => {
                       {...register("fuel_type")}
                       value={showCustomerData?.fuel_type}
                       focused={showCustomerData?.fuel_type}
-                      
                     />
                   )}
                 />
@@ -1259,7 +1287,7 @@ const AddJobCard = () => {
               <div className="mt-3">
                 <b className="block mb-1 "> Note </b>
                 <textarea
-                  onChange={(e) => setVehicleBody(e.target.value)}
+                  onChange={(e) => setNote(e.target.value)}
                   required
                   autoComplete="off"
                 ></textarea>
@@ -1300,7 +1328,8 @@ const AddJobCard = () => {
             </div>
             <div>
               <input
-                {...register("technician_date", { required: true })}
+              
+                onChange={handleTechnicianDateChange}
                 required
                 autoComplete="off"
                 type="date"
@@ -1375,8 +1404,11 @@ const AddJobCard = () => {
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-sm font-bold lg:text-3xl">Job Card List:</h3>
           <div className="flex items-center searcList">
-           
             <div className="searchGroup">
+
+            <button onClick={handleAllAddToJobCard} className="SearchBtn mr-2">
+              All{" "}
+            </button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
