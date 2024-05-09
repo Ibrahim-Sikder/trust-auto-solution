@@ -20,9 +20,14 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import TADatePicker from "../../../components/form/TADatePicker";
+ 
 import { formatDate } from "../../../utils/formateDate";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import TADatePickers from "../../../components/form/TADatePickers";
 
+const theme = createTheme({
+  // Your theme configuration
+});
 const Invoice = () => {
   const [select, setSelect] = useState(null);
 
@@ -34,14 +39,14 @@ const Invoice = () => {
   const [error, setError] = useState("");
   const [postError, setPostError] = useState("");
   const [getAllInvoice, setGetAllInvoice] = useState([]);
-  console.log(getAllInvoice);
+  
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // const [customerDetails, setCustomerDetails] = useState([]);
-  // const [showCustomerData, setShowCustomerData] = useState({});
+  const [selectedDate, setSelectedDate] = useState("");
+
   const [customerId, setCustomerId] = useState(null);
   const [preview, setPreview] = useState("");
 
@@ -64,9 +69,11 @@ const Invoice = () => {
     }
   }, [job_no]);
 
-  const [inputList, setInputList] = useState([
-    { flyingFrom: "", flyingTo: "", date: "" },
-  ]);
+  const handleDateChange = (newDate) => {
+    setSelectedDate(formatDate(newDate));
+  };
+
+
   const handleRemove = (index) => {
     if (!index) {
       const list = [...items];
@@ -113,21 +120,18 @@ const Invoice = () => {
     const newItems = [...items];
     const roundedValue = Math.round(value);
     newItems[index].quantity = roundedValue;
-    // newItems[index].quantity = value;
-    // Convert quantity to a number and calculate total
 
     newItems[index].total = roundedValue * newItems[index].rate;
 
     setItems(newItems);
-    // newItems[index].total = Number(value) * newItems[index].rate;
-    // setItems(newItems);
+     
   };
 
   const handleRateChange = (index, value) => {
     const newItems = [...items];
 
     // Convert rate to a number
-    newItems[index].rate = parseFloat(value);
+    newItems[index].rate = parseFloat(value).toFixed(2);
 
     // Calculate total with the updated rate
     newItems[index].total = newItems[index].quantity * newItems[index].rate;
@@ -185,7 +189,7 @@ const Invoice = () => {
         username: jobCardData.username || data.username,
         Id: customerId || jobCardData.Id,
         job_no: job_no || jobCardData.job_no,
-        date: jobCardData.date,
+        date: selectedDate || jobCardData.date,
 
         company_name: data.company_name || jobCardData.company_name,
         customer_name: data.customer_name || jobCardData.customer_name,
@@ -216,6 +220,7 @@ const Invoice = () => {
 
       if (response.data.message === "Successfully Invoice post") {
         setReload(!reload);
+        navigate("/dashboard/invoice-view");
         setPostError("");
         setError("");
         if (preview === "") {
@@ -352,6 +357,13 @@ const Invoice = () => {
     currentItems = [];
   }
 
+  // for customer id edit
+  const handleInputChange = (e) => {
+    const newId = e.target.value;
+    console.log("New ID:", newId); // Log the input for debugging
+    setJobCardData({ ...jobCardData, Id: newId });
+  };
+
   const renderData = (getAllInvoice) => {
     return (
       <table className="table">
@@ -374,7 +386,7 @@ const Invoice = () => {
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
               <td> {card.customer_contact} </td>
-              <td>{formatDate(card.date)}</td>
+              <td>{(card.date)}</td>
               <td>
                 <div
                   onClick={() => handleIconPreview(card._id)}
@@ -500,7 +512,8 @@ const Invoice = () => {
           </div>
           <div className="space-y-1 text-justify">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 01821-216465, 01972-216465
+              <span className="font-bold">Mobile:</span> 01821-216465,
+              01972-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
@@ -517,7 +530,10 @@ const Invoice = () => {
             <div className="vehicleCard">Create Invoice </div>
 
             <div>
-              <TADatePicker />
+              <TADatePickers  date={jobCardData?.date}
+                handleDateChange={handleDateChange}
+                selectedDate={selectedDate}/>
+             
             </div>
           </div>
 
@@ -534,12 +550,11 @@ const Invoice = () => {
                 />
               </div>
               <div className="mt-3">
-                <TextField
+              <TextField
                   className="addJobInputField"
                   label="Customer Id"
-                  onChange={(e) => setCustomerId(e.target.value)}
+                  onChange={handleInputChange}
                   value={jobCardData?.Id}
-                  focused={jobCardData?.Id}
                   required
                 />
               </div>
@@ -551,6 +566,15 @@ const Invoice = () => {
                   value={jobCardData?.company_name}
                   focused={jobCardData?.company_name}
                   {...register("company_name")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      company_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.company_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -560,6 +584,15 @@ const Invoice = () => {
                   value={jobCardData?.customer_name}
                   focused={jobCardData?.customer_name}
                   {...register("customer_name")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      customer_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.customer_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -569,6 +602,15 @@ const Invoice = () => {
                   value={jobCardData?.customer_contact}
                   focused={jobCardData?.customer_contact}
                   {...register("customer_contact")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      customer_contact: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.customer_contact,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -578,6 +620,15 @@ const Invoice = () => {
                   value={jobCardData?.customer_address}
                   focused={jobCardData?.customer_address}
                   {...register("customer_address")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      customer_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.customer_address,
+                  }}
                 />
               </div>
             </div>
@@ -592,6 +643,15 @@ const Invoice = () => {
                   value={jobCardData?.car_registration_no}
                   focused={jobCardData?.car_registration_no}
                   {...register("car_registration_no")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      car_registration_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.car_registration_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -601,6 +661,15 @@ const Invoice = () => {
                   value={jobCardData?.chassis_no}
                   focused={jobCardData?.chassis_no}
                   {...register("chassis_no")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      chassis_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.chassis_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -610,6 +679,16 @@ const Invoice = () => {
                   value={jobCardData?.engine_no}
                   focused={jobCardData?.engine_no}
                   {...register("engine_no")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      engine_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.engine_no,
+                  }}
+                  
                 />
               </div>
               <div className="mt-3">
@@ -619,6 +698,15 @@ const Invoice = () => {
                   value={jobCardData?.vehicle_name}
                   focused={jobCardData?.vehicle_name}
                   {...register("vehicle_name")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      vehicle_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.vehicle_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -628,6 +716,15 @@ const Invoice = () => {
                   value={jobCardData?.mileage}
                   focused={jobCardData?.mileage}
                   {...register("mileage")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      mileage: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.mileage,
+                  }}
                 />
               </div>
             </div>
@@ -690,7 +787,7 @@ const Invoice = () => {
                     <input
                       className="thirdInputField"
                       autoComplete="off"
-                      type="number"
+                     
                       placeholder="Rate"
                       onChange={(e) => handleRateChange(i, e.target.value)}
                       required
@@ -797,6 +894,9 @@ const Invoice = () => {
           <h3 className="mb-3 text-3xl font-bold">Invoice List:</h3>
           <div className="flex items-center searcList">
             <div className="searchGroup">
+            <button onClick={handleAllInvoice} className="SearchBtn mr-2">
+              All{" "}
+            </button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"

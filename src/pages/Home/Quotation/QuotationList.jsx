@@ -240,35 +240,7 @@ const QuotationList = () => {
     );
   }
 
-  // const handleFilterType = async () => {
-  //   if (select === "SL No") {
-  //     fetch(
-  //       `${import.meta.env.VITE_API_URL}/api/v1/quotation/all `
-  //     )
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setGetAllQuotation(data);
-  //         setNoMatching(null);
-  //       });
-  //   } else {
-  //     const data = {
-  //       select,
-  //       filterType,
-  //     };
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_API_URL}/api/v1/quotation/all `,
-  //       data
-  //     );
-  //     console.log(response.data);
-  //     if (response.data.message === "Filter successful") {
-  //       setGetAllQuotation(response.data.result);
-  //       setNoMatching(null);
-  //     }
-  //     if (response.data.message === "No matching found") {
-  //       setNoMatching(response.data.message);
-  //     }
-  //   }
-  // };
+  
 
 
 

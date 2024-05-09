@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
 import "./AddJobCard.css";
 import car from "../../../../public/assets/car2.jpeg";
@@ -47,10 +48,9 @@ const AddJobCard = () => {
   const inputRef = useRef(null); // Create a ref for the input element
   const [inputValue, setInputValue] = useState(""); // Controlled input value state
 
-  // Effect to manage focus when showCustomerData.carReg_no changes and is non-empty
   useEffect(() => {
     if (showCustomerData?.carReg_no && inputRef.current) {
-      inputRef.current.focus(); // Focus the input element if data is present
+      inputRef.current.focus();
       setInputValue(showCustomerData.carReg_no); // Set the input value to the loaded data
     }
   }, [showCustomerData]);
@@ -173,7 +173,10 @@ const AddJobCard = () => {
     }
   };
 
-  const handleBrandChange = (_, newInputValue) => {
+  // const handleBrandChange = (_, newInputValue) => {
+  //   setBrand(newInputValue);
+  // };
+  const handleNameChange = (_, newInputValue) => {
     setBrand(newInputValue);
   };
   const handleCategoryChange = (_, newInputValue) => {
@@ -181,6 +184,44 @@ const AddJobCard = () => {
   };
   const handleFuelChange = (_, newInputValue) => {
     setGetFuelType(newInputValue);
+  };
+
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  const handleBrandChange = (event, newValue) => {
+    setSelectedBrand(newValue);
+    const filtered = vehicleName.filter(
+      (vehicle) => vehicle.label === newValue
+    );
+    setFilteredVehicles(filtered);
+  };
+
+  // year select only number 4 digit
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+
+  // Handle input changes
+  const handleYearSelectInput = (event) => {
+    const value = event.target.value;
+    // Check if the input is a number and does not exceed 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setYearSelectInput(value);
+      const filtered = vehicleModels.filter((option) =>
+        option.label.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    }
+  };
+  // Handle clicking on an option
+  // const handleOptionClick = (option) => {
+  //   setYearSelectInput(option.label);
+  //   setFilteredOptions([]);
+  // };
+
+  const handleOptionClick = (option) => {
+    setYearSelectInput(option.label);
+    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
   };
 
   useEffect(() => {
@@ -408,8 +449,6 @@ const AddJobCard = () => {
     currentItems = [];
   }
 
-  // ...
-
   const renderData = (allJobCard) => {
     return (
       <table className="table overflow-scroll ">
@@ -610,6 +649,9 @@ const AddJobCard = () => {
                     <MenuItem value="showRoomId">Show Room ID </MenuItem>
                   </Select>
                 </FormControl>
+ 
+ 
+              
 
                 <Autocomplete
                   className="w-40 "
@@ -1051,21 +1093,21 @@ const AddJobCard = () => {
                 )} */}
               </div>
 
-              <div className="mt-3">
+              {/* <div className="mt-3">
                 <Autocomplete
                   className="addJobInputField"
                   id="free-solo-demo"
-                  Vehicle
-                  Brand
-                  onInputChange={handleBrandChange}
+                  freeSolo
+                  onInputChange={(event, newValue) => {
+                    handleBrandChange(newValue);
+                  }}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Brand"
                       {...register("vehicle_brand")}
-                      value={showCustomerData?.vehicle_brand}
-                      focused={showCustomerData?.vehicle_brand}
+                      focused={Boolean(showCustomerData?.vehicle_brand)}
                     />
                   )}
                 />
@@ -1075,10 +1117,16 @@ const AddJobCard = () => {
                 <Autocomplete
                   className="addJobInputField"
                   id="free-solo-demo"
+                  freeSolo
                   Vehicle
                   Brand
+                
+                  onInputChange={(event, newValue) => {
+                    handleNameChange(newValue); // Assuming you want the new value as input
+                  }}
                   // onInputChange={handleBrandChange}
-                  options={vehicleName.map((option) => option.label)}
+                  // options={vehicleName.map((option) => option.label)}
+                  options={filteredVehicles.map((option) => option.value)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -1088,47 +1136,141 @@ const AddJobCard = () => {
                       focused={showCustomerData?.vehicle_name}
                     />
                   )}
+                  getOptionLabel={(option) => option || ""}
+               
                 />
-              </div>
-
-              <div className="mt-3">
-                <div className="mt-3">
-                  <Autocomplete
-                    className="addJobInputField"
-                    Vehicle
-                    Types
-                    onInputChange={handleCategoryChange}
-                    options={vehicleModels.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=" Vehicle Model "
-                        {...register("vehicle_model")}
-                        value={showCustomerData?.vehicle_model}
-                        focused={showCustomerData?.vehicle_model}
-                        onChange={(e) => {
-                          const input = e.target.value;
-                          // Only allow numbers and limit to 4 digits
-                          if (/^\d{0,4}$/.test(input)) {
-                            setShowCustomerData({
-                              ...showCustomerData,
-                              vehicle_model: input,
-                            });
-                          }
-                        }}
-                      />
-                    )}
+              </div> */}
+              <div className="mt-3"></div>
+              <Autocomplete
+                className="addJobInputField"
+                freeSolo
+                onInputChange={(event, newValue) => {
+                  handleBrandChange(newValue);
+                }}
+                options={carBrands.map((option) => option.label)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Vehicle Brand"
+                    {...register("vehicle_brand")}
+                    focused={Boolean(showCustomerData?.vehicle_brand)}
                   />
-                </div>
+                )}
+                onChange={handleBrandChange}
+                value={selectedBrand}
+                style={{ marginBottom: 20 }}
+              />
+
+              <Autocomplete
+                className="addJobInputField"
+                freeSolo
+                Vehicle
+                Name
+                onInputChange={(event, newValue) => {
+                  handleNameChange(newValue); // Assuming you want the new value as input
+                }}
+                options={filteredVehicles.map((option) => option.value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Vehicle Name "
+                    {...register("vehicle_name")}
+                    value={showCustomerData?.vehicle_name}
+                    focused={showCustomerData?.vehicle_name}
+                  />
+                )}
+                getOptionLabel={(option) => option || ""}
+                // disabled={!selectedBrand}
+              />
+
+              <div className="mt-3 relative">
+                {/* <Autocomplete
+                  className="addJobInputField"
+                  Vehicle
+                  Types
+                  options={filteredOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label=" Vehicle Model "
+                      {...register("vehicle_model")}
+                      value={showCustomerData?.vehicle_model}
+                      focused={showCustomerData?.vehicle_model}
+                      onChange={(e) => {
+                        const input = e.target.value;
+                        // Only allow numbers and limit to 4 digits
+                        if (/^\d{0,4}$/.test(input)) {
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            vehicle_model: input,
+                          });
+                        }
+                      }}
+                    />
+                  )}
+                />  */}
+                {/* <TextField
+                value={showCustomerData?.vehicle_model ? `${showCustomerData.vehicle_model}` : yearSelectInput }
+                  onInput={handleYearSelectInput}
+                  className="addJobInputField"
+                  {...register("vehicle_model")}
+                  label="Vehicle Model "
+                  
+                  focused={
+                    showCustomerData?.vehicle_model !== "" &&
+                    showCustomerData?.vehicle_model
+                  }
+                  onChange={(e) =>
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      vehicle_model: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!showCustomerData.vehicle_model,
+                  }}
+                /> */}
+
+
+                  <input
+                    value={yearSelectInput}
+                    onInput={handleYearSelectInput}
+                    {...register("vehicle_model")}
+                    type="text"
+                    className="border border-[#1111110e] mb-5 w-[98%] h-12 p-3 rounded-md"
+                    placeholder="Vehicle Model"
+                    onChange={(e) => {
+                      setShowCustomerData({
+                        ...showCustomerData,
+                        vehicle_model: e.target.value,
+                      });
+                    }}
+                  />
+                  {yearSelectInput && (
+                    <ul className="options-list">
+                      {filteredOptions.map((option, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleOptionClick(option)}
+                        >
+                          {option.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
               </div>
 
-              <div className="mt-3">
+              <div className="">
                 <Autocomplete
                   className="addJobInputField"
                   id="free-solo-demo"
                   Vehicle
                   Types
-                  onInputChange={handleCategoryChange}
+                  freeSolo
+                  onInputChange={(event, newValue) => {
+                    handleCategoryChange(newValue); // Assuming you want the new value as input
+                  }}
                   options={vehicleTypes.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
@@ -1146,6 +1288,7 @@ const AddJobCard = () => {
                   </span>
                 )} */}
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -1209,7 +1352,10 @@ const AddJobCard = () => {
                   id="free-solo-demo"
                   Fuel
                   Type
-                  onInputChange={handleFuelChange}
+                  freeSolo
+                  onInputChange={(event, newValue) => {
+                    handleFuelChange(newValue); // Assuming you want the new value as input
+                  }}
                   options={fuelType.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
@@ -1384,34 +1530,28 @@ const AddJobCard = () => {
 
           <div className="mt-5 buttonGroup">
             <div>
-              {/* <Link to={`/dashboard/preview?${id}`}> */}
+               
               <button
                 disabled={loading}
                 onClick={() => setClickControl("preview")}
               >
                 Preview
               </button>
-              {/* </Link> */}
-              {/* <Link to="/dashboard/preview"> */}
-              {/* </Link>
-              <Link to="/dashboard/preview"> */}
-              {/* </Link> */}
-              {/* <Link to={`/dashboard/qutation?order_no=${jobNo}`}> */}{" "}
+               
               <button
                 disabled={loading}
                 onClick={() => setClickControl("quotation")}
               >
                 Quotation
               </button>
-              {/* </Link> */}
-              {/* <Link to="/dashboard/invoice"> */}{" "}
+               
               <button
                 disabled={loading}
                 onClick={() => setClickControl("invoice")}
               >
                 Invoice
               </button>
-              {/* </Link> */}
+               
             </div>
             <div className="submitQutationBtn">
               <button

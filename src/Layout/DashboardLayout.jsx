@@ -18,7 +18,7 @@ import {
   FaHospitalUser,
   FaSearch,
 } from "react-icons/fa";
-import { FaAnchorCircleCheck, FaRegMessage } from "react-icons/fa6";
+import { FaAnchorCircleCheck, FaCalendarDays, FaRegMessage } from "react-icons/fa6";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -85,54 +85,52 @@ const DashboardLayout = () => {
   const messageData = [
     {
       id: 1,
-      name: 'Mr John',
+      name: "Mr John",
       text: "Hi Arif! Could you please...",
       time: "2hrs ago",
     },
     {
       id: 2,
-      name: 'Mr John',
+      name: "Mr John",
       text: "Hi Arif! Could you please...",
       time: "3hrs ago",
     },
     {
       id: 3,
-      name: 'Mr John',
+      name: "Mr John",
       text: "Hi Arif! Could you please...",
       time: "2hrs ago",
     },
     {
       id: 4,
-      name: 'Mr John',
+      name: "Mr John",
       text: "Hi Arif! Could you please...",
       time: "8hrs ago",
     },
   ];
-  
-	const notificationData = [
-		{
-		  id: 1,
-		  notification: "You have requested to Withdrawal",
-		  time: "2hrs ago",
-		},
-		{
-		  id: 2,
-		  notification: "A new user added in TAS ",
-		  time: "3hrs ago",
-		},
-		{
-		  id: 3,
-		  notification: "You have requested to Withdrawal",
-		  time: "5hrs ago",
-		},
-		{
-		  id: 4,
-		  notification: "You have requested to Withdrawal",
-		  time: "8hrs ago",
-		},
-	  ];
 
-
+  const notificationData = [
+    {
+      id: 1,
+      notification: "You have requested to Withdrawal",
+      time: "2hrs ago",
+    },
+    {
+      id: 2,
+      notification: "A new user added in TAS ",
+      time: "3hrs ago",
+    },
+    {
+      id: 3,
+      notification: "You have requested to Withdrawal",
+      time: "5hrs ago",
+    },
+    {
+      id: 4,
+      notification: "You have requested to Withdrawal",
+      time: "8hrs ago",
+    },
+  ];
 
   return (
     <main>
@@ -163,7 +161,9 @@ const DashboardLayout = () => {
                 />
                 <FaSearch size={20} className="text-[#fff]" />
               </div>
-
+               <Link to='/dashboard/holiday'>
+               <FaCalendarDays size={20} className="text-[#fff]"/>
+               </Link>
               <div className="relative lg:block hidden notificationIconsWraps cursor-pointer ">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">
                   5
@@ -206,7 +206,6 @@ const DashboardLayout = () => {
                 </div>
                 <HiOutlineChat className="text-white " size={30} />
 
-
                 <div className=" messageModal">
                   <div className="flex items-center justify-between">
                     <h3>Notifications(5)</h3>
@@ -216,11 +215,17 @@ const DashboardLayout = () => {
                     <div key={data.id} className="">
                       <Link to="/dashboard/message">
                         <div className="notificationMessage space-y-5">
-                          <img src={user} className="h-10 w-10 rounded-full " alt="user" />
+                          <img
+                            src={user}
+                            className="h-10 w-10 rounded-full "
+                            alt="user"
+                          />
                           <div>
                             <div className="flex items-center">
-                            <h3 className="mr-2 font-semibold ">{data.name}</h3>
-                            <small >{data.time}</small>
+                              <h3 className="mr-2 font-semibold ">
+                                {data.name}
+                              </h3>
+                              <small>{data.time}</small>
                             </div>
                             <p className="text-[#A8A8A8]">{data.text}</p>
                           </div>
@@ -234,10 +239,6 @@ const DashboardLayout = () => {
                     </button>
                   </Link>
                 </div>
-
-
-
-
               </div>
 
               <div className="flex items-center adminProfileWrap">
@@ -250,8 +251,15 @@ const DashboardLayout = () => {
                   <Link to="/dashboard/profile">
                     <p>My Profile</p>
                   </Link>
-                  <p>Settings</p>
-                  <p>Logout</p>
+                  <Link to="/dashboard/support">
+                    <p>Settings</p>
+                  </Link>
+                  <Link to="/dashboard/support">
+                    <p>Support</p>
+                  </Link>
+                  <Link to="/">
+                    <p>Logout</p>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -683,7 +691,8 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    Holiday
+                    <NavLink to="/dashboard/holiday ">Holiday</NavLink>
+                    
                   </span>
                 </Typography>
                 <Typography className="accordionTypoGrapy">

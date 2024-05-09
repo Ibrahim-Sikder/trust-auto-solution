@@ -11,7 +11,7 @@ import { formatDate } from "../../../../utils/formateDate";
 const PreviewJobCard = () => {
   const { componentRef, targetRef } = useContext(PrintContext);
   const [previewData, setPreviewData] = useState({});
- 
+  console.log(previewData);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -271,7 +271,6 @@ const PreviewJobCard = () => {
                       readOnly
                     ></textarea>
                   </div>
-                 
                 </div>
                 <div className="rightSide">
                   <div className="carImgWrap">

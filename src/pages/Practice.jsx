@@ -22,7 +22,7 @@ function PhoneNumberInput() {
 
   // Handle clicking on an option
   const handleOptionClick = (option) => {
-    setInputValue(option.label); 
+    setInputValue(option.label);
     setFilteredOptions([]);
   };
 
@@ -30,7 +30,7 @@ function PhoneNumberInput() {
     <>
       <div className="mt-5">
         <input
-          type="text" 
+          type="text"
           className="border mb-5"
           value={inputValue}
           onInput={handleInput}

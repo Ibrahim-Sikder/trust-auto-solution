@@ -16,7 +16,7 @@ import { LuSendHorizonal } from "react-icons/lu";
 import MessageList from "./MessageList";
 const Message = () => {
   return (
-    <div className="bg-[#EFF3F9] p-5 xxl:px-20">
+    <div className="bg-[#EFF3F9] p-5 xl:px-20 lg:px-10">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h3 className="text-3xl font-semibold">Chat</h3>
         <div className="flex items-center space-x-3">
@@ -148,9 +148,9 @@ const Message = () => {
           <div className="chatting ">
             <div className="flex flex-wrap gap-3  items-center justify-between ">
               <div className="flex items-center space-x-2">
-                <HiOutlineEmojiSad  className="size-30 md:size-64" />
-                <IoMdLink  className="size-30 md:size-64" />
-                <HiOutlinePhotograph  className="size-30 md:size-64" />
+                <HiOutlineEmojiSad  className="md:size-8 " />
+                <IoMdLink  className="md:size-8 " />
+                <HiOutlinePhotograph  className="md:size-8" />
               </div>
              <div className="flex items-center">
              <input
@@ -160,7 +160,7 @@ const Message = () => {
               />
               <button className="chatBtn">
                 {" "}
-                <LuSendHorizonal className="size-30" />{" "}
+                <LuSendHorizonal className="md:size-8" />{" "}
               </button>
              </div>
             </div>
