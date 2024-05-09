@@ -691,7 +691,8 @@ const DashboardLayout = () => {
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    Holiday
+                    <NavLink to="/dashboard/holiday ">Holiday</NavLink>
+                    
                   </span>
                 </Typography>
                 <Typography className="accordionTypoGrapy">

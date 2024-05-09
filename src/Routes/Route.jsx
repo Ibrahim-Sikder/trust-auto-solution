@@ -69,6 +69,7 @@ import Practice from "../pages/Practice";
 import Message from "../pages/Message/Message";
 import Notification from "../pages/Notification/Notification";
 import EmployeeHoliday from "../pages/Holiday/Holiday";
+import ShiftList from "../pages/Home/Employee/ShiftAndSchedule/ShiftList";
 
 export const router = createBrowserRouter([
   {
@@ -372,6 +373,10 @@ export const router = createBrowserRouter([
       {
         path: "holiday",
         element: <EmployeeHoliday/>,
+      },
+      {
+        path: "shift-list",
+        element: <ShiftList/>,
       },
 
     ],
