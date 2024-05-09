@@ -21,6 +21,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePicker from "../../../components/form/TADatePicker";
 import { formatDate } from "../../../utils/formateDate";
+import TADatePickers from "../../../components/form/TADatePickers";
 
 const AddQuotation = () => {
   const [select, setSelect] = useState(null);
@@ -501,7 +502,7 @@ const AddQuotation = () => {
             <div className="vehicleCard">Create Quotation </div>
 
             <div>
-              <TADatePicker/>
+              <TADatePickers/>
             </div>
           </div>
           <div className="mb-10 jobCardFieldWraps">

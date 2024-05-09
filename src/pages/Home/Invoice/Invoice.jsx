@@ -22,7 +22,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TADatePicker from "../../../components/form/TADatePicker";
 import { formatDate } from "../../../utils/formateDate";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import TADatePickers from "../../../components/form/TADatePickers";
 
+const theme = createTheme({
+  // Your theme configuration
+});
 const Invoice = () => {
   const [select, setSelect] = useState(null);
 
@@ -500,7 +505,8 @@ const Invoice = () => {
           </div>
           <div className="space-y-1 text-justify">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 01821-216465, 01972-216465
+              <span className="font-bold">Mobile:</span> 01821-216465,
+              01972-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
@@ -517,7 +523,8 @@ const Invoice = () => {
             <div className="vehicleCard">Create Invoice </div>
 
             <div>
-              <TADatePicker />
+              <TADatePickers />
+             
             </div>
           </div>
 
