@@ -7,6 +7,8 @@ import TabPanel from "@mui/lab/TabPanel";
 import { HiOutlineHome } from "react-icons/hi";
 import UpdateProfile from "./UpdateProfile";
 import ChangePassword from "./ChangePassword";
+import PrivacyPolicy from "./PrivacyPolicy";
+import TermAndCondition from "./TermAndCondition";
 
 export default function Support() {
   const [value, setValue] = React.useState("1");
@@ -36,9 +38,8 @@ export default function Support() {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
               <Tab label="Account Setting " value="1" />
               <Tab label="Change Password" value="2" />
-              <Tab label="Connections" value="3" />
-              <Tab label="Privacy Policy " value="4" />
-              <Tab label="Terms & Condition " value="5" />
+              <Tab label="Privacy Policy " value="3" />
+              <Tab label="Terms & Condition " value="4" />
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -48,13 +49,11 @@ export default function Support() {
             <ChangePassword />
           </TabPanel>
           <TabPanel value="3">
-            <h3 className="text-3xl font-semibold">Comming soooon</h3>
+            <PrivacyPolicy/>
           </TabPanel>
+          
           <TabPanel value="4">
-            <h3 className="text-3xl font-semibold">Comming soooon</h3>
-          </TabPanel>
-          <TabPanel value="5">
-            <h3 className="text-3xl font-semibold">Comming soooon</h3>
+           <TermAndCondition/>
           </TabPanel>
         </TabContext>
       </Box>
