@@ -2,7 +2,12 @@
 import { HiOutlineTrash } from "react-icons/hi";
 import "./ShiftAndSchedule.css";
 import { FaEdit } from "react-icons/fa";
+import { useState } from "react";
+import AddShiftModal from "./AddShiftModal";
 const ShiftList = () => {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
   const shiftData = [
     {
       "Shift Name": "10'o clock Shift",
@@ -160,7 +165,7 @@ const ShiftList = () => {
           <span>Dashboard / Employees / Shift & Schedule </span>
         </div>
         <div className="flex items-center space-x-3">
-          <button className="shiftBtn">Assign Shift </button>
+          <button onClick={handleOpen} className="shiftBtn">Assign Shift </button>
           <button className="shiftBtn">Add Shift </button>
         </div>
       </div>
@@ -212,6 +217,9 @@ const ShiftList = () => {
           </tbody>
         </table>
       </div>
+      {
+        open && <AddShiftModal onClose={handleClose} />
+      }
     </div>
   );
 };
