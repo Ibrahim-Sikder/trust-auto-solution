@@ -4,10 +4,14 @@ import "./ShiftAndSchedule.css";
 import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import AddShiftModal from "./AddShiftModal";
+import AssignShiftModal from "./AssignShiftModal";
 const ShiftList = () => {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [open2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
   const shiftData = [
     {
       "Shift Name": "10'o clock Shift",
@@ -165,8 +169,10 @@ const ShiftList = () => {
           <span>Dashboard / Employees / Shift & Schedule </span>
         </div>
         <div className="flex items-center space-x-3">
-          <button onClick={handleOpen} className="shiftBtn">Assign Shift </button>
-          <button className="shiftBtn">Add Shift </button>
+          <button onClick={handleOpen2} className="shiftBtn">
+            Assign Shift{" "}
+          </button>
+          <button onClick={handleOpen} className="shiftBtn">Add Shift </button>
         </div>
       </div>
       <div className="overflow-x-auto">
@@ -188,7 +194,7 @@ const ShiftList = () => {
           <tbody>
             {shiftData.map((shift, i) => (
               <tr key={shift.id}>
-                <td>{i+1}</td>
+                <td>{i + 1}</td>
                 <td>10'o clock Shift </td>
                 <td>08.00:00 am</td>
                 <td>09.00:00 am</td>
@@ -201,7 +207,7 @@ const ShiftList = () => {
                     Active
                   </button>
                 </td>
-               
+
                 <td>
                   <div className="flex items-center justify-center">
                     <FaEdit className="size-5 text-[#42A1DA]" />
@@ -217,9 +223,8 @@ const ShiftList = () => {
           </tbody>
         </table>
       </div>
-      {
-        open && <AddShiftModal onClose={handleClose} />
-      }
+      {open && <AddShiftModal onClose={handleClose} />}
+      {open2 && <AssignShiftModal onClose={handleClose2} />}
     </div>
   );
 };
