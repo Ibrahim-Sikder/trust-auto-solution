@@ -6,10 +6,11 @@ const Practice2 = () => {
 
   // Handle changes in the phone number input
   const handlePhoneNumberChange = (e) => {
-    const fullValue = e.target.value;
-    const numericPart = fullValue.slice(countryCode.length + 1);
-    if (/^\d*$/.test(numericPart) && numericPart.length <= 11) {
-      setPhoneNumber(numericPart);
+    const newPhoneNumber = e.target.value;
+    // Allow only numeric input, prevent the number from starting with '0', and restrict to 11 digits
+    // Ensures that the first character is not '0' if the length of the number is 1 or more
+    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+      setPhoneNumber(newPhoneNumber);
     }
   };
 
@@ -19,9 +20,10 @@ const Practice2 = () => {
         value={countryCode}
         onChange={(e) => {
           setCountryCode(e.target.value);
-          setPhoneNumber("");
+          setPhoneNumber("");  // Reset the phone number when changing country codes
         }}
       >
+      <option value="+880">BD (+880)</option>
         <option value="+1">USA (+1)</option>
         <option value="+91">IND (+91)</option>
         <option value="+92">PAK (+92)</option>
@@ -36,7 +38,7 @@ const Practice2 = () => {
         <option value="+65">SGP (+65)</option>
         <option value="+63">PHL (+63)</option>
         <option value="+62">IDN (+62)</option>
-        <option value="+880">BGD (+880)</option>
+        
         <option value="+976">MNG (+976)</option>
         <option value="+977">NPL (+977)</option>
         <option value="+855">KHM (+855)</option>
@@ -47,13 +49,16 @@ const Practice2 = () => {
         <option value="+995">GEO (+995)</option>
         <option value="+7">RUS/KAZ (+7)</option>
       </select>
-      <input
-        className="border"
-        type="tel"
-        value={`${countryCode} ${phoneNumber}`}
-        onChange={handlePhoneNumberChange}
-        placeholder="Enter phone number"
-      />
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+       
+        <input
+          className="border ml-2" 
+          type="tel"
+          value={phoneNumber}
+          onChange={handlePhoneNumberChange}
+          placeholder="Enter phone number"
+        />
+      </div>
     </div>
   );
 };
