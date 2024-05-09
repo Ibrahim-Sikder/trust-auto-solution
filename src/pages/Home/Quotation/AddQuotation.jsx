@@ -24,6 +24,7 @@ import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
 
 const AddQuotation = () => {
+
   const [select, setSelect] = useState(null);
 
   const [inputList, setInputList] = useState([
@@ -35,6 +36,7 @@ const AddQuotation = () => {
   const navigate = useNavigate();
   const [job_no, setJob_no] = useState(serial_no);
   const [jobCardData, setJobCardData] = useState({});
+  console.log(jobCardData);
   const [error, setError] = useState("");
   const [postError, setPostError] = useState("");
   const [getAllQuotation, setGetAllQuotation] = useState([]);
@@ -47,8 +49,15 @@ const AddQuotation = () => {
   // const [customerDetails, setCustomerDetails] = useState([]);
   // const [showCustomerData, setShowCustomerData] = useState({});
   const [customerId, setCustomerId] = useState(null);
+
   const [preview, setPreview] = useState("");
 
+  // for customer id edit 
+  const handleInputChange = (e) => {
+    const newId = e.target.value;
+    console.log("New ID:", newId); // Log the input for debugging
+    setJobCardData({ ...jobCardData, Id: newId });
+  };
   const {
     register,
     handleSubmit,
@@ -502,7 +511,7 @@ const AddQuotation = () => {
             <div className="vehicleCard">Create Quotation </div>
 
             <div>
-              <TADatePickers/>
+              <TADatePickers />
             </div>
           </div>
           <div className="mb-10 jobCardFieldWraps">
@@ -521,9 +530,8 @@ const AddQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Customer Id"
-                  onChange={(e) => setCustomerId(e.target.value)}
+                  onChange={handleInputChange}
                   value={jobCardData?.Id}
-                  focused={jobCardData?.Id}
                   required
                 />
               </div>
@@ -535,6 +543,15 @@ const AddQuotation = () => {
                   value={jobCardData?.company_name}
                   focused={jobCardData?.company_name}
                   {...register("company_name")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      company_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.company_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -544,6 +561,15 @@ const AddQuotation = () => {
                   value={jobCardData?.customer_name}
                   focused={jobCardData?.customer_name}
                   {...register("customer_name")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      customer_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.customer_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -553,6 +579,15 @@ const AddQuotation = () => {
                   value={jobCardData?.customer_contact}
                   focused={jobCardData?.customer_contact}
                   {...register("customer_contact")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      customer_contact: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.customer_contact,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -562,6 +597,15 @@ const AddQuotation = () => {
                   value={jobCardData?.customer_address}
                   focused={jobCardData?.customer_address}
                   {...register("customer_address")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      customer_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.customer_address,
+                  }}
                 />
               </div>
             </div>
@@ -576,6 +620,15 @@ const AddQuotation = () => {
                   value={jobCardData?.car_registration_no}
                   focused={jobCardData?.car_registration_no}
                   {...register("car_registration_no")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      car_registration_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.car_registration_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -585,6 +638,15 @@ const AddQuotation = () => {
                   value={jobCardData?.chassis_no}
                   focused={jobCardData?.chassis_no}
                   {...register("chassis_no")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      chassis_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.chassis_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -594,6 +656,15 @@ const AddQuotation = () => {
                   value={jobCardData?.engine_no}
                   focused={jobCardData?.engine_no}
                   {...register("engine_no")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      engine_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.engine_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -603,6 +674,15 @@ const AddQuotation = () => {
                   value={jobCardData?.vehicle_name}
                   focused={jobCardData?.vehicle_name}
                   {...register("vehicle_name")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      vehicle_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.vehicle_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -612,6 +692,15 @@ const AddQuotation = () => {
                   value={jobCardData?.mileage}
                   focused={jobCardData?.mileage}
                   {...register("mileage")}
+                  onChange={(e) =>
+                    setJobCardData({
+                      ...jobCardData,
+                      mileage: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.mileage,
+                  }}
                 />
               </div>
             </div>
