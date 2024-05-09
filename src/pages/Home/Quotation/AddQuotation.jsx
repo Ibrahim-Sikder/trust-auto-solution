@@ -43,10 +43,15 @@ const AddQuotation = () => {
   const [loading, setLoading] = useState(false);
   const [jobLoading, setJobLoading] = useState(false);
 
-  // const [customerDetails, setCustomerDetails] = useState([]);
-  // const [showCustomerData, setShowCustomerData] = useState({});
   const [customerId, setCustomerId] = useState(null);
   const [preview, setPreview] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const parsedDate = new Date();
+  const day = parsedDate.getDate().toString().padStart(2, "0");
+  const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = parsedDate.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
 
   const {
     register,
@@ -66,6 +71,10 @@ const AddQuotation = () => {
         });
     }
   }, [job_no]);
+
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate.format("DD-MM-YYYY"));
+  };
 
   const handleRemove = (index) => {
     if (!index) {
@@ -113,9 +122,6 @@ const AddQuotation = () => {
     return finalTotal;
   };
 
-  // const trust_auto_id = Cookies.get("trust_auto_id");
-  // const customer_type = Cookies.get("customer_type");
-
   const onSubmit = async (data) => {
     if (!jobCardData.Id) {
       return toast.error("No account found.");
@@ -125,7 +131,7 @@ const AddQuotation = () => {
         username: jobCardData.username || data.username,
         Id: customerId || jobCardData.Id,
         job_no: job_no || jobCardData.job_no,
-        date: jobCardData.date,
+        date:   formattedDate  ,
 
         company_name: data.company_name || jobCardData.company_name,
         customer_name: data.customer_name || jobCardData.customer_name,
@@ -501,7 +507,11 @@ const AddQuotation = () => {
             <div className="vehicleCard">Create Quotation </div>
 
             <div>
-              <TADatePicker/>
+              <TADatePicker
+                date={jobCardData?.date}
+                handleDateChange={handleDateChange}
+                selectedDate={selectedDate}
+              />
             </div>
           </div>
           <div className="mb-10 jobCardFieldWraps">
@@ -765,6 +775,9 @@ const AddQuotation = () => {
           </h3>
           <div className="flex items-center searcList">
             <div className="searchGroup">
+              <button onClick={handleAllQuotation} className="SearchBtn mr-2">
+                All
+              </button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
@@ -773,7 +786,7 @@ const AddQuotation = () => {
               />
             </div>
             <button onClick={handleFilterType} className="SearchBtn ">
-              Search{" "}
+              Search
             </button>
           </div>
         </div>

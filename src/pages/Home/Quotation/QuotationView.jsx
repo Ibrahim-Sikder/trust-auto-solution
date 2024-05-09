@@ -5,16 +5,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import logo from "../../../../public/assets/logo.png";
 import { useReactToPrint } from "react-to-print";
 import { usePDF } from "react-to-pdf";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, useLocation } from "react-router-dom";
+
 import "../Invoice/Invoice.css"; // Add a separate CSS file for print styles
-import { formatDate } from "../../../utils/formateDate";
 
 const Detail = () => {
   const componentRef = useRef();
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
-  const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -43,87 +41,28 @@ const Detail = () => {
     }
   }, [id]);
 
-  // const [currentPage, setCurrentPage] = useState(1);
-
-  // const itemsPerPage = 20;
-  // const itemsPerPages = 24;
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-  // const secondEndIndex = startIndex + itemsPerPages;
-
-  // const firstPageData = invoicePreview?.input_data?.slice(startIndex, endIndex);
-
-  // // Calculate the start index for the second page
-  // const secondPageStartIndex = endIndex;
-  // const secondPageData = invoicePreview?.input_data?.slice(
-  //   secondPageStartIndex,
-  //   secondPageStartIndex + itemsPerPages
-  // );
-
-  // // Calculate the start index for the third page
-  // const thirdPageStartIndex = secondPageStartIndex + itemsPerPage;
-  // const thirdPageData = invoicePreview?.input_data?.slice(
-  //   thirdPageStartIndex,
-  //   thirdPageStartIndex + itemsPerPages
-  // );
-
-  // // Calculate the start index for the fourth page
-  // const fourthPageStartIndex = thirdPageStartIndex + itemsPerPage;
-  // const fourthPageData = invoicePreview?.input_data?.slice(
-  //   fourthPageStartIndex,
-  //   fourthPageStartIndex + itemsPerPages
-  // );
-
-  // // Calculate the start index for the fifth page
-  // const fifthPageStartIndex = fourthPageStartIndex + itemsPerPage;
-  // const fifthPageData = invoicePreview?.input_data?.slice(
-  //   fifthPageStartIndex,
-  //   fifthPageStartIndex + itemsPerPages
-  // );
-
-  // // Calculate the start index for the sixth page
-  // const sixthPageStartIndex = fifthPageStartIndex + itemsPerPage;
-  // const sixthPageData = invoicePreview?.input_data?.slice(
-  //   sixthPageStartIndex,
-  //   sixthPageStartIndex + itemsPerPage
-  // );
-
   const [totalPages, setTotalPages] = useState(1);
   const [pagesData, setPagesData] = useState([]);
 
   const calculateItemsPerPage = useCallback((pageNumber) => {
     const itemHeight = 50;
     const pageHeight = 1800;
-    const marginHeight = 50;
+    const marginHeight = 10;
     const headerHeight = 100;
-    let footerHeight;
-    if (pageNumber === 1) {
-      footerHeight = 250;
-    } else {
-      footerHeight = 100;
-    }
+    const footerHeight = 100;
 
     const availableHeight =
       pageHeight - marginHeight - headerHeight - footerHeight;
 
-    // if (pageNumber === 1 && invoicePreview?.input_data?.length === 25) {
-    //   return 23;
-    // } else if (pageNumber === 1 && invoicePreview?.input_data?.length < 28) {
-    //   return 25;
-    // } else if (pageNumber === 1 && invoicePreview?.input_data?.length < 30) {
-    //   return 26;
-    // } else if (pageNumber === 1 && invoicePreview?.input_data?.length > 30) {
-    //   return 28;
-    // }
+    if (pageNumber !== undefined && pageNumber === 1) {
+      return 28;
+    }
 
     return Math.floor(availableHeight / itemHeight);
   });
 
   useEffect(() => {
-    const itemsPerPage = calculateItemsPerPage();
-    const totalPagesCount = Math.ceil(
-      invoicePreview?.input_data?.length / itemsPerPage
-    );
+    const totalPagesCount = Math.ceil(invoicePreview?.input_data?.length / 28);
     setTotalPages(totalPagesCount || 1);
   }, [calculateItemsPerPage, invoicePreview?.input_data]);
 
@@ -278,8 +217,8 @@ const Detail = () => {
                       </div>
                       <div className="text-left">
                         <small className="block">
-                          <small className="font-bold">Mobile:</small>{" "}
-                          +88 01821-216465
+                          <small className="font-bold">Mobile:</small> +88
+                          01821-216465
                         </small>
                         <small className="block">
                           <small className="font-bold">Email:</small>{" "}
@@ -302,9 +241,7 @@ const Detail = () => {
                         <b className="mr-5 uppercase">Quotation</b>
                         <b>
                           Date:
-                          {invoicePreview?.date
-                            ? formatDate(invoicePreview.date)
-                            : ""}
+                          {invoicePreview?.date}
                         </b>
                       </div>
 
@@ -423,7 +360,7 @@ const Detail = () => {
                 <button onClick={handlePrint}>Print </button>
                 <button onClick={() => toPDF()}>Pdf </button>
 
-                <Link to="/dashboard/invoice">
+                <Link to={`/dashboard/update-quotation?id=${id}`}>
                   <button> Edit </button>
                 </Link>
 

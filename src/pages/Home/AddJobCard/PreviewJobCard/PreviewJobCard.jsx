@@ -68,7 +68,7 @@ const PreviewJobCard = () => {
                     Job No: <span>{previewData.job_no}</span>
                   </b>
                   <div>
-                    <b>Customer ID:</b> {previewData.Id}
+                    <b>  ID:</b> {previewData.Id}
                   </div>
                 </div>
                 <div>
@@ -350,7 +350,7 @@ const PreviewJobCard = () => {
           </div>
         </div>
       </div>
-      <CommonButton />
+      <CommonButton id={id}/>
     </main>
   );
 };

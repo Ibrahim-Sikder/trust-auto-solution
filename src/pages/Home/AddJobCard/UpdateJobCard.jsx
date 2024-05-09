@@ -11,14 +11,16 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { carBrands, vehicleModels } from "../../../constant";
-import Cookies from "js-cookie";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
-import { Controller } from "react-hook-form";
 import { CalendarIcon } from "@mui/x-date-pickers";
+
 const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
-  // const [allJobCard, setAllJobCard] = useState([]);
+
+  const [customerConError, setCustomerConError] = useState("");
+  const [driverConError, setDriverConError] = useState("");
+  const [registrationError, setRegistrationError] = useState("");
 
   const [singleCard, setSingleCard] = useState({});
 
@@ -140,8 +142,6 @@ const UpdateJobCard = () => {
   const handleFuelChange = (_, newInputValue) => {
     setGetFuelType(newInputValue);
   };
-
- 
 
   useEffect(() => {
     setLoading(true);
@@ -362,19 +362,32 @@ const UpdateJobCard = () => {
                   {...register("customer_contact", {
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={singleCard?.customer_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setCustomerConError("");
+                    } else if (e.target.value > 11) {
+                      setCustomerConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setSingleCard({
                       ...singleCard,
                       customer_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!singleCard.customer_contact,
                   }}
+                  error={!!errors.customer_contact | !!customerConError}
+                  helperText={
+                    errors.customer_contact
+                      ? errors.customer_contact.message
+                      : ""
+                  }
                 />
               </div>
               <div className="mt-3">
@@ -434,22 +447,32 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Driver Contact No (N)"
                   {...register("driver_contact", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={singleCard?.driver_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setDriverConError("");
+                    } else if (e.target.value > 11) {
+                      setDriverConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setSingleCard({
                       ...singleCard,
                       driver_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!singleCard.driver_contact,
                   }}
+                  error={!!errors.driver_contact | !!driverConError}
+                  helperText={
+                    errors.driver_contact ? errors.driver_contact.message : ""
+                  }
                 />
               </div>
               <div className="mt-3">
@@ -491,21 +514,86 @@ const UpdateJobCard = () => {
                     />
                   )}
                 />
-
-                <TextField
+                {/* <TextField
                   className="carRegField"
-                  label="Car R (T&N)"
-                  {...register("car_registration_no")}
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    // required: "Car registration number is required",
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
                   value={singleCard?.car_registration_no}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                     setSingleCard({
                       ...singleCard,
-                      car_registration_no: e.target.value,
-                    })
-                  }
+                      car_registration_no: formattedValue,
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!singleCard.car_registration_no,
                   }}
+                /> */}
+
+                <TextField
+                  className="carRegField"
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    // required: "Car registration number is required",
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
+                  value={singleCard?.car_registration_no}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length === 7) {
+                      setRegistrationError("");
+                    } else if (value.length < 7) {
+                      setRegistrationError(
+                        "Car registration number must be 7 characters"
+                      );
+                    }
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
+                    setSingleCard({
+                      ...singleCard,
+                      car_registration_no: formattedValue,
+                    });
+                  }}
+                  InputLabelProps={{
+                    shrink: !!singleCard.car_registration_no,
+                  }}
+                  error={!!errors.car_registration_no || !!registrationError}
                 />
               </div>
 
@@ -647,6 +735,11 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.mileage,
                   }}
                 />
+                {errors.mileage && (
+                  <span className="text-sm text-red-400">
+                    {errors.mileage.message}
+                  </span>
+                )}
               </div>
               <div className="mt-3">
                 <Autocomplete

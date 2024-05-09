@@ -64,11 +64,16 @@ const AddJobCard = () => {
   const [clickControl, setClickControl] = useState(null);
 
   const [error, setError] = useState(null);
-  const [select, setSelect] = useState("SL No");
+
+  const [customerConError, setCustomerConError] = useState("");
+  const [driverConError, setDriverConError] = useState("");
+  const [registrationError, setRegistrationError] = useState("");
+
   const [value, setValue] = useState("");
   const [value2, setValue2] = useState("");
   const [value3, setValue3] = useState("");
   const [reload, setReload] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -76,10 +81,9 @@ const AddJobCard = () => {
     formState: { errors },
   } = useForm();
 
-  const [technicianDate, setTechnicianDate] = useState("")
+  const [technicianDate, setTechnicianDate] = useState("");
   const [formattedDate, setFormattedDate] = useState("");
   const [filterType, setFilterType] = useState("");
-
 
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -96,7 +100,7 @@ const AddJobCard = () => {
         job_no: jobNo,
         date: formattedDate,
         company_name: data.company_name || showCustomerData.company_name,
-        // username: data.username || showCustomerData.username,
+        username: data.username || showCustomerData.username,
         company_address:
           data.company_address || showCustomerData.company_address,
         customer_name: data.customer_name || showCustomerData.customer_name,
@@ -142,7 +146,7 @@ const AddJobCard = () => {
         setLoading(false);
         const newJobNo = jobNo + 1;
         setJobNo(newJobNo);
-        navigate("/dashboard/jobcard-list")
+        navigate("/dashboard/jobcard-list");
         setReload(!reload);
         if (clickControl === "preview") {
           fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/recent`)
@@ -213,7 +217,7 @@ const AddJobCard = () => {
   }, [customerId]);
 
   // get id
- 
+
   const getAndSetIds = (url, idExtractor) => {
     setLoading(true);
     fetch(url)
@@ -251,8 +255,6 @@ const AddJobCard = () => {
         toast.error("Invalid id type");
     }
   };
-
- 
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
@@ -544,9 +546,6 @@ const AddJobCard = () => {
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
-  
-
- 
 
   return (
     <div className="addJobCardWraps">
@@ -595,7 +594,7 @@ const AddJobCard = () => {
                 </span>
               </div>
               <div className="flex items-center mt-2">
-                <FormControl sx={{ m: 1, minWidth: 150 }} size="small" >
+                <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
                   <InputLabel id="demo-select-small-label">
                     Select Customer
                   </InputLabel>
@@ -611,17 +610,10 @@ const AddJobCard = () => {
                     <MenuItem value="showRoomId">Show Room ID </MenuItem>
                   </Select>
                 </FormControl>
-                {/* <input
-                  placeholder="Search Here"
-                  onChange={(e) => setCustomerId(e.target.value)}
-                  type="text"
-                  className="border-[#ddd] border w-40 h-10 p-2 rounded-sm"
-                /> */}
-                 
+
                 <Autocomplete
                   className="w-40 "
                   id="free-solo-demo"
-                 
                   options={showId.map((option) => option)}
                   onChange={(e, value) => setCustomerId(value)}
                   renderInput={(params) => (
@@ -685,7 +677,6 @@ const AddJobCard = () => {
                   </div>
                 </div>
               </div>
-               
             </div>
           </div>
 
@@ -785,29 +776,35 @@ const AddJobCard = () => {
                   className="addJobInputField"
                   label="Customer Contact No (N)"
                   {...register("customer_contact", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={showCustomerData?.customer_contact}
-                  focused={showCustomerData?.customer_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setCustomerConError("");
+                    } else if (e.target.value > 11) {
+                      setCustomerConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setShowCustomerData({
                       ...showCustomerData,
                       customer_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!showCustomerData.customer_contact,
                   }}
+                  error={!!errors.customer_contact | !!customerConError}
+                  helperText={
+                    errors.customer_contact
+                      ? errors.customer_contact.message
+                      : ""
+                  }
                 />
-                {/* {errors.customer_contact && (
-              <span className="text-sm text-red-400">
-                {errors.customer_contact.message}
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -884,29 +881,33 @@ const AddJobCard = () => {
                   className="addJobInputField"
                   label="Driver Contact No (N)"
                   {...register("driver_contact", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={showCustomerData?.driver_contact}
-                  focused={showCustomerData?.driver_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setDriverConError("");
+                    } else if (e.target.value > 11) {
+                      setDriverConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setShowCustomerData({
                       ...showCustomerData,
                       driver_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!showCustomerData.driver_contact,
                   }}
+                  error={!!errors.driver_contact | !!driverConError}
+                  helperText={
+                    errors.driver_contact ? errors.driver_contact.message : ""
+                  }
                 />
-                {/* {errors.driver_contact && (
-              <span className="text-sm text-red-400">
-                {errors.driver_contact.message}
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -955,27 +956,53 @@ const AddJobCard = () => {
 
                 <TextField
                   className="carRegField"
-                  label="Car R (T&N)"
-                  {...register("car_registration_no")}
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers and hyphens are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
                   value={showCustomerData?.car_registration_no}
-                  focused={showCustomerData?.car_registration_no}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length === 7) {
+                      setRegistrationError("");
+                    } else if (value.length < 7) {
+                      setRegistrationError(
+                        "Car registration number must be 7 characters"
+                      );
+                    }
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                     setShowCustomerData({
                       ...showCustomerData,
-                      car_registration_no: e.target.value,
-                    })
-                  }
+                      car_registration_no: formattedValue,
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!showCustomerData.car_registration_no,
                   }}
+                  error={!!errors.car_registration_no || !!registrationError}
+                  // helperText={
+                  //   (errors.car_registration_no
+                  //     ? errors.car_registration_no.message
+                  //     : "") || registrationError
+                  // }
                 />
               </div>
-
-              {/* {errors.car_registration_no && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )} */}
 
               <div className="mt-3">
                 <TextField
@@ -1168,11 +1195,11 @@ const AddJobCard = () => {
                     shrink: !!showCustomerData.mileage,
                   }}
                 />
-                {/* {errors.mileage && (
+                {errors.mileage && (
                   <span className="text-sm text-red-400">
                     {errors.mileage.message}
                   </span>
-                )} */}
+                )}
               </div>
               <div className="mt-3">
                 <Autocomplete
@@ -1328,7 +1355,6 @@ const AddJobCard = () => {
             </div>
             <div>
               <input
-              
                 onChange={handleTechnicianDateChange}
                 required
                 autoComplete="off"
@@ -1405,10 +1431,12 @@ const AddJobCard = () => {
           <h3 className="mb-3 text-sm font-bold lg:text-3xl">Job Card List:</h3>
           <div className="flex items-center searcList">
             <div className="searchGroup">
-
-            <button onClick={handleAllAddToJobCard} className="SearchBtn mr-2">
-              All{" "}
-            </button>
+              <button
+                onClick={handleAllAddToJobCard}
+                className="SearchBtn mr-2"
+              >
+                All{" "}
+              </button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"

@@ -310,6 +310,7 @@ const UpdateQuotation = () => {
 
               <div className="mt-3">
                 <TextField
+                  readonly
                   className="addJobInputField"
                   label="Customer Id"
                   {...register("customerId")}

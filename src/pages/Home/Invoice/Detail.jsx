@@ -9,7 +9,6 @@ import { usePDF } from "react-to-pdf";
 import { Link, useLocation } from "react-router-dom";
 import "./Invoice.css";
 import { formatDate } from "../../../utils/formateDate";
- 
 
 const Detail = () => {
   const componentRef = useRef();
@@ -23,7 +22,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
-  console.log(invoicePreview)
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -46,36 +45,22 @@ const Detail = () => {
     const pageHeight = 1800;
     const marginHeight = 50;
     const headerHeight = 100;
-    let footerHeight;
-    if (pageNumber === 1) {
-      footerHeight = 250;
-    } else {
-      footerHeight = 100;
-    }
+    const footerHeight = 100;
 
     const availableHeight =
       pageHeight - marginHeight - headerHeight - footerHeight;
 
-    // if (pageNumber === 1 && invoicePreview?.input_data?.length === 25) {
-    //   return 23;
-    // }
-    // else if (pageNumber === 1 && invoicePreview?.input_data?.length < 28) {
-    //   return 25;
-    // }
-    // else if (pageNumber === 1 && invoicePreview?.input_data?.length < 30) {
-    //   return 26;
-    // }
-    // else if (pageNumber === 1 && invoicePreview?.input_data?.length > 30) {
-    //   return 28;
-    // }
+    if (pageNumber !== undefined && pageNumber === 1) {
+      return 28;
+    }
 
     return Math.floor(availableHeight / itemHeight);
   };
 
   useEffect(() => {
-    const itemsPerPage = calculateItemsPerPage();
+    // const itemsPerPage = calculateItemsPerPage();
     const totalPagesCount = Math.ceil(
-      invoicePreview?.input_data?.length / itemsPerPage
+      invoicePreview?.input_data?.length / 28
     );
     setTotalPages(totalPagesCount || 1);
   }, [invoicePreview.input_data]);
