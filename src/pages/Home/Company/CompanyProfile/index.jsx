@@ -16,19 +16,20 @@ import CompanyInvoiceList from "./CompanyInvoiceList";
 import CompanyMoneyList from "./CompanyMoneyList";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
- 
+
   const [jobCardData, setJobCardData] = useState([]);
- 
+
   const [quotationData, setQuotationData] = useState([]);
- 
+
   const [invoiceData, setInvoiceData] = useState([]);
- 
+
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
- 
+
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -56,8 +57,7 @@ const CompanyProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
-          // Handle errors
+          toast.error(error.message);
         });
     }
   }, [id]);
@@ -74,8 +74,7 @@ const CompanyProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
-          // Handle errors
+          toast.error(error.message);
         });
     }
   }, [id]);
@@ -91,8 +90,7 @@ const CompanyProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
-          // Handle errors
+          toast.error(error.message);
         });
     }
   }, [id]);
@@ -109,7 +107,7 @@ const CompanyProfile = () => {
           }
         })
         .catch((error) => {
-          console.error("Error:", error);
+          toast.error(error.message);
           // Handle errors
         });
     }
@@ -119,7 +117,6 @@ const CompanyProfile = () => {
     return <div>Loading...</div>;
   }
 
- 
   return (
     <div>
       <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">

@@ -26,9 +26,6 @@ const AddCustomer = () => {
   const [customerData, setCustomerData] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
 
-  // const [brand, setBrand] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [getFuelType, setGetFuelType] = useState("");
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -45,9 +42,10 @@ const AddCustomer = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     // const uniqueId = 'Id_' + Math.random().toString(36).substr(2, 9);
-    const customerNamePrefix = data.customer_name.substring(0, 4);
+    const customerNamePrefix = "TSA-C:";
+    // const customerNamePrefix = data.customer_name.substring(0, 4);
     const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
-    const paddedNumber = randomNumber.toString().padStart(4, "0"); // Ensures the number is 3 digits long
+    const paddedNumber = randomNumber.toString().padStart(6, "0"); // Ensures the number is 3 digits long
 
     // Concatenate the name and the number to form the unique ID
     const uniqueId = `${customerNamePrefix}${paddedNumber}`;
@@ -201,30 +199,26 @@ const AddCustomer = () => {
           <tr>
             <th>Customer ID </th>
             <th>Customer Name</th>
-            <th>Order Number </th>
-            <th>Car Number </th>
             <th>Mobile Number</th>
+            <th>Vehicle Name </th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>
         <tbody>
           {customerData?.map((card, index) => (
             <tr key={card._id}>
-              {/* <td>{index + 1}</td> */}
               <td>{card.customerId}</td>
               <td>{card.customer_name}</td>
+              <td>{card.customer_contact}</td>
 
-              <td>{card.car_registration_no}</td>
-              <td> {card.customer_contact} </td>
-              <td>{card.date}</td>
+              <td>{card.vehicle_name}</td>
+
               <td>
                 <div
                   onClick={() => handleIconPreview(card.customerId)}
-                  className="flex items-center justify-center "
+                  className="flex items-center justify-center cursor-pointer"
                 >
-                  <Link to="/dashboard/employee-profile">
-                    <FaUserTie size={25} className="" />
-                  </Link>
+                  <FaUserTie size={25} className="" />
                 </div>
               </td>
 
@@ -614,7 +608,12 @@ const AddCustomer = () => {
             Customer List:{" "}
           </h3>
           <div className="flex flex-wrap items-center">
-           
+            <button
+              onClick={handleAllCustomer}
+              className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
+            >
+              All
+            </button>
             <input
               onChange={(e) => setFilterType(e.target.value)}
               type="text"
