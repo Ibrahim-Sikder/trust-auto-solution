@@ -11,7 +11,7 @@ const CustomerAccount = ({
   moneyReceiptData,
   invoiceData,
 }) => {
-  console.log(profileData);
+ 
 
   return (
     <div className="customerProfileWrap">
@@ -21,26 +21,26 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="space-y-2">
               <div>
-                Customer Name : <b className="capitalize ">{profileData.company_name} </b>
+                Customer Name : <b className="capitalize ">{profileData?.company_name} </b>
               </div>
               <div>
-               Vehicle Name : <b>{profileData.vehicle_name} </b>
+               Vehicle Name : <b>{profileData?.vehicle_name} </b>
               </div>
               <div>
-               Registration No : <b>{profileData.car_registration_no}</b>
+               Registration No : <b>{profileData?.car_registration_no}</b>
               </div>
               
             </div>
 
             <div className="space-y-2" >
               <div>
-                Company Name : <b className="capitalize">{profileData.company_name} </b>
+                Company Name : <b className="capitalize">{profileData?.company_name} </b>
               </div>
               <div>
-                Company Address : <b>{profileData.company_address}</b>
+                Company Address : <b>{profileData?.company_address}</b>
               </div>
               <div>
-               Reference Name : <b> {profileData.reference_name}</b>
+               Reference Name : <b> {profileData?.reference_name}</b>
               </div>
             </div>
            
@@ -85,46 +85,46 @@ const CustomerAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <b className="block">Feb</b>
-                {jobCardData && jobCardData.length > 0 && (
-                  <div key={jobCardData[0].Id}>
-                    <b>{jobCardData[0].date.slice(0, 2)}</b>
+                {jobCardData && jobCardData?.length > 0 && (
+                  <div key={jobCardData[0]?.Id}>
+                    <b>{jobCardData[0]?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {jobCardData && invoiceData.length > 0 && (
-                  <div key={jobCardData[0].Id}>
-                    <b>{jobCardData[0].vehicle_name}</b>
+                {jobCardData && invoiceData?.length > 0 && (
+                  <div key={jobCardData[0]?.Id}>
+                    <b>{jobCardData[0]?.vehicle_name}</b>
                   </div>
                 )}
                 {jobCardData && jobCardData.length > 0 && (
-                  <div key={jobCardData[0].Id}>
-                    <b>{jobCardData[0].job_no}</b>
+                  <div key={jobCardData[0]?.Id}>
+                    <b>{jobCardData[0]?.job_no}</b>
                   </div>
                 )}
               </div>
             </div>
             <b className="cursor-pointer">
-            <Link to={`/dashboard/preview?id=${jobCardData._id}`}> <HiOutlineEye size={35} /></Link>
+            <Link to={`/dashboard/preview?id=${jobCardData?._id}`}> <HiOutlineEye size={35} /></Link>
             </b>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <b className="block">Feb</b>
-                {jobCardData && jobCardData.length > 0 && (
-                  <div key={jobCardData[1].Id}>
-                    <b>{jobCardData[1].date.slice(0, 2)}</b>
+                {jobCardData && jobCardData?.length > 0 && (
+                  <div key={jobCardData[1]?.Id}>
+                    <b>{jobCardData[1]?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {jobCardData && jobCardData.length > 0 && (
+                {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[1]?.Id}>
                     <b>{jobCardData[1]?.vehicle_name}</b>
                   </div>
                 )}
-                {jobCardData && jobCardData.length > 0 && (
+                {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[1]?.job_no}>
                     <b>{jobCardData[1]?.job_no}</b>
                   </div>
@@ -133,7 +133,7 @@ const CustomerAccount = ({
             </div>
             <b className="cursor-pointer">
             
-             <Link to={`/dashboard/preview?id=${jobCardData._id}`}> <HiOutlineEye size={35} /></Link>
+             <Link to={`/dashboard/preview?id=${jobCardData?._id}`}> <HiOutlineEye size={35} /></Link>
             </b>
           </div>
         </Card>
@@ -150,25 +150,25 @@ const CustomerAccount = ({
               <div className="cardIcon ">
                 <b className="block">Feb</b>
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0].Id}>
-                    <b>{quotationData[0].date.slice(0, 2)}</b>
+                  <div key={quotationData[0]?.Id}>
+                    <b>{quotationData[0]?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0].Id}>
-                    <b>{quotationData[0].vehicle_name}</b>
+                  <div key={quotationData[0]?.Id}>
+                    <b>{quotationData[0]?.vehicle_name}</b>
                   </div>
                 )}
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0].Id}>
-                    <b>৳{quotationData[0].net_total}</b>
+                  <div key={quotationData[0]?.Id}>
+                    <b>৳{quotationData[0]?.net_total}</b>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/quotation-view?id=${quotationData._id}`}>
+            <Link to={`/dashboard/quotation-view?id=${quotationData?._id}`}>
             <b className="cursor-pointer">
               <HiOutlineEye size={35} />
             </b>
@@ -179,26 +179,26 @@ const CustomerAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <b className="block">Feb</b>
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1].Id}>
-                    <b>{quotationData[1].date.slice(0, 2)}</b>
+                {quotationData && quotationData?.length > 0 && (
+                  <div key={quotationData[1]?.Id}>
+                    <b>{quotationData[1]?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1].Id}>
-                    <b>{quotationData[1].vehicle_name}</b>
+                {quotationData && quotationData?.length > 0 && (
+                  <div key={quotationData[1]?.Id}>
+                    <b>{quotationData[1]?.vehicle_name}</b>
                   </div>
                 )}
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1].Id}>
-                    <b>৳{quotationData[1].net_total}</b>
+                {quotationData && quotationData?.length > 0 && (
+                  <div key={quotationData[1]?.Id}>
+                    <b>৳{quotationData[1]?.net_total}</b>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/quotation-view?id=${quotationData._id}`}>
+            <Link to={`/dashboard/quotation-view?id=${quotationData?._id}`}>
             <b className="cursor-pointer">
               <HiOutlineEye size={35} />
             </b>
@@ -220,26 +220,26 @@ const CustomerAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <b className="block">Feb</b>
-                {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0].Id}>
-                    <b>{invoiceData[0].date.slice(0, 2)}</b>
+                {invoiceData && invoiceData?.length > 0 && (
+                  <div key={invoiceData[0]?.Id}>
+                    <b>{invoiceData[0]?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0].Id}>
-                    <b>{invoiceData[0].vehicle_name}</b>
+                {invoiceData && invoiceData?.length > 0 && (
+                  <div key={invoiceData[0]?.Id}>
+                    <b>{invoiceData[0]?.vehicle_name}</b>
                   </div>
                 )}
                 {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0].Id}>
-                    <b>৳{invoiceData[0].net_total}</b>
+                  <div key={invoiceData[0]?.Id}>
+                    <b>৳{invoiceData[0]?.net_total}</b>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${invoiceData._id}`}>
+            <Link to={`/dashboard/detail?id=${invoiceData?._id}`}>
             <b className="cursor-pointer">
               <HiOutlineEye size={35} />
             </b>
@@ -249,26 +249,26 @@ const CustomerAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <b className="block">Feb</b>
-                {invoiceData && invoiceData.length > 0 && (
+                {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[1]?.Id}>
                     <b>{invoiceData[1]?.date.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {invoiceData && quotationData.length > 0 && (
-                  <div key={quotationData[1].Id}>
-                    <b>{quotationData[1].vehicle_name}</b>
+                {invoiceData && quotationData?.length > 0 && (
+                  <div key={quotationData[1]?.Id}>
+                    <b>{quotationData[1]?.vehicle_name}</b>
                   </div>
                 )}
                 {invoiceData && quotationData.length > 0 && (
-                  <div key={quotationData[1].Id}>
-                    <b>৳{quotationData[1].net_total}</b>
+                  <div key={quotationData[1]?.Id}>
+                    <b>৳{quotationData[1]?.net_total}</b>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${invoiceData._id}`}>
+            <Link to={`/dashboard/detail?id=${invoiceData?._id}`}>
             <b className="cursor-pointer">
               <HiOutlineEye size={35} />
             </b>
@@ -287,21 +287,21 @@ const CustomerAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <b className="block">Feb</b>
-                {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0].Id}>
-                    <b>{invoiceData[0].date.slice(0, 2)}</b>
+                {invoiceData && invoiceData?.length > 0 && (
+                  <div key={invoiceData[0]?.Id}>
+                    <b>{invoiceData[0]?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0].Id}>
-                    <b>{invoiceData[0].vehicle_name}</b>
+                {invoiceData && invoiceData?.length > 0 && (
+                  <div key={invoiceData[0]?.Id}>
+                    <b>{invoiceData[0]?.vehicle_name}</b>
                   </div>
                 )}
-                {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0].Id}>
-                    <b>৳{invoiceData[0].net_total}</b>
+                {invoiceData && invoiceData?.length > 0 && (
+                  <div key={invoiceData[0]?.Id}>
+                    <b>৳{invoiceData[0]?.net_total}</b>
                   </div>
                 )}
               </div>
@@ -314,21 +314,21 @@ const CustomerAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <b className="block">Feb</b>
-                {invoiceData && invoiceData.length > 0 && (
+                {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[1]?.Id}>
                     <b>{invoiceData[1]?.date.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {invoiceData && quotationData.length > 0 && (
-                  <div key={quotationData[1].Id}>
-                    <b>{quotationData[1].vehicle_name}</b>
+                {invoiceData && quotationData?.length > 0 && (
+                  <div key={quotationData[1]?.Id}>
+                    <b>{quotationData[1]?.vehicle_name}</b>
                   </div>
                 )}
-                {invoiceData && quotationData.length > 0 && (
-                  <div key={quotationData[1].Id}>
-                    <b>৳{quotationData[1].net_total}</b>
+                {invoiceData && quotationData?.length > 0 && (
+                  <div key={quotationData[1]?.Id}>
+                    <b>৳{quotationData[1]?.net_total}</b>
                   </div>
                 )}
               </div>

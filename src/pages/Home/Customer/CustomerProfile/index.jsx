@@ -25,7 +25,7 @@ const CustomerProfile = () => {
   const [invoiceData, setInvoiceData] = useState([]);
 
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-
+console.log(moneyReceiptData)
   const [error, setError] = useState("");
 
   const location = useLocation();
@@ -133,7 +133,7 @@ const CustomerProfile = () => {
               <div className="flex items-center">
                   <span> Customer ID : </span>{" "}
                   <span className="ml-3 font-semibold ">
-                    {profileData.customerId}
+                    {profileData?.customerId}
                   </span>
                 </div>
                 
@@ -141,15 +141,15 @@ const CustomerProfile = () => {
                
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>{profileData.customer_contact}</span>
+                    <span>{profileData?.customer_contact}</span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>{profileData.customer_email} </span>
+                    <span>{profileData?.customer_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span> {profileData.customer_address} </span>
+                    <span> {profileData?.customer_address} </span>
                   </div>
                 </div>
               </div>

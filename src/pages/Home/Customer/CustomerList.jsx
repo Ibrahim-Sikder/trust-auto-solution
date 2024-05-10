@@ -14,7 +14,7 @@ import { HiOutlineSearch } from "react-icons/hi";
 const CustomerList = () => {
   const [filterType, setFilterType] = useState("");
   const [customerData, setCustomerData] = useState([]);
-  console.log(customerData)
+  console.log(customerData);
 
   const [noMatching, setNoMatching] = useState(null);
 
@@ -156,11 +156,11 @@ const CustomerList = () => {
               <td>
                 <div
                   onClick={() => handleIconPreview(card.customerId)}
-                  className="flex items-center justify-center "
+                  className="flex items-center justify-center cursor-pointer"
                 >
-                  <Link to="/dashboard/employee-profile">
-                    <FaUserTie size={25} className="" />
-                  </Link>
+                  {/* <Link to="/dashboard/employee-profile"> */}
+                  <FaUserTie size={25} className="" />
+                  {/* </Link> */}
                 </div>
               </td>
 
@@ -301,6 +301,12 @@ const CustomerList = () => {
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <h3 className="mb-3 text-3xl font-bold"> Customer List:</h3>
         <div className="flex items-center">
+          <button
+            onClick={handleAllCustomer}
+            className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
+          >
+            All
+          </button>
           <input
             onChange={(e) => setFilterType(e.target.value)}
             type="text"

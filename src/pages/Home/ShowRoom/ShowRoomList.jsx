@@ -12,11 +12,9 @@ import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 import { HiOutlineSearch } from "react-icons/hi";
 const ShowRoomList = () => {
-
-
   const [filterType, setFilterType] = useState("");
   const [showRoomData, setShowRoomData] = useState([]);
-  
+
   const [noMatching, setNoMatching] = useState(null);
 
   // const [brand, setBrand] = useState("");
@@ -34,7 +32,6 @@ const ShowRoomList = () => {
       .then((data) => {
         setShowRoomData(data);
 
-       
         setLoading(false);
       });
   }, [reload]);
@@ -143,7 +140,7 @@ const ShowRoomList = () => {
           <tr>
             <th>Show Room ID</th>
             <th>Customer Name</th>
-            <th>Order Number </th>
+
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th>Date</th>
@@ -158,15 +155,13 @@ const ShowRoomList = () => {
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-              <td>{card.date}</td>
+
               <td>
                 <div
                   onClick={() => handleIconPreview(card.showRoomId)}
-                  className="flex items-center justify-center "
+                  className="flex items-center justify-center cursor-pointer"
                 >
-                  <Link to="/dashboard/employee-profile">
-                    <FaUserTie size={25} className="" />
-                  </Link>
+                  <FaUserTie size={25} className="" />
                 </div>
               </td>
 
@@ -237,7 +232,6 @@ const ShowRoomList = () => {
     );
   }
 
- 
   const handleFilterType = async () => {
     try {
       const data = {
@@ -301,14 +295,19 @@ const ShowRoomList = () => {
         </div>
         <div className="productHome">
           <span>Dashboard / </span>
-          <span>Show Room  / </span>
+          <span>Show Room / </span>
           <span>Show Room List </span>
         </div>
       </div>
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3 ">
         <h3 className="mb-3 text-3xl font-bold"> Show Room List:</h3>
         <div className="flex items-center">
-          
+          <button
+            onClick={handleAllCustomer}
+            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+          >
+            All
+          </button>
           <input
             onChange={(e) => setFilterType(e.target.value)}
             type="text"

@@ -8,11 +8,32 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { formatDate } from "../../../utils/formateDate";
+import TADatePickers from "../../../components/form/TADatePickers";
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   const [specificMoneyReceipt, setSpecificMoneyReceipt] = useState({});
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [advance, setAdvance] = useState(null);
+  const [totalAmount, setTotalAmount] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const [job_no, setJob_no] = useState(null);
+  const [jobCardData, setJobCardData] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const [advanceSelect, setAdvanceSelect] = useState(false);
+  const [finalPayment, setFinalPayment] = useState(false);
+  const [cash, setCash] = useState(false);
+  const [cheque, setCheque] = useState(false);
+
+  const navigate = useNavigate();
 
   const amountInWords = (amount) => {
     const numberWords = [
@@ -139,11 +160,37 @@ const UpdateMoneyReceipt = () => {
     }
   }, [id]);
 
-  const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
+  const handleDateChange = (newDate) => {
+    setSelectedDate(formatDate(newDate));
+  };
 
+  const getRemaining = () => {
+    if (!isNaN(totalAmount) && totalAmount && !isNaN(advance) && advance) {
+      const remaining = totalAmount - advance;
+      return remaining;
+    }
+
+    if (totalAmount === null && advance) {
+      const remaining = specificMoneyReceipt.total_amount - advance;
+      return remaining;
+    }
+    if (totalAmount && advance === null) {
+      const remaining = totalAmount - specificMoneyReceipt.advance;
+      return remaining;
+    }
+  };
   const onSubmit = async (data) => {
     const values = {
+      Id: specificMoneyReceipt.Id,
+      job_no: specificMoneyReceipt.job_no,
+      default_date: selectedDate || specificMoneyReceipt.default_date,
+
+      advance_select: specificMoneyReceipt.advance_select,
+      final_payment: specificMoneyReceipt.final_payment,
+
+      cash: specificMoneyReceipt.cash,
+      cheque: specificMoneyReceipt.cheque,
+
       thanks_from: data.thanks_from || specificMoneyReceipt.thanks_from,
       against_bill_no:
         data.against_bill_no || specificMoneyReceipt.against_bill_no,
@@ -154,8 +201,10 @@ const UpdateMoneyReceipt = () => {
       date_two: data.date_two || specificMoneyReceipt.date_two,
       total_amount: data.total_amount || specificMoneyReceipt.total_amount,
       advance: data.advance || specificMoneyReceipt.advance,
-      remaining: data.remaining || specificMoneyReceipt.remaining,
-      taka_in_word: totalAmountInWords || specificMoneyReceipt.taka_in_word,
+      remaining: getRemaining() || specificMoneyReceipt.remaining,
+      taka_in_word: advance
+        ? totalAmountInWords
+        : specificMoneyReceipt.taka_in_word,
     };
     try {
       const response = await axios.put(
@@ -210,8 +259,15 @@ const UpdateMoneyReceipt = () => {
         <button>Receipt</button>
       </div>
       <div className="flex justify-between ">
-        <b>Serial No: 01</b>
-        <b>Date: 12-12-21</b>
+        <b>Serial No: {specificMoneyReceipt.against_bill_no}</b>
+        <b className="flex gap-x-2">
+          Date:{" "}
+          <TADatePickers
+            date={specificMoneyReceipt?.default_date}
+            handleDateChange={handleDateChange}
+            selectedDate={selectedDate}
+          />
+        </b>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex mt-3 receivedField">
@@ -237,6 +293,7 @@ const UpdateMoneyReceipt = () => {
               type="text"
               autoComplete="off"
               {...register("against_bill_no")}
+              readOnly
             />
           </div>
           <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
@@ -298,10 +355,11 @@ const UpdateMoneyReceipt = () => {
           <div className="flex ">
             <label className="totalAmountText2">Total Amount Tk:</label>
             <input
-              defaultValue={specificMoneyReceipt.total_amount}
+              defaultValue={specificMoneyReceipt?.total_amount}
               className="moneyViewInputField  totalAmountInput"
               type="text"
               {...register("total_amount")}
+              onChange={(e) => setTotalAmount(e.target.value)}
             />
           </div>
           <div className="flex ">
@@ -317,7 +375,9 @@ const UpdateMoneyReceipt = () => {
           <div className="flex ">
             <label>Remaining:</label>
             <input
-              defaultValue={specificMoneyReceipt.remaining}
+              value={
+                getRemaining() ? getRemaining() : specificMoneyReceipt.remaining
+              }
               className="moneyViewInputField totalAmountInput"
               type="text"
               {...register("remaining")}
@@ -326,15 +386,8 @@ const UpdateMoneyReceipt = () => {
         </div>
         <div className="mt-5 wordTaka">
           <label>in word (taka) </label>
-          {/* <input
-            defaultValue={specificMoneyReceipt.taka_in_word}
-            className="moneyViewInputField"
-            type="text"
-            {...register("taka_in_word")}
-          /> */}
-          {advance
-            ? totalAmountInWords
-            : specificMoneyReceipt?.taka_in_word}
+
+          {advance ? totalAmountInWords : specificMoneyReceipt?.taka_in_word}
         </div>
         {/* <div>
             <button className="w-full my-10 btn btn-warning"> Update</button>

@@ -11,7 +11,7 @@ import Loading from "../../../components/Loading/Loading";
 const CompanyList = () => {
   const [filterType, setFilterType] = useState("");
   const [companyData, setCompanyData] = useState([]);
-  
+
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -134,7 +134,7 @@ const CompanyList = () => {
             <th>SL No</th>
             <th>Company ID</th>
             <th>Customer Name</th>
-            <th>Order Number </th>
+
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th>Date</th>
@@ -149,17 +149,14 @@ const CompanyList = () => {
               <td>{card.company_name}</td>
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-              <td>{card.date}</td>
+
               <td>
-              <div 
-              onClick={() => handleIconPreview(card.companyId)}
-              className="flex items-center justify-center ">
-              <Link to="/dashboard/employee-profile">
-                <FaUserTie size={25} className="" />
-              </Link>
-            </div>
-              
-               
+                <div
+                  onClick={() => handleIconPreview(card.companyId)}
+                  className="flex items-center justify-center cursor-pointer"
+                >
+                  <FaUserTie size={25} className="" />
+                </div>
               </td>
 
               <td>
@@ -229,7 +226,6 @@ const CompanyList = () => {
     );
   }
 
- 
   const handleFilterType = async () => {
     try {
       const data = {
@@ -300,15 +296,13 @@ const CompanyList = () => {
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
         <h3 className="mb-3 text-xl font-bold md:text-3xl"> Company List:</h3>
         <div className="flex items-center">
-        
-        {/**
           <button
             onClick={handleAllCustomer}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
+            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-3 py-2 rounded-md text-white"
           >
             All
           </button>
-  */}
+
           <input
             type="text"
             placeholder="Search"

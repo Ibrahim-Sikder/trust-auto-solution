@@ -202,7 +202,7 @@ const AddCompany = () => {
           <tr>
             <th>Company Id</th>
             <th>Customer Name</th>
-            <th>Order Number </th>
+             
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th colSpan={3}>Action</th>
@@ -216,11 +216,11 @@ const AddCompany = () => {
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-              <td>{card.date}</td>
+             
               <td>
                 <div
                   onClick={() => handleIconPreview(card.companyId)}
-                  className="flex items-center justify-center"
+                  className="flex items-center justify-center cursor-pointer"
                 >
                   <FaUserTie size={25} className="" />
                 </div>

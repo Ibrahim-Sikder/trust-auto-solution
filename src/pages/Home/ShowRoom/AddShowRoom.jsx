@@ -186,7 +186,7 @@ const AddShowRoom = () => {
           <tr>
             <th>SL No</th>
             <th>Customer Name</th>
-            <th>Order Number </th>
+        
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th>Date</th>
@@ -201,15 +201,15 @@ const AddShowRoom = () => {
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-              <td>{card.date}</td>
+              
               <td>
                 <div
                   onClick={() => handleIconPreview(card.showRoomId)}
-                  className="flex items-center justify-center "
+                  className="flex items-center justify-center cursor-pointer"
                 >
-                  <Link to="/dashboard/employee-profile">
+                  
                     <FaUserTie size={25} className="" />
-                  </Link>
+              
                 </div>
               </td>
 
@@ -610,7 +610,7 @@ const AddShowRoom = () => {
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
             />
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+            <button onClick={handleFilterType} className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
               {" "}
               <HiOutlineSearch size={22} />
             </button>
