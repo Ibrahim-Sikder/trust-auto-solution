@@ -59,9 +59,7 @@ const Detail = () => {
 
   useEffect(() => {
     // const itemsPerPage = calculateItemsPerPage();
-    const totalPagesCount = Math.ceil(
-      invoicePreview?.input_data?.length / 28
-    );
+    const totalPagesCount = Math.ceil(invoicePreview?.input_data?.length / 28);
     setTotalPages(totalPagesCount || 1);
   }, [invoicePreview.input_data]);
 
@@ -197,8 +195,8 @@ const Detail = () => {
 
   return (
     <div ref={componentRef} className="h-screen">
-      {pagesData.map((pageData, index) => (
-        <main ref={targetRef} className="invoicePrintWrap" key={index}>
+      {pagesData.map((pageData, pageNumber) => (
+        <main ref={targetRef} className="invoicePrintWrap" key={pageNumber}>
           <div>
             <div className="pb-5 px-14 invoicePrint">
               <div>
@@ -233,17 +231,14 @@ const Detail = () => {
                   <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
                     <span>
                       {" "}
-                      <b>  ID: </b>
+                      <b> ID: </b>
                       {invoicePreview.Id}
                     </span>
                     <b className="mr-5 uppercase">Invoice</b>
-                    <b>
-                      Date: {invoicePreview?.date
-                         }
-                    </b>
+                    <b>Date: {invoicePreview?.date}</b>
                   </div>
 
-                  {index === 0 && (
+                  {pageNumber === 0 && (
                     <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
                       <div className="flex justify-between w-[40%]">
                         <div className="invoiceCustomerInfo">
@@ -296,7 +291,15 @@ const Detail = () => {
                     <>
                       {pageData?.map((data, index) => (
                         <tr key={data?._id}>
-                          <td>{index + 1}</td>
+                          <td>
+                            {pageNumber === 0 && index + 1}
+                            {pageNumber === 1 && 28 + index + 1}
+                            {pageNumber === 2 && pageNumber * 30 + index}
+                            {pageNumber === 3 && pageNumber * 30 + index + 1}
+                            {pageNumber === 4 && pageNumber * 30 + index + 2}
+                            {pageNumber === 5 && pageNumber * 30 + index + 3}
+                            {pageNumber === 6 && pageNumber * 30 + index + 4}
+                          </td>
                           <td>{data?.description}</td>
                           <td>{data?.quantity}</td>
                           <td>{data?.rate}</td>
@@ -307,7 +310,7 @@ const Detail = () => {
                   </tbody>
                 </table>
 
-                {index === pagesData?.length - 1 && (
+                {pageNumber === pagesData?.length - 1 && (
                   <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
                     <div className="mt-5 text-[12px] invisible">
                       <b className="">In words:</b> {totalAmountInWords}
@@ -332,14 +335,14 @@ const Detail = () => {
                     </div>
                   </div>
                 )}
-                {index === pagesData?.length - 1 && (
+                {pageNumber === pagesData?.length - 1 && (
                   <div className="mt-1 text-[12px]">
                     <b className="">In words:</b> {totalAmountInWords}
                   </div>
                 )}
               </div>
 
-              {index === pagesData?.length - 1 && (
+              {pageNumber === pagesData?.length - 1 && (
                 <div>
                   <div className="customerSignatureWrap pt-5">
                     <b className="text-sm customerSignatur">
@@ -354,7 +357,7 @@ const Detail = () => {
             </div>
           </div>
 
-          {index === pagesData.length - 1 && (
+          {pageNumber === pagesData.length - 1 && (
             <div className="printInvoiceBtnGroup">
               <button onClick={handlePrint}>Print </button>
               <button onClick={() => toPDF()}>Pdf </button>
@@ -376,5 +379,3 @@ const Detail = () => {
 };
 
 export default Detail;
-
- 

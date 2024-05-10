@@ -30,7 +30,6 @@ const UpdateInvoice = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-  
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
@@ -110,7 +109,7 @@ const UpdateInvoice = () => {
       newItems[index] = {
         ...newItems[index],
         quantity: roundedQuantity,
-        total: (roundedQuantity * newItems[index].rate).toFixed(2), 
+        total: (roundedQuantity * newItems[index].rate).toFixed(2),
       };
       setSpecificInvoice((prevState) => ({
         ...prevState,
@@ -124,31 +123,35 @@ const UpdateInvoice = () => {
       const newItems = [...items];
       const roundedValue = Math.round(value);
       newItems[index].quantity = Number(roundedValue);
-
-      newItems[index].total = Number(value) * newItems[index].rate.toFixed(2);
+      newItems[index].total = (roundedValue * newItems[index].rate) ;
+      newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
       setItems(newItems);
     }
   };
 
   const handleRateChange = (index, value) => {
-    const newItems = [...specificInvoice.input_data];
-    newItems[index] = {
-      ...newItems[index],
-      rate: Number(value).toFixed(2),
-      total: (newItems[index].quantity * Number(value)).toFixed(2),
-    };
-    setSpecificInvoice((prevState) => ({
-      ...prevState,
-      input_data: newItems,
-    }));
+    if (!isNaN(value)) {
+      const newItems = [...specificInvoice.input_data];
+      newItems[index] = {
+        ...newItems[index],
+        rate: Number(value).toFixed(2),
+        total: (newItems[index].quantity * Number(value)).toFixed(2),
+      };
+      setSpecificInvoice((prevState) => ({
+        ...prevState,
+        input_data: newItems,
+      }));
+    }
   };
 
   const handleRateChange2 = (index, value) => {
-    const newItems = [...items];
-    newItems[index].rate = parseFloat(value).toFixed(2);
-    newItems[index].total = newItems[index].quantity * newItems[index].rate;
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-    setItems(newItems);
+    if (!isNaN(value)) {
+      const newItems = [...items];
+      newItems[index].rate = parseFloat(value).toFixed(2);
+      newItems[index].total = newItems[index].quantity * newItems[index].rate;
+      newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
+      setItems(newItems);
+    }
   };
 
   const handleDiscountChange = (value) => {

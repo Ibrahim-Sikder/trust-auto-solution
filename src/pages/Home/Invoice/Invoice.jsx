@@ -20,7 +20,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
- 
+
 import { formatDate } from "../../../utils/formateDate";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TADatePickers from "../../../components/form/TADatePickers";
@@ -39,7 +39,7 @@ const Invoice = () => {
   const [error, setError] = useState("");
   const [postError, setPostError] = useState("");
   const [getAllInvoice, setGetAllInvoice] = useState([]);
-  
+
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
@@ -72,7 +72,6 @@ const Invoice = () => {
   const handleDateChange = (newDate) => {
     setSelectedDate(formatDate(newDate));
   };
-
 
   const handleRemove = (index) => {
     if (!index) {
@@ -121,10 +120,10 @@ const Invoice = () => {
     const roundedValue = Math.round(value);
     newItems[index].quantity = roundedValue;
 
-    newItems[index].total = (roundedValue * newItems[index].rate).toFixed(2);
+    newItems[index].total = roundedValue * newItems[index].rate;
+    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
 
     setItems(newItems);
-     
   };
 
   const handleRateChange = (index, value) => {
@@ -220,7 +219,7 @@ const Invoice = () => {
 
       if (response.data.message === "Successfully Invoice post") {
         setReload(!reload);
-        
+
         setPostError("");
         setError("");
         if (preview === "") {
@@ -387,7 +386,7 @@ const Invoice = () => {
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
               <td> {card.customer_contact} </td>
-              <td>{(card.date)}</td>
+              <td>{card.date}</td>
               <td>
                 <div
                   onClick={() => handleIconPreview(card._id)}
@@ -531,10 +530,11 @@ const Invoice = () => {
             <div className="vehicleCard">Create Invoice </div>
 
             <div>
-              <TADatePickers  date={jobCardData?.date}
+              <TADatePickers
+                date={jobCardData?.date}
                 handleDateChange={handleDateChange}
-                selectedDate={selectedDate}/>
-             
+                selectedDate={selectedDate}
+              />
             </div>
           </div>
 
@@ -551,7 +551,7 @@ const Invoice = () => {
                 />
               </div>
               <div className="mt-3">
-              <TextField
+                <TextField
                   className="addJobInputField"
                   label="Customer Id"
                   onChange={handleInputChange}
@@ -689,7 +689,6 @@ const Invoice = () => {
                   InputLabelProps={{
                     shrink: !!jobCardData?.engine_no,
                   }}
-                  
                 />
               </div>
               <div className="mt-3">
@@ -895,9 +894,9 @@ const Invoice = () => {
           <h3 className="mb-3 text-3xl font-bold">Invoice List:</h3>
           <div className="flex items-center searcList">
             <div className="searchGroup">
-            <button onClick={handleAllInvoice} className="SearchBtn mr-2">
-              All{" "}
-            </button>
+              <button onClick={handleAllInvoice} className="SearchBtn mr-2">
+                All{" "}
+              </button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"

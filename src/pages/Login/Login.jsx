@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './Login.css'
+import "./Login.css";
 import Swal from "sweetalert2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import car from '../../../public/assets/auto-car.jpg'
+import car from "../../../public/assets/auto-car.jpg";
+import Cookies from "js-cookie";
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [defaultEmail, setDefaultEmail] = useState('');
-  const [defaultPassword, setDefaultPassword] = useState('');
+  const [defaultEmail, setDefaultEmail] = useState("");
+  const [defaultPassword, setDefaultPassword] = useState("");
   const navigate = useNavigate();
   const email = useRef();
   const password = useRef();
@@ -19,23 +21,27 @@ const Login = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    
-    if (email.current.value === 'trustautosolution@gmail.com' && password.current.value === 'trust@#Auto33') {
+
+    if (
+      email.current.value === "trustautosolution@gmail.com" &&
+      password.current.value === "trust@#Auto33"
+    ) {
       Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Login Successfully!',
+        position: "center",
+        icon: "success",
+        title: "Login Successfully!",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
-      navigate('/dashboard');
+      Cookies.set("tas-auth", "51RSM78du77QnlJy86LgWSEUpVM", { expires: 7 });
+      navigate("/dashboard");
     } else {
       Swal.fire({
         icon: "error",
-        position: 'top',
-        title: 'Invalid Email & Password',
+        position: "top",
+        title: "Invalid Email & Password",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
     }
   };
@@ -53,12 +59,13 @@ const Login = () => {
 
   return (
     <div className="loginWrap">
-      <div className="py-5  min-h-screen flex items-center 
-      ">
-      
+      <div
+        className="py-5  min-h-screen flex items-center 
+      "
+      >
         <div className="loginFormWraps">
           <h2 className="text-lg sm:text-2xl md:text-4xl capitalize mb-8 font-bold text-white text-center">
-          Welcome to back !
+            Welcome to back !
           </h2>
           <div className="signUnWrap">
             <form onSubmit={handleLogin}>
@@ -69,7 +76,6 @@ const Login = () => {
                     ref={email}
                     name="email"
                     placeholder="Email"
-                 
                     type="email"
                     className="inputFiel"
                     autoComplete="off"
@@ -80,19 +86,21 @@ const Login = () => {
                   <input
                     ref={password}
                     name="password"
-                    type={showPassword ? "text" : "password"} 
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     className="inputFiel"
                     autoComplete="off"
                   />
                   <div onClick={handleShowPassword} className="showIconWrap">
-                    {showPassword ? <FaEye className="showPassIcon" /> : <FaEyeSlash className="showPassIcon" />}
+                    {showPassword ? (
+                      <FaEye className="showPassIcon" />
+                    ) : (
+                      <FaEyeSlash className="showPassIcon" />
+                    )}
                   </div>
                 </div>
                 <div className="singleSignupForm">
-                  <button type="submit">
-                    Login
-                  </button>
+                  <button type="submit">Login</button>
                 </div>
               </div>
             </form>
@@ -104,11 +112,19 @@ const Login = () => {
                   <th>Role</th>
                 </tr>
               </thead>
-              <tbody >
-                <tr onClick={() => handleRowClick('trust@gmail.com', 'trust123')}>
-                  <td><span>trustautosolution@gmail.com</span></td>
-                  <td><span>trust@#Auto33</span></td>
-                  <td><span>Admin</span></td>
+              <tbody>
+                <tr
+                  onClick={() => handleRowClick("trust@gmail.com", "trust123")}
+                >
+                  <td>
+                    <span>trustautosolution@gmail.com</span>
+                  </td>
+                  <td>
+                    <span>trust@#Auto33</span>
+                  </td>
+                  <td>
+                    <span>Admin</span>
+                  </td>
                 </tr>
               </tbody>
             </table>

@@ -62,6 +62,7 @@ const Detail = () => {
   });
 
   useEffect(() => {
+    
     const totalPagesCount = Math.ceil(invoicePreview?.input_data?.length / 28);
     setTotalPages(totalPagesCount || 1);
   }, [calculateItemsPerPage, invoicePreview?.input_data]);
@@ -199,8 +200,8 @@ const Detail = () => {
   return (
     <div ref={componentRef} className="h-screen">
       {pagesData.length > 0 &&
-        pagesData.map((pageData, index) => (
-          <main ref={targetRef} key={index} className="invoicePrintWrap">
+        pagesData.map((pageData, pageNumber) => (
+          <main ref={targetRef} key={pageNumber} className="invoicePrintWrap">
             <div>
               <div className="pb-5 px-14 invoicePrint">
                 <div>
@@ -231,7 +232,7 @@ const Detail = () => {
                     </div>
                   </div>
 
-                  {index === 0 && (
+                  {pageNumber === 0 && (
                     <div className="px-10">
                       <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
                         <span>
@@ -299,7 +300,16 @@ const Detail = () => {
                       <>
                         {pageData?.map((data, index) => (
                           <tr key={data._id}>
-                            <td> {index + 1}</td>
+                            <td>
+                            
+                              {pageNumber === 0 && index + 1}
+                              {pageNumber === 1 && 28 + index + 1}
+                              {pageNumber === 2 && pageNumber * 30 + index}
+                              {pageNumber === 3 && pageNumber * 30 + index + 1}
+                              {pageNumber === 4 && pageNumber * 30 + index + 2}
+                              {pageNumber === 5 && pageNumber * 30 + index + 3}
+                              {pageNumber === 6 && pageNumber * 30 + index + 4}
+                            </td>
                             <td>{data.description}</td>
                             <td>{data.quantity}</td>
                             <td>{data.rate}</td>
@@ -309,7 +319,7 @@ const Detail = () => {
                       </>
                     </tbody>
                   </table>
-                  {index === pagesData?.length - 1 && (
+                  {pageNumber === pagesData?.length - 1 && (
                     <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
                       <div className="mt-5 text-[12px] invisible">
                         <b className="">In words:</b> {totalAmountInWords}
@@ -334,7 +344,7 @@ const Detail = () => {
                       </div>
                     </div>
                   )}
-                  {index === pagesData?.length - 1 && (
+                  {pageNumber === pagesData?.length - 1 && (
                     <div className="mt-5 text-[12px]">
                       <b className="">In words:</b> {totalAmountInWords}
                     </div>
@@ -342,7 +352,7 @@ const Detail = () => {
                 </div>
 
                 <div>
-                  {index === pagesData?.length - 1 && (
+                  {pageNumber === pagesData?.length - 1 && (
                     <div className="customerSignatureWrap">
                       <b className="text-sm customerSignatur">
                         Customer Signature :{" "}
@@ -355,7 +365,7 @@ const Detail = () => {
                 </div>
               </div>
             </div>
-            {index === pagesData?.length - 1 && (
+            {pageNumber === pagesData?.length - 1 && (
               <div className="printInvoiceBtnGroup">
                 <button onClick={handlePrint}>Print </button>
                 <button onClick={() => toPDF()}>Pdf </button>
