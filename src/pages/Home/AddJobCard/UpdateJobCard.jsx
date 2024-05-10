@@ -514,42 +514,7 @@ const UpdateJobCard = () => {
                     />
                   )}
                 />
-                {/* <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    // required: "Car registration number is required",
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  value={singleCard?.car_registration_no}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const formattedValue = value
-                      .replace(/\D/g, "")
-                      .slice(0, 6)
-                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setSingleCard({
-                      ...singleCard,
-                      car_registration_no: formattedValue,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!singleCard.car_registration_no,
-                  }}
-                /> */}
+                
 
                 <TextField
                   className="carRegField"
@@ -911,12 +876,12 @@ const UpdateJobCard = () => {
             </div>
             <div>
               {!technicianDateShow && (
-                <>
+                <div className="p-3 border-2 ownerInput">
                   {singleCard.technician_date}
                   <CalendarIcon
                     onClick={() => setTechnicianDateShow(!technicianDateShow)}
                   />
-                </>
+                </div>
               )}
               {technicianDateShow && (
                 <>

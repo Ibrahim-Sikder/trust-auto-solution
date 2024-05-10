@@ -121,7 +121,8 @@ const AddQuotation = () => {
     const roundedValue = Math.round(value);
 
     newItems[index].quantity = roundedValue;
-    newItems[index].total = (roundedValue * newItems[index].rate).toFixed(2);
+    newItems[index].total = (roundedValue * newItems[index].rate);
+    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
 
     setItems(newItems);
   };

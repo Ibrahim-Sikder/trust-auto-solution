@@ -118,7 +118,8 @@ const UpdateQuotation = () => {
     const roundedValue = Math.round(value);
     newItems[index].quantity = Number(roundedValue);
 
-    newItems[index].total = (Number(value) * newItems[index].rate).toFixed(2);
+    newItems[index].total = (Number(value) * newItems[index].rate) ;
+    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
     setItems(newItems);
   };
 

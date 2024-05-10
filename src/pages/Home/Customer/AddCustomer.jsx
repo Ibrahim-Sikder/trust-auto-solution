@@ -42,7 +42,7 @@ const AddCustomer = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     // const uniqueId = 'Id_' + Math.random().toString(36).substr(2, 9);
-    const customerNamePrefix = "TSA-C:";
+    const customerNamePrefix = "TAS-C:";
     // const customerNamePrefix = data.customer_name.substring(0, 4);
     const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
     const paddedNumber = randomNumber.toString().padStart(6, "0"); // Ensures the number is 3 digits long
