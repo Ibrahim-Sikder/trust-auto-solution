@@ -16,14 +16,12 @@ import Loading from "../../../components/Loading/Loading";
 import { NotificationAdd } from "@mui/icons-material";
 import { toast } from "react-toastify";
 const QuotationList = () => {
- 
   const [getAllQuotation, setGetAllQuotation] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
- 
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/quotation-view?id=${e}`);
@@ -36,7 +34,7 @@ const QuotationList = () => {
         setGetAllQuotation(data);
         setLoading(false);
       });
-  }, [ ]);
+  }, []);
 
   // pagination
 
@@ -138,60 +136,57 @@ const QuotationList = () => {
   const renderData = (getAllQuotation) => {
     return (
       <div className="px-5 py-10 bg-[#F1F3F6]">
-    
-
-      <table className="table bg-[#fff]">
-        <thead className="tableWrap">
-          <tr>
-            <th>SL No</th>
-            <th>Customer Name</th>
-            <th>Order Number </th>
-            <th>Car Number </th>
-            <th>Mobile Number</th>
-            <th>Date</th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {getAllQuotation?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{index + 1}</td>
-              <td>{card.customer_name}</td>
-              <td>{card.job_no}</td>
-              <td>{card.car_registration_no}</td>
-              <td> {card.contact_number} </td>
-              <td>{card.date}</td>
-              <td>
-                <div
-                  onClick={() => handleIconPreview(card._id)}
-                  className="editIconWrap edit2"
-                >
-                  {/* <Link to="/dashboard/preview"> */}
-                  <FaEye className="editIcon" />
-                  {/* </Link> */}
-                </div>
-              </td>
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-quotation?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
+        <table className="table bg-[#fff]">
+          <thead className="tableWrap">
+            <tr>
+              <th>SL No</th>
+              <th>Customer Name</th>
+              <th>Order Number </th>
+              <th>Car Number </th>
+              <th>Mobile Number</th>
+              <th>Date</th>
+              <th colSpan={3}>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {getAllQuotation?.map((card, index) => (
+              <tr key={card._id}>
+                <td>{index + 1}</td>
+                <td>{card.customer_name}</td>
+                <td>{card.job_no}</td>
+                <td>{card.car_registration_no}</td>
+                <td> {card.contact_number} </td>
+                <td>{card.date}</td>
+                <td>
+                  <div
+                    onClick={() => handleIconPreview(card._id)}
+                    className="editIconWrap edit2"
+                  >
+                    {/* <Link to="/dashboard/preview"> */}
+                    <FaEye className="editIcon" />
+                    {/* </Link> */}
+                  </div>
+                </td>
+                <td>
+                  <div className="editIconWrap edit">
+                    <Link to={`/dashboard/update-quotation?id=${card._id}`}>
+                      <FaEdit className="editIcon" />
+                    </Link>
+                  </div>
+                </td>
+                <td>
+                  <div
+                    onClick={() => deletePackage(card._id)}
+                    className="editIconWrap"
+                  >
+                    <FaTrashAlt className="deleteIcon" />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-     
     );
   };
 
@@ -240,12 +235,7 @@ const QuotationList = () => {
     );
   }
 
-  
-
-
-
   const handleFilterType = async () => {
-    
     try {
       const data = {
         filterType,
@@ -254,81 +244,80 @@ const QuotationList = () => {
         `${import.meta.env.VITE_API_URL}/api/v1/quotation/all`,
         data
       );
-    
+
       if (response.data.message === "Filter successful") {
         setGetAllQuotation(response.data.result);
         setNoMatching(null);
       }
       if (response.data.message === "No matching found") {
-        setGetAllQuotation([])
+        setGetAllQuotation([]);
         setNoMatching(response.data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   };
 
   const handleAllQuotation = () => {
     try {
       fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/all`)
-      .then((res) => res.json())
-      .then((data) => {
-       
-        setGetAllQuotation(data );
-        setNoMatching(null);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          setGetAllQuotation(data);
+          setNoMatching(null);
+        });
     } catch (error) {
-      toast.error("Something went wrong.")
+      toast.error("Something went wrong.");
     }
   };
   return (
     <div>
       <div className="overflow-x-auto mt-5">
-    <div className="flex justify-between border-b-2 pb-3">
-    <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-				<Link to='/dashboard/addjob'><button> Add Job </button></Link>
-				<Link to='/dashboard/qutation'><button>Qutation </button></Link>
-				<Link to='/dashboard/invoice'><button>Invoice </button></Link>
-			</div>
-      <div className="flex  justify-end items-end">
-        <NotificationAdd size={30} className="mr-2"/>
-        <FaUserGear size={30} />
-      </div>
-    </div>
-    
-			<div className="flex items-center justify-between my-3 mb-8">
-				<div className="flex items-center justify-center ">
-					<FaFileInvoice className="invoicIcon" />
-					<div className="ml-2">
-						<h3 className="text-2xl font-bold"> Quotation </h3>
-						<span>Manage Quotation </span>
-					</div>
-				</div>
-				<div className="productHome">
-					<span>Dashboard / </span>
-					<span>Quotation / </span>
-					<span>Quotation List </span>
-				</div>
-			</div>
-			
-        <div className="flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
+        <div className="flex justify-between border-b-2 pb-3">
+          <div className="flex items-center mr-[80px]  justify-center topProductBtn">
+            <Link to="/dashboard/addjob">
+              <button> Add Job </button>
+            </Link>
+            <Link to="/dashboard/qutation">
+              <button>Qutation </button>
+            </Link>
+            <Link to="/dashboard/invoice">
+              <button>Invoice </button>
+            </Link>
+          </div>
+          <div className="flex  justify-end items-end">
+            <NotificationAdd size={30} className="mr-2" />
+            <FaUserGear size={30} />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between my-3 mb-8">
+          <div className="flex items-center justify-center ">
+            <FaFileInvoice className="invoicIcon" />
+            <div className="ml-2">
+              <h3 className="text-2xl font-bold"> Quotation </h3>
+              <span>Manage Quotation </span>
+            </div>
+          </div>
+          <div className="productHome">
+            <span>Dashboard / </span>
+            <span>Quotation / </span>
+            <span>Quotation List </span>
+          </div>
+        </div>
+
+        <div className="md:flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
           <h3 className="text-3xl font-bold mb-3">Quotation List:</h3>
-          
+
           <div className="flex items-center searcList">
-            {/* <select onChange={(e) => setSelect(e.target.value)}>
-              <option value="SL No"> SL No</option>
-              <option value="Customer Name"> Customer Name</option>
-              <option value="Order Number"> Order Number</option>
-              <option value="Car Number"> Car Number</option>
-              <option value="Mobile Number"> Mobile Number</option>
-            </select> */}
-           
             <div className="searchGroup">
+              <button onClick={handleAllQuotation} className="SearchBtn mr-2">
+                All{" "}
+              </button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
                 type="text"
-                
               />
             </div>
             <button onClick={handleFilterType} className="SearchBtn ">
@@ -338,7 +327,7 @@ const QuotationList = () => {
         </div>
         {loading ? (
           <div className="flex justify-center items-center text-xl">
-          <Loading/>
+            <Loading />
           </div>
         ) : (
           <div>

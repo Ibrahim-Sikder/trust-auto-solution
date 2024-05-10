@@ -44,6 +44,11 @@ const AddQuotation = () => {
 
   const [selectedDate, setSelectedDate] = useState("");
 
+  const [items, setItems] = useState([
+    { description: "", quantity: "", rate: "", total: "" },
+  ]);
+
+
   // for customer id edit
   const handleInputChange = (e) => {
     const newId = e.target.value;
@@ -92,6 +97,50 @@ const AddQuotation = () => {
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
+
+
+  useEffect(() => {
+    const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
+
+    // Limiting totalSum to two decimal places
+    const roundedTotalSum = parseFloat(totalSum.toFixed(2));
+
+    setGrandTotal(roundedTotalSum);
+  }, [items]);
+
+  const handleDescriptionChange = (index, value) => {
+    const newItems = [...items];
+    newItems[index].description = value;
+    setItems(newItems);
+  };
+
+  const handleQuantityChange = (index, value) => {
+    const newItems = [...items];
+
+    // Round the value to the nearest integer
+    const roundedValue = Math.round(value);
+
+    newItems[index].quantity = roundedValue;
+    newItems[index].total = (roundedValue * newItems[index].rate).toFixed(2);
+
+    setItems(newItems);
+  };
+
+  const handleRateChange = (index, value) => {
+    const newItems = [...items];
+
+    // Convert rate to a number
+    newItems[index].rate = parseFloat(value).toFixed(2);
+
+    // Calculate total with the updated rate
+    newItems[index].total = newItems[index].quantity * newItems[index].rate;
+
+    // Round total to two decimal places
+    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
+
+    setItems(newItems);
+  };
+
 
   const handleDiscountChange = (value) => {
     const parsedValue = value === "" ? 0 : parseFloat(value);
@@ -158,8 +207,10 @@ const AddQuotation = () => {
       if (response.data.message === "Successfully quotation post") {
         setPostError("");
         setError("");
+       
         if (preview === "") {
           toast.success("Quotation added successful.");
+          navigate("/dashboard/quotaiton-list");
         }
         setReload(!reload);
         if (preview === "preview") {
@@ -425,51 +476,8 @@ const AddQuotation = () => {
       });
   };
 
-  const [items, setItems] = useState([
-    { description: "", quantity: "", rate: "", total: "" },
-  ]);
-
-  useEffect(() => {
-    const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
-
-    // Limiting totalSum to two decimal places
-    const roundedTotalSum = parseFloat(totalSum.toFixed(2));
-
-    setGrandTotal(roundedTotalSum);
-  }, [items]);
-
-  const handleDescriptionChange = (index, value) => {
-    const newItems = [...items];
-    newItems[index].description = value;
-    setItems(newItems);
-  };
-
-  const handleQuantityChange = (index, value) => {
-    const newItems = [...items];
-
-    // Round the value to the nearest integer
-    const roundedValue = Math.round(value);
-
-    newItems[index].quantity = roundedValue;
-    newItems[index].total = roundedValue * newItems[index].rate;
-
-    setItems(newItems);
-  };
-
-  const handleRateChange = (index, value) => {
-    const newItems = [...items];
-
-    // Convert rate to a number
-    newItems[index].rate = parseFloat(value);
-
-    // Calculate total with the updated rate
-    newItems[index].total = newItems[index].quantity * newItems[index].rate;
-
-    // Round total to two decimal places
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-
-    setItems(newItems);
-  };
+ 
+  
 
   return (
     <div className="px-5 py-10">
@@ -531,6 +539,7 @@ const AddQuotation = () => {
                   label="Customer Id"
                   onChange={handleInputChange}
                   value={jobCardData?.Id}
+                  focused={jobCardData?.Id}
                   required
                 />
               </div>

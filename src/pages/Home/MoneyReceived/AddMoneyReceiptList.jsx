@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import swal from "sweetalert";
 const AddMoneyReceiptList = () => {
   const [getMoneyReceipt, setGetMoneyReceipt] = useState([]);
-  console.log(getMoneyReceipt)
+  
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const navigate = useNavigate();
@@ -273,6 +273,9 @@ const AddMoneyReceiptList = () => {
          
 
           <div className="searchGroup">
+          <button onClick={handleAllMoneyReceipt} className="SearchBtn mr-2">
+            All{" "}
+          </button>
             <input
               onChange={(e) => setFilterType(e.target.value)}
               autoComplete="off"

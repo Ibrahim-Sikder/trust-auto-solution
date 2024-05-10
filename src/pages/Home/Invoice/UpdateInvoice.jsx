@@ -110,7 +110,7 @@ const UpdateInvoice = () => {
       newItems[index] = {
         ...newItems[index],
         quantity: roundedQuantity,
-        total: (roundedQuantity * newItems[index].rate).toFixed(2), // Calculate total with 2 decimal places
+        total: (roundedQuantity * newItems[index].rate).toFixed(2), 
       };
       setSpecificInvoice((prevState) => ({
         ...prevState,

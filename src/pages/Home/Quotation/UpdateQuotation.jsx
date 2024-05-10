@@ -72,7 +72,8 @@ const UpdateQuotation = () => {
     const newTotalSum = isNaN(totalSum) ? 0 : totalSum;
     const newTotalSum2 = isNaN(totalSum2) ? 0 : totalSum2;
 
-    const newGrandTotal = newTotalSum + newTotalSum2;
+    let newGrandTotal = newTotalSum + newTotalSum2;
+    newGrandTotal = parseFloat(newGrandTotal.toFixed(2));
 
     setGrandTotal(newGrandTotal);
   }, [items, specificInvoice.input_data]);
@@ -97,16 +98,19 @@ const UpdateQuotation = () => {
   };
 
   const handleQuantityChange = (index, value) => {
-    const newItems = [...specificInvoice.input_data];
-    newItems[index] = {
-      ...newItems[index],
-      quantity: Number(value),
-      total: Number(value) * newItems[index].rate,
-    };
-    setSpecificInvoice((prevState) => ({
-      ...prevState,
-      input_data: newItems,
-    }));
+    if (!isNaN(value)) {
+      const newItems = [...specificInvoice.input_data];
+      const roundedQuantity = Math.round(Number(value));
+      newItems[index] = {
+        ...newItems[index],
+        quantity: roundedQuantity,
+        total: (Number(value) * newItems[index].rate).toFixed(2),
+      };
+      setSpecificInvoice((prevState) => ({
+        ...prevState,
+        input_data: newItems,
+      }));
+    }
   };
 
   const handleQuantityChange2 = (index, value) => {
@@ -114,7 +118,7 @@ const UpdateQuotation = () => {
     const roundedValue = Math.round(value);
     newItems[index].quantity = Number(roundedValue);
 
-    newItems[index].total = Number(value) * newItems[index].rate;
+    newItems[index].total = (Number(value) * newItems[index].rate).toFixed(2);
     setItems(newItems);
   };
 
@@ -122,8 +126,8 @@ const UpdateQuotation = () => {
     const newItems = [...specificInvoice.input_data];
     newItems[index] = {
       ...newItems[index],
-      rate: Number(value),
-      total: newItems[index].quantity * Number(value),
+      rate: Number(value).toFixed(2),
+      total: (newItems[index].quantity * Number(value)).toFixed(2),
     };
     setSpecificInvoice((prevState) => ({
       ...prevState,
@@ -133,7 +137,7 @@ const UpdateQuotation = () => {
 
   const handleRateChange2 = (index, value) => {
     const newItems = [...items];
-    newItems[index].rate = parseFloat(value);
+    newItems[index].rate = parseFloat(value).toFixed(2);
     newItems[index].total = newItems[index].quantity * newItems[index].rate;
     newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
     setItems(newItems);
@@ -166,9 +170,8 @@ const UpdateQuotation = () => {
     }
 
     const vatAsPercentage = vat / 100;
-    const finalTotal =
-      totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
-
+    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    finalTotal = parseFloat(finalTotal.toFixed(2));
     return finalTotal;
   };
 
@@ -177,7 +180,9 @@ const UpdateQuotation = () => {
       return toast.error("Unauthorized");
     }
     axios
-      .put(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, { index: i })
+      .put(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, {
+        index: i,
+      })
       .then((response) => {
         if (response.data.message === "Deleted successful") {
           setReload(!reload);

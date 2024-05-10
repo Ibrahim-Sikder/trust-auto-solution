@@ -1093,53 +1093,7 @@ const AddJobCard = () => {
                 )} */}
               </div>
 
-              {/* <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  id="free-solo-demo"
-                  freeSolo
-                  onInputChange={(event, newValue) => {
-                    handleBrandChange(newValue);
-                  }}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Brand"
-                      {...register("vehicle_brand")}
-                      focused={Boolean(showCustomerData?.vehicle_brand)}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  id="free-solo-demo"
-                  freeSolo
-                  Vehicle
-                  Brand
-                
-                  onInputChange={(event, newValue) => {
-                    handleNameChange(newValue); // Assuming you want the new value as input
-                  }}
-                  // onInputChange={handleBrandChange}
-                  // options={vehicleName.map((option) => option.label)}
-                  options={filteredVehicles.map((option) => option.value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Name "
-                      {...register("vehicle_name")}
-                      value={showCustomerData?.vehicle_name}
-                      focused={showCustomerData?.vehicle_name}
-                    />
-                  )}
-                  getOptionLabel={(option) => option || ""}
                
-                />
-              </div> */}
               <div className="mt-3"></div>
               <Autocomplete
                 className="addJobInputField"

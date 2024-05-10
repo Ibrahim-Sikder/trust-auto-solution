@@ -121,7 +121,7 @@ const Invoice = () => {
     const roundedValue = Math.round(value);
     newItems[index].quantity = roundedValue;
 
-    newItems[index].total = roundedValue * newItems[index].rate;
+    newItems[index].total = (roundedValue * newItems[index].rate).toFixed(2);
 
     setItems(newItems);
      
@@ -220,11 +220,12 @@ const Invoice = () => {
 
       if (response.data.message === "Successfully Invoice post") {
         setReload(!reload);
-        navigate("/dashboard/invoice-view");
+        
         setPostError("");
         setError("");
         if (preview === "") {
           toast.success("Invoice added successful.");
+          navigate("/dashboard/invoice-view");
         }
         if (preview === "preview") {
           fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice`)
@@ -787,7 +788,7 @@ const Invoice = () => {
                     <input
                       className="thirdInputField"
                       autoComplete="off"
-                     
+                      type="number"
                       placeholder="Rate"
                       onChange={(e) => handleRateChange(i, e.target.value)}
                       required
