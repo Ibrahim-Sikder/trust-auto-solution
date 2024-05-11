@@ -531,7 +531,6 @@ const Invoice = () => {
 
             <div>
               <TADatePickers />
-             
             </div>
           </div>
 

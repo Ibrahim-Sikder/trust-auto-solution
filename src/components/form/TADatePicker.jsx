@@ -32,6 +32,7 @@ const TADatePicker = () => {
         renderInput={(params) => <TextField {...params} />}
         inputFormat="DD/MM/YY"
       />
+      
       <p>Selected Date: {formattedDate}</p>
       <button onClick={handleSubmit}>Submit Date</button>
     </LocalizationProvider>
