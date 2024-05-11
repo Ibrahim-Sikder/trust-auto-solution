@@ -13,6 +13,7 @@ import Loading from "../../../../components/Loading/Loading";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
+
 const VehicleDetails = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -53,34 +54,6 @@ const VehicleDetails = () => {
   const [pageNumberLimit, setPageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-
-  // const deletePackage = async (id) => {
-  //   const willDelete = await swal({
-  //     title: "Are you sure?",
-  //     text: "Are you sure that you want to delete this card?",
-  //     icon: "warning",
-  //     dangerMode: true,
-  //   });
-
-  //   if (willDelete) {
-  //     try {
-  //       const res = await fetch(
-  //         `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
-  //         {
-  //           method: "DELETE",
-  //         }
-  //       );
-  //       const data = await res.json();
-
-  //       if (data.message == "Company card delete successful") {
-  //         setVehicleList(vehicleList?.filter((pkg) => pkg._id !== id));
-  //       }
-  //       swal("Deleted!", "Card delete successful.", "success");
-  //     } catch (error) {
-  //       swal("Error", "An error occurred while deleting the card.", "error");
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     sessionStorage.setItem("com", currentPage.toString());

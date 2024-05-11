@@ -5,6 +5,8 @@ import {
   cmDmOptions,
   fuelType,
   totalYear,
+  vehicleModels,
+  vehicleName,
   vehicleTypes,
 } from "../../../../constant";
 import { useLocation } from "react-router-dom";
@@ -33,7 +35,7 @@ const JobCardForm = ({ onClose }) => {
         `${import.meta.env.VITE_API_URL}/api/v1/vehicle`,
         data
       );
-    
+
       if (response.data.message === "Successfully add to vehicle post") {
         toast.success("Successfully add to vehicle post");
         onClose();
@@ -41,27 +43,59 @@ const JobCardForm = ({ onClose }) => {
         reset();
       }
     } catch (error) {
-     
       toast.error(error.message);
       setLoading(false);
     }
   };
 
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  const handleBrandChange = (event, newValue) => {
+    setSelectedBrand(newValue);
+    const filtered = vehicleName.filter(
+      (vehicle) => vehicle.label === newValue
+    );
+    setFilteredVehicles(filtered);
+  };
+
+  // year select only number 4 digit
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+
+  // Handle input changes
+  const handleYearSelectInput = (event) => {
+    const value = event.target.value;
+    // Check if the input is a number and does not exceed 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setYearSelectInput(value);
+      const filtered = vehicleModels.filter((option) =>
+        option.label.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    }
+  };
+  const handleOptionClick = (option) => {
+    setYearSelectInput(option.label);
+    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
+  };
+
   return (
-    <div className=" flex items-center py-8 px-10">
+    <div className=" flex items-center px-10">
       <div className="w-full">
-        <h2 className="text-center text-[#42A1DA] font-bold text-2xl uppercase mb-5">
+        <h2 className="text-center text-[#42A1DA] font-bold text-2xl uppercase mb-3">
           Add Vehicle
         </h2>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-3 gap-x-6"></div>
+            <div className="grid grid-cols-2 gap-x-6"></div>
             <div>
               <div className="mt-3 mb-3">
                 <div className="flex items-center">
                   <Autocomplete
-                    className="jobCardSelect"
-                    id="free-solo-demo"
+                    freeSolo
+                    className="jobCardSelect2"
+                    id="reg"
                     Car
                     Registration
                     No
@@ -75,7 +109,8 @@ const JobCardForm = ({ onClose }) => {
                     )}
                   />
                   <TextField
-                    className="addJobInputField"
+                  sx={{width:'485px'}}
+                    className=""
                     on
                     label="Car R (T&N)"
                     {...register("car_registration_no")}
@@ -98,9 +133,11 @@ const JobCardForm = ({ onClose }) => {
               </div>
               <div className="mt-3">
                 <Autocomplete
-                  id="free-solo-demo"
-                  Vehicle
-                  Brand
+                className="addJobInputField"
+                  freeSolo
+                  onInputChange={(event, newValue) => {
+                    handleBrandChange(newValue);
+                  }}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
@@ -109,43 +146,67 @@ const JobCardForm = ({ onClose }) => {
                       {...register("vehicle_brand")}
                     />
                   )}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  {...register("vehicle_name")}
-                  label="Vehicle Name "
+                  onChange={handleBrandChange}
+                  value={selectedBrand}
+                  style={{ marginBottom: 20 }}
                 />
               </div>
               <div className="mt-3">
                 <Autocomplete
-                  id="free-solo-demo"
+                className="addJobInputField"
+                  freeSolo
                   Vehicle
-                  Brand
-                  options={totalYear.map((option) => option.title)}
+                  Name
+                  options={filteredVehicles.map((option) => option.value)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label=" Vehicle Model"
-                      {...register("vehicle_model", {
-                        pattern: {
-                          value: /^\d+$/,
-                          message: "Please enter a valid model number.",
-                        },
-                      })}
+                      label="Vehicle Name "
+                      {...register("vehicle_name")}
                     />
                   )}
+                  getOptionLabel={(option) => option || ""}
+                  // disabled={!selectedBrand}
                 />
+              </div>
+              <div className="relative mt-3 ">
+                {/* <TextField
+                    className="productField"
+                    label="Vehicle Model (N)"
+                    {...register("vehicle_model", {
+                      pattern: {
+                        value: /^\d+$/,
+                        message: "Please enter a valid model number.",
+                      },
+                    })}
+                  /> */}
+                <input
+                  value={yearSelectInput}
+                  onInput={handleYearSelectInput}
+                  {...register("vehicle_model")}
+                  type="text"
+                  className="border addJobInputField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
+                  placeholder="Vehicle Model"
+                />
+                {yearSelectInput && (
+                  <ul className="options-list">
+                    {filteredOptions.map((option, index) => (
+                      <li key={index} onClick={() => handleOptionClick(option)}>
+                        {option.label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 {errors.vehicle_model && (
                   <span className="text-sm text-red-400">
                     {errors.vehicle_model.message}
                   </span>
                 )}
               </div>
-              <div className="mt-3">
+              <div>
                 <Autocomplete
-                  id="free-solo-demo"
+                 className="addJobInputField"
+                  freeSolo
                   Vehicle
                   Types
                   options={vehicleTypes.map((option) => option.label)}
@@ -154,21 +215,22 @@ const JobCardForm = ({ onClose }) => {
                       {...params}
                       label=" Vehicle Categories "
                       {...register("vehicle_category")}
-                    />
+                    />                           
                   )}
                 />
               </div>
               <div className="mt-3">
                 <TextField
-                  className="addJobInputField"
+                 className="addJobInputField"
+                  freeSolo
                   label="Color & Code (T&N) "
                   {...register("color_code")}
                 />
               </div>
               <div className="mt-3">
                 <TextField
-                  className="addJobInputField"
-                  label="Mileage (N) "
+                 className="addJobInputField"
+                  label="Mileage (N)"
                   {...register("mileage", {
                     pattern: {
                       value: /^\d+$/,
@@ -176,6 +238,7 @@ const JobCardForm = ({ onClose }) => {
                     },
                   })}
                 />
+
                 {errors.mileage && (
                   <span className="text-sm text-red-400">
                     {errors.mileage.message}
@@ -184,7 +247,8 @@ const JobCardForm = ({ onClose }) => {
               </div>
               <div className="mt-3">
                 <Autocomplete
-                  id="free-solo-demo"
+                 className="addJobInputField"
+                  freeSolo
                   Fuel
                   Type
                   options={fuelType.map((option) => option.label)}
