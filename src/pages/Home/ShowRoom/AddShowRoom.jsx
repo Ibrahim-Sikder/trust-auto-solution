@@ -9,6 +9,8 @@ import {
   carBrands,
   cmDmOptions,
   fuelType,
+  vehicleModels,
+  vehicleName,
   vehicleTypes,
 } from "../../../constant";
 import { useEffect, useState } from "react";
@@ -41,12 +43,45 @@ const AddShowRoom = () => {
 
   const navigate = useNavigate();
 
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  const handleBrandChange = (event, newValue) => {
+    setSelectedBrand(newValue);
+    const filtered = vehicleName.filter(
+      (vehicle) => vehicle.label === newValue
+    );
+    setFilteredVehicles(filtered);
+  };
+
+  // year select only number 4 digit
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+
+  // Handle input changes
+  const handleYearSelectInput = (event) => {
+    const value = event.target.value;
+    // Check if the input is a number and does not exceed 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setYearSelectInput(value);
+      const filtered = vehicleModels.filter((option) =>
+        option.label.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    }
+  };
+  const handleOptionClick = (option) => {
+    setYearSelectInput(option.label);
+    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
+  };
+
   const onSubmit = async (data) => {
     setLoading(true);
     // const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
-    const showRoomNamePrefix = data.showRoom_name.substring(0, 4);
+    // const showRoomNamePrefix = data.showRoom_name.substring(0, 4);
+    const showRoomNamePrefix = "TAS-S:";
     const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
-    const paddedNumber = randomNumber.toString().padStart(4, "0"); // Ensures the number is 3 digits long
+    const paddedNumber = randomNumber.toString().padStart(6, "0"); // Ensures the number is 3 digits long
 
     // Concatenate the name and the number to form the unique ID
     const uniqueId = `${showRoomNamePrefix}${paddedNumber}`;
@@ -186,7 +221,7 @@ const AddShowRoom = () => {
           <tr>
             <th>SL No</th>
             <th>Customer Name</th>
-            <th>Order Number </th>
+        
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th>Date</th>
@@ -201,15 +236,15 @@ const AddShowRoom = () => {
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-              <td>{card.date}</td>
+              
               <td>
                 <div
                   onClick={() => handleIconPreview(card.showRoomId)}
-                  className="flex items-center justify-center "
+                  className="flex items-center justify-center cursor-pointer"
                 >
-                  <Link to="/dashboard/employee-profile">
+                  
                     <FaUserTie size={25} className="" />
-                  </Link>
+              
                 </div>
               </td>
 
@@ -456,7 +491,7 @@ const AddShowRoom = () => {
                 </h3>
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
-                    className="jobCardSelect"
+                    className="jobCardSelect2"
                     id="reg"
                     Car
                     Registration
@@ -493,7 +528,7 @@ const AddShowRoom = () => {
                 </div>
 
                 <div>
-                  <Autocomplete
+                  {/* <Autocomplete
                     className="productField"
                     id="free-solo-demo"
                     Vehicle
@@ -506,17 +541,52 @@ const AddShowRoom = () => {
                         {...register("vehicle_brand")}
                       />
                     )}
+                  /> */}
+                  <Autocomplete
+                    className="productField"
+                    freeSolo
+                    onInputChange={(event, newValue) => {
+                      handleBrandChange(newValue);
+                    }}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Brand"
+                        {...register("vehicle_brand")}
+                      />
+                    )}
+                    onChange={handleBrandChange}
+                    value={selectedBrand}
+                    style={{ marginBottom: 20 }}
                   />
+
                 </div>
                 <div>
-                  <TextField
+                  {/* <TextField
                     className="productField"
                     label="Vehicle Name "
                     {...register("vehicle_name")}
+                  /> */}
+                  <Autocomplete
+                    className="productField"
+                    freeSolo
+                    Vehicle
+                    Name
+                    options={filteredVehicles.map((option) => option.value)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Name "
+                        {...register("vehicle_name")}
+                      />
+                    )}
+                    getOptionLabel={(option) => option || ""}
+                    // disabled={!selectedBrand}
                   />
                 </div>
                 <div>
-                  <TextField
+                  {/* <TextField
                     className="productField"
                     label="Vehicle Model (N)"
                     {...register("vehicle_model", {
@@ -525,7 +595,45 @@ const AddShowRoom = () => {
                         message: "Please enter a valid model number.",
                       },
                     })}
+                  /> */}
+                  <div className="relative ">
+                  {/* <TextField
+                    className="productField"
+                    label="Vehicle Model (N)"
+                    {...register("vehicle_model", {
+                      pattern: {
+                        value: /^\d+$/,
+                        message: "Please enter a valid model number.",
+                      },
+                    })}
+                  /> */}
+                  <input
+                    value={yearSelectInput}
+                    onInput={handleYearSelectInput}
+                    {...register("vehicle_model")}
+                    type="text"
+                    className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
+                    placeholder="Vehicle Model"
                   />
+                  {yearSelectInput && (
+                    <ul className="options-list">
+                      {filteredOptions.map((option, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleOptionClick(option)}
+                        >
+                          {option.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {errors.vehicle_model && (
+                    <span className="text-sm text-red-400">
+                      {errors.vehicle_model.message}
+                    </span>
+                  )}
+                </div>
+
                   {errors.vehicle_model && (
                     <span className="text-sm text-red-400">
                       {errors.vehicle_model.message}
@@ -534,6 +642,7 @@ const AddShowRoom = () => {
                 </div>
                 <div>
                   <Autocomplete
+                  freeSolo
                     className="productField"
                     Vehicle
                     Types
@@ -573,6 +682,7 @@ const AddShowRoom = () => {
                 </div>
                 <div>
                   <Autocomplete
+                  freeSolo
                     className="productField"
                     Fuel
                     Type
@@ -610,7 +720,7 @@ const AddShowRoom = () => {
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
             />
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+            <button onClick={handleFilterType} className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
               {" "}
               <HiOutlineSearch size={22} />
             </button>

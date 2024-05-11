@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   FaCarAlt,
   FaProjectDiagram,
@@ -25,6 +25,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useEffect, useRef, useState } from "react";
+import Cookies from "js-cookie";
 import "./Layout.css";
 import {
   Home,
@@ -131,6 +132,12 @@ const DashboardLayout = () => {
       time: "8hrs ago",
     },
   ];
+
+const navigate = useNavigate()
+ const handleLogout=()=>{
+  Cookies.remove("tas-auth")
+  navigate("/")
+ }
 
   return (
     <main>
@@ -257,9 +264,9 @@ const DashboardLayout = () => {
                   <Link to="/dashboard/support">
                     <p>Support</p>
                   </Link>
-                  <Link to="/">
-                    <p>Logout</p>
-                  </Link>
+                  {/* <Link to="/"> */}
+                    <p className=" cursor-pointer" onClick={handleLogout}>Logout</p>
+                  {/* </Link> */}
                 </div>
               </div>
             </div>
@@ -851,9 +858,9 @@ const DashboardLayout = () => {
                 </div>
               </NavLink>
               <NavLink to="/dashboard/services">
-                <div className="flex items-center dashboardItems">
+                <div onClick={handleLogout} className="flex items-center dashboardItems">
                   <Logout size={22} />
-                  <span className="ml-2">Log Out </span>
+                  <span  className="ml-2">Log Out </span>
                 </div>
               </NavLink>
             </div>
@@ -1012,7 +1019,7 @@ const DashboardLayout = () => {
                 </div>
               </div>
               <div className="mt-[14px]">
-                <div className="toolTipWrap">
+                <div onClick={handleLogout} className="toolTipWrap">
                   <Logout className="tooltipIcon" />
                   <b className="toolTip">Log Out </b>
                 </div>

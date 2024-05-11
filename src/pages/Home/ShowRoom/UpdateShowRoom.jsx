@@ -8,6 +8,8 @@ import {
   carBrands,
   cmDmOptions,
   fuelType,
+  vehicleModels,
+  vehicleName,
   vehicleTypes,
 } from "../../../constant";
 import { useEffect, useState } from "react";
@@ -95,6 +97,38 @@ const UpdateShowRoom = () => {
       toast.error(error.message);
       setLoading(false);
     }
+  };
+
+  const [selectedBrand, setSelectedBrand] = useState("");
+  //   const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  // year select only number 4 digit
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const handleBrandChange = (event, newValue) => {
+    setSelectedBrand(newValue);
+    const filtered = vehicleName.filter(
+      (vehicle) => vehicle.label === newValue
+    );
+    setFilteredVehicles(filtered);
+  };
+
+  // Handle input changes
+  const handleYearSelectInput = (event) => {
+    const value = event.target.value;
+    // Check if the input is a number and does not exceed 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setYearSelectInput(value);
+      const filtered = vehicleModels.filter((option) =>
+        option.label.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    }
+  };
+  const handleOptionClick = (option) => {
+    setYearSelectInput(option.label);
+    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
   };
 
   return (
@@ -422,7 +456,7 @@ const UpdateShowRoom = () => {
                 </div>
 
                 <div>
-                  <Autocomplete
+                  {/* <Autocomplete
                   className="addJobInputField"
                   value={showRoomData?.vehicle_brand || ""}
                   options={carBrands.map((option) => option.label)}
@@ -436,10 +470,27 @@ const UpdateShowRoom = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
+                <Autocomplete
+                    freeSolo
+                    className="productField"
+                    value={showRoomData?.vehicle_brand || ""}
+                    onChange={handleBrandChange}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Brand"
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!showRoomData?.vehicle_brand,
+                        }}
+                      />
+                    )}
+                  />
                 </div>
                 <div>
-                  <TextField
+                  {/* <TextField
                     className="productField"
                     label="Vehicle Name "
                     {...register("vehicle_name")}
@@ -454,10 +505,27 @@ const UpdateShowRoom = () => {
                     InputLabelProps={{
                       shrink: !!showRoomData.vehicle_name,
                     }}
+                  /> */}
+                  <Autocomplete
+                    className="productField"
+                    freeSolo
+                    Vehicle
+                    Name
+                    value={showRoomData?.vehicle_name || ""}
+                    options={filteredVehicles.map((option) => option.value)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Name "
+                        {...register("vehicle_name")}
+                      />
+                    )}
+                    getOptionLabel={(option) => option || ""}
+                    // disabled={!selectedBrand}
                   />
                 </div>
-                <div>
-                  <TextField
+                <div className="relative">
+                  {/* <TextField
                     className="productField"
                     label="Vehicle Model (N)"
                     {...register("vehicle_model", {
@@ -477,15 +545,36 @@ const UpdateShowRoom = () => {
                     InputLabelProps={{
                       shrink: !!showRoomData.vehicle_model,
                     }}
+                  /> */}
+                  <input
+                    value={yearSelectInput}
+                    onInput={handleYearSelectInput}
+                    {...register("vehicle_model")}
+                    type="text"
+                    className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
+                    placeholder="Vehicle Model"
                   />
+
+                  {yearSelectInput && (
+                    <ul className="options-list">
+                      {filteredOptions.map((option, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleOptionClick(option)}
+                        >
+                          {option.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   {errors.vehicle_model && (
                     <span className="text-sm text-red-400">
                       {errors.vehicle_model.message}
                     </span>
                   )}
                 </div>
-                <div>
-                  <Autocomplete
+                <div className="mt-3">
+                  {/* <Autocomplete
                   className="addJobInputField"
                   value={showRoomData?.vehicle_category || ""}
                   options={carBrands.map((option) => option.label)}
@@ -499,7 +588,23 @@ const UpdateShowRoom = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
+                <Autocomplete
+                   freeSolo
+                    className="productField"
+                    value={showRoomData?.vehicle_category || ""}
+                    options={vehicleTypes.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Category"
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!showRoomData?.vehicle_category,
+                        }}
+                      />
+                    )}
+                  />
                 </div>
                 <div>
                   <TextField
@@ -549,7 +654,7 @@ const UpdateShowRoom = () => {
                   )}
                 </div>
                 <div>
-                  <Autocomplete
+                  {/* <Autocomplete
                   className="addJobInputField"
                   value={showRoomData?.fuel_type || ""}
                   options={carBrands.map((option) => option.label)}
@@ -563,7 +668,24 @@ const UpdateShowRoom = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
+
+                <Autocomplete
+                   freeSolo
+                    className="productField"
+                    value={showRoomData?.fuel_type || ""}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Fuel Type "
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!showRoomData?.fuel_type,
+                        }}
+                      />
+                    )}
+                  />
                   
                 </div>
               </div>

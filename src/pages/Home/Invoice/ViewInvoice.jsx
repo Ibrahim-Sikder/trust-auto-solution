@@ -312,6 +312,9 @@ const ViewInvoice = () => {
         <div className="flex items-center searcList">
           
           <div className="searchGroup">
+          <button onClick={handleAllInvoice} className="SearchBtn mr-2">
+            All{" "}
+          </button>
             <input
               onChange={(e) => setFilterType(e.target.value)}
               autoComplete="off"

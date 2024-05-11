@@ -15,12 +15,47 @@ import {
   carBrands,
   cmDmOptions,
   fuelType,
+  vehicleModels,
+  vehicleName,
   vehicleTypes,
 } from "../../../constant";
 import { Autocomplete } from "@mui/material";
 import { HiOfficeBuilding } from "react-icons/hi";
 
 const UpdateCompany = () => {
+
+  
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  const handleBrandChange = (event, newValue) => {
+    setSelectedBrand(newValue);
+    const filtered = vehicleName.filter(
+      (vehicle) => vehicle.label === newValue
+    );
+    setFilteredVehicles(filtered);
+  };
+
+  // year select only number 4 digit
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+
+  // Handle input changes
+  const handleYearSelectInput = (event) => {
+    const value = event.target.value;
+    // Check if the input is a number and does not exceed 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setYearSelectInput(value);
+      const filtered = vehicleModels.filter((option) =>
+        option.label.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    }
+  };
+  const handleOptionClick = (option) => {
+    setYearSelectInput(option.label);
+    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
+  };
 
   const {
     register,
@@ -364,11 +399,29 @@ const UpdateCompany = () => {
                   />
                 </div>
 
+
                 <div>
                    
-                <Autocomplete
+                {/* <Autocomplete
                      className="productField"
                     value={singleCard?.vehicle_brand || ""}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Brand"
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.vehicle_brand,
+                        }}
+                      />
+                    )}
+                  /> */}
+                  <Autocomplete
+                    freeSolo
+                    className="productField"
+                    value={singleCard?.vehicle_brand || ""}
+                    onChange={handleBrandChange}
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
@@ -383,7 +436,7 @@ const UpdateCompany = () => {
                   />
                 </div>
                 <div>
-                  <TextField
+                  {/* <TextField
                     className="productField"
                     label="Vehicle Name "
                     {...register("vehicle_name")}
@@ -397,10 +450,27 @@ const UpdateCompany = () => {
                     InputLabelProps={{
                       shrink: !!singleCard.vehicle_name,
                     }}
+                  /> */}
+                  <Autocomplete
+                    className="productField"
+                    freeSolo
+                    Vehicle
+                    Name
+                    value={singleCard?.vehicle_name || ""}
+                    options={filteredVehicles.map((option) => option.value)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Name "
+                        {...register("vehicle_name")}
+                      />
+                    )}
+                    getOptionLabel={(option) => option || ""}
+                    // disabled={!selectedBrand}
                   />
                 </div>
-                <div>
-                  <TextField
+                <div className="relative ">
+                  {/* <TextField
                     className="productField"
                     label="Vehicle Model (N)"
                     {...register("vehicle_model", {
@@ -419,7 +489,28 @@ const UpdateCompany = () => {
                     InputLabelProps={{
                       shrink: !!singleCard.vehicle_model,
                     }}
+                  /> */}
+                  <input
+                    value={yearSelectInput}
+                    onInput={handleYearSelectInput}
+                    {...register("vehicle_model")}
+                    type="text"
+                    className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
+                    placeholder="Vehicle Model"
                   />
+
+                  {yearSelectInput && (
+                    <ul className="options-list">
+                      {filteredOptions.map((option, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleOptionClick(option)}
+                        >
+                          {option.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   {errors.vehicle_model && (
                     <span className="text-sm text-red-400">
                       {errors.vehicle_model.message}

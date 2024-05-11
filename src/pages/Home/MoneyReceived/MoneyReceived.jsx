@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable react/no-unescaped-entities */
 import "./MoneyReceived.css";
@@ -9,13 +10,38 @@ import { useNavigate } from "react-router-dom";
 
 import AddMoneyReceiptList from "./AddMoneyReceiptList";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa";
-import TADatePicker from "../../../components/form/TADatePicker";
+import TADatePickers from "../../../components/form/TADatePickers";
+ 
+
 const MoneyReceiptView = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [advance, setAdvance] = useState(null);
+  const [totalAmount, setTotalAmount] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const [job_no, setJob_no] = useState(null);
+  const [jobCardData, setJobCardData] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const [advanceSelect, setAdvanceSelect] = useState(false);
+  const [finalPayment, setFinalPayment] = useState(false);
+  const [cash, setCash] = useState(false);
+  const [cheque, setCheque] = useState(false);
+
   const navigate = useNavigate();
+
+  const parsedDate = new Date();
+  const day = parsedDate.getDate().toString().padStart(2, "0");
+  const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = parsedDate.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
 
   const amountInWords = (amount) => {
     const numberWords = [
@@ -132,20 +158,63 @@ const MoneyReceiptView = () => {
 
   const totalAmountInWords = amountInWords(advance);
 
-  const onSubmit = async (data) => {
-    const values = {
-      Id: "",
+  const handleDateChange = (newDate) => {
+    setSelectedDate(formatDate(newDate));
+  };
 
+  const getRemaining = () => {
+    if (!isNaN(totalAmount) && !isNaN(advance)) {
+      const remaining = totalAmount - advance;
+      return remaining;
+    }
+  };
+
+  useEffect(() => {
+    if (job_no) {
+      setLoading(true);
+      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/invoice/${job_no}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setJobCardData(data);
+          setLoading(false);
+        });
+    }
+  }, [job_no]);
+
+  const formatDate = (dateString) => {
+    const parsedDate = new Date(dateString);
+    const day = parsedDate.getDate().toString().padStart(2, "0");
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = parsedDate.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+    return formattedDate;
+  };
+
+  const onSubmit = async (data) => {
+    const dateOne = formatDate(data.date_one);
+    const dateTwo = formatDate(data.date_two);
+
+    const values = {
+      Id: jobCardData.Id,
+      job_no: job_no,
+      default_date: selectedDate || formattedDate || jobCardData.date,
       thanks_from: data.thanks_from,
+
+      advance_select: advanceSelect,
+      final_payment: finalPayment,
+
       against_bill_no: data.against_bill_no,
       vehicle_no: data.vehicle_no,
+      cash: cash,
+      cheque: cheque,
+
       cheque_no: data.cheque_no,
-      date_one: data.date_one,
+      date_one: dateOne,
       bank: data.bank,
-      date_two: data.date_two,
+      date_two: dateTwo,
       total_amount: data.total_amount,
       advance: data.advance,
-      remaining: data.remaining,
+      remaining: getRemaining(),
       taka_in_word: totalAmountInWords,
     };
     try {
@@ -166,6 +235,23 @@ const MoneyReceiptView = () => {
     }
   };
 
+  const handleAdvanceSelect = () => {
+    setAdvanceSelect(!advanceSelect);
+    setFinalPayment(false);
+  };
+  const handleFinalPayment = () => {
+    setFinalPayment(!finalPayment);
+    setAdvanceSelect(false);
+  };
+  const handleCash = () => {
+    setCash(!cash);
+    setCheque(false);
+  };
+  const handleCheque = () => {
+    setCheque(!cheque);
+    setCash(false);
+  };
+
   return (
     <>
       <div className="moneyReceptWrap ">
@@ -183,7 +269,7 @@ const MoneyReceiptView = () => {
             </small>
           </div>
           <div>
-          <div className="flex items-center mt-1">
+            <div className="flex items-center mt-1">
               <FaGlobe className="hotlineIcon" />
               <small className="ml-1">trustautosolution.com</small>
             </div>
@@ -207,125 +293,209 @@ const MoneyReceiptView = () => {
           <button>Receipt</button>
         </div>
         <div className="flex justify-between items-center lg:mt-0  mb-5">
-          <b>Job No: 01</b>
-         
-          <TADatePicker/>
+          <b>Job No: {jobCardData?.job_no ? jobCardData?.job_no : 0}</b>
+
+          <TADatePickers
+            date={jobCardData?.date}
+            handleDateChange={handleDateChange}
+            selectedDate={selectedDate}
+          />
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex mt-3 receivedField">
             <label className="receivedMoneyText">
               Received with thanks from{" "}
             </label>
-            <input
-              {...register("thanks_from", { required: true })}
-              className="moneyViewInputField"
-              type="text"
-              autoComplete="off"
-            />
+            <div>
+              <input
+                {...register("thanks_from", { required: true })}
+                className="moneyViewInputField w-screen"
+                type="text"
+                autoComplete="off"
+              />
+              {errors.thanks_from && (
+                <span className="text-sm text-red-400">
+                  This field is required
+                </span>
+              )}
+            </div>
           </div>
           <div className="mt-5 payAdvance">
             <div className="flex receivedField">
               <label className="advance">
-                <input type="checkbox" /> Advance <input type="checkbox" />{" "}
+                <input
+                  type="checkbox"
+                  onClick={handleAdvanceSelect}
+                  checked={advanceSelect}
+                />{" "}
+                Advance{" "}
+                <input
+                  type="checkbox"
+                  onClick={handleFinalPayment}
+                  checked={finalPayment}
+                />{" "}
                 Final Payment / against bill no
               </label>
-              <input
-                {...register("against_bill_no", { required: true })}
-                className=" moneyViewInputField"
-                type="text"
-                autoComplete="off"
-              />
+              <div>
+                <input
+                  {...register("against_bill_no", { required: true })}
+                  className=" moneyViewInputField"
+                  type="number"
+                  onChange={(e) => setJob_no(e.target.value)}
+                  autoComplete="off"
+                />
+                {errors.against_bill_no && job_no === null && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
               <label className="vehicleText">Vehicle No: </label>
-              <input
-                {...register("vehicle_no", { required: true })}
-                className=" moneyViewInputField"
-                type="text"
-                autoComplete="off"
-              />
+              <div>
+                <input
+                  {...register("vehicle_no", { required: true })}
+                  className=" moneyViewInputField"
+                  type="text"
+                  autoComplete="off"
+                />
+                {errors.vehicle_no && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           <div className="mt-5 payAdvance">
             <div className="flex receivedField">
-              <label className="checqueText">
+              <div className="checqueText">
                 {" "}
-                <input type="checkbox" /> Cash <input type="checkbox" />
-                Cheque No:{" "}
-              </label>
-              <input
-                {...register("cheque_no", { required: true })}
-                className="cashInput moneyViewInputField"
-                type="text"
-                autoComplete="off"
-              />
+                <input
+                  type="checkbox"
+                  checked={cash}
+                  onClick={handleCash}
+                />{" "}
+                <span className=" font-semibold">Cash </span>
+                <input
+                  type="checkbox"
+                  checked={cheque}
+                  onClick={handleCheque}
+                />
+                <span className=" font-semibold">Cheque No:</span>{" "}
+              </div>
+              <div>
+                <input
+                  {...register("cheque_no", { required: true })}
+                  className="cashInput moneyViewInputField"
+                  type="text"
+                  autoComplete="off"
+                />
+                {errors.cheque_no && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex mt-6 receivedField md:mt-0">
               <b className="mr-2 date2">Date: </b>
-              <input
-                {...register("date_one", { required: true })}
-                className="dateInput moneyViewInputField"
-                type="date"
-                autoComplete="off"
-              />
+              <div>
+                <input
+                  {...register("date_one", { required: true })}
+                  className="dateInput moneyViewInputField"
+                  type="date"
+                  autoComplete="off"
+                />
+                {errors.date_one && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           <div className="mt-5 payAdvance">
             <div className="flex receivedField">
               <label className="backText">Bank: </label>
-              <input
-                {...register("bank", { required: true })}
-                className=" moneyViewInputField"
-                type="text"
-                autoComplete="off"
-              />
+              <div>
+                <input
+                  {...register("bank", { required: true })}
+                  className=" moneyViewInputField"
+                  type="text"
+                  autoComplete="off"
+                />
+                {errors.bank && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex receivedField">
               <label className="date2 "> Date:</label>
-              <input
-                {...register("date_two", { required: true })}
-                className=" moneyViewInputField"
-                type="date"
-                autoComplete="off"
-              />
+              <div>
+                <input
+                  {...register("date_two", { required: true })}
+                  className=" moneyViewInputField"
+                  type="date"
+                  autoComplete="off"
+                />
+                {errors.date_two && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           <div className="mt-5 amount2">
             <div className="flex ">
               <label className="totalAmountText2">Total Amount Tk:</label>
-              <input
-                {...register("total_amount", { required: true })}
-                className="moneyViewInputField totalAmountInput"
-                type="text"
-                
-              />
+              <div>
+                <input
+                  {...register("total_amount", { required: true })}
+                  className="moneyViewInputField totalAmountInput"
+                  type="number"
+                  onChange={(e) => setTotalAmount(e.target.value)}
+                />
+                {errors.total_amount && totalAmount === null && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex ">
               <label>Advance:</label>
-              <input
-                {...register("advance", { required: true })}
-                className="moneyViewInputField totalAmountInput"
-                type="text"
-                onChange={(e) => setAdvance(e.target.value)}
-              />
+              <div>
+                <input
+                  {...register("advance", { required: true })}
+                  className="moneyViewInputField totalAmountInput"
+                  type="number"
+                  onChange={(e) => setAdvance(e.target.value)}
+                />
+                {errors.advance && advance === null && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex">
               <label>Remaining:</label>
               <input
-                {...register("remaining", { required: true })}
+                {...register("remaining")}
                 className="moneyViewInputField totalAmountInput"
                 type="text"
+                value={getRemaining()}
+                readOnly
               />
             </div>
           </div>
           <div className="mt-5 wordTaka">
             <label>in word (taka) </label>
-            {/* <input
-              {...register("taka_in_word", { required: true })}
-              className="moneyViewInputField"
-              type="text"
-              defaultValue={totalAmountInWords}
-            /> */}
             {totalAmountInWords}
           </div>
 

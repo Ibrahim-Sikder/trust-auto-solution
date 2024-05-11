@@ -112,8 +112,8 @@ const PdfGenerator = () => {
             </div>
 
             <div className="flex justify-between ">
-              <small>Serial No: 01</small>
-              <small>Date: 12/01/2023 </small>
+              <small>Serial No: {specificMoneyReceipt?.job_no} </small>
+              <small>Date: {specificMoneyReceipt?.default_date} </small>
             </div>
             <div className="allInputWraps">
               <div className="flex items-center justify-center receivedField ">

@@ -10,15 +10,17 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { carBrands, vehicleModels } from "../../../constant";
-import Cookies from "js-cookie";
+import { carBrands, vehicleModels, vehicleName, vehicleTypes } from "../../../constant";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
-import { Controller } from "react-hook-form";
 import { CalendarIcon } from "@mui/x-date-pickers";
+
 const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
   const [jobNo, setJobNo] = useState(previousPostData.job_no);
-  // const [allJobCard, setAllJobCard] = useState([]);
+
+  const [customerConError, setCustomerConError] = useState("");
+  const [driverConError, setDriverConError] = useState("");
+  const [registrationError, setRegistrationError] = useState("");
 
   const [singleCard, setSingleCard] = useState({});
 
@@ -128,10 +130,7 @@ const UpdateJobCard = () => {
     }
   };
 
-  const handleModelChange = (_, newInputValue) => {
-    setModel(newInputValue);
-  };
-  const handleBrandChange = (_, newInputValue) => {
+  const handleNameChange = (_, newInputValue) => {
     setBrand(newInputValue);
   };
   const handleCategoryChange = (_, newInputValue) => {
@@ -141,8 +140,37 @@ const UpdateJobCard = () => {
     setGetFuelType(newInputValue);
   };
 
- 
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
 
+  const handleBrandChange = (event, newValue) => {
+    setSelectedBrand(newValue);
+    const filtered = vehicleName.filter(
+      (vehicle) => vehicle.label === newValue
+    );
+    setFilteredVehicles(filtered);
+  };
+
+  // year select only number 4 digit
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+
+  // Handle input changes
+  const handleYearSelectInput = (event) => {
+    const value = event.target.value;
+    // Check if the input is a number and does not exceed 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setYearSelectInput(value);
+      const filtered = vehicleModels.filter((option) =>
+        option.label.toLowerCase().startsWith(value.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    }
+  };
+  const handleOptionClick = (option) => {
+    setYearSelectInput(option.label);
+    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
+  };
   useEffect(() => {
     setLoading(true);
     fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard`)
@@ -174,6 +202,9 @@ const UpdateJobCard = () => {
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
+
+
+  
 
   return (
     <div className="mb-20 addJobCardWraps">
@@ -362,19 +393,32 @@ const UpdateJobCard = () => {
                   {...register("customer_contact", {
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={singleCard?.customer_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setCustomerConError("");
+                    } else if (e.target.value > 11) {
+                      setCustomerConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setSingleCard({
                       ...singleCard,
                       customer_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!singleCard.customer_contact,
                   }}
+                  error={!!errors.customer_contact | !!customerConError}
+                  helperText={
+                    errors.customer_contact
+                      ? errors.customer_contact.message
+                      : ""
+                  }
                 />
               </div>
               <div className="mt-3">
@@ -434,22 +478,32 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   label="Driver Contact No (N)"
                   {...register("driver_contact", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={singleCard?.driver_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setDriverConError("");
+                    } else if (e.target.value > 11) {
+                      setDriverConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setSingleCard({
                       ...singleCard,
                       driver_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!singleCard.driver_contact,
                   }}
+                  error={!!errors.driver_contact | !!driverConError}
+                  helperText={
+                    errors.driver_contact ? errors.driver_contact.message : ""
+                  }
                 />
               </div>
               <div className="mt-3">
@@ -474,8 +528,9 @@ const UpdateJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex gap-4 md:gap-0 items-center mt-3 ">
-                <Autocomplete
+             <div className="space-y-3">
+             <div className="flex gap-4 md:gap-0 items-center mt-3 ">
+                {/* <Autocomplete
                   className="jobCardSelect2"
                   value={singleCard?.carReg_no}
                   // onChange={handleBrandChange}
@@ -490,26 +545,71 @@ const UpdateJobCard = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
+                <Autocomplete
+                freeSolo
+                   className="jobCardSelect2"
+                    value={singleCard?.carReg_no || ""}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Reg No"
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.carReg_no,
+                        }}
+                      />
+                    )}
+                  />
+                
 
                 <TextField
                   className="carRegField"
-                  label="Car R (T&N)"
-                  {...register("car_registration_no")}
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    // required: "Car registration number is required",
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
                   value={singleCard?.car_registration_no}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length === 7) {
+                      setRegistrationError("");
+                    } else if (value.length < 7) {
+                      setRegistrationError(
+                        "Car registration number must be 7 characters"
+                      );
+                    }
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                     setSingleCard({
                       ...singleCard,
-                      car_registration_no: e.target.value,
-                    })
-                  }
+                      car_registration_no: formattedValue,
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!singleCard.car_registration_no,
                   }}
+                  error={!!errors.car_registration_no || !!registrationError}
                 />
               </div>
-
-              <div className="mt-3">
+              <div className="">
                 <TextField
                   className="addJobInputField"
                   {...register("chassis_no")}
@@ -526,7 +626,7 @@ const UpdateJobCard = () => {
                   }}
                 />
               </div>
-              <div className="mt-3">
+              <div className="">
                 <TextField
                   className="addJobInputField"
                   {...register("engine_no")}
@@ -543,11 +643,27 @@ const UpdateJobCard = () => {
                   }}
                 />
               </div>
-
-              <div className="mt-3">
-                <Autocomplete
+              <div className="">
+              <Autocomplete
+                    freeSolo
+                    className="addJobInputField"
+                    value={singleCard?.vehicle_brand || ""}
+                    onChange={handleBrandChange}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Brand"
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.vehicle_brand,
+                        }}
+                      />
+                    )}
+                  />
+                {/* <Autocomplete
                   className="addJobInputField"
-                  value={singleCard?.vehicle_brand}
+                  value={singleCard?.vehicle_brand || ""}
                   onChange={handleBrandChange}
                   options={carBrands.map((option) => option.label)}
                   renderInput={(params) => (
@@ -560,13 +676,52 @@ const UpdateJobCard = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
               </div>
-
-              <div className="mt-3">
-                <Autocomplete
+              <div className="">
+              {/* <Autocomplete
+                className="addJobInputField"
+                freeSolo
+                Vehicle
+                Name
+                onInputChange={(event, newValue) => {
+                  handleNameChange(newValue); // Assuming you want the new value as input
+                }}
+                options={filteredVehicles.map((option) => option.value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Vehicle Name "
+                    {...register("vehicle_name")}
+                    value={singleCard?.vehicle_name}
+                    focused={singleCard?.vehicle_name}
+                  />
+                )}
+                getOptionLabel={(option) => option || ""}
+                // disabled={!selectedBrand}
+              /> */}
+              <Autocomplete
+                   className="addJobInputField"
+                    freeSolo
+                    Vehicle
+                    Name
+                    value={singleCard?.vehicle_name || ""}
+                    options={filteredVehicles.map((option) => option.value)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Name "
+                        {...register("vehicle_name")}
+                      />
+                    )}
+                    getOptionLabel={(option) => option || ""}
+                    // disabled={!selectedBrand}
+                  />
+              </div>
+              <div className=" relative ">
+                {/* <Autocomplete
                   className="addJobInputField"
-                  onInputChange={handleModelChange}
+                  // onInputChange={handleModelChange}
                   options={vehicleModels.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
@@ -587,11 +742,37 @@ const UpdateJobCard = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
+                <input
+                    value={yearSelectInput}
+                    onInput={handleYearSelectInput}
+                    {...register("vehicle_model")}
+                    type="text"
+                    className="border border-[#11111157] mb-5 w-[98%] h-12 p-3 rounded-md"
+                    placeholder="Vehicle Model"
+                    onChange={(e) => {
+                      setSingleCard({
+                        ...singleCard,
+                        vehicle_model: e.target.value,
+                      });
+                    }}
+                  />
+                  {yearSelectInput && (
+                    <ul className="options-list">
+                      {filteredOptions.map((option, index) => (
+                        <li
+                          key={index}
+                          onClick={() => handleOptionClick(option)}
+                        >
+                          {option.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
               </div>
 
-              <div className="mt-3">
-                <Autocomplete
+              <div className="">
+                {/* <Autocomplete
                   className="addJobInputField"
                   value={singleCard?.vehicle_category}
                   focused={singleCard?.vehicle_category}
@@ -607,9 +788,25 @@ const UpdateJobCard = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
+                <Autocomplete
+                   freeSolo
+                   className="addJobInputField"
+                    value={singleCard?.vehicle_category || ""}
+                    options={vehicleTypes.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Category"
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.vehicle_category,
+                        }}
+                      />
+                    )}
+                  />
               </div>
-              <div className="mt-3">
+              <div className="">
                 <TextField
                   className="addJobInputField"
                   {...register("color_code")}
@@ -626,7 +823,7 @@ const UpdateJobCard = () => {
                   }}
                 />
               </div>
-              <div className="mt-3">
+              <div className="">
                 <TextField
                   className="addJobInputField"
                   label="Mileage (N) "
@@ -647,9 +844,14 @@ const UpdateJobCard = () => {
                     shrink: !!singleCard.mileage,
                   }}
                 />
+                {errors.mileage && (
+                  <span className="text-sm text-red-400">
+                    {errors.mileage.message}
+                  </span>
+                )}
               </div>
-              <div className="mt-3">
-                <Autocomplete
+              <div className="">
+                {/* <Autocomplete
                   className="addJobInputField"
                   value={singleCard?.fuel_type}
                   focused={singleCard?.fuel_type}
@@ -668,8 +870,27 @@ const UpdateJobCard = () => {
                       }}
                     />
                   )}
-                />
+                /> */}
+                <Autocomplete
+                   freeSolo
+                   className="addJobInputField"
+                    value={singleCard?.fuel_type || ""}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Fuel Type "
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!singleCard?.fuel_type,
+                        }}
+                      />
+                    )}
+                  />
               </div>
+
+             </div>
+
             </div>
           </div>
 
@@ -818,12 +1039,12 @@ const UpdateJobCard = () => {
             </div>
             <div>
               {!technicianDateShow && (
-                <>
+                <div className="p-3 border-2 ownerInput">
                   {singleCard.technician_date}
                   <CalendarIcon
                     onClick={() => setTechnicianDateShow(!technicianDateShow)}
                   />
-                </>
+                </div>
               )}
               {technicianDateShow && (
                 <>

@@ -15,7 +15,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 const MoneyReceiptList = () => {
- 
   const [getMoneyReceipt, setGetMoneyReceipt] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
@@ -233,7 +232,6 @@ const MoneyReceiptList = () => {
   }
 
   const handleFilterType = async () => {
-    
     try {
       const data = {
         filterType,
@@ -242,17 +240,17 @@ const MoneyReceiptList = () => {
         `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/all`,
         data
       );
-    
+
       if (response.data.message === "Filter successful") {
         setGetMoneyReceipt(response.data.result);
         setNoMatching(null);
       }
       if (response.data.message === "No matching found") {
-        setGetMoneyReceipt([])
+        setGetMoneyReceipt([]);
         setNoMatching(response.data.message);
       }
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error("Something went wrong");
     }
   };
 
@@ -268,7 +266,6 @@ const MoneyReceiptList = () => {
   return (
     <div className="mt-5 overflow-x-auto">
       <div className="flex flex-wrap justify-end pb-3 border-b-2">
-       
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />
@@ -290,16 +287,18 @@ const MoneyReceiptList = () => {
       </div>
 
       <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-        <h3 className="mb-3 text-xl font-bold md:text-3xl">Money Receipt List:</h3>
+        <h3 className="mb-3 text-xl font-bold md:text-3xl">
+          Money Receipt List:
+        </h3>
         <div className="flex items-center searcList">
-          
-           
           <div className="searchGroup">
+            <button onClick={handleAllMoneyReceipt} className="SearchBtn mr-2">
+              All{" "}
+            </button>
             <input
               onChange={(e) => setFilterType(e.target.value)}
               autoComplete="off"
               type="text"
-             
             />
           </div>
           <button onClick={handleFilterType} className="SearchBtn ">

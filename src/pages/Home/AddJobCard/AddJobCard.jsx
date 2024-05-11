@@ -64,11 +64,16 @@ const AddJobCard = () => {
   const [clickControl, setClickControl] = useState(null);
 
   const [error, setError] = useState(null);
-  const [select, setSelect] = useState("SL No");
+
+  const [customerConError, setCustomerConError] = useState("");
+  const [driverConError, setDriverConError] = useState("");
+  const [registrationError, setRegistrationError] = useState("");
+
   const [value, setValue] = useState("");
   const [value2, setValue2] = useState("");
   const [value3, setValue3] = useState("");
   const [reload, setReload] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -95,7 +100,7 @@ const AddJobCard = () => {
         job_no: jobNo,
         date: formattedDate,
         company_name: data.company_name || showCustomerData.company_name,
-        // username: data.username || showCustomerData.username,
+        username: data.username || showCustomerData.username,
         company_address:
           data.company_address || showCustomerData.company_address,
         customer_name: data.customer_name || showCustomerData.customer_name,
@@ -208,12 +213,6 @@ const AddJobCard = () => {
       setFilteredOptions(filtered);
     }
   };
-  // Handle clicking on an option
-  // const handleOptionClick = (option) => {
-  //   setYearSelectInput(option.label);
-  //   setFilteredOptions([]);
-  // };
-
   const handleOptionClick = (option) => {
     setYearSelectInput(option.label);
     setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
@@ -644,12 +643,6 @@ const AddJobCard = () => {
                     <MenuItem value="showRoomId">Show Room ID </MenuItem>
                   </Select>
                 </FormControl>
-                {/* <input
-                  placeholder="Search Here"
-                  onChange={(e) => setCustomerId(e.target.value)}
-                  type="text"
-                  className="border-[#ddd] border w-40 h-10 p-2 rounded-sm"
-                /> */}
 
                 <Autocomplete
                   className="w-40 "
@@ -816,29 +809,35 @@ const AddJobCard = () => {
                   className="addJobInputField"
                   label="Customer Contact No (N)"
                   {...register("customer_contact", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={showCustomerData?.customer_contact}
-                  focused={showCustomerData?.customer_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setCustomerConError("");
+                    } else if (e.target.value > 11) {
+                      setCustomerConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setShowCustomerData({
                       ...showCustomerData,
                       customer_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!showCustomerData.customer_contact,
                   }}
+                  error={!!errors.customer_contact | !!customerConError}
+                  helperText={
+                    errors.customer_contact
+                      ? errors.customer_contact.message
+                      : ""
+                  }
                 />
-                {/* {errors.customer_contact && (
-              <span className="text-sm text-red-400">
-                {errors.customer_contact.message}
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -915,29 +914,33 @@ const AddJobCard = () => {
                   className="addJobInputField"
                   label="Driver Contact No (N)"
                   {...register("driver_contact", {
-                    // required: "This field is required.",
                     pattern: {
                       value: /^\d{11}$/,
-                      message: "Please enter a valid number.",
+                      message: "Please enter a valid 11-digit number.",
                     },
                   })}
                   value={showCustomerData?.driver_contact}
-                  focused={showCustomerData?.driver_contact}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    if (e.target.value.length === 11) {
+                      setDriverConError("");
+                    } else if (e.target.value > 11) {
+                      setDriverConError(
+                        "Please enter a valid 11-digit number."
+                      );
+                    }
                     setShowCustomerData({
                       ...showCustomerData,
                       driver_contact: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!showCustomerData.driver_contact,
                   }}
+                  error={!!errors.driver_contact | !!driverConError}
+                  helperText={
+                    errors.driver_contact ? errors.driver_contact.message : ""
+                  }
                 />
-                {/* {errors.driver_contact && (
-              <span className="text-sm text-red-400">
-                {errors.driver_contact.message}
-              </span>
-            )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -966,8 +969,9 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex  md:gap-0 gap-4 items-center mt-3 ">
+              <div className="flex  md:gap-0 gap-4 items-center">
                 <Autocomplete
+                  freeSolo
                   className="jobCardSelect2"
                   id="free-solo-demo"
                   inputValue={inputValue}
@@ -986,27 +990,53 @@ const AddJobCard = () => {
 
                 <TextField
                   className="carRegField"
-                  label="Car R (T&N)"
-                  {...register("car_registration_no")}
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers and hyphens are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
                   value={showCustomerData?.car_registration_no}
-                  focused={showCustomerData?.car_registration_no}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length === 7) {
+                      setRegistrationError("");
+                    } else if (value.length < 7) {
+                      setRegistrationError(
+                        "Car registration number must be 7 characters"
+                      );
+                    }
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                     setShowCustomerData({
                       ...showCustomerData,
-                      car_registration_no: e.target.value,
-                    })
-                  }
+                      car_registration_no: formattedValue,
+                    });
+                  }}
                   InputLabelProps={{
                     shrink: !!showCustomerData.car_registration_no,
                   }}
+                  error={!!errors.car_registration_no || !!registrationError}
+                  // helperText={
+                  //   (errors.car_registration_no
+                  //     ? errors.car_registration_no.message
+                  //     : "") || registrationError
+                  // }
                 />
               </div>
-
-              {/* {errors.car_registration_no && (
-                <span className="text-sm text-red-400">
-                  This field is required.
-                </span>
-              )} */}
 
               <div className="mt-3">
                 <TextField
@@ -1055,10 +1085,9 @@ const AddJobCard = () => {
                 )} */}
               </div>
 
-              {/* <div className="mt-3">
+              <div className="mt-3">
                 <Autocomplete
                   className="addJobInputField"
-                  id="free-solo-demo"
                   freeSolo
                   onInputChange={(event, newValue) => {
                     handleBrandChange(newValue);
@@ -1072,58 +1101,14 @@ const AddJobCard = () => {
                       focused={Boolean(showCustomerData?.vehicle_brand)}
                     />
                   )}
+                  onChange={handleBrandChange}
+                  value={selectedBrand}
+                  style={{ marginBottom: 20 }}
                 />
               </div>
 
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  id="free-solo-demo"
-                  freeSolo
-                  Vehicle
-                  Brand
-                
-                  onInputChange={(event, newValue) => {
-                    handleNameChange(newValue); // Assuming you want the new value as input
-                  }}
-                  // onInputChange={handleBrandChange}
-                  // options={vehicleName.map((option) => option.label)}
-                  options={filteredVehicles.map((option) => option.value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Name "
-                      {...register("vehicle_name")}
-                      value={showCustomerData?.vehicle_name}
-                      focused={showCustomerData?.vehicle_name}
-                    />
-                  )}
-                  getOptionLabel={(option) => option || ""}
-               
-                />
-              </div> */}
-              <div className="mt-3"></div>
-              <Autocomplete
-                className="addJobInputField"
-                freeSolo
-                onInputChange={(event, newValue) => {
-                  handleBrandChange(newValue);
-                }}
-                options={carBrands.map((option) => option.label)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Vehicle Brand"
-                    {...register("vehicle_brand")}
-                    focused={Boolean(showCustomerData?.vehicle_brand)}
-                  />
-                )}
-                onChange={handleBrandChange}
-                value={selectedBrand}
-                style={{ marginBottom: 20 }}
-              />
-
-              <Autocomplete
+             <div className="mt-3">
+             <Autocomplete
                 className="addJobInputField"
                 freeSolo
                 Vehicle
@@ -1144,6 +1129,7 @@ const AddJobCard = () => {
                 getOptionLabel={(option) => option || ""}
                 // disabled={!selectedBrand}
               />
+             </div>
 
               <div className="mt-3 relative">
                 {/* <Autocomplete
@@ -1193,37 +1179,32 @@ const AddJobCard = () => {
                   }}
                 /> */}
 
-
-                  <input
-                    value={yearSelectInput}
-                    onInput={handleYearSelectInput}
-                    {...register("vehicle_model")}
-                    type="text"
-                    className="border border-[#1111110e] mb-5 w-[98%] h-12 p-3 rounded-md"
-                    placeholder="Vehicle Model"
-                    onChange={(e) => {
-                      setShowCustomerData({
-                        ...showCustomerData,
-                        vehicle_model: e.target.value,
-                      });
-                    }}
-                  />
-                  {yearSelectInput && (
-                    <ul className="options-list">
-                      {filteredOptions.map((option, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleOptionClick(option)}
-                        >
-                          {option.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
+                <input
+                  value={yearSelectInput}
+                  onInput={handleYearSelectInput}
+                  {...register("vehicle_model")}
+                  type="text"
+                  className="border border-[#11111163] mb-5 w-[98%] h-12 p-3 rounded-md"
+                  placeholder="Vehicle Model"
+                  onChange={(e) => {
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      vehicle_model: e.target.value,
+                    });
+                  }}
+                />
+                {yearSelectInput && (
+                  <ul className="options-list">
+                    {filteredOptions.map((option, index) => (
+                      <li key={index} onClick={() => handleOptionClick(option)}>
+                        {option.label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
-              <div className="">
+              <div>
                 <Autocomplete
                   className="addJobInputField"
                   id="free-solo-demo"
@@ -1300,11 +1281,11 @@ const AddJobCard = () => {
                     shrink: !!showCustomerData.mileage,
                   }}
                 />
-                {/* {errors.mileage && (
+                {errors.mileage && (
                   <span className="text-sm text-red-400">
                     {errors.mileage.message}
                   </span>
-                )} */}
+                )}
               </div>
               <div className="mt-3">
                 <Autocomplete
@@ -1492,34 +1473,26 @@ const AddJobCard = () => {
 
           <div className="mt-5 buttonGroup">
             <div>
-              {/* <Link to={`/dashboard/preview?${id}`}> */}
               <button
                 disabled={loading}
                 onClick={() => setClickControl("preview")}
               >
                 Preview
               </button>
-              {/* </Link> */}
-              {/* <Link to="/dashboard/preview"> */}
-              {/* </Link>
-              <Link to="/dashboard/preview"> */}
-              {/* </Link> */}
-              {/* <Link to={`/dashboard/qutation?order_no=${jobNo}`}> */}{" "}
+
               <button
                 disabled={loading}
                 onClick={() => setClickControl("quotation")}
               >
                 Quotation
               </button>
-              {/* </Link> */}
-              {/* <Link to="/dashboard/invoice"> */}{" "}
+
               <button
                 disabled={loading}
                 onClick={() => setClickControl("invoice")}
               >
                 Invoice
               </button>
-              {/* </Link> */}
             </div>
             <div className="submitQutationBtn">
               <button

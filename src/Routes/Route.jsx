@@ -70,6 +70,7 @@ import Message from "../pages/Message/Message";
 import Notification from "../pages/Notification/Notification";
 import EmployeeHoliday from "../pages/Holiday/Holiday";
 import ShiftList from "../pages/Home/Employee/ShiftAndSchedule/ShiftList";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -84,13 +85,17 @@ export const router = createBrowserRouter([
   },
   {
     path: "dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/dashboard",
         element: <Home />,
       },
-      
+
       {
         path: "addjob",
         element: <AddJobCard />,
@@ -372,14 +377,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "holiday",
-        element: <EmployeeHoliday/>,
+        element: <EmployeeHoliday />,
       },
       {
         path: "shift-list",
-        element: <ShiftList/>,
+        element: <ShiftList />,
       },
-
     ],
   },
 ]);
-  

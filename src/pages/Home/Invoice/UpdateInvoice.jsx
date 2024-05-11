@@ -30,9 +30,6 @@ const UpdateInvoice = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-  // const [inputList, setinputList] = useState([
-  //   { flyingFrom: "", flyingTo: "", date: "" },
-  // ]);
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
@@ -79,8 +76,8 @@ const UpdateInvoice = () => {
     const newTotalSum = isNaN(totalSum) ? 0 : totalSum;
     const newTotalSum2 = isNaN(totalSum2) ? 0 : totalSum2;
 
-    const newGrandTotal = newTotalSum + newTotalSum2;
-
+    let newGrandTotal = newTotalSum + newTotalSum2;
+    newGrandTotal = parseFloat(newGrandTotal.toFixed(2));
     setGrandTotal(newGrandTotal);
   }, [items, specificInvoice.input_data]);
 
@@ -104,46 +101,57 @@ const UpdateInvoice = () => {
   };
 
   const handleQuantityChange = (index, value) => {
-    const newItems = [...specificInvoice.input_data];
-    newItems[index] = {
-      ...newItems[index],
-      quantity: Number(value),
-      total: Number(value) * newItems[index].rate,
-    };
-    setSpecificInvoice((prevState) => ({
-      ...prevState,
-      input_data: newItems,
-    }));
+    // Ensure value is a valid number
+    if (!isNaN(value)) {
+      const newItems = [...specificInvoice.input_data];
+      // Round the quantity to the nearest integer
+      const roundedQuantity = Math.round(Number(value));
+      newItems[index] = {
+        ...newItems[index],
+        quantity: roundedQuantity,
+        total: (roundedQuantity * newItems[index].rate).toFixed(2),
+      };
+      setSpecificInvoice((prevState) => ({
+        ...prevState,
+        input_data: newItems,
+      }));
+    }
   };
 
   const handleQuantityChange2 = (index, value) => {
-    const newItems = [...items];
-    const roundedValue = Math.round(value);
-    newItems[index].quantity = Number(roundedValue);
-
-    newItems[index].total = Number(value) * newItems[index].rate;
-    setItems(newItems);
+    if (!isNaN(value)) {
+      const newItems = [...items];
+      const roundedValue = Math.round(value);
+      newItems[index].quantity = Number(roundedValue);
+      newItems[index].total = (roundedValue * newItems[index].rate) ;
+      newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
+      setItems(newItems);
+    }
   };
 
   const handleRateChange = (index, value) => {
-    const newItems = [...specificInvoice.input_data];
-    newItems[index] = {
-      ...newItems[index],
-      rate: Number(value),
-      total: newItems[index].quantity * Number(value),
-    };
-    setSpecificInvoice((prevState) => ({
-      ...prevState,
-      input_data: newItems,
-    }));
+    if (!isNaN(value)) {
+      const newItems = [...specificInvoice.input_data];
+      newItems[index] = {
+        ...newItems[index],
+        rate: Number(value).toFixed(2),
+        total: (newItems[index].quantity * Number(value)).toFixed(2),
+      };
+      setSpecificInvoice((prevState) => ({
+        ...prevState,
+        input_data: newItems,
+      }));
+    }
   };
 
   const handleRateChange2 = (index, value) => {
-    const newItems = [...items];
-    newItems[index].rate = parseFloat(value);
-    newItems[index].total = newItems[index].quantity * newItems[index].rate;
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-    setItems(newItems);
+    if (!isNaN(value)) {
+      const newItems = [...items];
+      newItems[index].rate = parseFloat(value).toFixed(2);
+      newItems[index].total = newItems[index].quantity * newItems[index].rate;
+      newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
+      setItems(newItems);
+    }
   };
 
   const handleDiscountChange = (value) => {
@@ -181,9 +189,9 @@ const UpdateInvoice = () => {
     }
 
     const vatAsPercentage = vat / 100;
-    const finalTotal =
-      totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
 
+    finalTotal = parseFloat(finalTotal.toFixed(2));
     return finalTotal;
   };
 
