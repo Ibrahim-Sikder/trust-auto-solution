@@ -1080,7 +1080,13 @@ const Home = () => {
             </Link>
           </div>
         </div>
+
+        
       </div>
+      <div className="text-center mt-5  bg-red-600 p-5 text-white ">
+      <p>Copy write @ Trust Auto Solution </p>
+          <p>Develope by <b>softypy</b></p>
+        </div>
     </div>
   );
 };

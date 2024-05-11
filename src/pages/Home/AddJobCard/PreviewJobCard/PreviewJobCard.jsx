@@ -102,7 +102,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Registration"
-                          defaultValue={previewData.car_registration_no}
+                          defaultValue={`${previewData.carReg_no} ${previewData.car_registration_no}`}
                           disabled
                         />
                       </div>
