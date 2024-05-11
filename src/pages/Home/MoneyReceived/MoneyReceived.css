@@ -2,10 +2,12 @@
   padding: 10px 50px;
 }
 .moneyReceptWrap {
-  padding: 20px 50px;
+  padding: 20px;
   border: 1px solid #11111183;
-  margin: 30px 20px;
+  margin: 30px auto;
   border-radius: 5px;
+  width:1300px;
+  
 }
 .viewMoneyReceiptWrap {
   background-color: #dddddd;
@@ -104,18 +106,14 @@
 .payAdvance {
   width: 100%;
 }
-.receivedMoneyText {
-  width: 280px;
-}
+
 .receivedMoneyText2 {
   width: 192px;
 }
 .allInputWraps label {
   font-size: 11px;
 }
-.advance {
-  width: 670px;
-}
+
 .advance2 {
   width: 448px;
 }
@@ -129,12 +127,7 @@
 .vehicleText2 {
   width: 124px;
 }
-.checqueText {
-  width: 228px;
-}
-.checqueText2 {
-  width: 206px;
-}
+
 
 .date {
   width: 54px;
@@ -150,9 +143,7 @@
   width: 39px;
 }
 
-.dateInput {
-  width: 100%;
-}
+
 .amount,
 .amount2 {
   display: flex;
@@ -266,15 +257,43 @@
   margin-left: 595px;
 }
 
-@media only screen and (min-width: 1441px) {
+
   .totalAmountInput {
-    width: 488px !important;
+    width: 306px !important;
   }
+  .totalAmountInput, .receiptInput, .advanceInput, .cashInput, .bankInput{
+    display: block;
+  }
+  .receiptInput {
+    width: 1030px;
+    display: block;
+
+  }
+  .advanceInput{
+    width: 392px;
+  }
+  .advanceText{
+    width: 362px;
+  
+  }
+  .cashInput{
+    width: 513px;
+  }
+  .checqueText {
+    width: 175px;
 }
-@media only screen and (max-width: 1441px) {
-  .totalAmountInput {
-    width: 276px !important;
-  }
+.bankInput{
+  width: 571px;
+}
+.vehicleText {
+  width: 92px;
+}
+.receivedMoneyText {
+  width: 219px;
+}
+
+@media only screen and (max-width: 1440px) {
+ 
 }
 
 @media only screen and (max-width: 1024px) {
@@ -287,11 +306,7 @@
   .moneyReceivedWrap {
     padding: 10px 5px;
   }
-  
-  .totalAmountInput {
-	width: 100% !important;
 
-}
 
   .amount input {
     width: 250px;
@@ -299,12 +314,8 @@
   .receivedMoneyText {
     width: 297px;
   }
-  .vehicleText {
-    width: 188px;
-  }
-  .checqueText {
-    width: 315px;
-  }
+
+
   .date2 {
     width: 47px;
     margin-left: 15px;

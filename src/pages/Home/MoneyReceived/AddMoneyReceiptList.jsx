@@ -262,6 +262,7 @@ const AddMoneyReceiptList = () => {
         setNoMatching(null);
       });
   };
+  
 
   return (
     <div className="mt-5 overflow-x-auto">

@@ -220,6 +220,23 @@ const UpdateMoneyReceipt = () => {
     }
   };
 
+  const handleAdvanceSelect = () => {
+    setAdvanceSelect(!advanceSelect);
+    setFinalPayment(false);
+  };
+  const handleFinalPayment = () => {
+    setFinalPayment(!finalPayment);
+    setAdvanceSelect(false);
+  };
+  const handleCash = () => {
+    setCash(!cash);
+    setCheque(false);
+  };
+  const handleCheque = () => {
+    setCheque(!cheque);
+    setCash(false);
+  };
+
   return (
     <div className="moneyReceptWrap ">
       <div className="moneyRecieved ">
@@ -259,7 +276,7 @@ const UpdateMoneyReceipt = () => {
         <button>Receipt</button>
       </div>
       <div className="flex justify-between ">
-        <b>Serial No: {specificMoneyReceipt.against_bill_no}</b>
+        <b>Job No: {specificMoneyReceipt.against_bill_no}</b>
         <b className="flex gap-x-2">
           Date:{" "}
           <TADatePickers
@@ -275,7 +292,7 @@ const UpdateMoneyReceipt = () => {
             Received with thanks from{" "}
           </label>
           <input
-            className="moneyViewInputField"
+            className="moneyViewInputField receiptInput"
             type="text"
             autoComplete="off"
             defaultValue={specificMoneyReceipt.thanks_from}
@@ -283,7 +300,7 @@ const UpdateMoneyReceipt = () => {
           />
         </div>
         <div className="mt-5 payAdvance">
-          <div className="flex receivedField">
+          {/* <div className="flex receivedField">
             <label className="advance">
               Advance/Final Payment against bill no:{" "}
             </label>
@@ -295,7 +312,36 @@ const UpdateMoneyReceipt = () => {
               {...register("against_bill_no")}
               readOnly
             />
-          </div>
+          </div> */}
+          <div className="flex receivedField">
+              <label className="advanceText">
+                <input
+                  type="checkbox"
+                  onClick={handleAdvanceSelect}
+                  checked={advanceSelect}
+                />{" "}
+                Advance{" "}
+                <input
+               
+                  type="checkbox"
+                  onClick={handleFinalPayment}
+                  checked={finalPayment}
+                />{" "}
+                Final Payment / against bill no
+              </label>
+              <div>
+              
+                <input
+                 defaultValue={specificMoneyReceipt.against_bill_no}
+                  {...register("against_bill_no", )}
+                  className=" moneyViewInputField advanceInput "
+                  type="number"
+                  onChange={(e) => setJob_no(e.target.value)}
+                  autoComplete="off"
+                />
+                
+              </div>
+            </div>
           <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
             <label className="vehicleText2">Vehicle No: </label>
             <input
@@ -308,16 +354,37 @@ const UpdateMoneyReceipt = () => {
           </div>
         </div>
         <div className="mt-5 payAdvance">
-          <div className="flex receivedField">
-            <label className="checqueText2">Cash/Cheque No: </label>
-            <input
-              defaultValue={specificMoneyReceipt.cheque_no}
-              className="cashInput moneyViewInputField"
-              type="text"
-              autoComplete="off"
-              {...register("cheque_no")}
-            />
-          </div>
+
+        <div className="flex receivedField">
+              <div className="checqueText">
+                {" "}
+                <input
+                  type="checkbox"
+                  checked={cash}
+                  onClick={handleCash}
+                />{" "}
+                <span className=" font-semibold">Cash </span>
+                <input
+                
+                  type="checkbox"
+                  checked={cheque}
+                  onClick={handleCheque}
+                />
+                <span className=" font-semibold">Cheque No:</span>{" "}
+              </div>
+              <div>
+                <input
+                 defaultValue={specificMoneyReceipt.cheque_no}
+                  {...register("cheque_no", )}
+                  className="cashInput moneyViewInputField"
+                  type="text"
+                  autoComplete="off"
+                />
+                
+              </div>
+            </div>
+
+         
           <div className="flex mt-6 receivedField md:mt-0">
             <b className="date">Date: </b>
             <input

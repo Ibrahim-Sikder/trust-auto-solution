@@ -309,7 +309,7 @@ const MoneyReceiptView = () => {
             <div>
               <input
                 {...register("thanks_from", { required: true })}
-                className="moneyViewInputField w-screen"
+                className="moneyViewInputField receiptInput"
                 type="text"
                 autoComplete="off"
               />
@@ -322,7 +322,7 @@ const MoneyReceiptView = () => {
           </div>
           <div className="mt-5 payAdvance">
             <div className="flex receivedField">
-              <label className="advance">
+              <label className="advanceText">
                 <input
                   type="checkbox"
                   onClick={handleAdvanceSelect}
@@ -330,6 +330,7 @@ const MoneyReceiptView = () => {
                 />{" "}
                 Advance{" "}
                 <input
+               
                   type="checkbox"
                   onClick={handleFinalPayment}
                   checked={finalPayment}
@@ -339,7 +340,7 @@ const MoneyReceiptView = () => {
               <div>
                 <input
                   {...register("against_bill_no", { required: true })}
-                  className=" moneyViewInputField"
+                  className=" moneyViewInputField advanceInput "
                   type="number"
                   onChange={(e) => setJob_no(e.target.value)}
                   autoComplete="off"
@@ -356,7 +357,7 @@ const MoneyReceiptView = () => {
               <div>
                 <input
                   {...register("vehicle_no", { required: true })}
-                  className=" moneyViewInputField"
+                  className=" moneyViewInputField advanceInput"
                   type="text"
                   autoComplete="off"
                 />
@@ -404,7 +405,7 @@ const MoneyReceiptView = () => {
               <div>
                 <input
                   {...register("date_one", { required: true })}
-                  className="dateInput moneyViewInputField"
+                  className="cashInput moneyViewInputField"
                   type="date"
                   autoComplete="off"
                 />
@@ -422,7 +423,7 @@ const MoneyReceiptView = () => {
               <div>
                 <input
                   {...register("bank", { required: true })}
-                  className=" moneyViewInputField"
+                  className=" moneyViewInputField bankInput"
                   type="text"
                   autoComplete="off"
                 />
@@ -438,7 +439,7 @@ const MoneyReceiptView = () => {
               <div>
                 <input
                   {...register("date_two", { required: true })}
-                  className=" moneyViewInputField"
+                  className=" moneyViewInputField bankInput"
                   type="date"
                   autoComplete="off"
                 />
