@@ -21,12 +21,14 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 
 const UpdateCustomer = () => {
   const [selectedBrand, setSelectedBrand] = useState("");
-  //   const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  const [registrationError, setRegistrationError] = useState("");
 
   // year select only number 4 digit
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [yearSelectInput, setYearSelectInput] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
+
   const handleBrandChange = (event, newValue) => {
     setSelectedBrand(newValue);
     const filtered = vehicleName.filter(
@@ -390,19 +392,47 @@ const UpdateCustomer = () => {
                   />
 
                   <TextField
-                    className="carRegNumbers"
-                    label="Car R (T&N)"
-                    {...register("car_registration_no")}
-                    value={singleCard.car_registration_no}
-                    onChange={(e) =>
+                    className="carRegField"
+                    label="Car R (N)"
+                    {...register("car_registration_no", {
+                      pattern: {
+                        value: /^[\d-]+$/,
+                        message: "Only numbers and hyphens are allowed",
+                      },
+                      minLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                      maxLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                    })}
+                    value={singleCard?.car_registration_no}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length === 7) {
+                        setRegistrationError("");
+                      } else if (value.length < 7) {
+                        setRegistrationError(
+                          "Car registration number must be 7 characters"
+                        );
+                      }
+                      const formattedValue = value
+                        .replace(/\D/g, "")
+                        .slice(0, 6)
+                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                       setSingleCard({
                         ...singleCard,
-                        car_registration_no: e.target.value,
-                      })
-                    }
+                        car_registration_no: formattedValue,
+                      });
+                    }}
                     InputLabelProps={{
                       shrink: !!singleCard.car_registration_no,
                     }}
+                    error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
 
@@ -540,7 +570,7 @@ const UpdateCustomer = () => {
                 </div>
                 <div>
                   <Autocomplete
-                   freeSolo
+                    freeSolo
                     className="productField"
                     value={singleCard?.vehicle_category || ""}
                     options={vehicleTypes.map((option) => option.label)}
@@ -597,7 +627,7 @@ const UpdateCustomer = () => {
                 </div>
                 <div>
                   <Autocomplete
-                   freeSolo
+                    freeSolo
                     className="productField"
                     value={singleCard?.fuel_type || ""}
                     options={carBrands.map((option) => option.label)}

@@ -23,8 +23,8 @@ import { Autocomplete } from "@mui/material";
 import { HiOfficeBuilding } from "react-icons/hi";
 
 const UpdateCompany = () => {
+  const [registrationError, setRegistrationError] = useState("");
 
-  
   const [selectedBrand, setSelectedBrand] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
 
@@ -154,14 +154,12 @@ const UpdateCompany = () => {
             <span>New Customer </span>
           </div>
         </div>
-        
+
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-center">
               <div>
-                <h3 className="mb-1 text-xl font-bold">
-                  Company Information{" "}
-                </h3>
+                <h3 className="mb-1 text-xl font-bold">Company Information </h3>
                 <div>
                   <TextField
                     className="productField"
@@ -236,7 +234,6 @@ const UpdateCompany = () => {
                     InputLabelProps={{
                       shrink: !!singleCard.company_contact,
                     }}
-
                   />
                   {errors.company_contact && (
                     <span className="text-sm text-red-400">
@@ -289,7 +286,6 @@ const UpdateCompany = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
-
                     value={singleCard?.driver_contact}
                     onChange={(e) =>
                       setSingleCard({
@@ -300,7 +296,6 @@ const UpdateCompany = () => {
                     InputLabelProps={{
                       shrink: !!singleCard.driver_contact,
                     }}
-
                   />
                   {errors.driver_contact && (
                     <span className="text-sm text-red-400">
@@ -330,8 +325,7 @@ const UpdateCompany = () => {
               <div>
                 <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
-                 
-                   <Autocomplete
+                  <Autocomplete
                     className="customerSelect"
                     value={singleCard?.carReg_no || ""}
                     options={carBrands.map((option) => option.label)}
@@ -348,19 +342,48 @@ const UpdateCompany = () => {
                   />
 
                   <TextField
-                    className="carRegNumbers"
-                    label="Car R (T&N)"
-                    {...register("car_registration_no")}
+                    className="carRegField"
+                    label="Car R (N)"
+                    {...register("car_registration_no", {
+                      pattern: {
+                        value: /^[\d-]+$/,
+                        message: "Only numbers and hyphens are allowed",
+                      },
+                      minLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                      maxLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                    })}
                     value={singleCard?.car_registration_no}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length === 7) {
+                        setRegistrationError("");
+                      } else if (value.length < 7) {
+                        setRegistrationError(
+                          "Car registration number must be 7 characters"
+                        );
+                      }
+                      const formattedValue = value
+                        .replace(/\D/g, "")
+                        .slice(0, 6)
+                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                       setSingleCard({
                         ...singleCard,
-                        car_registration_no: e.target.value,
-                      })
-                    }
+                        car_registration_no: formattedValue,
+                      });
+                    }}
                     InputLabelProps={{
                       shrink: !!singleCard.car_registration_no,
                     }}
+                    error={!!errors.car_registration_no || !!registrationError}
+                     
                   />
                 </div>
 
@@ -399,10 +422,8 @@ const UpdateCompany = () => {
                   />
                 </div>
 
-
                 <div>
-                   
-                {/* <Autocomplete
+                  {/* <Autocomplete
                      className="productField"
                     value={singleCard?.vehicle_brand || ""}
                     options={carBrands.map((option) => option.label)}
@@ -518,8 +539,8 @@ const UpdateCompany = () => {
                   )}
                 </div>
                 <div>
-                <Autocomplete
-                     className="productField"
+                  <Autocomplete
+                    className="productField"
                     value={singleCard?.vehicle_category || ""}
                     options={vehicleTypes.map((option) => option.label)}
                     renderInput={(params) => (
@@ -579,8 +600,8 @@ const UpdateCompany = () => {
                   )}
                 </div>
                 <div>
-                <Autocomplete
-                     className="productField"
+                  <Autocomplete
+                    className="productField"
                     value={singleCard?.fuel_type || ""}
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (

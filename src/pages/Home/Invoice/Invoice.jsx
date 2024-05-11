@@ -36,7 +36,11 @@ const Invoice = () => {
   const navigate = useNavigate();
   const [job_no, setJob_no] = useState(orderNo);
   const [jobCardData, setJobCardData] = useState({});
+
   const [error, setError] = useState("");
+  const [registrationError, setRegistrationError] = useState("");
+
+
   const [postError, setPostError] = useState("");
   const [getAllInvoice, setGetAllInvoice] = useState([]);
 
@@ -559,6 +563,7 @@ const Invoice = () => {
                   label="Customer Id"
                   onChange={handleInputChange}
                   value={jobCardData?.Id}
+                  focused={jobCardData?.Id}
                   required
                 />
               </div>
@@ -641,22 +646,51 @@ const Invoice = () => {
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
+                
                 <TextField
-                  className="addJobInputField"
-                  label="Registration No"
-                  value={jobCardData?.car_registration_no}
-                  focused={jobCardData?.car_registration_no}
-                  {...register("car_registration_no")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      car_registration_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.car_registration_no,
-                  }}
-                />
+                    className="addJobInputField"
+                    label="Car R (N)"
+                    {...register("car_registration_no", {
+                      pattern: {
+                        value: /^[\d-]+$/,
+                        message: "Only numbers and hyphens are allowed",
+                      },
+                      minLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                      maxLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                    })}
+                    value={jobCardData?.car_registration_no}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length === 7) {
+                        setRegistrationError("");
+                      } else if (value.length < 7) {
+                        setRegistrationError(
+                          "Car registration number must be 7 characters"
+                        );
+                      }
+                      const formattedValue = value
+                        .replace(/\D/g, "")
+                        .slice(0, 6)
+                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
+                        setJobCardData({
+                        ...jobCardData,
+                        car_registration_no: formattedValue,
+                      });
+                    }}
+                    InputLabelProps={{
+                      shrink: !!jobCardData?.car_registration_no,
+                    }}
+                    error={!!errors.car_registration_no || !!registrationError}
+                     
+                  />
               </div>
               <div className="mt-3">
                 <TextField

@@ -34,10 +34,13 @@ const AddShowRoom = () => {
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
 
+  const [registrationError, setRegistrationError] = useState("");
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -101,7 +104,6 @@ const AddShowRoom = () => {
         reset();
       }
     } catch (error) {
-       
       toast.error(error.message);
       setLoading(false);
     }
@@ -112,7 +114,7 @@ const AddShowRoom = () => {
       .then((res) => res.json())
       .then((data) => {
         setShowRoomData(data);
-       
+
         setLoading(false);
       });
   }, [reload]);
@@ -221,7 +223,7 @@ const AddShowRoom = () => {
           <tr>
             <th>SL No</th>
             <th>Customer Name</th>
-        
+
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th>Date</th>
@@ -236,15 +238,13 @@ const AddShowRoom = () => {
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-              
+
               <td>
                 <div
                   onClick={() => handleIconPreview(card.showRoomId)}
                   className="flex items-center justify-center cursor-pointer"
                 >
-                  
-                    <FaUserTie size={25} className="" />
-              
+                  <FaUserTie size={25} className="" />
                 </div>
               </td>
 
@@ -315,7 +315,6 @@ const AddShowRoom = () => {
     );
   }
 
-  
   const handleFilterType = async () => {
     try {
       const data = {
@@ -506,9 +505,37 @@ const AddShowRoom = () => {
                     )}
                   />
                   <TextField
-                    className="carRegNumbers"
-                    label="Car R (T&N)"
-                    {...register("car_registration_no")}
+                    className="carRegField"
+                    label="Car R (N)"
+                    {...register("car_registration_no", {
+                      pattern: {
+                        value: /^[\d-]+$/,
+                        message: "Only numbers and hyphens are allowed",
+                      },
+                      maxLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 7 characters",
+                      },
+                    })}
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+                      if (value.length > 2) {
+                        value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
+                      }
+
+                      setRegistrationError(""); // Clear previous error
+                      if (value.length !== 7) {
+                        setRegistrationError(
+                          "Car registration number must be 7 characters"
+                        );
+                      }
+                      // Update input value
+                      setValue("car_registration_no", value, {
+                        shouldValidate: true,
+                      });
+                    }}
+                    error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
 
@@ -560,7 +587,6 @@ const AddShowRoom = () => {
                     value={selectedBrand}
                     style={{ marginBottom: 20 }}
                   />
-
                 </div>
                 <div>
                   {/* <TextField
@@ -597,7 +623,7 @@ const AddShowRoom = () => {
                     })}
                   /> */}
                   <div className="relative ">
-                  {/* <TextField
+                    {/* <TextField
                     className="productField"
                     label="Vehicle Model (N)"
                     {...register("vehicle_model", {
@@ -607,32 +633,32 @@ const AddShowRoom = () => {
                       },
                     })}
                   /> */}
-                  <input
-                    value={yearSelectInput}
-                    onInput={handleYearSelectInput}
-                    {...register("vehicle_model")}
-                    type="text"
-                    className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
-                    placeholder="Vehicle Model"
-                  />
-                  {yearSelectInput && (
-                    <ul className="options-list">
-                      {filteredOptions.map((option, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleOptionClick(option)}
-                        >
-                          {option.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {errors.vehicle_model && (
-                    <span className="text-sm text-red-400">
-                      {errors.vehicle_model.message}
-                    </span>
-                  )}
-                </div>
+                    <input
+                      value={yearSelectInput}
+                      onInput={handleYearSelectInput}
+                      {...register("vehicle_model")}
+                      type="text"
+                      className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
+                      placeholder="Vehicle Model"
+                    />
+                    {yearSelectInput && (
+                      <ul className="options-list">
+                        {filteredOptions.map((option, index) => (
+                          <li
+                            key={index}
+                            onClick={() => handleOptionClick(option)}
+                          >
+                            {option.label}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {errors.vehicle_model && (
+                      <span className="text-sm text-red-400">
+                        {errors.vehicle_model.message}
+                      </span>
+                    )}
+                  </div>
 
                   {errors.vehicle_model && (
                     <span className="text-sm text-red-400">
@@ -642,7 +668,7 @@ const AddShowRoom = () => {
                 </div>
                 <div>
                   <Autocomplete
-                  freeSolo
+                    freeSolo
                     className="productField"
                     Vehicle
                     Types
@@ -682,7 +708,7 @@ const AddShowRoom = () => {
                 </div>
                 <div>
                   <Autocomplete
-                  freeSolo
+                    freeSolo
                     className="productField"
                     Fuel
                     Type
@@ -720,7 +746,10 @@ const AddShowRoom = () => {
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
             />
-            <button onClick={handleFilterType} className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
+            <button
+              onClick={handleFilterType}
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1"
+            >
               {" "}
               <HiOutlineSearch size={22} />
             </button>

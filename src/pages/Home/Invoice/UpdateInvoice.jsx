@@ -15,6 +15,8 @@ const UpdateInvoice = () => {
   const [advance, setAdvance] = useState(0);
 
   const [error, setError] = useState("");
+  const [registrationError, setRegistrationError] = useState("");
+
   const [reload, setReload] = useState(false);
 
   const [removeButton, setRemoveButton] = useState("");
@@ -123,7 +125,7 @@ const UpdateInvoice = () => {
       const newItems = [...items];
       const roundedValue = Math.round(value);
       newItems[index].quantity = Number(roundedValue);
-      newItems[index].total = (roundedValue * newItems[index].rate) ;
+      newItems[index].total = roundedValue * newItems[index].rate;
       newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
       setItems(newItems);
     }
@@ -382,10 +384,46 @@ const UpdateInvoice = () => {
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Registration No"
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers and hyphens are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
                   value={specificInvoice?.car_registration_no}
-                  focused={specificInvoice?.car_registration_no}
-                  {...register("car_registration_no")}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length === 7) {
+                      setRegistrationError("");
+                    } else if (value.length < 7) {
+                      setRegistrationError(
+                        "Car registration number must be 7 characters"
+                      );
+                    }
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      car_registration_no: formattedValue,
+                    });
+                  }}
+                  InputLabelProps={{
+                    shrink: !!specificInvoice?.car_registration_no,
+                  }}
+                  error={!!errors.car_registration_no || !!registrationError}
                 />
               </div>
               <div className="mt-3">

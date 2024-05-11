@@ -21,7 +21,8 @@ import { HiOfficeBuilding } from "react-icons/hi";
 
 const UpdateShowRoom = () => {
   const [showRoomData, setShowRoomData] = useState({});
- 
+
+  const [registrationError, setRegistrationError] = useState("");
 
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -93,7 +94,6 @@ const UpdateShowRoom = () => {
         reset();
       }
     } catch (error) {
-       
       toast.error(error.message);
       setLoading(false);
     }
@@ -384,37 +384,64 @@ const UpdateShowRoom = () => {
                   Vehicle Information{" "}
                 </h3>
                 <div className="flex items-center mt-1 productField">
-                  
                   <Autocomplete
-                  className="addJobInputField"
-                  value={showRoomData?.carReg_no || ""}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Car Reg No "
-                      // Handle input props manually
-                      InputLabelProps={{
-                        shrink: !!showRoomData?.carReg_no,
-                      }}
-                    />
-                  )}
-                />
+                    className="addJobInputField"
+                    value={showRoomData?.carReg_no || ""}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Car Reg No "
+                        // Handle input props manually
+                        InputLabelProps={{
+                          shrink: !!showRoomData?.carReg_no,
+                        }}
+                      />
+                    )}
+                  />
+
                   <TextField
                     className="carRegNumbers"
-                    label="Car R (T&N)"
-                    {...register("car_registration_no")}
-                    defaultValue={showRoomData.car_registration_no}
-                    value={showRoomData.car_registration_no}
-                    onChange={(e) =>
+                    label="Car R (N)"
+                    {...register("car_registration_no", {
+                      pattern: {
+                        value: /^[\d-]+$/,
+                        message: "Only numbers and hyphens are allowed",
+                      },
+                      minLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                      maxLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 6 digits",
+                      },
+                    })}
+                    value={showRoomData?.car_registration_no}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length === 7) {
+                        setRegistrationError("");
+                      } else if (value.length < 7) {
+                        setRegistrationError(
+                          "Car registration number must be 7 characters"
+                        );
+                      }
+                      const formattedValue = value
+                        .replace(/\D/g, "")
+                        .slice(0, 6)
+                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                       setShowRoomData({
                         ...showRoomData,
-                        car_registration_no: e.target.value,
-                      })
-                    }
+                        car_registration_no: formattedValue,
+                      });
+                    }}
                     InputLabelProps={{
                       shrink: !!showRoomData.car_registration_no,
                     }}
+                    error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
 
@@ -471,7 +498,7 @@ const UpdateShowRoom = () => {
                     />
                   )}
                 /> */}
-                <Autocomplete
+                  <Autocomplete
                     freeSolo
                     className="productField"
                     value={showRoomData?.vehicle_brand || ""}
@@ -589,8 +616,8 @@ const UpdateShowRoom = () => {
                     />
                   )}
                 /> */}
-                <Autocomplete
-                   freeSolo
+                  <Autocomplete
+                    freeSolo
                     className="productField"
                     value={showRoomData?.vehicle_category || ""}
                     options={vehicleTypes.map((option) => option.label)}
@@ -645,7 +672,6 @@ const UpdateShowRoom = () => {
                     InputLabelProps={{
                       shrink: !!showRoomData.mileage,
                     }}
-
                   />
                   {errors.mileage && (
                     <span className="text-sm text-red-400">
@@ -670,8 +696,8 @@ const UpdateShowRoom = () => {
                   )}
                 /> */}
 
-                <Autocomplete
-                   freeSolo
+                  <Autocomplete
+                    freeSolo
                     className="productField"
                     value={showRoomData?.fuel_type || ""}
                     options={carBrands.map((option) => option.label)}
@@ -686,7 +712,6 @@ const UpdateShowRoom = () => {
                       />
                     )}
                   />
-                  
                 </div>
               </div>
             </div>
