@@ -65,7 +65,7 @@ const Login = () => {
       >
         <div className="loginFormWraps">
           <h2 className="text-lg sm:text-2xl md:text-4xl capitalize mb-8 font-bold text-white text-center">
-            Welcome to back !
+            Welcome to T.A.S !
           </h2>
           <div className="signUnWrap">
             <form onSubmit={handleLogin}>
