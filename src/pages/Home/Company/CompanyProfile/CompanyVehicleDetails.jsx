@@ -389,6 +389,7 @@ const location = useLocation();
       )}
       
       {open && <CompanyAddVehicleModal open={open} onClose={handleClose} />}
+      
       {vehicleDetails && (
         <CompanyVehicleDetailsModal
           handVehicleDetailsOpen={handVehicleDetailsOpen}

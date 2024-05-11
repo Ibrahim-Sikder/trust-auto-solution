@@ -531,7 +531,7 @@ const AddQuotation = () => {
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Job No"
+                  label="Job Card No"
                   onChange={(e) => setJob_no(e.target.value)}
                   value={jobCardData?.job_no}
                   focused={jobCardData?.job_no}

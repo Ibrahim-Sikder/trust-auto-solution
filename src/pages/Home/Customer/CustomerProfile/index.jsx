@@ -12,20 +12,21 @@ import CustomerAccount from "./CustomerAccount";
 import VehicleDetails from "./VehicleDetails";
 import { FaFacebookF, FaRocketchat, FaWhatsapp } from "react-icons/fa";
 import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const CustomerProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
   const [jobCardData, setJobCardData] = useState([]);
- 
+
   const [quotationData, setQuotationData] = useState([]);
 
   const [invoiceData, setInvoiceData] = useState([]);
 
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-console.log(moneyReceiptData)
+
+  console.log(moneyReceiptData);
   const [error, setError] = useState("");
 
   const location = useLocation();
@@ -41,8 +42,6 @@ console.log(moneyReceiptData)
         });
     }
   }, [id]);
-
-
 
   useEffect(() => {
     if (id) {
@@ -130,15 +129,14 @@ console.log(moneyReceiptData)
                 <ImUserTie size="80" className="text-white" />
               </div>
               <div className="text-sm">
-              <div className="flex items-center">
+                <div className="flex items-center">
                   <span> Customer ID : </span>{" "}
                   <span className="ml-3 font-semibold ">
                     {profileData?.customerId}
                   </span>
                 </div>
-                
+
                 <div className=" mt-3 space-y-2">
-               
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
                     <span>{profileData?.customer_contact}</span>
@@ -223,13 +221,21 @@ console.log(moneyReceiptData)
             <div>
               <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
                 <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
-                  <FaWhatsapp size={100} />
+                  <Link to="/dashboard/message">
+                    <FaWhatsapp size={100} />
+                  </Link>
                 </div>
                 <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
-                  <FaFacebookF size={100} />
+                  <Link to="/dashboard/message">
+                    {" "}
+                    <FaFacebookF size={100} />
+                  </Link>
                 </div>
                 <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
-                  <FaRocketchat size={100} />
+                  <Link to="/dashboard/message">
+                    {" "}
+                    <FaRocketchat size={100} />
+                  </Link>
                 </div>
               </div>
             </div>

@@ -195,7 +195,7 @@ const MoneyReceiptView = () => {
     const dateTwo = formatDate(data.date_two);
 
     const values = {
-      Id: jobCardData.Id,
+      Id: jobCardData?.Id,
       job_no: job_no,
       default_date: selectedDate || formattedDate || jobCardData.date,
       thanks_from: data.thanks_from,
@@ -370,7 +370,7 @@ const MoneyReceiptView = () => {
             </div>
           </div>
           <div className="mt-5 payAdvance">
-            <div className="flex receivedField">
+            <div className="flex ">
               <div className="checqueText">
                 {" "}
                 <input

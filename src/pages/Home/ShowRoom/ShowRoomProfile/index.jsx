@@ -8,7 +8,7 @@ import "react-tabs/style/react-tabs.css";
 
 import { FaFacebookF, FaRocketchat, FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ShowRoomAccount from "./ShowRoomAccount";
 import ShowRoomVehicleDetails from "./ShowRoomVehicleDetails";
 import ShowRoomJobCardList from "./ShowRoomJobCardList";
@@ -20,13 +20,13 @@ import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
 const ShowRoomProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
-  
+
   const [jobCardData, setJobCardData] = useState([]);
-  
+
   const [quotationData, setQuotationData] = useState([]);
-  
+
   const [invoiceData, setInvoiceData] = useState([]);
- 
+
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -42,8 +42,6 @@ const ShowRoomProfile = () => {
     }
   }, [id]);
 
-
-  
   useEffect(() => {
     if (id) {
       fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/${id}`, {
@@ -119,42 +117,48 @@ const ShowRoomProfile = () => {
     return <div>Loading...</div>;
   }
 
-  
   return (
     <div>
       <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
         <div className="flex justify-between w-full ">
           <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
-            <div className="flex flex-wrap ml-5">
-              <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
+            <div className="flex flex-wrap ml-5 b">
+              <div className="md:w-24 md:h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
                 <ImUserTie size="80" className="text-white" />
               </div>
-              <div>
-                <h3 className="text-2xl">Trust Auto Solution </h3>
-                <div className="mt-3 space-y-2">
+              <div className="text-sm">
+                <div className="flex items-center">
+                  <span> Show Room ID : </span>{" "}
+                  <span className="ml-3 font-semibold ">
+                    {profileData?.customerId}
+                  </span>
+                </div>
+
+                <div className=" mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>45996-0789777</span>
+                    <span>{profileData?.customer_contact}</span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>customer@gmail.com </span>
+                    <span>{profileData?.customer_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span> Kuril Bishawroad, Dhaka-1212 </span>
+                    <span> {profileData?.customer_address} </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="bg-[#F77F00] border h-14 rounded-md p-3 relative top-32 md:right-5 right-16 ">
+          <div className="bg-[#F77F00] border h-14 rounded-md p-3 relative top-32 right-5 ">
             <div className="flex items-center">
               <b>Due</b> /<b>Paid</b>
             </div>
           </div>
         </div>
       </div>
+
 
       <div className="mt-32 text-black">
         <Tabs className="tabList">
@@ -210,19 +214,27 @@ const ShowRoomProfile = () => {
             />
           </TabPanel>
           <TabPanel>
-           <SupplierPaymentList/>
+            <SupplierPaymentList />
           </TabPanel>
           <TabPanel>
             <div>
               <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
                 <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
-                  <FaWhatsapp size={100} />
+                  <Link to="/dashboard/message">
+                    <FaWhatsapp size={100} />
+                  </Link>
                 </div>
                 <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
-                  <FaFacebookF size={100} />
+                  <Link to="/dashboard/message">
+                    {" "}
+                    <FaFacebookF size={100} />
+                  </Link>
                 </div>
                 <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
-                  <FaRocketchat size={100} />
+                  <Link to="/dashboard/message">
+                    {" "}
+                    <FaRocketchat size={100} />
+                  </Link>
                 </div>
               </div>
             </div>

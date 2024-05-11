@@ -15,7 +15,7 @@ import CompanyQuotationList from "./CompanyQuotationList";
 import CompanyInvoiceList from "./CompanyInvoiceList";
 import CompanyMoneyList from "./CompanyMoneyList";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const CompanyProfile = () => {
@@ -213,13 +213,21 @@ const CompanyProfile = () => {
             <div>
               <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
                 <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
-                  <FaWhatsapp size={100} />
+                  <Link to="/dashboard/message">
+                    <FaWhatsapp size={100} />
+                  </Link>
                 </div>
                 <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
-                  <FaFacebookF size={100} />
+                  <Link to="/dashboard/message">
+                    {" "}
+                    <FaFacebookF size={100} />
+                  </Link>
                 </div>
                 <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
-                  <FaRocketchat size={100} />
+                  <Link to="/dashboard/message">
+                    {" "}
+                    <FaRocketchat size={100} />
+                  </Link>
                 </div>
               </div>
             </div>

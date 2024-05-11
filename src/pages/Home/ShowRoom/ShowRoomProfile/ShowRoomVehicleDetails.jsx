@@ -18,47 +18,6 @@ import ShowRoomAddVehicleModal from "./ShowRoomAddVehicleModal";
 import { toast } from "react-toastify";
 
 const CompanyVehicleDetails = () => {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
 
 
 const location = useLocation();
@@ -103,33 +62,6 @@ const location = useLocation();
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
-  // const deletePackage = async (id) => {
-  //   const willDelete = await swal({
-  //     title: "Are you sure?",
-  //     text: "Are you sure that you want to delete this card?",
-  //     icon: "warning",
-  //     dangerMode: true,
-  //   });
-
-  //   if (willDelete) {
-  //     try {
-  //       const res = await fetch(
-  //         `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
-  //         {
-  //           method: "DELETE",
-  //         }
-  //       );
-  //       const data = await res.json();
-
-  //       if (data.message == "Company card delete successful") {
-  //         setVehicleList(vehicleList?.filter((pkg) => pkg._id !== id));
-  //       }
-  //       swal("Deleted!", "Card delete successful.", "success");
-  //     } catch (error) {
-  //       swal("Error", "An error occurred while deleting the card.", "error");
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     sessionStorage.setItem("com", currentPage.toString());
