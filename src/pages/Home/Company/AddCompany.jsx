@@ -30,9 +30,8 @@ const AddCompany = () => {
   const [companyData, setCompanyData] = useState([]);
   const [noMatching, setNoMatching] = useState(null);
 
-  // const [brand, setBrand] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [getFuelType, setGetFuelType] = useState("");
+  const [registrationError, setRegistrationError] = useState("");
+
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -41,11 +40,11 @@ const AddCompany = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const navigate = useNavigate();
-
 
   const [selectedBrand, setSelectedBrand] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
@@ -78,8 +77,6 @@ const AddCompany = () => {
     setYearSelectInput(option.label);
     setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
   };
-
-
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -239,7 +236,7 @@ const AddCompany = () => {
           <tr>
             <th>Company Id</th>
             <th>Customer Name</th>
-             
+
             <th>Car Number </th>
             <th>Mobile Number</th>
             <th colSpan={3}>Action</th>
@@ -253,7 +250,7 @@ const AddCompany = () => {
 
               <td>{card.car_registration_no}</td>
               <td> {card.company_contact} </td>
-             
+
               <td>
                 <div
                   onClick={() => handleIconPreview(card.companyId)}
@@ -503,10 +500,44 @@ const AddCompany = () => {
                       />
                     )}
                   />
-                  <TextField
+                  {/* <TextField
                     className="carRegNumbers"
                     label="Car R (T&N)"
                     {...register("car_registration_no")}
+                  /> */}
+                   
+                  <TextField
+                    className="carRegField"
+                    label="Car R (N)"
+                    {...register("car_registration_no", {
+                      pattern: {
+                        value: /^[\d-]+$/,
+                        message: "Only numbers and hyphens are allowed",
+                      },
+                      maxLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 7 characters",
+                      },
+                    })}
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+                      if (value.length > 2) {
+                        value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
+                      }
+                      
+                      setRegistrationError(""); // Clear previous error
+                      if (value.length !== 7) {
+                        setRegistrationError(
+                          "Car registration number must be 7 characters"
+                        );
+                      }
+                      // Update input value
+                      setValue("car_registration_no", value, {
+                        shouldValidate: true,
+                      });
+                    }}
+                    error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
 
@@ -638,7 +669,7 @@ const AddCompany = () => {
                 </div>
                 <div>
                   <Autocomplete
-                   freeSolo
+                    freeSolo
                     className="productField"
                     Vehicle
                     Types
@@ -678,7 +709,7 @@ const AddCompany = () => {
                 </div>
                 <div>
                   <Autocomplete
-                   freeSolo
+                    freeSolo
                     className="productField"
                     Fuel
                     Type
