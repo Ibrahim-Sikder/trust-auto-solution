@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import TADatePickers from "../../../components/form/TADatePickers";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
 
@@ -16,7 +17,7 @@ const UpdateQuotation = () => {
 
   const [error, setError] = useState("");
   const [registrationError, setRegistrationError] = useState("");
-  
+
   const [removeButton, setRemoveButton] = useState("");
   const [reload, setReload] = useState(false);
   const [addButton, setAddButton] = useState(false);
@@ -121,7 +122,7 @@ const UpdateQuotation = () => {
     const roundedValue = Math.round(value);
     newItems[index].quantity = Number(roundedValue);
 
-    newItems[index].total = (Number(value) * newItems[index].rate) ;
+    newItems[index].total = Number(value) * newItems[index].rate;
     newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
     setItems(newItems);
   };
@@ -295,7 +296,20 @@ const UpdateQuotation = () => {
 
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex justify-between items-center">
+            <div className="hidden"></div>
+            <div className="vehicleCard">Update Quotation </div>
+
+            <div>
+              
+
+              <TADatePickers
+               
+              />
+            </div>
+          </div>
           <div className="mb-10 jobCardFieldWraps">
+          
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
@@ -410,51 +424,49 @@ const UpdateQuotation = () => {
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
-              <TextField
-                    className="addJobInputField"
-                    label="Car R (N)"
-                    {...register("car_registration_no", {
-                      pattern: {
-                        value: /^[\d-]+$/,
-                        message: "Only numbers and hyphens are allowed",
-                      },
-                      minLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                      maxLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                    })}
-                    value={specificInvoice?.car_registration_no}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length === 7) {
-                        setRegistrationError("");
-                      } else if (value.length < 7) {
-                        setRegistrationError(
-                          "Car registration number must be 7 characters"
-                        );
-                      }
-                      const formattedValue = value
-                        .replace(/\D/g, "")
-                        .slice(0, 6)
-                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                        setSpecificInvoice({
-                        ...specificInvoice,
-                        car_registration_no: formattedValue,
-                      });
-                    }}
-                    InputLabelProps={{
-                      shrink: !!specificInvoice?.car_registration_no,
-                    }}
-                    error={!!errors.car_registration_no || !!registrationError}
-                     
-                  />
-                 
+                <TextField
+                  className="addJobInputField"
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers and hyphens are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
+                  value={specificInvoice?.car_registration_no}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length === 7) {
+                      setRegistrationError("");
+                    } else if (value.length < 7) {
+                      setRegistrationError(
+                        "Car registration number must be 7 characters"
+                      );
+                    }
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      car_registration_no: formattedValue,
+                    });
+                  }}
+                  InputLabelProps={{
+                    shrink: !!specificInvoice?.car_registration_no,
+                  }}
+                  error={!!errors.car_registration_no || !!registrationError}
+                />
               </div>
               <div className="mt-3">
                 <TextField
@@ -526,7 +538,7 @@ const UpdateQuotation = () => {
               </div>
             </div>
           </div>
-          <div className="vehicleCard">Update Quotation </div>
+
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>

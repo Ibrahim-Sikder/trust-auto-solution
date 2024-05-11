@@ -140,7 +140,7 @@ const MoneyReceiptList = () => {
             <th>Vehicle No </th>
             <th>Check Number </th>
             <th>Bank</th>
-            <th>Total Amount</th>
+            <th>Date</th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>

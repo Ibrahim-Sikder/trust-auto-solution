@@ -149,8 +149,9 @@
   display: flex;
   justify-content: space-between;
 }
+
 .totalAmountText {
-  width: 168px;
+  width: 183px;
 }
 .totalAmountText2 {
   width: 140px;
@@ -174,9 +175,7 @@
 .amount2 input {
   width: 100%;
 }
-.moneyReceiptAmount input {
-  border: 1px solid #ddd !important;
-}
+
 .wordTaka input {
   border-bottom: 1px dashed;
   width: 400px;
@@ -231,10 +230,14 @@
   font-size: 11px;
 }
 .amountTextBG {
-  background: #d9d9d9 !important;
+  /* background: #d9d9d9 !important; */
   width: 100% !important;
   margin-right: 5px;
   border-radius: 3px;
+}
+.moneyReceiptAmount input {
+  border: none !important;
+  font-weight: bold;
 }
 .wordInTk {
   width: 90%;

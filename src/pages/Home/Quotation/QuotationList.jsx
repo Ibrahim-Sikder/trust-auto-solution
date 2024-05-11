@@ -15,8 +15,10 @@ import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
 import { NotificationAdd } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { formatDate } from "../../../utils/formateDate";
 const QuotationList = () => {
   const [getAllQuotation, setGetAllQuotation] = useState([]);
+  console.log(getAllQuotation)
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -155,8 +157,8 @@ const QuotationList = () => {
                 <td>{card.customer_name}</td>
                 <td>{card.job_no}</td>
                 <td>{card.car_registration_no}</td>
-                <td> {card.contact_number} </td>
-                <td>{card.date}</td>
+                <td> {card.customer_contact} </td>
+                <td>{formatDate(card.date)}</td>
                 <td>
                   <div
                     onClick={() => handleIconPreview(card._id)}

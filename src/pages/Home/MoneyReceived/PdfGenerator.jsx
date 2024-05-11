@@ -13,6 +13,7 @@ const PdfGenerator = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get('id');
   const [specificMoneyReceipt, setSpecificMoneyReceipt] = useState({});
+  console.log(specificMoneyReceipt)
   const componentRef = useRef();
   const { targetRef } = usePDF({ filename: 'page.pdf' });
   const handlePrint = useReactToPrint({
@@ -112,7 +113,7 @@ const PdfGenerator = () => {
             </div>
 
             <div className="flex justify-between ">
-              <small>Serial No: {specificMoneyReceipt?.job_no} </small>
+              <small>Job No: {specificMoneyReceipt?.job_no} </small>
               <small>Date: {specificMoneyReceipt?.default_date} </small>
             </div>
             <div className="allInputWraps">
