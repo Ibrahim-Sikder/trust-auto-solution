@@ -698,7 +698,7 @@ const navigate = useNavigate()
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    <NavLink to="/dashboard/holiday ">Holiday</NavLink>
+                    <NavLink to="/dashboard/holiday">Holiday</NavLink>
                     
                   </span>
                 </Typography>
@@ -719,7 +719,12 @@ const navigate = useNavigate()
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
+                    
+                    <NavLink to="/dashboard/shift-list">
                     Shift & Schedule
+                    </NavLink>
+
+                   
                   </span>
                 </Typography>
               </AccordionDetails>
