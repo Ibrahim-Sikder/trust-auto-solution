@@ -61,17 +61,30 @@ const UpdateJobCard = () => {
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
     if (
       /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
+      newPhoneNumber.length <= 10 &&
       (newPhoneNumber === "" ||
         !newPhoneNumber.startsWith("0") ||
         newPhoneNumber.length > 1)
     ) {
       setPhoneNumber(newPhoneNumber);
+    }
+  };
+  const handleDriverPhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 10 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setDriverPhoneNumber(newPhoneNumber);
     }
   };
 
@@ -426,17 +439,21 @@ const UpdateJobCard = () => {
                       />
                     )}
                   />
-                  {/* <TextField
+                  <TextField
+                    {...register("customer_contact")}
                     className="carRegField"
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
+                    value={phoneNumber ? phoneNumber : singleCard?.customer_contact}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-                  /> */}
-                  <TextField
+                    InputLabelProps={{
+                      shrink: !!singleCard.customer_contact,
+                    }}
+                  />
+                  {/* <TextField
                     className="carRegField"
                     label="Customer Contact No (N)"
                     {...register("customer_contact", {
@@ -466,7 +483,7 @@ const UpdateJobCard = () => {
                     //     ? errors.customer_contact.message
                     //     : ""
                     // }
-                  />
+                  /> */}
                 </div>
               </div>
               <div className="mt-3">
@@ -542,17 +559,22 @@ const UpdateJobCard = () => {
                       />
                     )}
                   />
-                  {/* <TextField
+                  <TextField
+                    {...register("driver_contact")}
                     className="carRegField"
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
+                    value={driverPhoneNumber ? driverPhoneNumber : singleCard?.driver_contact}
+                    onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
-                  /> */}
-                  <TextField
+                    InputLabelProps={{
+                      shrink: !!singleCard.driver_contact,
+                    }}
+                   
+                  />
+                  {/* <TextField
                     className="carRegField"
                     label="Driver Contact No (N)"
                     {...register("driver_contact", {
@@ -580,7 +602,7 @@ const UpdateJobCard = () => {
                     // helperText={
                     //   errors.driver_contact ? errors.driver_contact.message : ""
                     // }
-                  />
+                  /> */}
                 </div>
               </div>
               <div className="mt-3">
