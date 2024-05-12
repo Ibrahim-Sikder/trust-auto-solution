@@ -17,6 +17,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const JobCardForm = ({ onClose }) => {
+  const [registrationError, setRegistrationError] = useState("");
+
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -25,6 +27,7 @@ const JobCardForm = ({ onClose }) => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -109,12 +112,45 @@ const JobCardForm = ({ onClose }) => {
                       />
                     )}
                   />
-                  <TextField
+                  {/* <TextField
                   sx={{width:'485px'}}
                     className=""
                     on
                     label="Car R (T&N)"
                     {...register("car_registration_no")}
+                  /> */}
+                  <TextField
+                    className="carRegField"
+                    label="Car R (N)"
+                    {...register("car_registration_no", {
+                      pattern: {
+                        value: /^[\d-]+$/,
+                        message: "Only numbers and hyphens are allowed",
+                      },
+                      maxLength: {
+                        value: 7,
+                        message:
+                          "Car registration number must be exactly 7 characters",
+                      },
+                    })}
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+                      if (value.length > 2) {
+                        value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
+                      }
+
+                      setRegistrationError(""); // Clear previous error
+                      if (value.length !== 7) {
+                        setRegistrationError(
+                          "Car registration number must be 7 characters"
+                        );
+                      }
+                      // Update input value
+                      setValue("car_registration_no", value, {
+                        shouldValidate: true,
+                      });
+                    }}
+                    error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
               </div>

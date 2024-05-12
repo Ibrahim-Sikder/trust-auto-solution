@@ -398,21 +398,6 @@ const UpdateQuotation = () => {
                 />
               </div>
               <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Phone"
-                  value={specificInvoice?.customer_contact}
-                  {...register("customer_contact")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      customer_contact: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.customer_contact,
-                  }}
-                /> */}
                 <div className="flex items-center">
                   <Autocomplete
                     sx={{ marginRight: "2px" }}
@@ -434,14 +419,22 @@ const UpdateQuotation = () => {
                     )}
                   />
                   <TextField
-                    className="carRegField"
-                    label="Mobile Number "
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
+                    className="addJobInputField"
+                    label="Phone"
+                    value={specificInvoice?.customer_contact}
+                    {...register("customer_contact")}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        setSpecificInvoice({
+                          ...specificInvoice,
+                          customer_contact: inputValue,
+                        });
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.customer_contact,
+                    }}
                   />
                 </div>
               </div>

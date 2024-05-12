@@ -82,11 +82,18 @@ const AddShowRoom = () => {
   // country code set 
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
     if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
       setPhoneNumber(newPhoneNumber);
+    }
+  };
+  const handleDriverPhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+      setDriverPhoneNumber(newPhoneNumber);
     }
   };
 
@@ -469,15 +476,18 @@ const AddShowRoom = () => {
                     )}
                   />
                   <TextField
+                   {...register("company_contact")}
                     className="productField2"
-                    label="Driver Contact No (N)"
+                    label="Company Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
-                   
+                    placeholder="Enter phone number"
+                     
                   />
+                   
                 </div>
                 <div>
                   <TextField
@@ -540,14 +550,16 @@ const AddShowRoom = () => {
                     )}
                   />
                   <TextField
+                   {...register("driver_contact")}
                     className="productField2"
                     label="Driver Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
+                    value={driverPhoneNumber}
+                    onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
+                     
                   />
                 </div>
                 <div>
