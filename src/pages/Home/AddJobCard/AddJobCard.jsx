@@ -823,43 +823,11 @@ const AddJobCard = () => {
             )} */}
               </div>
               <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Customer Contact No (N)"
-                  {...register("customer_contact", {
-                    pattern: {
-                      value: /^\d{11}$/,
-                      message: "Please enter a valid 11-digit number.",
-                    },
-                  })}
-                  value={showCustomerData?.customer_contact}
-                  onChange={(e) => {
-                    if (e.target.value.length === 11) {
-                      setCustomerConError("");
-                    } else if (e.target.value > 11) {
-                      setCustomerConError(
-                        "Please enter a valid 11-digit number."
-                      );
-                    }
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      customer_contact: e.target.value,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.customer_contact,
-                  }}
-                  error={!!errors.customer_contact | !!customerConError}
-                  helperText={
-                    errors.customer_contact
-                      ? errors.customer_contact.message
-                      : ""
-                  }
-                /> */}
+                 
 
                 <div className="flex items-center">
                   <Autocomplete
-                  sx={{marginRight:'2px'}}
+                    sx={{ marginRight: "2px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -877,15 +845,54 @@ const AddJobCard = () => {
                       />
                     )}
                   />
-                  <TextField
+                  {/* <TextField
                     className="carRegField"
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
+                    // value={phoneNumber}
+                    // onChange={handlePhoneNumberChange}
+                    {...register("customer_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
                     placeholder="Enter phone number"
+                  /> */}
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer Contact No (N)"
+                    {...register("customer_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
+                    value={showCustomerData?.customer_contact}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        // Check if length is less than or equal to 10
+                        setCustomerConError("");
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          customer_contact: inputValue,
+                        });
+                      } else {
+                        setCustomerConError("Maximum 11 digits allowed.");
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!showCustomerData.customer_contact,
+                    }}
+                    error={!!errors.customer_contact || !!customerConError}
+                    // helperText={
+                    //   errors.customer_contact
+                    //     ? errors.customer_contact.message
+                    //     : customerConError  
+                    // }
                   />
                 </div>
               </div>
@@ -960,40 +967,10 @@ const AddJobCard = () => {
             )} */}
               </div>
               <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Driver Contact No (N)"
-                  {...register("driver_contact", {
-                    pattern: {
-                      value: /^\d{11}$/,
-                      message: "Please enter a valid 11-digit number.",
-                    },
-                  })}
-                  value={showCustomerData?.driver_contact}
-                  onChange={(e) => {
-                    if (e.target.value.length === 11) {
-                      setDriverConError("");
-                    } else if (e.target.value > 11) {
-                      setDriverConError(
-                        "Please enter a valid 11-digit number."
-                      );
-                    }
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      driver_contact: e.target.value,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.driver_contact,
-                  }}
-                  error={!!errors.driver_contact | !!driverConError}
-                  helperText={
-                    errors.driver_contact ? errors.driver_contact.message : ""
-                  }
-                /> */}
-                 <div className="flex items-center">
+                 
+                <div className="flex items-center">
                   <Autocomplete
-                  sx={{marginRight:'2px'}}
+                    sx={{ marginRight: "2px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -1011,7 +988,7 @@ const AddJobCard = () => {
                       />
                     )}
                   />
-                  <TextField
+                  {/* <TextField
                     className="carRegField"
                     label="Driver Contact No (N)"
                     variant="outlined"
@@ -1020,6 +997,38 @@ const AddJobCard = () => {
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
+                  /> */}
+                  <TextField
+                    className="addJobInputField"
+                    label="Driver Contact No (N)"
+                    {...register("driver_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
+                    value={showCustomerData?.driver_contact}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        setDriverConError("");
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          driver_contact: inputValue,
+                        });
+                      } else {
+                        setDriverConError("Maximum 11 digits allowed.");
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!showCustomerData.driver_contact,
+                    }}
+                    error={!!errors.driver_contact || !!driverConError}
+                    // helperText={
+                    //   errors.driver_contact
+                    //     ? errors.driver_contact.message
+                    //     : driverConError  
+                    // }
                   />
                 </div>
               </div>

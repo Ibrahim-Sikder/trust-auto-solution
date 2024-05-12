@@ -64,7 +64,7 @@ const UpdateCustomer = () => {
 
   const [loading, setLoading] = useState(false);
   const [singleCard, setSingleCard] = useState({});
-  console.log(singleCard);
+  
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -83,11 +83,18 @@ const UpdateCustomer = () => {
   // country code set 
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 10 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
       setPhoneNumber(newPhoneNumber);
+    }
+  };
+  const handleDriverPhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 10 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+      setDriverPhoneNumber(newPhoneNumber);
     }
   };
 
@@ -287,14 +294,19 @@ const UpdateCustomer = () => {
                     )}
                   />
                   <TextField
+                   {...register("customer_contact")}
                     className="productField2"
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
+                    value={phoneNumber ? phoneNumber : singleCard.customer_contact}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
+                    focused ={singleCard.customer_contact}
+                    InputLabelProps={{
+                      shrink: !!singleCard.customer_contact,
+                    }}
                   />
                 </div>
                 <div>
@@ -392,14 +404,19 @@ const UpdateCustomer = () => {
                     )}
                   />
                   <TextField
+                   {...register("driver_contact")}
                     className="productField2"
                     label="Driver Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
+                    value={driverPhoneNumber ? driverPhoneNumber : singleCard.driver_contact}
+                    onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
+                    focused ={singleCard.driver_contact}
+                    InputLabelProps={{
+                      shrink: !!singleCard.driver_contact,
+                    }}
                   />
                 </div>
                 <div>

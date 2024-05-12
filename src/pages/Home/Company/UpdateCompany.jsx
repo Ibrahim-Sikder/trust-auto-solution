@@ -61,17 +61,31 @@ const UpdateCompany = () => {
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
     if (
       /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
+      newPhoneNumber.length <= 10 &&
       (newPhoneNumber === "" ||
         !newPhoneNumber.startsWith("0") ||
         newPhoneNumber.length > 1)
     ) {
       setPhoneNumber(newPhoneNumber);
+    }
+  };
+
+  const handleDriverPhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 10 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setDriverPhoneNumber(newPhoneNumber);
     }
   };
 
@@ -107,8 +121,8 @@ const UpdateCompany = () => {
       username: data.username || singleCard.username,
       company_address: data.company_address || singleCard.company_address,
 
-      company_contact: data.customer_contact || singleCard.customer_contact,
-      company_email: data.customer_email || singleCard.customer_email,
+      company_contact: data.company_contact || singleCard.company_contact,
+      company_email: data.company_email || singleCard.company_email,
 
       driver_name: data.driver_name || singleCard.driver_name,
       driver_contact: data.driver_contact || singleCard.driver_contact,
@@ -261,7 +275,7 @@ const UpdateCompany = () => {
                 </div> */}
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -280,14 +294,21 @@ const UpdateCompany = () => {
                     )}
                   />
                   <TextField
+                    {...register("company_contact")}
                     className="productField2"
                     label="Company Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
+                    value={
+                      phoneNumber ? phoneNumber : singleCard.company_contact
+                    }
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
+                    focused={singleCard.company_contact || phoneNumber}
+                    InputLabelProps={{
+                      shrink: !!singleCard.company_contact,
+                    }}
                   />
                 </div>
                 <div>
@@ -354,7 +375,7 @@ const UpdateCompany = () => {
                 </div> */}
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -373,14 +394,23 @@ const UpdateCompany = () => {
                     )}
                   />
                   <TextField
+                    {...register("driver_contact")}
                     className="productField2"
                     label="Driver Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
+                    value={
+                      driverPhoneNumber
+                        ? driverPhoneNumber
+                        : singleCard.driver_contact
+                    }
+                    onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
+                    focused={singleCard.driver_contact}
+                    InputLabelProps={{
+                      shrink: !!singleCard.driver_contact,
+                    }}
                   />
                 </div>
                 <div>

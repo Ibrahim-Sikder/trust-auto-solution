@@ -26,7 +26,9 @@ const CustomerProfile = () => {
 
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
 
-  console.log(moneyReceiptData);
+  console.log(jobCardData);
+
+
   const [error, setError] = useState("");
 
   const location = useLocation();
@@ -50,6 +52,7 @@ const CustomerProfile = () => {
       })
         .then((res) => res.json())
         .then((data) => {
+         
           if (data.message === "success") {
             setJobCardData(data.jobCard);
           }

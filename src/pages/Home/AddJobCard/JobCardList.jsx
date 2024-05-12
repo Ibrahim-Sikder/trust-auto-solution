@@ -302,12 +302,12 @@ const JobCardList = () => {
         <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
           <h3 className="mb-3 text-3xl font-bold">All Job Card List:</h3>
           <div className="flex items-center searcList">
-            {/* <div
+            <div
               onClick={handleAllAddToJobCard}
               className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
             >
               All
-            </div> */}
+            </div>
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}
