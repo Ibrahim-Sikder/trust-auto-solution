@@ -255,7 +255,7 @@ const MoneyReceiptView = () => {
   return (
     <>
       <div className="moneyReceptWrap ">
-        <div className="moneyRecieved ">
+        <div className="flex items-center justify-between flex-col lg:flex-row gap-3  ">
           <div className="logoWrap ">
             <img className="" src={logo} alt="logo" />
           </div>
@@ -320,7 +320,7 @@ const MoneyReceiptView = () => {
               )}
             </div>
           </div>
-          <div className="mt-5 xl:block sm:flex flex-col gap-4 payAdvance">
+          <div className="mt-5 lg:flex-row  flex flex-col gap-4 payAdvance">
             <div className="flex f receivedField">
               <label className="advanceText">
                 <input
@@ -369,7 +369,7 @@ const MoneyReceiptView = () => {
               </div>
             </div>
           </div>
-          <div className="mt-5 payAdvance xl:block sm:flex flex-col gap-4">
+          <div className="mt-5 payAdvance lg:flex-row flex flex-col gap-4">
             <div className="flex lg:flex-row flex-col ">
               <div className="checqueText">
                 {" "}
@@ -417,7 +417,7 @@ const MoneyReceiptView = () => {
               </div>
             </div>
           </div>
-          <div className="mt-5 payAdvance xl:block sm:flex flex-col gap-4">
+          <div className="mt-5 payAdvance lg:flex-row sm:flex flex-col gap-4">
             <div className="flex receivedField">
               <label className="backText">Bank: </label>
               <div>
@@ -451,7 +451,7 @@ const MoneyReceiptView = () => {
               </div>
             </div>
           </div>
-          <div className="mt-5 amount2 xl:block sm:flex flex-col gap-4">
+          <div className="mt-5 amount2 lg:flex-row sm:flex flex-col gap-4">
             <div className="flex lg:flex-row  flex-col">
               <label className="totalAmountText2">Total Amount Tk:</label>
               <div>

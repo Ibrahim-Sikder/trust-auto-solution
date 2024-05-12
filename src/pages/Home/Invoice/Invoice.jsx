@@ -545,7 +545,7 @@ const Invoice = () => {
       </div>
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="hidden"></div>
             <div className="vehicleCard">Create Invoice </div>
 
@@ -635,7 +635,7 @@ const Invoice = () => {
                   }}
                 />
               </div> */}
-              <div className="flex items-center mt-3 ">
+              <div className="flex sm:flex-row flex-col gap-2 items-center mt-3 ">
                   <Autocomplete
                   sx={{marginRight:'2px'}}
                     className="jobCardSelect2"

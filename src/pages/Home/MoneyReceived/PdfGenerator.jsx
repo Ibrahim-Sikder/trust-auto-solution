@@ -71,7 +71,7 @@ const PdfGenerator = () => {
       <div className="moneyWraps">
         <div id="content-id" ref={targetRef}>
           <div ref={componentRef} className="moneyFormWrap">
-            <div className="moneyRecieved">
+            <div className="flex items-center justify-between flex-col lg:flex-row gap-3">
               <div className="logoWrap logoWrap2">
                 <img className="" src={logo} alt="logo" />
               </div>

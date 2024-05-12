@@ -313,8 +313,8 @@ const UpdateInvoice = () => {
   };
   return (
     <div className="px-5 py-10">
-      <div className="flex items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
-        <img src={logo} alt="logo" className="w-[70px] md:w-[210px]" />
+      <div className="flex md:flex-row flex-col items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
+        <img src={logo} alt="logo" className="md:block hidden w-[70px] md:w-[210px]" />
         <div>
           <h2 className=" trustAutoTitle trustAutoTitleQutation">
             Trust Auto Solution{" "}

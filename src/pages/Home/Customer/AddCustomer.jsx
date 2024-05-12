@@ -463,7 +463,7 @@ const AddCustomer = () => {
                     </span>
                   )}
                 </div> */}
-                <div className="flex items-center my-1">
+                <div className="flex xl:flex-row flex-col gap-2 items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: '5px' }}
                     className="jobCardSelect2"
@@ -484,7 +484,7 @@ const AddCustomer = () => {
                     )}
                   />
                   <TextField
-                    className="productField2"
+                    className=""
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
@@ -534,7 +534,7 @@ const AddCustomer = () => {
                     </span>
                   )}
                 </div> */}
-                <div className="flex items-center my-1">
+                <div className="flex xl:flex-row flex-col gap-2 items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: '5px' }}
                     className="jobCardSelect2"

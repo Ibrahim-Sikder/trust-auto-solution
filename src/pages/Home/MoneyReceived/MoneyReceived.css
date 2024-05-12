@@ -39,11 +39,7 @@
   width: 100%;
   object-fit: cover;
 }
-.moneyRecieved {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+
 .moneyHead {
   width: 570px;
   text-align: center;
@@ -261,9 +257,9 @@
 }
 
 
-  .totalAmountInput {
-    width: 306px !important;
-  }
+.totalAmountInput {
+  width: 295px !important;
+}
   .totalAmountInput, .receiptInput, .advanceInput, .cashInput, .bankInput{
     display: block;
   }
@@ -272,21 +268,21 @@
     display: block;
 
   }
-  .advanceInput{
-    width: 392px;
-  }
+  .advanceInput {
+    width: 382px;
+}
   .advanceText{
     width: 362px;
   
   }
-  .cashInput{
-    width: 513px;
-  }
-  .checqueText {
-    width: 175px;
+  .cashInput {
+    width: 502px;
 }
-.bankInput{
-  width: 571px;
+.checqueText {
+  width: 187px;
+}
+.bankInput {
+  width: 560px;
 }
 .vehicleText {
   width: 92px;
@@ -359,9 +355,7 @@
   .moneyFormWrap {
     margin-left: 23px;
   }
-  .moneyRecieved {
-    flex-wrap: wrap;
-  }
+
   .logoWrap {
     width: 149px;
   }
@@ -384,5 +378,8 @@
   .receivedTitle {
     font-size: 25px;
   }
+  .moneyHead {
+    width: 100%;
+}
 
 }

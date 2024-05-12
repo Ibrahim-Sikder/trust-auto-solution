@@ -239,7 +239,7 @@ const UpdateMoneyReceipt = () => {
 
   return (
     <div className="moneyReceptWrap ">
-      <div className="moneyRecieved ">
+      <div className="flex items-center justify-between flex-col lg:flex-row gap-3 ">
         <div className="logoWrap ">
           <img className="" src={logo} alt="logo" />
         </div>
@@ -275,10 +275,9 @@ const UpdateMoneyReceipt = () => {
       <div className="receivedBtn">
         <button>Receipt</button>
       </div>
-      <div className="flex justify-between ">
+      <div className="flex justify-between mt-5 md:mt-0">
         <b>Job No: {specificMoneyReceipt.against_bill_no}</b>
         <b className="flex gap-x-2">
-          Date:{" "}
           <TADatePickers
             date={specificMoneyReceipt?.default_date}
             handleDateChange={handleDateChange}
@@ -299,49 +298,34 @@ const UpdateMoneyReceipt = () => {
             {...register("thanks_from")}
           />
         </div>
-        <div className="mt-5 payAdvance">
-          {/* <div className="flex receivedField">
-            <label className="advance">
-              Advance/Final Payment against bill no:{" "}
+        <div className="mt-5 flex md:flex-row flex-col payAdvance">
+          
+          <div className="flex  receivedField">
+            <label className="advanceText">
+              <input
+                type="checkbox"
+                onClick={handleAdvanceSelect}
+                checked={advanceSelect}
+              />{" "}
+              Advance{" "}
+              <input
+                type="checkbox"
+                onClick={handleFinalPayment}
+                checked={finalPayment}
+              />{" "}
+              Final Payment / against bill no
             </label>
-            <input
-              defaultValue={specificMoneyReceipt.against_bill_no}
-              className=" moneyViewInputField"
-              type="text"
-              autoComplete="off"
-              {...register("against_bill_no")}
-              readOnly
-            />
-          </div> */}
-          <div className="flex receivedField">
-              <label className="advanceText">
-                <input
-                  type="checkbox"
-                  onClick={handleAdvanceSelect}
-                  checked={advanceSelect}
-                />{" "}
-                Advance{" "}
-                <input
-               
-                  type="checkbox"
-                  onClick={handleFinalPayment}
-                  checked={finalPayment}
-                />{" "}
-                Final Payment / against bill no
-              </label>
-              <div>
-              
-                <input
-                 defaultValue={specificMoneyReceipt.against_bill_no}
-                  {...register("against_bill_no", )}
-                  className=" moneyViewInputField advanceInput "
-                  type="number"
-                  onChange={(e) => setJob_no(e.target.value)}
-                  autoComplete="off"
-                />
-                
-              </div>
+            <div>
+              <input
+                defaultValue={specificMoneyReceipt.against_bill_no}
+                {...register("against_bill_no")}
+                className=" moneyViewInputField advanceInput "
+                type="number"
+                onChange={(e) => setJob_no(e.target.value)}
+                autoComplete="off"
+              />
             </div>
+          </div>
           <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
             <label className="vehicleText2">Vehicle No: </label>
             <input
@@ -353,38 +337,26 @@ const UpdateMoneyReceipt = () => {
             />
           </div>
         </div>
-        <div className="mt-5 payAdvance">
-
-        <div className="flex receivedField">
-              <div className="checqueText">
-                {" "}
-                <input
-                  type="checkbox"
-                  checked={cash}
-                  onClick={handleCash}
-                />{" "}
-                <span className=" font-semibold">Cash </span>
-                <input
-                
-                  type="checkbox"
-                  checked={cheque}
-                  onClick={handleCheque}
-                />
-                <span className=" font-semibold">Cheque No:</span>{" "}
-              </div>
-              <div>
-                <input
-                 defaultValue={specificMoneyReceipt.cheque_no}
-                  {...register("cheque_no", )}
-                  className="cashInput moneyViewInputField"
-                  type="text"
-                  autoComplete="off"
-                />
-                
-              </div>
+        <div className="mt-5 payAdvance flex flex-col lg:flex-row">
+          <div className="flex flex-col md:flex-row ">
+            <div className="checqueText space-x-1">
+              {" "}
+              <input type="checkbox" checked={cash} onClick={handleCash} />{" "}
+              <span className=" font-semibold">Cash </span>
+              <input type="checkbox" checked={cheque} onClick={handleCheque} />
+              <span className=" font-semibold">Cheque No:</span>{" "}
             </div>
+            <div>
+              <input
+                defaultValue={specificMoneyReceipt.cheque_no}
+                {...register("cheque_no")}
+                className="cashInput moneyViewInputField"
+                type="text"
+                autoComplete="off"
+              />
+            </div>
+          </div>
 
-         
           <div className="flex mt-6 receivedField md:mt-0">
             <b className="date">Date: </b>
             <input
@@ -396,7 +368,7 @@ const UpdateMoneyReceipt = () => {
             />
           </div>
         </div>
-        <div className="mt-5 payAdvance">
+        <div className="mt-5 flex flex-col lg:flex-row payAdvance">
           <div className="flex receivedField">
             <label className="backText">Bank : </label>
             <input
@@ -418,8 +390,8 @@ const UpdateMoneyReceipt = () => {
             />
           </div>
         </div>
-        <div className="mt-5 amount2">
-          <div className="flex ">
+        <div className="mt-5 amount2 flex flex-col lg:flex-row gap-2">
+          <div className="flex flex-col md:flex-row">
             <label className="totalAmountText2">Total Amount Tk:</label>
             <input
               defaultValue={specificMoneyReceipt?.total_amount}
@@ -429,7 +401,7 @@ const UpdateMoneyReceipt = () => {
               onChange={(e) => setTotalAmount(e.target.value)}
             />
           </div>
-          <div className="flex ">
+          <div className="flex flex-col md:flex-row ">
             <label>Advance:</label>
             <input
               defaultValue={specificMoneyReceipt.advance}
@@ -439,7 +411,7 @@ const UpdateMoneyReceipt = () => {
               onChange={(e) => setAdvance(e.target.value)}
             />
           </div>
-          <div className="flex ">
+          <div className="flex flex-col md:flex-row ">
             <label>Remaining:</label>
             <input
               value={

@@ -626,7 +626,7 @@ const AddJobCard = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div>
-          <div className=" flex md:flex-row flex-col items-center justify-between my-5 ">
+          <div className=" flex lg:flex-row flex-col items-center justify-between my-5 ">
             <div>
               <div>
                 <b>
@@ -857,7 +857,7 @@ const AddJobCard = () => {
                   }
                 /> */}
 
-                <div className="flex items-center">
+                <div className="flex md:flex-row gap-2 flex-col items-center">
                   <Autocomplete
                   sx={{marginRight:'2px'}}
                     className="jobCardSelect2"
@@ -885,7 +885,7 @@ const AddJobCard = () => {
                     type="tel"
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
+                    
                   />
                 </div>
               </div>
@@ -991,7 +991,7 @@ const AddJobCard = () => {
                     errors.driver_contact ? errors.driver_contact.message : ""
                   }
                 /> */}
-                 <div className="flex items-center">
+                 <div className="flex md:flex-row gap-2 flex-col items-center">
                   <Autocomplete
                   sx={{marginRight:'2px'}}
                     className="jobCardSelect2"
@@ -1050,10 +1050,10 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
-              <div className="flex  md:gap-0 gap-4 items-center">
+              <div className="flex flex-col gap-2 md:flex-row   items-center ">
                 <Autocomplete
                   freeSolo
-                  className="jobCardSelect2"
+                  sx={{width:'300px'}}
                   id="free-solo-demo"
                   inputValue={inputValue}
                   onInputChange={(event, newValue) => setInputValue(newValue)}
@@ -1070,7 +1070,7 @@ const AddJobCard = () => {
                 />
 
                 <TextField
-                  className="carRegField"
+                  className="vehicleInputs"
                   label="Car R (N)"
                   {...register("car_registration_no", {
                     pattern: {

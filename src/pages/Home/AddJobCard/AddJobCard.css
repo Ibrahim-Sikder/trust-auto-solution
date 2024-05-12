@@ -273,6 +273,19 @@
   transform: scaleY(1);
 }
 
+
+@media only screen and (min-width: 1441px) {
+  .vehicleInputs{
+    width:638px !important;
+  }	
+ 
+}
+@media only screen and (max-width: 1440px) {
+  .vehicleInputs{
+    width:310px !important;
+  }	
+ 
+}
 @media only screen and (min-width: 1024px) {
 	.addJobInputField{
 		width: 98% !important;
@@ -284,16 +297,8 @@
 
 @media only screen and (max-width: 1024px) {
 
-  .carRegField, .jobCardSelect2{
-    width:100% !important;
-    
-  }
-  .jobCardSelect2{
-    width:400px !important;
-  }
-  .carRegField{
-    margin-top:10px !important;
-  }
+ 
+ 
 
 
   .jobCardSingleForm label {
@@ -314,7 +319,15 @@
     font-size: 52px;
   }
 .jobCardSelect2{
-	width:260px !important;
+	width:200px !important;
+}
+.imgWrap {
+    height: 617px;
+    margin-top: 36px;
+}
+
+.vehicleReportRightSide textarea {
+  height: 119px;
 }
 
 
@@ -420,6 +433,12 @@
   .searchGroup input, .addJobBtn {
     width: 100%;
 }
+.carRegField{
+  width:100% !important;
+  
+}
+
+
 }
 
 @media only screen and (max-width: 375px) {

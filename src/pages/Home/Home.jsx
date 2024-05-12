@@ -104,8 +104,8 @@ const Home = () => {
 
   return (
     <div className="mt-10 ">
-      <h3 className="text-3xl font-bold">Welcome Admin !</h3>
-      <span>Home / Dashboard</span>
+      <h3 className="md:text-3xl font-bold">Welcome Admin !</h3>
+      <span className="text-sm">Home / Dashboard</span>
 
       <div className="dashBoardRight mt-5 lg:mt-0 ">
         <div className="md:flex items-center justify-between md:p-[0px] lg:p-[18px]"></div>

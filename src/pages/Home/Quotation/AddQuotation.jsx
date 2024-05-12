@@ -521,7 +521,7 @@ const AddQuotation = () => {
       </div>
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex justify-between items-center">
+          <div className="flex md:flex-row flex-col justify-between items-center">
             <div className="hidden"></div>
             <div className="vehicleCard">Create Quotation </div>
 
@@ -610,7 +610,7 @@ const AddQuotation = () => {
                   }}
                 />
 
-                <div className="flex items-center mt-3">
+                <div className="flex md:flex-row flex-col gap-2 items-center mt-3">
                   <Autocomplete
                     sx={{ marginRight: "2px" }}
                     className="jobCardSelect2"
@@ -631,7 +631,7 @@ const AddQuotation = () => {
                     )}
                   />
                   <TextField
-                    className="carRegField"
+                    className="carRegField quotationPhone"
                     label="Mobile Number "
                     variant="outlined"
                     fullWidth

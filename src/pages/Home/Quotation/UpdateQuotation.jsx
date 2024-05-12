@@ -314,7 +314,7 @@ const UpdateQuotation = () => {
 
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex justify-between items-center">
+          <div className="flex md:flex-row flex-col justify-between items-center">
             <div className="hidden"></div>
             <div className="vehicleCard">Update Quotation </div>
 
@@ -413,7 +413,7 @@ const UpdateQuotation = () => {
                     shrink: !!specificInvoice.customer_contact,
                   }}
                 /> */}
-                <div className="flex items-center">
+                <div className="flex sm:flex-row flex-col gap-2 items-center">
                   <Autocomplete
                     sx={{ marginRight: "2px" }}
                     className="jobCardSelect2"
