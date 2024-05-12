@@ -11,13 +11,14 @@ import {
   FaCloudUploadAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { FormControl, InputLabel, Select } from "@mui/material";
+import { Autocomplete, FormControl, InputLabel, Select } from "@mui/material";
 import { HiOutlineSearch } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
+import { countries } from "../../../constant";
 const AddSuppliers = () => {
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
@@ -48,17 +49,19 @@ const AddSuppliers = () => {
       });
   }, [reload]);
 
-
   const handleImageUpload = async (e) => {
     try {
       const file = e.target.files[0]; // Get the selected file
       const formData = new FormData();
       formData.append("image", file); // Use "image" as the key for single image upload
       setImageLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (data.message === "Image uploaded successful") {
@@ -94,7 +97,7 @@ const AddSuppliers = () => {
       if (response.data.message === "Successfully supplier post") {
         toast.success("Successfully supplier added.");
         setLoading(false);
-        setReload(!reload)
+        setReload(!reload);
         reset();
         setError("");
       }
@@ -106,6 +109,22 @@ const AddSuppliers = () => {
     }
   };
 
+  // country code set
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
   // pagination
 
   const [limit, setLimit] = useState(10);
@@ -148,7 +167,6 @@ const AddSuppliers = () => {
   useEffect(() => {
     sessionStorage.setItem("supplier", currentPage.toString());
   }, [currentPage]);
- 
 
   useEffect(() => {
     const storedPage = Number(sessionStorage.getItem("supplier")) || 1;
@@ -301,7 +319,7 @@ const AddSuppliers = () => {
         `${import.meta.env.VITE_API_URL}/api/v1/supplier/all`,
         data
       );
-       
+
       if (response.data.message === "Filter successful") {
         setGetAllSuppliers(response.data.result);
         setNoMatching(null);
@@ -371,13 +389,46 @@ const AddSuppliers = () => {
                   id="Full Name "
                   {...register("full_name")}
                 />
-                <TextField
+                {/* <TextField
                   className="productField"
                   fullWidth
                   label="Phone Number "
                   id="Phone Number "
                   {...register("phone_number")}
-                />
+                /> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Phone No"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                   
+                  />
+                </div>
+
+
                 <TextField
                   className="productField"
                   fullWidth
@@ -475,9 +526,10 @@ const AddSuppliers = () => {
       </div>
       <div className="mt-20 overflow-x-auto">
         <div className="md:flex items-center justify-between mb-5">
-          <h3 className="mb-3 text-xl md:text-3xl font-bold">Suppliers List:</h3>
+          <h3 className="mb-3 text-xl md:text-3xl font-bold">
+            Suppliers List:
+          </h3>
           <div className="flex items-center searcList">
-           
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}

@@ -11,12 +11,13 @@ import {
   FaCloudUploadAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Autocomplete, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
+import { countries } from "../../../constant";
 
 const AddEmployee = () => {
   const [active, setActive] = useState("");
@@ -29,6 +30,17 @@ const AddEmployee = () => {
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
 
+
+  // set country code 
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
   const {
     register,
     handleSubmit,
@@ -399,12 +411,42 @@ const AddEmployee = () => {
                   label="Blood Group "
                   {...register("blood_group")}
                 />
-                <TextField
+                {/* <TextField
                   className="productField"
                   label="Phone Number "
                   id="Phone Number "
                   {...register("phone_number")}
-                />
+                /> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Phone No"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                  />
+                </div>
                 <TextField
                   className="productField"
                   label="Email Address "

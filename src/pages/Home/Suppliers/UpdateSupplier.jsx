@@ -5,25 +5,41 @@
 import TextField from "@mui/material/TextField";
 import { FaUsers, FaCloudUploadAlt } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FormControl, InputLabel, Select } from "@mui/material";
+import { Autocomplete, FormControl, InputLabel, Select } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { countries } from "../../../constant";
 const UpdateSupplier = () => {
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getSingleSuppliers, setGetSingleSuppliers] = useState({});
- 
+
   const [reload, setReload] = useState(false);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   const navigate = useNavigate();
 
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
   const {
     register,
     handleSubmit,
@@ -48,10 +64,13 @@ const UpdateSupplier = () => {
       const formData = new FormData();
       formData.append("image", file); // Use "image" as the key for single image upload
       setImageLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (data.message === "Image uploaded successfully") {
@@ -152,7 +171,7 @@ const UpdateSupplier = () => {
                     shrink: !!getSingleSuppliers.full_name,
                   }}
                 />
-                <TextField
+                {/* <TextField
                   className="productField"
                   fullWidth
                   label="Phone Number "
@@ -168,7 +187,38 @@ const UpdateSupplier = () => {
                   InputLabelProps={{
                     shrink: !!getSingleSuppliers.phone_number,
                   }}
-                />
+                /> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Phone No"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                  />
+                </div>
+
                 <TextField
                   className="productField"
                   fullWidth
@@ -280,48 +330,53 @@ const UpdateSupplier = () => {
                   }}
                 />
                 <div className="productField">
-                <input
-                  onChange={handleImageUpload}
-                  type="file"
-                  id="files"
-                  className="hidden"
-                />
-                <label
-                  htmlFor="files"
-                  className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                >
-                  <span>
-                    <FaCloudUploadAlt size={30} className="mr-2" />
-                  </span>
-                  {imageLoading ? (
-                    <span>Uploading...</span>
-                  ) : (
-                    <>
-                      {url || getSingleSuppliers.image ? (
-                        <div>
-                          {/* Check if url exists, if yes, render it */}
-                          {url && (
-                            <span className="overflow-hidden">
-                              {url.slice(0, 4)}{/* Display only the first 4 characters */}
-                              {url.slice(url.lastIndexOf('.'))} {/* Display file extension */}
-                            </span>
-                          )}
-                          {/* Check if getSingleSuppliers.image exists, if yes, render it */}
-                          {getSingleSuppliers.image && (
-                            <span className="overflow-hidden">
-                              {getSingleSuppliers.image.slice(0, 4)}{/* Display only the first 4 characters */}
-                              {getSingleSuppliers.image.slice(getSingleSuppliers.image.lastIndexOf('.'))} {/* Display file extension */}
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <span>Upload Image</span>
-                      )}
-                    </>
-                  )}
-                </label>
-              </div>
-              
+                  <input
+                    onChange={handleImageUpload}
+                    type="file"
+                    id="files"
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="files"
+                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                  >
+                    <span>
+                      <FaCloudUploadAlt size={30} className="mr-2" />
+                    </span>
+                    {imageLoading ? (
+                      <span>Uploading...</span>
+                    ) : (
+                      <>
+                        {url || getSingleSuppliers.image ? (
+                          <div>
+                            {/* Check if url exists, if yes, render it */}
+                            {url && (
+                              <span className="overflow-hidden">
+                                {url.slice(0, 4)}
+                                {/* Display only the first 4 characters */}
+                                {url.slice(url.lastIndexOf("."))}{" "}
+                                {/* Display file extension */}
+                              </span>
+                            )}
+                            {/* Check if getSingleSuppliers.image exists, if yes, render it */}
+                            {getSingleSuppliers.image && (
+                              <span className="overflow-hidden">
+                                {getSingleSuppliers.image.slice(0, 4)}
+                                {/* Display only the first 4 characters */}
+                                {getSingleSuppliers.image.slice(
+                                  getSingleSuppliers.image.lastIndexOf(".")
+                                )}{" "}
+                                {/* Display file extension */}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <span>Upload Image</span>
+                        )}
+                      </>
+                    )}
+                  </label>
+                </div>
               </div>
             </div>
             <div className="text-start text-red-400 py-2">{error}</div>

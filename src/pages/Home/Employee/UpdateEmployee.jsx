@@ -2,7 +2,7 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/jsx-no-undef */
 
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Autocomplete, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { FaUsers, FaCloudUploadAlt } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { countries } from "../../../constant";
 
 const UpdateEmployee = () => {
   const [url, setUrl] = useState("");
@@ -17,13 +18,29 @@ const UpdateEmployee = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getSingleEmployee, setGetSingleEmployee] = useState({});
- 
+
   const [reload, setReload] = useState(false);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   const navigate = useNavigate();
 
+  // set country code
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
   const {
     register,
     handleSubmit,
@@ -42,15 +59,13 @@ const UpdateEmployee = () => {
       });
   }, [reload, id]);
 
-
   function isImage(url) {
     return /\.(jpg|jpeg|png)$/i.test(url);
-}
+  }
 
-function getFileName(url) {
-  return url.split('/').pop().split('.')[0]; // Extract only the file name without extension
-}
-
+  function getFileName(url) {
+    return url.split("/").pop().split(".")[0]; // Extract only the file name without extension
+  }
 
   const handleImageUpload = async (e) => {
     try {
@@ -58,10 +73,13 @@ function getFileName(url) {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 
@@ -229,7 +247,7 @@ function getFileName(url) {
                     shrink: !!getSingleEmployee.blood_group,
                   }}
                 />
-                <TextField
+                {/* <TextField
                   className="productField"
                   fullWidth
                   label="Phone Number "
@@ -246,7 +264,38 @@ function getFileName(url) {
                   InputLabelProps={{
                     shrink: !!getSingleEmployee.phone_number,
                   }}
-                />
+                /> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Phone No"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                  />
+                </div>
+
                 <TextField
                   className="productField"
                   fullWidth
@@ -299,7 +348,6 @@ function getFileName(url) {
                   label="Join Date  "
                   id="Join Date  "
                   {...register("join_date")}
-
                   defaultValue={getSingleEmployee.join_date}
                   value={getSingleEmployee.join_date}
                   onChange={(e) =>
@@ -311,7 +359,6 @@ function getFileName(url) {
                   InputLabelProps={{
                     shrink: !!getSingleEmployee.join_date,
                   }}
-
                 />
 
                 <TextField
@@ -320,7 +367,6 @@ function getFileName(url) {
                   label="Designation  "
                   id="Designation  "
                   {...register("designation")}
-
                   defaultValue={getSingleEmployee.designation}
                   value={getSingleEmployee.designation}
                   onChange={(e) =>
@@ -332,7 +378,6 @@ function getFileName(url) {
                   InputLabelProps={{
                     shrink: !!getSingleEmployee.designation,
                   }}
-
                 />
 
                 <FormControl fullWidth>
@@ -345,7 +390,6 @@ function getFileName(url) {
                     id="demo-simple-select"
                     label="Select Status"
                     {...register("status")}
-
                     defaultValue={getSingleEmployee.status}
                     value={getSingleEmployee.status}
                     onChange={(e) =>
@@ -357,8 +401,6 @@ function getFileName(url) {
                     InputLabelProps={{
                       shrink: !!getSingleEmployee.status,
                     }}
-
-                    
                   >
                     <MenuItem>Select</MenuItem>
                     <MenuItem value="Active">Active</MenuItem>
@@ -372,7 +414,6 @@ function getFileName(url) {
                   label="Password"
                   id="Password"
                   {...register("password")}
-
                   defaultValue={getSingleEmployee.password}
                   value={getSingleEmployee.password}
                   onChange={(e) =>
@@ -384,7 +425,6 @@ function getFileName(url) {
                   InputLabelProps={{
                     shrink: !!getSingleEmployee.password,
                   }}
-
                 />
                 <TextField
                   className="productField"
@@ -403,8 +443,6 @@ function getFileName(url) {
                   InputLabelProps={{
                     shrink: !!getSingleEmployee.confirm_password,
                   }}
-
-
                 />
               </div>
 
@@ -415,7 +453,6 @@ function getFileName(url) {
                   fullWidth
                   label="Father Name "
                   {...register("father_name")}
-
                   defaultValue={getSingleEmployee.father_name}
                   value={getSingleEmployee.father_name}
                   onChange={(e) =>
@@ -427,7 +464,6 @@ function getFileName(url) {
                   InputLabelProps={{
                     shrink: !!getSingleEmployee.father_name,
                   }}
-
                 />
                 <TextField
                   className="productField"
@@ -535,36 +571,40 @@ function getFileName(url) {
                 />
                 {!imageLoading && (
                   <div className="productField">
-                      <input
-                          onChange={handleImageUpload}
-                          type="file"
-                          id="files"
-                          className="hidden"
-                      />
-                      <label
-                          htmlFor="files"
-                          className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                      >
-                          <span>
-                              <FaCloudUploadAlt size={30} className="mr-2" />
-                          </span>
-                          {url || getSingleEmployee.image ? (
-                              <div>
-                                  {url && isImage(url) && (
-                                      <span className=" overflow-hidden">{getFileName(url)}</span>
-                                  )}
-              
-                                  {getSingleEmployee.image && isImage(getSingleEmployee.image) && (
-                                      <span className=" overflow-hidden">{getFileName(getSingleEmployee.image)}</span>
-                                  )}
-                              </div>
-                          ) : (
-                              <span>Upload Image</span>
+                    <input
+                      onChange={handleImageUpload}
+                      type="file"
+                      id="files"
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor="files"
+                      className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                    >
+                      <span>
+                        <FaCloudUploadAlt size={30} className="mr-2" />
+                      </span>
+                      {url || getSingleEmployee.image ? (
+                        <div>
+                          {url && isImage(url) && (
+                            <span className=" overflow-hidden">
+                              {getFileName(url)}
+                            </span>
                           )}
-                      </label>
+
+                          {getSingleEmployee.image &&
+                            isImage(getSingleEmployee.image) && (
+                              <span className=" overflow-hidden">
+                                {getFileName(getSingleEmployee.image)}
+                              </span>
+                            )}
+                        </div>
+                      ) : (
+                        <span>Upload Image</span>
+                      )}
+                    </label>
                   </div>
-              )}
-              
+                )}
               </div>
             </div>
             <div className="text-sm text-red-400 py-2">{error}</div>
