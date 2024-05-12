@@ -300,6 +300,12 @@
 }
 
 @media only screen and (max-width: 1024px) {
+  .receiptInput {
+    width: 800px;
+}
+.moneyReceptWrap {
+  width: 100%;
+}
   .moneyHead {
     width: 432px;
   }
@@ -309,6 +315,9 @@
   .moneyReceivedWrap {
     padding: 10px 5px;
   }
+  .payAdvance {
+    align-items: baseline;
+}
 
 
   .amount input {
@@ -323,14 +332,16 @@
     width: 47px;
     margin-left: 15px;
   }
-  .totalAmountText2 {
-    width: 236px;
-  }
+
 }
 @media only screen and (max-width: 768px) {
   .advance {
     width: 351px;
   }
+  .receiptInput {
+    width: 100%;
+}
+
   .amount input {
     width: 100%;
   }
@@ -364,13 +375,14 @@
     flex-wrap: wrap;
     row-gap: 5px;
   }
-  .wordTaka input {
-    width: 100%;
-  }
+  .wordTaka input , .cashInput, .advanceInput , .bankInput , .totalAmountInput {
+    width: 100% !important;
+}
   .logoWrap {
-    width: 80px;
+    display: none;
   }
   .receivedTitle {
     font-size: 25px;
   }
+
 }

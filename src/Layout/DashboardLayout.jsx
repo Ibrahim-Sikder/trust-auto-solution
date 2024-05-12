@@ -169,7 +169,7 @@ const navigate = useNavigate()
                 <FaSearch size={20} className="text-[#fff]" />
               </div>
                <Link to='/dashboard/holiday'>
-               <FaCalendarDays size={20} className="text-[#fff]"/>
+               <FaCalendarDays size={20} className="text-[#fff] lg:block hidden"/>
                </Link>
               <div className="relative lg:block hidden notificationIconsWraps cursor-pointer ">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">

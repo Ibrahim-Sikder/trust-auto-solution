@@ -289,10 +289,10 @@ const MoneyReceiptView = () => {
             </div>
           </div>
         </div>
-        <div className="receivedBtn">
+        <div className="receivedBtn md:mt-0 mt-5">
           <button>Receipt</button>
         </div>
-        <div className="flex justify-between items-center lg:mt-0  mb-5">
+        <div className="flex justify-between mt-5 md:mt-0 items-center lg:mt-0  mb-5">
           <b>Job No: {jobCardData?.job_no ? jobCardData?.job_no : 0}</b>
 
           <TADatePickers
@@ -320,8 +320,8 @@ const MoneyReceiptView = () => {
               )}
             </div>
           </div>
-          <div className="mt-5 payAdvance">
-            <div className="flex receivedField">
+          <div className="mt-5 xl:block sm:flex flex-col gap-4 payAdvance">
+            <div className="flex f receivedField">
               <label className="advanceText">
                 <input
                   type="checkbox"
@@ -369,8 +369,8 @@ const MoneyReceiptView = () => {
               </div>
             </div>
           </div>
-          <div className="mt-5 payAdvance">
-            <div className="flex ">
+          <div className="mt-5 payAdvance xl:block sm:flex flex-col gap-4">
+            <div className="flex lg:flex-row flex-col ">
               <div className="checqueText">
                 {" "}
                 <input
@@ -417,7 +417,7 @@ const MoneyReceiptView = () => {
               </div>
             </div>
           </div>
-          <div className="mt-5 payAdvance">
+          <div className="mt-5 payAdvance xl:block sm:flex flex-col gap-4">
             <div className="flex receivedField">
               <label className="backText">Bank: </label>
               <div>
@@ -451,8 +451,8 @@ const MoneyReceiptView = () => {
               </div>
             </div>
           </div>
-          <div className="mt-5 amount2">
-            <div className="flex ">
+          <div className="mt-5 amount2 xl:block sm:flex flex-col gap-4">
+            <div className="flex lg:flex-row  flex-col">
               <label className="totalAmountText2">Total Amount Tk:</label>
               <div>
                 <input
@@ -468,7 +468,7 @@ const MoneyReceiptView = () => {
                 )}
               </div>
             </div>
-            <div className="flex ">
+            <div className="flex lg:flex-row  flex-col">
               <label>Advance:</label>
               <div>
                 <input
@@ -484,7 +484,7 @@ const MoneyReceiptView = () => {
                 )}
               </div>
             </div>
-            <div className="flex">
+            <div className="flex lg:flex-row  flex-col ">
               <label>Remaining:</label>
               <input
                 {...register("remaining")}
