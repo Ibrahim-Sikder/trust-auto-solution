@@ -4,8 +4,9 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { countries } from "../../../constant";
 const UpdateInvoice = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
 
@@ -21,6 +22,23 @@ const UpdateInvoice = () => {
 
   const [removeButton, setRemoveButton] = useState("");
   const [addButton, setAddButton] = useState(false);
+
+  // country code set
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
 
   const {
     register,
@@ -358,13 +376,44 @@ const UpdateInvoice = () => {
                   {...register("customer_name")}
                 />
               </div>
-              <div className="mt-3">
+              {/* <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Phone"
                   value={specificInvoice?.customer_contact}
                   focused={specificInvoice?.customer_contact}
                   {...register("customer_contact")}
+                />
+              </div> */}
+              <div className="flex items-center mt-3 ">
+                <Autocomplete
+                  sx={{ marginRight: "2px" }}
+                  className="jobCardSelect2"
+                  freeSolo
+                  options={countries}
+                  getOptionLabel={(option) => option.label}
+                  value={countryCode}
+                  onChange={(event, newValue) => {
+                    setCountryCode(newValue);
+                    setPhoneNumber(""); // Reset the phone number when changing country codes
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Select Country Code"
+                      variant="outlined"
+                    />
+                  )}
+                />
+                <TextField
+                  className="carRegField"
+                  label="Customer Contact No (N)"
+                  variant="outlined"
+                  fullWidth
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  placeholder="Enter phone number"
                 />
               </div>
               <div className="mt-3">

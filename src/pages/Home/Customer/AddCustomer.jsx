@@ -8,6 +8,7 @@ import { Autocomplete } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
+  countries,
   fuelType,
   vehicleModels,
   vehicleName,
@@ -33,6 +34,22 @@ const AddCustomer = () => {
   const [searchLoading, setSearchLoading] = useState(false);
 
   const [registrationError, setRegistrationError] = useState("");
+
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
 
   const {
     register,
@@ -429,7 +446,7 @@ const AddCustomer = () => {
                     {...register("customer_name")}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <TextField
                     className="productField"
                     label="Customer Contact No (N)"
@@ -445,6 +462,37 @@ const AddCustomer = () => {
                       {errors.customer_contact.message}
                     </span>
                   )}
+                </div> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Customer Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
+                  />
                 </div>
                 <div>
                   <TextField
@@ -469,7 +517,7 @@ const AddCustomer = () => {
                     {...register("driver_name")}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <TextField
                     className="productField"
                     label="Driver Contact No (N)"
@@ -485,6 +533,37 @@ const AddCustomer = () => {
                       {errors.driver_contact.message}
                     </span>
                   )}
+                </div> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Driver Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
+                  />
                 </div>
                 <div>
                   <TextField
@@ -514,7 +593,7 @@ const AddCustomer = () => {
                       />
                     )}
                   />
-                 <TextField
+                  <TextField
                     className="carRegField"
                     label="Car R (N)"
                     {...register("car_registration_no", {
@@ -533,7 +612,7 @@ const AddCustomer = () => {
                       if (value.length > 2) {
                         value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
                       }
-                      
+
                       setRegistrationError(""); // Clear previous error
                       if (value.length !== 7) {
                         setRegistrationError(

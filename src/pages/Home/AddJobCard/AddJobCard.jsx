@@ -24,6 +24,7 @@ import Loading from "../../../components/Loading/Loading";
 import {
   carBrands,
   cmDmOptions,
+  countries,
   fuelType,
   totalYear,
   vehicleModels,
@@ -47,6 +48,23 @@ const AddJobCard = () => {
   const [showCustomerData, setShowCustomerData] = useState({});
   const inputRef = useRef(null); // Create a ref for the input element
   const [inputValue, setInputValue] = useState(""); // Controlled input value state
+
+  // country code
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
 
   useEffect(() => {
     if (showCustomerData?.carReg_no && inputRef.current) {
@@ -805,7 +823,7 @@ const AddJobCard = () => {
             )} */}
               </div>
               <div className="mt-3">
-                <TextField
+                {/* <TextField
                   className="addJobInputField"
                   label="Customer Contact No (N)"
                   {...register("customer_contact", {
@@ -837,7 +855,39 @@ const AddJobCard = () => {
                       ? errors.customer_contact.message
                       : ""
                   }
-                />
+                /> */}
+
+                <div className="flex items-center">
+                  <Autocomplete
+                  sx={{marginRight:'2px'}}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="carRegField"
+                    label="Customer Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
+                  />
+                </div>
               </div>
               <div className="mt-3">
                 <TextField
@@ -910,7 +960,7 @@ const AddJobCard = () => {
             )} */}
               </div>
               <div className="mt-3">
-                <TextField
+                {/* <TextField
                   className="addJobInputField"
                   label="Driver Contact No (N)"
                   {...register("driver_contact", {
@@ -940,7 +990,38 @@ const AddJobCard = () => {
                   helperText={
                     errors.driver_contact ? errors.driver_contact.message : ""
                   }
-                />
+                /> */}
+                 <div className="flex items-center">
+                  <Autocomplete
+                  sx={{marginRight:'2px'}}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="carRegField"
+                    label="Driver Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
+                  />
+                </div>
               </div>
               <div className="mt-3">
                 <TextField
@@ -1107,29 +1188,29 @@ const AddJobCard = () => {
                 />
               </div>
 
-             <div className="mt-3">
-             <Autocomplete
-                className="addJobInputField"
-                freeSolo
-                Vehicle
-                Name
-                onInputChange={(event, newValue) => {
-                  handleNameChange(newValue); // Assuming you want the new value as input
-                }}
-                options={filteredVehicles.map((option) => option.value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Vehicle Name "
-                    {...register("vehicle_name")}
-                    value={showCustomerData?.vehicle_name}
-                    focused={showCustomerData?.vehicle_name}
-                  />
-                )}
-                getOptionLabel={(option) => option || ""}
-                // disabled={!selectedBrand}
-              />
-             </div>
+              <div className="mt-3">
+                <Autocomplete
+                  className="addJobInputField"
+                  freeSolo
+                  Vehicle
+                  Name
+                  onInputChange={(event, newValue) => {
+                    handleNameChange(newValue); // Assuming you want the new value as input
+                  }}
+                  options={filteredVehicles.map((option) => option.value)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Name "
+                      {...register("vehicle_name")}
+                      value={showCustomerData?.vehicle_name}
+                      focused={showCustomerData?.vehicle_name}
+                    />
+                  )}
+                  getOptionLabel={(option) => option || ""}
+                  // disabled={!selectedBrand}
+                />
+              </div>
 
               <div className="mt-3 relative">
                 {/* <Autocomplete

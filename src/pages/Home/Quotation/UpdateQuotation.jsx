@@ -4,9 +4,10 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
+import { countries } from "../../../constant";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
 
@@ -27,6 +28,23 @@ const UpdateQuotation = () => {
   // const [inputList, setinputList] = useState([
   //   { flyingFrom: "", flyingTo: "", date: "" },
   // ]);
+
+  // country code set
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
@@ -296,20 +314,15 @@ const UpdateQuotation = () => {
 
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center">
             <div className="hidden"></div>
             <div className="vehicleCard">Update Quotation </div>
 
             <div>
-              
-
-              <TADatePickers
-               
-              />
+              <TADatePickers />
             </div>
           </div>
           <div className="mb-10 jobCardFieldWraps">
-          
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
@@ -385,7 +398,7 @@ const UpdateQuotation = () => {
                 />
               </div>
               <div className="mt-3">
-                <TextField
+                {/* <TextField
                   className="addJobInputField"
                   label="Phone"
                   value={specificInvoice?.customer_contact}
@@ -399,7 +412,38 @@ const UpdateQuotation = () => {
                   InputLabelProps={{
                     shrink: !!specificInvoice.customer_contact,
                   }}
-                />
+                /> */}
+                <div className="flex items-center">
+                  <Autocomplete
+                    sx={{ marginRight: "2px" }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="carRegField"
+                    label="Customer Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
+                  />
+                </div>
               </div>
               <div className="mt-3">
                 <TextField

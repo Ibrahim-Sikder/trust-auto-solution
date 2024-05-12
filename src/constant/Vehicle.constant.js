@@ -1194,3 +1194,32 @@ export const months = [
   { value: "November", label: "November" },
   { value: "December", label: "December" },
 ];
+
+
+export const countries = [
+  { code: "+880", label: "BD (+880)" },
+  { code: "+1", label: "USA (+1)" },
+  { code: "+91", label: "IND (+91)" },
+  { code: "+92", label: "PAK (+92)" },
+  { code: "+93", label: "AFG (+93)" },
+  { code: "+94", label: "LKA (+94)" },
+  { code: "+95", label: "MMR (+95)" },
+  { code: "+86", label: "CHN (+86)" },
+  { code: "+81", label: "JPN (+81)" },
+  { code: "+82", label: "KOR (+82)" },
+  { code: "+66", label: "THA (+66)" },
+  { code: "+60", label: "MYS (+60)" },
+  { code: "+65", label: "SGP (+65)" },
+  { code: "+63", label: "PHL (+63)" },
+  { code: "+62", label: "IDN (+62)" },
+  { code: "+976", label: "MNG (+976)" },
+  { code: "+977", label: "NPL (+977)" },
+  { code: "+855", label: "KHM (+855)" },
+  { code: "+856", label: "LAO (+856)" },
+  { code: "+998", label: "UZB (+998)" },
+  { code: "+992", label: "TJK (+992)" },
+  { code: "+994", label: "AZE (+994)" },
+  { code: "+995", label: "GEO (+995)" },
+  { code: "+7", label: "RUS/KAZ (+7)" }
+];
+

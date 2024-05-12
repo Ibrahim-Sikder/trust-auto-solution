@@ -13,11 +13,12 @@ import axios from "axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading/Loading";
-import { TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
+import { countries } from "../../../constant";
 
 const AddQuotation = () => {
   const [select, setSelect] = useState(null);
@@ -32,7 +33,6 @@ const AddQuotation = () => {
   const [postError, setPostError] = useState("");
   const [registrationError, setRegistrationError] = useState("");
 
-
   const [getAllQuotation, setGetAllQuotation] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
@@ -43,14 +43,12 @@ const AddQuotation = () => {
   const [customerId, setCustomerId] = useState(null);
 
   const [preview, setPreview] = useState("");
- 
 
   const [selectedDate, setSelectedDate] = useState("");
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
   ]);
-
 
   // for customer id edit
   const handleInputChange = (e) => {
@@ -101,7 +99,6 @@ const AddQuotation = () => {
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
 
-
   useEffect(() => {
     const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
 
@@ -124,7 +121,7 @@ const AddQuotation = () => {
     const roundedValue = Math.round(value);
 
     newItems[index].quantity = roundedValue;
-    newItems[index].total = (roundedValue * newItems[index].rate);
+    newItems[index].total = roundedValue * newItems[index].rate;
     newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
 
     setItems(newItems);
@@ -144,7 +141,6 @@ const AddQuotation = () => {
 
     setItems(newItems);
   };
-
 
   const handleDiscountChange = (value) => {
     const parsedValue = value === "" ? 0 : parseFloat(value);
@@ -211,7 +207,7 @@ const AddQuotation = () => {
       if (response.data.message === "Successfully quotation post") {
         setPostError("");
         setError("");
-       
+
         if (preview === "") {
           toast.success("Quotation added successful.");
           navigate("/dashboard/quotaiton-list");
@@ -259,6 +255,23 @@ const AddQuotation = () => {
   const [pageNumberLimit, setPageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
+
+  // country code set
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -480,9 +493,6 @@ const AddQuotation = () => {
       });
   };
 
- 
-  
-
   return (
     <div className="px-5 py-10">
       <div className=" mb-5 pb-5 mx-auto text-center border-b-2 border-[#42A1DA]">
@@ -516,8 +526,6 @@ const AddQuotation = () => {
             <div className="vehicleCard">Create Quotation </div>
 
             <div>
-              
-
               <TADatePickers
                 date={jobCardData?.date}
                 handleDateChange={handleDateChange}
@@ -601,6 +609,38 @@ const AddQuotation = () => {
                     shrink: !!jobCardData?.customer_contact,
                   }}
                 />
+
+                <div className="flex items-center mt-3">
+                  <Autocomplete
+                    sx={{ marginRight: "2px" }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="carRegField"
+                    label="Customer Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
+                  />
+                </div>
               </div>
               <div className="mt-3">
                 <TextField
@@ -626,51 +666,49 @@ const AddQuotation = () => {
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
               <div className="mt-3">
-                 
                 <TextField
-                    className="addJobInputField"
-                    label="Car R (N)"
-                    {...register("car_registration_no", {
-                      pattern: {
-                        value: /^[\d-]+$/,
-                        message: "Only numbers and hyphens are allowed",
-                      },
-                      minLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                      maxLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                    })}
-                    value={jobCardData?.car_registration_no}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length === 7) {
-                        setRegistrationError("");
-                      } else if (value.length < 7) {
-                        setRegistrationError(
-                          "Car registration number must be 7 characters"
-                        );
-                      }
-                      const formattedValue = value
-                        .replace(/\D/g, "")
-                        .slice(0, 6)
-                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                        setJobCardData({
-                        ...jobCardData,
-                        car_registration_no: formattedValue,
-                      });
-                    }}
-                    InputLabelProps={{
-                      shrink: !!jobCardData?.car_registration_no,
-                    }}
-                    error={!!errors.car_registration_no || !!registrationError}
-                     
-                  />
+                  className="addJobInputField"
+                  label="Car R (N)"
+                  {...register("car_registration_no", {
+                    pattern: {
+                      value: /^[\d-]+$/,
+                      message: "Only numbers and hyphens are allowed",
+                    },
+                    minLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                    maxLength: {
+                      value: 7,
+                      message:
+                        "Car registration number must be exactly 6 digits",
+                    },
+                  })}
+                  value={jobCardData?.car_registration_no}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value.length === 7) {
+                      setRegistrationError("");
+                    } else if (value.length < 7) {
+                      setRegistrationError(
+                        "Car registration number must be 7 characters"
+                      );
+                    }
+                    const formattedValue = value
+                      .replace(/\D/g, "")
+                      .slice(0, 6)
+                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
+                    setJobCardData({
+                      ...jobCardData,
+                      car_registration_no: formattedValue,
+                    });
+                  }}
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.car_registration_no,
+                  }}
+                  error={!!errors.car_registration_no || !!registrationError}
+                />
               </div>
               <div className="mt-3">
                 <TextField

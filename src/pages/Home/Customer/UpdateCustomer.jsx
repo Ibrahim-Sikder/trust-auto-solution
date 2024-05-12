@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import {
   carBrands,
   cmDmOptions,
+  countries,
   fuelType,
   vehicleModels,
   vehicleName,
@@ -78,6 +79,17 @@ const UpdateCustomer = () => {
         });
     }
   }, [id]);
+
+  // country code set 
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -232,7 +244,7 @@ const UpdateCustomer = () => {
                     }}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <TextField
                     className="productField"
                     label="Customer Contact No (N)"
@@ -252,6 +264,37 @@ const UpdateCustomer = () => {
                     InputLabelProps={{
                       shrink: !!singleCard.customer_contact,
                     }}
+                  />
+                </div> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Customer Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
                   />
                 </div>
                 <div>
@@ -306,7 +349,7 @@ const UpdateCustomer = () => {
                     }}
                   />
                 </div>
-                <div>
+                {/* <div>
                   <TextField
                     className="productField"
                     label="Driver Contact No (N)"
@@ -326,6 +369,37 @@ const UpdateCustomer = () => {
                     InputLabelProps={{
                       shrink: !!singleCard.driver_contact,
                     }}
+                  />
+                </div> */}
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="productField2"
+                    label="Driver Contact No (N)"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    placeholder="Enter phone number"
                   />
                 </div>
                 <div>
