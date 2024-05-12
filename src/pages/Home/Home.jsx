@@ -43,20 +43,21 @@ import LinearProgress, {
 import ExpanseIncomeChart from "../../components/Chart/ExpanseIncomeChart";
 import client from "../../../public/assets/avatar.jpg";
 import { Link } from "react-router-dom";
-
+import WebsiteMade from "../../components/WebsiteMade";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme, color }) => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
+    backgroundColor:
+      theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: color || (theme.palette.mode === "light" ? "#1a90ff" : "#308fe8"), // Default to existing color if no color prop
+    backgroundColor:
+      color || (theme.palette.mode === "light" ? "#1a90ff" : "#308fe8"), // Default to existing color if no color prop
   },
 }));
-
 
 const Home = () => {
   const [expanded, setExpanded] = React.useState(false);
@@ -102,7 +103,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="mt-10 pb-20">
+    <div className="mt-10 ">
       <h3 className="text-3xl font-bold">Welcome Admin !</h3>
       <span>Home / Dashboard</span>
 
@@ -1080,13 +1081,8 @@ const Home = () => {
             </Link>
           </div>
         </div>
-
-        
       </div>
-      <div className="text-center mt-5  bg-red-600 p-5 text-white ">
-      <p>Copy write @ Trust Auto Solution </p>
-          <p>Develope by <b>softypy</b></p>
-        </div>
+     
     </div>
   );
 };

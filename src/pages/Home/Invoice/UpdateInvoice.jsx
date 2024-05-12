@@ -407,7 +407,7 @@ const UpdateInvoice = () => {
                 />
                 <TextField
                   className="carRegField"
-                  label="Customer Contact No (N)"
+                  label="Phone Number "
                   variant="outlined"
                   fullWidth
                   type="tel"

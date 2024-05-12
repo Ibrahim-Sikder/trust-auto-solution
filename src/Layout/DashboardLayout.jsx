@@ -47,6 +47,7 @@ import {
 } from "react-icons/hi";
 import admin from "../../public/assets/avatar.jpg";
 import user from "../../public/assets/chat.jpg";
+import WebsiteMade from "../components/WebsiteMade";
 
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
@@ -248,7 +249,7 @@ const navigate = useNavigate()
                 </div>
               </div>
 
-              <div className="flex items-center adminProfileWrap">
+              <div className="flex items-center adminProfileWrap ">
                 <img src={admin} alt="admin" className="rounded-full w-10" />
                 <div className="flex items-center text-white ml-2">
                   <span>Admin</span>
@@ -280,6 +281,7 @@ const navigate = useNavigate()
           className={`${toggle ? `drawer-content` : `activeDrawer`}  `}
         >
           <Outlet />
+          <WebsiteMade/>
         </div>
 
         <aside className="flex ">
@@ -1039,6 +1041,7 @@ const navigate = useNavigate()
           <FaAngleDoubleUp size={25} />
         </div>
       </button>
+      
     </main>
   );
 };

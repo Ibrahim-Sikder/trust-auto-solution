@@ -41,10 +41,10 @@ const events = [
 
 const EmployeeHoliday = () => {
   return (
-    <div className="bg-[#EFF3F9] h-screen">
-     <div className=" p-5 xl:px-20 lg:10">
+    <div className="bg-[#EFF3F9] min-h-screen">
+      <div className="p-5 xl:px-20 lg:10">
         <div className="flex flex-wrap items-center justify-between">
-          <h3 className="text-xl  md:text-3xl font-semibold">Holiday </h3>
+          <h3 className="text-xl md:text-3xl font-semibold">Holiday</h3>
           <div className="flex items-center space-x-3">
             <div className="flex items-center">
               <HiOutlineHome className="text-[#0F79F3] size-5 mr-1" />
@@ -55,14 +55,16 @@ const EmployeeHoliday = () => {
           </div>
         </div>
       </div>
-      <div style={{ height: "600px", width: "1300px", margin: "20px auto", background: 'white' }}>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: "100%" }}
-        />
+      <div className="mx-auto max-w-screen-xl bg-white">
+        <div className="p-5 md:p-10">
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: "100vh" }}
+          />
+        </div>
       </div>
     </div>
   );
