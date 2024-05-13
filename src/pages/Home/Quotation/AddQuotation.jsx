@@ -264,7 +264,7 @@ const AddQuotation = () => {
     const newPhoneNumber = e.target.value;
     if (
       /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
+      newPhoneNumber.length <= 10 &&
       (newPhoneNumber === "" ||
         !newPhoneNumber.startsWith("0") ||
         newPhoneNumber.length > 1)
@@ -502,7 +502,7 @@ const AddQuotation = () => {
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}
             </h2>
-            <span className="text-[12px] lg:text-xl">
+            <span className="text-[12px] lg:text-xl mt-5 block">
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
@@ -593,39 +593,7 @@ const AddQuotation = () => {
                 />
               </div>
               <div className="mt-3">
-                {/* <TextField
-                    className="addJobInputField"
-                    label="Customer Contact No (N)"
-                    {...register("customer_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid 11-digit number.",
-                      },
-                    })}
-                    value={showCustomerData?.customer_contact}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
-                        // Check if length is less than or equal to 10
-                        setCustomerConError("");
-                        setShowCustomerData({
-                          ...showCustomerData,
-                          customer_contact: inputValue,
-                        });
-                      } else {
-                        setCustomerConError("Maximum 11 digits allowed.");
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: !!showCustomerData.customer_contact,
-                    }}
-                    error={!!errors.customer_contact || !!customerConError}
-                    // helperText={
-                    //   errors.customer_contact
-                    //     ? errors.customer_contact.message
-                    //     : customerConError  
-                    // }
-                  /> */}
+                 
 
                 <div className="flex md:flex-row flex-col gap-2 items-center mt-3">
                   <Autocomplete
@@ -648,35 +616,38 @@ const AddQuotation = () => {
                     )}
                   />
                   <TextField
-
-                    // className="carRegField quotationPhone"
-                    // label="Mobile Number "
+                    {...register("customer_contact")}
+                    className="carRegField"
+                    label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
+                    value={phoneNumber ? phoneNumber : jobCardData?.customer_contact}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-
+                    InputLabelProps={{
+                      shrink: !!jobCardData?.customer_contact,
+                    }}
+                  />
+                  {/* <TextField
                     className="addJobInputField"
                     label="Phone"
                     // value={jobCardData?.customer_contact}
                     focused={jobCardData?.customer_contact}
                     {...register("customer_contact")}
-                    // onChange={(e) => {
-                    //   const inputValue = e.target.value;
-                    //   if (inputValue.length <= 11) {
-                    //     setJobCardData({
-                    //       ...jobCardData,
-                    //       customer_contact: inputValue,
-                    //     });
-                    //   }
-                    // }}
-                    // InputLabelProps={{
-                    //   shrink: !!jobCardData?.customer_contact,
-                    // }}
-
-                  />
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        setJobCardData({
+                          ...jobCardData,
+                          customer_contact: inputValue,
+                        });
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!jobCardData?.customer_contact,
+                    }}
+                  /> */}
                 </div>
               </div>
               <div className="mt-3">

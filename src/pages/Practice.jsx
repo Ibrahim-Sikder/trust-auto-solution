@@ -5,7 +5,6 @@ function PhoneNumberInput() {
     <div className="mt-10">
       <Practice2 />
 
-      
     </div>
   );
 }

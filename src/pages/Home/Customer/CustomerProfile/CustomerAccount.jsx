@@ -12,6 +12,7 @@ const CustomerAccount = ({
   invoiceData,
 }) => {
  
+  console.log(moneyReceiptData)
 
   return (
     <div className="customerProfileWrap">
@@ -84,7 +85,7 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon ">
-                <b className="block">Feb</b>
+              <p>{new Date(jobCardData[0]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
                 {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[0]?.Id}>
                     <b>{jobCardData[0]?.date?.slice(0, 2)}</b>
@@ -111,7 +112,7 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <b className="block">Feb</b>
+              <p>{new Date(jobCardData[1]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
                 {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[1]?.Id}>
                     <b>{jobCardData[1]?.date?.slice(0, 2)}</b>
@@ -148,7 +149,7 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon ">
-                <b className="block">Feb</b>
+              <p>{new Date(quotationData[0]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
                 {quotationData && quotationData.length > 0 && (
                   <div key={quotationData[0]?.Id}>
                     <b>{quotationData[0]?.date?.slice(0, 2)}</b>
@@ -178,7 +179,7 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <b className="block">Feb</b>
+              <p>{new Date(quotationData[1]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
                 {quotationData && quotationData?.length > 0 && (
                   <div key={quotationData[1]?.Id}>
                     <b>{quotationData[1]?.date?.slice(0, 2)}</b>
@@ -219,7 +220,7 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon ">
-                <b className="block">Feb</b>
+              <p>{new Date(invoiceData[0]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[0]?.Id}>
                     <b>{invoiceData[0]?.date?.slice(0, 2)}</b>
@@ -248,10 +249,10 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <b className="block">Feb</b>
+              <p>{new Date(invoiceData[1]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[1]?.Id}>
-                    <b>{invoiceData[1]?.date.slice(0, 2)}</b>
+                    <b>{invoiceData[1]?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
@@ -286,22 +287,29 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon ">
-                <b className="block">Feb</b>
+                <b className="block"></b>
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
-                    <b>{moneyReceiptData[0]?.date?.slice(0, 2)}</b>
+                  <p>{new Date(moneyReceiptData[0]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
+                    <b>{moneyReceiptData[0]?.createdAt?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
-                    <b>{moneyReceiptData[0]?.vehicle_name}</b>
+                   <div className="flex items-center">
+                   <span className="mr-2">Remaining :</span>
+                   <b> ৳{moneyReceiptData[0]?.remaining}</b>
+                   </div>
                   </div>
                 )}
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
-                    <b>৳{moneyReceiptData[0]?.net_total}</b>
+                    <div className="flex items-center">
+                    <span className="mr-2">Total Amount : </span>
+                    <b> ৳{moneyReceiptData[0]?.total_amount}</b>
+                    </div>
                   </div>
                 )}
               </div>
@@ -314,28 +322,35 @@ const CustomerAccount = ({
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
-              <div className="cardIcon bg-[#48CAE4]">
-                <b className="block">Feb</b>
+              <div className="cardIcon ">
+                <b className="block"></b>
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
-                    <b>{moneyReceiptData[1]?.date.slice(0, 2)}</b>
+                    <p>{new Date(moneyReceiptData[0]?.createdAt).toLocaleString('en-US', { month: 'short' })}</p>
+                    <b>{moneyReceiptData[1]?.createdAt?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
-                    <b>{moneyReceiptData[1]?.vehicle_name}</b>
+                   <div className="flex items-center">
+                   <span className="mr-2">Remaining :</span>
+                   <b> ৳{moneyReceiptData[1]?.remaining}</b>
+                   </div>
                   </div>
                 )}
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
-                    <b>৳{moneyReceiptData[1]?.net_total}</b>
+                    <div className="flex items-center">
+                    <span className="mr-2">Total Amount : </span>
+                    <b> ৳{moneyReceiptData[1]?.total_amount}</b>
+                    </div>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${moneyReceiptData[1]?._id}`}>
+            <Link to={`/dashboard/detail?id=${moneyReceiptData[0]?._id}`}>
             <b className="cursor-pointer">
               <HiOutlineEye size={35} />
             </b>

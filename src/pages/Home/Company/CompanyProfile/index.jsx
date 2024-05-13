@@ -21,15 +21,15 @@ import { toast } from "react-toastify";
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
-
+console.log(profileData)
   const [jobCardData, setJobCardData] = useState([]);
 
   const [quotationData, setQuotationData] = useState([]);
-
+  console.log(quotationData)
   const [invoiceData, setInvoiceData] = useState([]);
-
+console.log(invoiceData)
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-
+console.log(moneyReceiptData)
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -127,7 +127,12 @@ const CompanyProfile = () => {
                 <ImUserTie size="80" className="text-white" />
               </div>
               <div>
-                <h3 className="text-2xl">Trust Auto Solution </h3>
+              <div className="flex items-center">
+                  <span> Company ID : </span>{" "}
+                  <span className="ml-3 font-semibold ">
+                    {profileData?.companyId}
+                  </span>
+                </div>
                 <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />

@@ -71,7 +71,7 @@ const PdfGenerator = () => {
       <div className="moneyWraps">
         <div id="content-id" ref={targetRef}>
           <div ref={componentRef} className="moneyFormWrap">
-            <div className="flex items-center justify-between flex-col lg:flex-row gap-3">
+            <div className="flex items-center justify-between  lg:flex-row gap-3">
               <div className="logoWrap logoWrap2">
                 <img className="" src={logo} alt="logo" />
               </div>
@@ -80,7 +80,7 @@ const PdfGenerator = () => {
                 <h2 className="receivedTitle receivedTitle2">
                   Trust Auto Solution{" "}
                 </h2>
-                <span>
+                <span className='mt-1 block'>
                   It's trusted computerized Organization for all kinds of
                   vehicle check up & maintenance such as computerized Engine
                   Analysis, Engine tune up, Denting, Painting, Engine, AC,
@@ -90,21 +90,21 @@ const PdfGenerator = () => {
               <div className="hotlineWrap">
                 <div className="flex items-center">
                   <LocalPhone className="hotlineIcon" />
-                  <small className="ml-1">+880 1821-216465</small>
+                  <small>+880 1821-216465</small>
                 </div>
                 <div className="flex items-center">
                   <Email className="hotlineIcon" />
-                  <small className="ml-1">trustautosolution@gmail.com</small>
+                  <small>trustautosolution@gmail.com</small>
                 </div>
                 <div className="flex items-center">
                   <Home className="hotlineIcon"> </Home>
-                  <small className="ml-1">
+                  <small >
                     Ka-93/4/C Kuril Bishawroad, <br /> Dhaka-1212
                   </small>
                 </div>
                 <div className="flex items-center">
                   <WhatsApp className="hotlineIcon" />
-                  <small className="ml-1">+88 1972-216465</small>
+                  <small >+88 1972-216465</small>
                 </div>
               </div>
             </div>

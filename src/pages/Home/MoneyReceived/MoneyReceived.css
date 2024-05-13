@@ -80,11 +80,14 @@
   font-family: "Merriweather", serif;
 }
 .moneyHead span {
-  line-height: 15px;
-  display: block;
-  width: 377px;
-  margin: 0px auto;
-  margin-top: -9px;
+  .moneyHead span {
+    line-height: 14px;
+    display: block;
+    width: 377px;
+    margin: 0px auto;
+    margin-top: 3px;
+    font-size: 10px !important;
+}
 }
 
 .receivedField {

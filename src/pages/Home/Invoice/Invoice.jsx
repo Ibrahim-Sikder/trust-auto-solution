@@ -528,7 +528,7 @@ const Invoice = () => {
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}
             </h2>
-            <span>Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+            <span className="block mt-5">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
           </div>
           <div className="space-y-1 text-justify">
             <span className="block">

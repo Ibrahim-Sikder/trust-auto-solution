@@ -261,7 +261,7 @@ const MoneyReceiptView = () => {
           </div>
           <div className="moneyHead ">
             <h2 className="receivedTitle ">Trust Auto Solution </h2>
-            <small>
+            <small className="text-sm">
               It's trusted computerized Organization for all kinds of vehicle
               check up & maintenance such as computerized Engine Analysis,
               Engine tune up, Denting, Painting, Engine, AC, Electrical Works &

@@ -10,6 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./Invoice.css";
 import { formatDate } from "../../../utils/formateDate";
 
+
 const Detail = () => {
   const componentRef = useRef();
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
@@ -22,6 +23,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
+  console.log(invoicePreview)
 
   const [loading, setLoading] = useState(false);
 

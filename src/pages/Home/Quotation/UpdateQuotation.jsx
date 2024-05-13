@@ -296,9 +296,9 @@ const UpdateQuotation = () => {
           <h2 className=" trustAutoTitle trustAutoTitleQutation">
             Trust Auto Solution{" "}
           </h2>
-          <span className="text-[12px] lg:text-xl">
-            Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
-          </span>
+          <span className="text-[12px] lg:text-xl mt-5 block">
+              Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
+            </span>
         </div>
         <div className="space-y-1 text-justify jobCardContactInfo">
           <span className="block">

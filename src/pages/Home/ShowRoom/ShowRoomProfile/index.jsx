@@ -20,7 +20,7 @@ import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
 const ShowRoomProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
-
+console.log(profileData)
   const [jobCardData, setJobCardData] = useState([]);
 
   const [quotationData, setQuotationData] = useState([]);
@@ -130,22 +130,22 @@ const ShowRoomProfile = () => {
                 <div className="flex items-center">
                   <span> Show Room ID : </span>{" "}
                   <span className="ml-3 font-semibold ">
-                    {profileData?.customerId}
+                    {profileData?.showRoomId}
                   </span>
                 </div>
 
                 <div className=" mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>{profileData?.customer_contact}</span>
+                    <span>{profileData?.company_contact}</span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>{profileData?.customer_email} </span>
+                    <span>{profileData?.company_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span> {profileData?.customer_address} </span>
+                    <span> {profileData?.company_address} </span>
                   </div>
                 </div>
               </div>

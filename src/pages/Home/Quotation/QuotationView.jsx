@@ -249,7 +249,7 @@ const Detail = () => {
                       <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
                         <div className="flex justify-between w-[40%]">
                           <div className="invoiceCustomerInfo">
-                            <b>SL NO</b>
+                            <b>Job No</b>
                             <b>Company</b>
                             <b>Customer</b>
                             <b>Phone</b>

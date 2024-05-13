@@ -46,23 +46,37 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
+  console.log(showCustomerData)
   const inputRef = useRef(null); // Create a ref for the input element
   const [inputValue, setInputValue] = useState(""); // Controlled input value state
 
   // country code
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
     if (
       /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
+      newPhoneNumber.length <= 10 &&
       (newPhoneNumber === "" ||
         !newPhoneNumber.startsWith("0") ||
         newPhoneNumber.length > 1)
     ) {
       setPhoneNumber(newPhoneNumber);
+    }
+  };
+  const handleDriverPhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 10 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setDriverPhoneNumber(newPhoneNumber);
     }
   };
 
@@ -607,7 +621,7 @@ const AddJobCard = () => {
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}
             </h2>
-            <span className="text-[12px] lg:text-xl">
+            <span className="text-[12px] lg:text-xl mt-5 block">
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
@@ -823,8 +837,6 @@ const AddJobCard = () => {
             )} */}
               </div>
               <div className="mt-3">
-                 
-
                 <div className="flex items-center">
                   <Autocomplete
                     sx={{ marginRight: "2px" }}
@@ -845,23 +857,25 @@ const AddJobCard = () => {
                       />
                     )}
                   />
-                  {/* <TextField
+                  <TextField
+                    {...register("customer_contact")}
                     className="carRegField"
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    // value={phoneNumber}
-                    // onChange={handlePhoneNumberChange}
-                    {...register("customer_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid 11-digit number.",
-                      },
-                    })}
+                    value={
+                      phoneNumber
+                        ? phoneNumber
+                        : showCustomerData?.customer_contact
+                    }
+                    onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-                  /> */}
-                  <TextField
+                    InputLabelProps={{
+                      shrink: !!showCustomerData.customer_contact,
+                    }}
+                  />
+                  {/* <TextField
                     className="addJobInputField"
                     label="Customer Contact No (N)"
                     {...register("customer_contact", {
@@ -893,7 +907,7 @@ const AddJobCard = () => {
                     //     ? errors.customer_contact.message
                     //     : customerConError  
                     // }
-                  />
+                  /> */}
                 </div>
               </div>
               <div className="mt-3">
@@ -967,7 +981,6 @@ const AddJobCard = () => {
             )} */}
               </div>
               <div className="mt-3">
-                 
                 <div className="flex items-center">
                   <Autocomplete
                     sx={{ marginRight: "2px" }}
@@ -988,17 +1001,25 @@ const AddJobCard = () => {
                       />
                     )}
                   />
-                  {/* <TextField
+                  <TextField
+                    {...register("driver_contact")}
                     className="carRegField"
                     label="Driver Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
+                    value={
+                      driverPhoneNumber
+                        ? driverPhoneNumber
+                        : showCustomerData?.driver_contact
+                    }
+                    onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
-                  /> */}
-                  <TextField
+                    InputLabelProps={{
+                      shrink: !!showCustomerData.driver_contact,
+                    }}
+                  />
+                  {/* <TextField
                     className="addJobInputField"
                     label="Driver Contact No (N)"
                     {...register("driver_contact", {
@@ -1029,7 +1050,7 @@ const AddJobCard = () => {
                     //     ? errors.driver_contact.message
                     //     : driverConError  
                     // }
-                  />
+                  /> */}
                 </div>
               </div>
               <div className="mt-3">
@@ -1067,13 +1088,13 @@ const AddJobCard = () => {
                   inputValue={inputValue}
                   onInputChange={(event, newValue) => setInputValue(newValue)}
                   options={cmDmOptions.map((option) => option.label)}
-                  value={showCustomerData?.carReg_no}
-                  focused={showCustomerData?.carReg_no}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Reg No"
                       {...register("carReg_no")}
+                      value={showCustomerData?.carReg_no}
+                      focused={showCustomerData?.carReg_no}
                     />
                   )}
                 />
