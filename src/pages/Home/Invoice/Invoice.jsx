@@ -656,14 +656,22 @@ const Invoice = () => {
                     )}
                   />
                   <TextField
-                    className="carRegField"
-                    label="Phone Number "
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
+                    className="addJobInputField"
+                    label="Phone"
+                    value={jobCardData?.customer_contact}
+                    {...register("customer_contact",)}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        setJobCardData({
+                          ...jobCardData,
+                          customer_contact: inputValue,
+                        });
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!jobCardData?.customer_contact,
+                    }}
                   />
                 </div>
               <div className="mt-3">

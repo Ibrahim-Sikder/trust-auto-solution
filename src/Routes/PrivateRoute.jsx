@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }) => {
 
   const user = Cookies.get("tas-auth");
 
-  if (user === "51RSM78du77QnlJy86LgWSEUpVM") {
+  if (user  && user === "51RSM78du77QnlJy86LgWSEUpVM") {
     return children;
   }
   return <Navigate to="/" state={{ from: location }} replace></Navigate>;

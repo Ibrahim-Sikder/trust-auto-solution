@@ -341,8 +341,7 @@ const UpdateJobCard = () => {
                   className="addJobInputField"
                   {...register("company_name")}
                   label="Company Name (T)"
-                  value={singleCard.company_name}
-                  // value={singleCard.company_name}
+                  value={singleCard?.company_name}
                   onChange={(e) =>
                     setSingleCard({
                       ...singleCard,
@@ -407,43 +406,9 @@ const UpdateJobCard = () => {
                 />
               </div>
               <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Customer Contact No (N)"
-                  {...register("customer_contact", {
-                    pattern: {
-                      value: /^\d{11}$/,
-                      message: "Please enter a valid 11-digit number.",
-                    },
-                  })}
-                  value={singleCard?.customer_contact}
-                  onChange={(e) => {
-                    if (e.target.value.length === 11) {
-                      setCustomerConError("");
-                    } else if (e.target.value > 11) {
-                      setCustomerConError(
-                        "Please enter a valid 11-digit number."
-                      );
-                    }
-                    setSingleCard({
-                      ...singleCard,
-                      customer_contact: e.target.value,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!singleCard.customer_contact,
-                  }}
-                  error={!!errors.customer_contact | !!customerConError}
-                  helperText={
-                    errors.customer_contact
-                      ? errors.customer_contact.message
-                      : ""
-                  }
-                /> */}
-
                 <div className="flex items-center">
                   <Autocomplete
-                  sx={{marginRight:'2px'}}
+                    sx={{ marginRight: "2px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -461,7 +426,7 @@ const UpdateJobCard = () => {
                       />
                     )}
                   />
-                  <TextField
+                  {/* <TextField
                     className="carRegField"
                     label="Customer Contact No (N)"
                     variant="outlined"
@@ -470,9 +435,39 @@ const UpdateJobCard = () => {
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
+                  /> */}
+                  <TextField
+                    className="carRegField"
+                    label="Customer Contact No (N)"
+                    {...register("customer_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
+                    value={singleCard?.customer_contact}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 11) {
+                        setCustomerConError("");
+                        setSingleCard({
+                          ...singleCard,
+                          customer_contact: e.target.value,
+                        });
+                      } else {
+                        setCustomerConError("Maximum 11 digits allowed.");
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!singleCard.customer_contact,
+                    }}
+                    error={!!errors.customer_contact || !!customerConError}
+                    // helperText={
+                    //   errors.customer_contact
+                    //     ? errors.customer_contact.message
+                    //     : ""
+                    // }
                   />
                 </div>
-
               </div>
               <div className="mt-3">
                 <TextField
@@ -527,40 +522,9 @@ const UpdateJobCard = () => {
                 />
               </div>
               <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Driver Contact No (N)"
-                  {...register("driver_contact", {
-                    pattern: {
-                      value: /^\d{11}$/,
-                      message: "Please enter a valid 11-digit number.",
-                    },
-                  })}
-                  value={singleCard?.driver_contact}
-                  onChange={(e) => {
-                    if (e.target.value.length === 11) {
-                      setDriverConError("");
-                    } else if (e.target.value > 11) {
-                      setDriverConError(
-                        "Please enter a valid 11-digit number."
-                      );
-                    }
-                    setSingleCard({
-                      ...singleCard,
-                      driver_contact: e.target.value,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!singleCard.driver_contact,
-                  }}
-                  error={!!errors.driver_contact | !!driverConError}
-                  helperText={
-                    errors.driver_contact ? errors.driver_contact.message : ""
-                  }
-                /> */}
                 <div className="flex items-center">
                   <Autocomplete
-                  sx={{marginRight:'2px'}}
+                    sx={{ marginRight: "2px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -578,7 +542,7 @@ const UpdateJobCard = () => {
                       />
                     )}
                   />
-                  <TextField
+                  {/* <TextField
                     className="carRegField"
                     label="Customer Contact No (N)"
                     variant="outlined"
@@ -587,6 +551,35 @@ const UpdateJobCard = () => {
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
+                  /> */}
+                  <TextField
+                    className="carRegField"
+                    label="Driver Contact No (N)"
+                    {...register("driver_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
+                    value={singleCard?.driver_contact}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 11) {
+                        setDriverConError("");
+                        setSingleCard({
+                          ...singleCard,
+                          driver_contact: e.target.value,
+                        });
+                      } else {
+                        setDriverConError("Maximum 11 digits allowed.");
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!singleCard.driver_contact,
+                    }}
+                    error={!!errors.driver_contact || !!driverConError}
+                    // helperText={
+                    //   errors.driver_contact ? errors.driver_contact.message : ""
+                    // }
                   />
                 </div>
               </div>
@@ -788,7 +781,7 @@ const UpdateJobCard = () => {
                     freeSolo
                     Vehicle
                     Name
-                    value={singleCard?.vehicle_name || ""}
+                    value={singleCard?.vehicle_name}
                     options={filteredVehicles.map((option) => option.value)}
                     renderInput={(params) => (
                       <TextField
@@ -827,7 +820,11 @@ const UpdateJobCard = () => {
                   )}
                 /> */}
                   <input
-                    value={yearSelectInput}
+                    value={
+                      yearSelectInput
+                        ? yearSelectInput
+                        : singleCard?.vehicle_model
+                    }
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"

@@ -16,6 +16,7 @@ const CustomerMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
     navigate(`/dashboard/money-receipt-view?id=${e}`);
   };
 
+  
   // pagination
 
   const [limit, setLimit] = useState(10);

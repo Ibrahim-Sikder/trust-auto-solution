@@ -47,7 +47,6 @@ import {
 } from "react-icons/hi";
 import admin from "../../public/assets/avatar.jpg";
 import user from "../../public/assets/chat.jpg";
-import WebsiteMade from "../components/WebsiteMade";
 
 const DashboardLayout = () => {
   const [expanded, setExpanded] = useState(false);
@@ -281,7 +280,7 @@ const navigate = useNavigate()
           className={`${toggle ? `drawer-content` : `activeDrawer`}  `}
         >
           <Outlet />
-          <WebsiteMade/>
+      
         </div>
 
         <aside className="flex ">
