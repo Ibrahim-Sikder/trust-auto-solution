@@ -22,6 +22,9 @@ import {
 } from "../../../constant";
 import { Autocomplete } from "@mui/material";
 import { HiOfficeBuilding } from "react-icons/hi";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
+import { FaUserGear } from "react-icons/fa6";
+import { NotificationAdd } from "@mui/icons-material";
 
 const UpdateCompany = () => {
   const [registrationError, setRegistrationError] = useState("");
@@ -161,16 +164,12 @@ const UpdateCompany = () => {
   return (
     <section>
       <div className=" addProductWraps">
-        <div className="flex items-center mr-[80px]  justify-end topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
+      <div className="flex justify-between pb-3 border-b-2 px-2">
+          <HeaderButton />
+          <div className="flex items-end justify-end">
+            <NotificationAdd size={30} className="mr-2" />
+            <FaUserGear size={30} />
+          </div>
         </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">

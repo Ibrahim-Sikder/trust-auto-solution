@@ -508,8 +508,7 @@ const AddQuotation = () => {
           </div>
           <div className="space-y-1 text-justify jobCardContactInfo">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 01821-216465,
-              01972-216465
+              <span className="font-bold">Mobile:</span> 01821-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}

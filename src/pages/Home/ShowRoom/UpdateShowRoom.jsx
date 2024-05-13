@@ -19,6 +19,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import { HiOfficeBuilding } from "react-icons/hi";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
 
 const UpdateShowRoom = () => {
   const [showRoomData, setShowRoomData] = useState({});
@@ -156,17 +157,7 @@ const UpdateShowRoom = () => {
   return (
     <section>
       <div className=" addProductWraps">
-        <div className="flex items-center mr-[80px]  justify-end topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
-        </div>
+       <HeaderButton/>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
             <HiOfficeBuilding className="invoicIcon" />

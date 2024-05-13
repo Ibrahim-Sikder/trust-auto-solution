@@ -14,6 +14,7 @@ import { FaUserGear } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
 const MoneyReceiptList = () => {
   const [getMoneyReceipt, setGetMoneyReceipt] = useState([]);
   const [filterType, setFilterType] = useState("");
@@ -265,7 +266,8 @@ const MoneyReceiptList = () => {
 
   return (
     <div className="mt-5 overflow-x-auto">
-      <div className="flex flex-wrap justify-end pb-3 border-b-2">
+       <div className="flex justify-between pb-3 border-b-2">
+        <HeaderButton/>
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />

@@ -4,22 +4,13 @@ import img from "../../../../public/assets/service2.png";
 import { Link } from "react-router-dom";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
 
 const Product = () => {
   return (
     <div className="w-full mt-5 mb-24">
       <div className="flex justify-between pb-3 border-b-2">
-        <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
-        </div>
+        <HeaderButton/>
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />

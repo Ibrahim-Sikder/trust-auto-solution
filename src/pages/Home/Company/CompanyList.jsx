@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
 const CompanyList = () => {
   const [filterType, setFilterType] = useState("");
   const [companyData, setCompanyData] = useState([]);
@@ -262,18 +263,8 @@ const CompanyList = () => {
 
   return (
     <div className="w-full mt-5 mb-24">
-      <div className="flex justify-between pb-3 border-b-2">
-        <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
-        </div>
+     <div className="flex justify-between pb-3 border-b-2 px-2">
+        <HeaderButton/>
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />

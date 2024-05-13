@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import { toast } from "react-toastify";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
 const SupplierList = () => {
   const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -271,23 +272,13 @@ const SupplierList = () => {
 
   return (
     <div className="w-full mt-5 mb-24">
-      <div className="flex justify-between pb-3 border-b-2">
-        <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Qutation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
+      <div className="flex justify-between pb-3 border-b-2 px-2">
+          <HeaderButton />
+          <div className="flex items-end justify-end">
+            <NotificationAdd size={30} className="mr-2" />
+            <FaUserGear size={30} />
+          </div>
         </div>
-        <div className="flex items-end justify-end">
-          <NotificationAdd size={30} className="mr-2" />
-          <FaUserGear size={30} />
-        </div>
-      </div>
       <div className="md:flex items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <FaUsers size={70} className="invoicIcon" />

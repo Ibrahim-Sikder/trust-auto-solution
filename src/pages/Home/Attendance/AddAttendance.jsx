@@ -422,7 +422,7 @@ const AddAttendance = () => {
                   <td>
                     <input
                       type="checkbox"
-                      className="border"
+                      className="border w-5 h-5"
                       onClick={() => handlePresent(index)}
                       checked={presentState[index]}
                     />
@@ -430,7 +430,7 @@ const AddAttendance = () => {
                   <td>
                     <input
                       type="checkbox"
-                      className="border"
+                      className="border w-5 h-5"
                       onClick={() => handleAbsent(index)}
                       checked={absentState[index]}
                     />

@@ -15,6 +15,7 @@ import Loading from "../../../components/Loading/Loading";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import { toast } from "react-toastify";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
 const CompletedProject = () => {
   const [select, setSelect] = useState(null);
   const [getAllInvoice, setGetAllInvoice] = useState([]);
@@ -270,17 +271,7 @@ const CompletedProject = () => {
   return (
     <div className="mt-5 overflow-x-auto">
       <div className="flex justify-between pb-3 border-b-2">
-        <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Qutation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
-        </div>
+        <HeaderButton/>
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />

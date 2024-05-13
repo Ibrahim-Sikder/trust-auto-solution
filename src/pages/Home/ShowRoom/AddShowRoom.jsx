@@ -14,6 +14,8 @@ import {
   vehicleName,
   vehicleTypes,
 } from "../../../constant";
+import { FaUserGear } from "react-icons/fa6";
+
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -22,6 +24,8 @@ import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
 import { HiOfficeBuilding, HiOutlineSearch } from "react-icons/hi";
 import Cookies from "js-cookie";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
+import { NotificationAdd } from "@mui/icons-material";
 
 const AddShowRoom = () => {
   const [filterType, setFilterType] = useState("");
@@ -79,20 +83,32 @@ const AddShowRoom = () => {
     setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
   };
 
-  // country code set 
+  // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setPhoneNumber(newPhoneNumber);
     }
   };
   const handleDriverPhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setDriverPhoneNumber(newPhoneNumber);
     }
   };
@@ -371,16 +387,12 @@ const AddShowRoom = () => {
   return (
     <section>
       <div className=" addProductWraps">
-        <div className="flex items-center mr-[80px]  justify-end topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Quotation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
+        <div className="flex justify-between pb-3 border-b-2 px-2">
+          <HeaderButton />
+          <div className="flex items-end justify-end">
+            <NotificationAdd size={30} className="mr-2" />
+            <FaUserGear size={30} />
+          </div>
         </div>
         <div className="productHeadWrap">
           <div className="flex flex-wrap items-center justify-center">
@@ -457,7 +469,7 @@ const AddShowRoom = () => {
                 </div> */}
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -476,7 +488,7 @@ const AddShowRoom = () => {
                     )}
                   />
                   <TextField
-                   {...register("company_contact")}
+                    {...register("company_contact")}
                     className="productField2"
                     label="Company Contact No (N)"
                     variant="outlined"
@@ -485,9 +497,7 @@ const AddShowRoom = () => {
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-                     
                   />
-                   
                 </div>
                 <div>
                   <TextField
@@ -531,7 +541,7 @@ const AddShowRoom = () => {
                 </div> */}
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -550,7 +560,7 @@ const AddShowRoom = () => {
                     )}
                   />
                   <TextField
-                   {...register("driver_contact")}
+                    {...register("driver_contact")}
                     className="productField2"
                     label="Driver Contact No (N)"
                     variant="outlined"
@@ -559,7 +569,6 @@ const AddShowRoom = () => {
                     value={driverPhoneNumber}
                     onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
-                     
                   />
                 </div>
                 <div>

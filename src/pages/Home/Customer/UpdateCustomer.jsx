@@ -19,6 +19,9 @@ import {
 } from "../../../constant";
 import { Autocomplete } from "@mui/material";
 import { HiOutlineUserGroup } from "react-icons/hi";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
+import { NotificationAdd } from "@mui/icons-material";
+import { FaUserGear } from "react-icons/fa6";
 
 const UpdateCustomer = () => {
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -146,17 +149,13 @@ const UpdateCustomer = () => {
   return (
     <section>
       <div className=" addProductWraps">
-        <div className="flex items-center mr-[80px]  justify-end topProductBtn">
-          <Link to="/dashboard/addjob">
-            <button> Add Job </button>
-          </Link>
-          <Link to="/dashboard/qutation">
-            <button>Qutation </button>
-          </Link>
-          <Link to="/dashboard/invoice">
-            <button>Invoice </button>
-          </Link>
+      <div className="flex justify-between pb-3 border-b-2 px-2 ">
+        <HeaderButton/>
+        <div className="flex items-end justify-end">
+          <NotificationAdd size={30} className="mr-2" />
+          <FaUserGear size={30} />
         </div>
+      </div>
         <div className="productHeadWrap">
           <div className="flex flex-wrap items-center justify-center">
             <HiOutlineUserGroup className="invoicIcon" />

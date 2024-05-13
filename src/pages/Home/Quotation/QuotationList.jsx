@@ -16,9 +16,11 @@ import Loading from "../../../components/Loading/Loading";
 import { NotificationAdd } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import { formatDate } from "../../../utils/formateDate";
+import { Button } from "@mui/material";
+import HeaderButton from "../../../components/CommonButton/HeaderButton";
 const QuotationList = () => {
   const [getAllQuotation, setGetAllQuotation] = useState([]);
-  console.log(getAllQuotation)
+  console.log(getAllQuotation);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -276,17 +278,7 @@ const QuotationList = () => {
     <div>
       <div className="overflow-x-auto mt-5">
         <div className="flex justify-between border-b-2 pb-3">
-          <div className="flex items-center mr-[80px]  justify-center topProductBtn">
-            <Link to="/dashboard/addjob">
-              <button> Add Job </button>
-            </Link>
-            <Link to="/dashboard/qutation">
-              <button>Qutation </button>
-            </Link>
-            <Link to="/dashboard/invoice">
-              <button>Invoice </button>
-            </Link>
-          </div>
+         <HeaderButton/>
           <div className="flex  justify-end items-end">
             <NotificationAdd size={30} className="mr-2" />
             <FaUserGear size={30} />
