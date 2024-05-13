@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa";
 import TADatePickers from "../../../components/form/TADatePickers";
+import { Button } from "@mui/material";
  
 
 const MoneyReceiptView = () => {
@@ -290,7 +291,7 @@ const MoneyReceiptView = () => {
           </div>
         </div>
         <div className="receivedBtn md:mt-0 mt-5">
-          <button>Receipt</button>
+          <Button>Receipt</Button>
         </div>
         <div className="flex justify-between mt-5 md:mt-0 items-center lg:mt-0  mb-5">
           <b>Job No: {jobCardData?.job_no ? jobCardData?.job_no : 0}</b>
@@ -501,7 +502,7 @@ const MoneyReceiptView = () => {
           </div>
 
           <div className="my-5 receivedBtn">
-            <button type="submit">Submit</button>
+            <Button type="submit">Submit</Button>
           </div>
         </form>
         <div>

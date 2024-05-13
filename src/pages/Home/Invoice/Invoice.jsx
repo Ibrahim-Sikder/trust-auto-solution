@@ -25,6 +25,7 @@ import { formatDate } from "../../../utils/formateDate";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { countries } from "../../../constant";
+import { Button } from "react-scroll";
 
 const theme = createTheme({
   // Your theme configuration
@@ -528,7 +529,9 @@ const Invoice = () => {
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
               Trust Auto Solution{" "}
             </h2>
-            <span className="block mt-5">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+            <span className="block mt-5">
+              Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
+            </span>
           </div>
           <div className="space-y-1 text-justify">
             <span className="block">
@@ -635,44 +638,44 @@ const Invoice = () => {
                 />
               </div> */}
               <div className="flex sm:flex-row flex-col gap-2 items-center mt-3 ">
-                  <Autocomplete
-                  sx={{marginRight:'2px'}}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <TextField
-                    className="addJobInputField"
-                    label="Phone"
-                    value={jobCardData?.customer_contact}
-                    {...register("customer_contact",)}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
-                        setJobCardData({
-                          ...jobCardData,
-                          customer_contact: inputValue,
-                        });
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: !!jobCardData?.customer_contact,
-                    }}
-                  />
-                </div>
+                <Autocomplete
+                  sx={{ marginRight: "2px" }}
+                  className="jobCardSelect2"
+                  freeSolo
+                  options={countries}
+                  getOptionLabel={(option) => option.label}
+                  value={countryCode}
+                  onChange={(event, newValue) => {
+                    setCountryCode(newValue);
+                    setPhoneNumber(""); // Reset the phone number when changing country codes
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Select Country Code"
+                      variant="outlined"
+                    />
+                  )}
+                />
+                <TextField
+                  className="addJobInputField"
+                  label="Phone"
+                  value={jobCardData?.customer_contact}
+                  {...register("customer_contact")}
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+                    if (inputValue.length <= 11) {
+                      setJobCardData({
+                        ...jobCardData,
+                        customer_contact: inputValue,
+                      });
+                    }
+                  }}
+                  InputLabelProps={{
+                    shrink: !!jobCardData?.customer_contact,
+                  }}
+                />
+              </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -958,13 +961,13 @@ const Invoice = () => {
           <div className="mt-8 buttonGroup">
             <div>
               {/* <Link to={}> */}
-              <button onClick={() => setPreview("preview")}>Preview</button>
+              <Button onClick={() => setPreview("preview")}>Preview</Button>
               {/* </Link> */}
-              <button>Download </button>
-              <button>Print </button>
+              <Button>Download </Button>
+             
             </div>
             <div className="submitQutationBtn">
-              <button className="">Add To Invoice </button>
+              <Button className="">Add To Invoice </Button>
             </div>
           </div>
           {error && (
@@ -980,9 +983,9 @@ const Invoice = () => {
           <h3 className="mb-3 text-3xl font-bold">Invoice List:</h3>
           <div className="flex items-center searcList">
             <div className="searchGroup">
-              <button onClick={handleAllInvoice} className="SearchBtn mr-2">
+              <Button onClick={handleAllInvoice} className="SearchBtn mr-2">
                 All{" "}
-              </button>
+              </Button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"

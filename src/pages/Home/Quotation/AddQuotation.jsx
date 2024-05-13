@@ -13,7 +13,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading/Loading";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 import { formatDate } from "../../../utils/formateDate";
@@ -592,8 +592,6 @@ const AddQuotation = () => {
                 />
               </div>
               <div className="mt-3">
-                 
-
                 <div className="flex md:flex-row flex-col gap-2 items-center mt-3">
                   <Autocomplete
                     sx={{ marginRight: "2px" }}
@@ -621,7 +619,9 @@ const AddQuotation = () => {
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber ? phoneNumber : jobCardData?.customer_contact}
+                    value={
+                      phoneNumber ? phoneNumber : jobCardData?.customer_contact
+                    }
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
                     InputLabelProps={{
@@ -917,13 +917,13 @@ const AddQuotation = () => {
           <div className="mt-8 buttonGroup buttonMargin">
             <div className="flex md:flex-row flex-col justify-end">
               {/* <Link to={}> */}
-              <button onClick={() => setPreview("preview")}>Preview</button>
+              <Button onClick={() => setPreview("preview")}>Preview</Button>
               {/* </Link> */}
-              <button>Download </button>
-              <button>Print </button>
+              <Button>Download </Button>
+              <Button>Print </Button>
             </div>
             <div className="submitQutationBtn">
-              <button className="">Add To Quotation </button>
+              <Button >Add Quotation </Button>
             </div>
           </div>
           {error && (
@@ -940,10 +940,10 @@ const AddQuotation = () => {
             Quotation List:
           </h3>
           <div className="flex items-center searcList">
-            <div className="searchGroup">
-              <button onClick={handleAllQuotation} className="SearchBtn mr-2">
+            <div className="searchGroup space-x-2">
+              <Button sx={{background:'#42A1DA'}} onClick={handleAllQuotation}>
                 All
-              </button>
+              </Button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"

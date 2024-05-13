@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
+import { Button, ButtonBase } from "@mui/material";
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -273,7 +274,7 @@ const UpdateMoneyReceipt = () => {
         </div>
       </div>
       <div className="receivedBtn">
-        <button>Receipt</button>
+        <Button>Receipt</Button>
       </div>
       <div className="flex justify-between mt-5 md:mt-0">
         <b>Job No: {specificMoneyReceipt.against_bill_no}</b>
@@ -432,7 +433,7 @@ const UpdateMoneyReceipt = () => {
             <button className="w-full my-10 btn btn-warning"> Update</button>
         </div> */}
         <div className="my-5 receivedBtn">
-          <button type="submit">Update</button>
+          <Button type="submit">Update</Button>
         </div>
       </form>
       <div className="">

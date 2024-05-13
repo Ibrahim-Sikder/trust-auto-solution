@@ -4,7 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { countries } from "../../../constant";
@@ -837,9 +837,11 @@ const UpdateQuotation = () => {
           </div>
         </div>
         <div>
-          <button onClick={handleOnSubmit} className="addJobBtn">
-            Update Quotation{" "}
-          </button>
+         <div className="flex  justify-center align-items-center">
+         <Button sx={{background: '#42A1DA'}} onClick={handleOnSubmit} className="addJobBtn">
+            Update Quotation
+          </Button>
+         </div>
         </div>
 
         {error && <div className="pt-6 text-center text-red-400">{error}</div>}

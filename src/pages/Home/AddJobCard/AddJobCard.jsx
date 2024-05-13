@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
 import {
   Autocomplete,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -46,7 +47,6 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-  console.log(showCustomerData)
   const inputRef = useRef(null); // Create a ref for the input element
   const [inputValue, setInputValue] = useState(""); // Controlled input value state
 
@@ -167,6 +167,8 @@ const AddJobCard = () => {
         technician_date: technicianDate,
         vehicle_owner: data.vehicle_owner,
       };
+
+      console.log(values)
 
       setLoading(true);
       const response = await axios.post(
@@ -1583,35 +1585,35 @@ const AddJobCard = () => {
 
           <div className="mt-5 buttonGroup">
             <div>
-              <button
+              <Button
                 disabled={loading}
                 onClick={() => setClickControl("preview")}
               >
                 Preview
-              </button>
+              </Button>
 
-              <button
+              <Button
                 disabled={loading}
                 onClick={() => setClickControl("quotation")}
               >
                 Quotation
-              </button>
+              </Button>
 
-              <button
+              <Button
                 disabled={loading}
                 onClick={() => setClickControl("invoice")}
               >
                 Invoice
-              </button>
+              </Button>
             </div>
             <div className="submitQutationBtn">
-              <button
+              <Button
                 disabled={loading}
-                // onClick={handleAddToCard}
+                // onClick={handleAddToCard
                 type="submit"
               >
                 Add To Job Card{" "}
-              </button>
+              </Button>
             </div>
           </div>
           {/* <div className="pt-6 text-center text-red-400">{error}</div> */}
@@ -1620,14 +1622,15 @@ const AddJobCard = () => {
       <div className="mt-20 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-sm font-bold lg:text-3xl">Job Card List:</h3>
-          <div className="flex items-center searcList">
-            <div className="searchGroup">
-              <button
+          <div className="flex items-center searcList space-x-2">
+            <div className="searchGroup space-x-2">
+              <Button
+              sx={{background:'#42A1DA'}}
                 onClick={handleAllAddToJobCard}
-                className="SearchBtn mr-2"
+                className=""
               >
                 All{" "}
-              </button>
+              </Button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
@@ -1635,9 +1638,9 @@ const AddJobCard = () => {
                 placeholder="Search"
               />
             </div>
-            <button onClick={handleFilterType} className="SearchBtn ">
+            <Button sx={{background:'#42A1DA'}} onClick={handleFilterType} className="SearchBtn ">
               Search{" "}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

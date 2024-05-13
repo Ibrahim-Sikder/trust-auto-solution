@@ -4,7 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { countries } from "../../../constant";
 const UpdateInvoice = () => {
@@ -314,12 +314,18 @@ const UpdateInvoice = () => {
   return (
     <div className="px-5 py-10">
       <div className="flex md:flex-row flex-col items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
-        <img src={logo} alt="logo" className="md:block hidden w-[70px] md:w-[210px]" />
+        <img
+          src={logo}
+          alt="logo"
+          className="md:block hidden w-[70px] md:w-[210px]"
+        />
         <div>
           <h2 className=" trustAutoTitle trustAutoTitleQutation">
             Trust Auto Solution{" "}
           </h2>
-          <span className="mt-5 block text-center">Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229</span>
+          <span className="mt-5 block text-center">
+            Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
+          </span>
         </div>
         <div className="space-y-1 text-justify">
           <span className="block">
@@ -776,10 +782,10 @@ const UpdateInvoice = () => {
             <span>{calculateDue() ? calculateDue() : specificInvoice.due}</span>
           </div>
         </div>
-        <div className="mb-12">
-          <button onClick={handleOnSubmit} className="addJobBtn">
+        <div className="mb-12 flex justify-center ">
+          <Button sx={{background: '#42A1DA'}} onClick={handleOnSubmit} className="addJobBtn">
             Update Invoice{" "}
-          </button>
+          </Button>
         </div>
 
         {error && <div className="pt-6 text-center text-red-400">{error}</div>}
