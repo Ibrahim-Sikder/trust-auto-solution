@@ -79,22 +79,55 @@ const AddShowRoom = () => {
     setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
   };
 
-  // country code set 
+  // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
+ 
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setPhoneNumber(newPhoneNumber);
     }
   };
   const handleDriverPhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setDriverPhoneNumber(newPhoneNumber);
     }
+  };
+  const handleCarRegistrationChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    if (value.length > 2) {
+      value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
+    }
+
+    if (value.length > 7) {
+      value = value.slice(0, 7); // Ensure the value does not exceed 7 characters
+    }
+
+    setRegistrationError(""); // Clear previous error
+    if (value.length !== 7) {
+      setRegistrationError("Car registration number must be 7 characters");
+    }
+
+    // Update input value
+    setValue("car_registration_no", value, {
+      shouldValidate: true,
+    });
   };
 
   const onSubmit = async (data) => {
@@ -457,7 +490,7 @@ const AddShowRoom = () => {
                 </div> */}
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -476,7 +509,7 @@ const AddShowRoom = () => {
                     )}
                   />
                   <TextField
-                   {...register("company_contact")}
+                    {...register("company_contact")}
                     className="productField2"
                     label="Company Contact No (N)"
                     variant="outlined"
@@ -485,9 +518,7 @@ const AddShowRoom = () => {
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-                     
                   />
-                   
                 </div>
                 <div>
                   <TextField
@@ -531,7 +562,7 @@ const AddShowRoom = () => {
                 </div> */}
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -550,7 +581,7 @@ const AddShowRoom = () => {
                     )}
                   />
                   <TextField
-                   {...register("driver_contact")}
+                    {...register("driver_contact")}
                     className="productField2"
                     label="Driver Contact No (N)"
                     variant="outlined"
@@ -559,7 +590,6 @@ const AddShowRoom = () => {
                     value={driverPhoneNumber}
                     onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
-                     
                   />
                 </div>
                 <div>
@@ -605,23 +635,7 @@ const AddShowRoom = () => {
                           "Car registration number must be exactly 7 characters",
                       },
                     })}
-                    onChange={(e) => {
-                      let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-                      if (value.length > 2) {
-                        value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
-                      }
-
-                      setRegistrationError(""); // Clear previous error
-                      if (value.length !== 7) {
-                        setRegistrationError(
-                          "Car registration number must be 7 characters"
-                        );
-                      }
-                      // Update input value
-                      setValue("car_registration_no", value, {
-                        shouldValidate: true,
-                      });
-                    }}
+                    onChange={handleCarRegistrationChange}
                     error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
