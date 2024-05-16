@@ -197,6 +197,7 @@ const AddQuotation = () => {
         net_total: calculateFinalTotal(),
         input_data: items,
       };
+      console.log(values)
 
       setLoading(true);
       const response = await axios.post(
@@ -923,7 +924,7 @@ const AddQuotation = () => {
               <Button>Print </Button>
             </div>
             <div className="submitQutationBtn">
-              <Button >Add Quotation </Button>
+              <button type="submit">Add Quotation </button>
             </div>
           </div>
           {error && (

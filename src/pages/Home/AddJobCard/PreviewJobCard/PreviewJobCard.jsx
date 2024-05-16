@@ -99,14 +99,13 @@ const PreviewJobCard = () => {
                       </div>
                       <div>
                         <label className="block">Car Registration No</label>
-                        <input
+                        {/* <input
                           type="text"
-                          placeholder="Registration"
-                          defaultValue={`${previewData?.carReg_no || ""} ${
-                            previewData?.car_registration_no || ""
-                          }`}
+                          // defaultValue={`${previewData.car_registration_no}`}
+                          defaultValue={`${previewData.car_registration_no} ${previewData.car_reg_no}`}
                           disabled
-                        />
+                        /> */}
+                        <p>{` ${previewData.carReg_no} ${previewData.car_registration_no} `}</p>
                       </div>
                       <div>
                         <label className="block">Vehicle Model </label>

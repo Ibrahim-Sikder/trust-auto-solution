@@ -640,6 +640,7 @@ const Invoice = () => {
               <div className="flex sm:flex-row flex-col gap-2 items-center mt-3 ">
                 <Autocomplete
                   sx={{ marginRight: "2px" }}
+                 
                   className="jobCardSelect2"
                   freeSolo
                   options={countries}
@@ -961,13 +962,16 @@ const Invoice = () => {
           <div className="mt-8 buttonGroup">
             <div>
               {/* <Link to={}> */}
-              <Button onClick={() => setPreview("preview")}>Preview</Button>
+              <Button type="submit" onClick={() => setPreview("preview")}>
+                Preview
+              </Button>
               {/* </Link> */}
               <Button>Download </Button>
-             
             </div>
             <div className="submitQutationBtn">
-              <Button className="">Add To Invoice </Button>
+              <button type="submit" className="">
+                Add To Invoice{" "}
+              </button>
             </div>
           </div>
           {error && (

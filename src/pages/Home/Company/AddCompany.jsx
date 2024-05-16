@@ -78,10 +78,12 @@ const AddCompany = () => {
     }
   };
   const handleOptionClick = (option) => {
-    setYearSelectInput(option.label);
-    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
+    setYearSelectInput(option.value);
+    setFilteredOptions([]);
+    setValue("vehicle_model", option.label, {
+      shouldValidate: true,
+    });
   };
-
   // country code set 
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");

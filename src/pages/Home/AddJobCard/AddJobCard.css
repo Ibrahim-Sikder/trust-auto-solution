@@ -212,7 +212,6 @@
   font-size: 14px;
 }
 
-
 .jobCardFieldWraps {
   width: 100%;
   display: flex;
@@ -266,47 +265,44 @@
   transform: scaleY(0);
   transform-origin: top;
   transition: all 0.5s ease-in-out;
-  background:#fff;
-  color:#111;
+  background: #fff;
+  color: #111;
 }
 .addCustomerRelative:hover .addCustomerDropDown {
   transform: scaleY(1);
 }
-
+.jobCardSelect2 {
+  width: 210px !important;
+}
 
 @media only screen and (min-width: 1441px) {
-  .vehicleInputs{
-    width:638px !important;
-  }	
- 
+  .vehicleInputs {
+    width: 638px !important;
+  }
 }
 @media only screen and (max-width: 1440px) {
-  .vehicleInputs{
-    width:310px !important;
-  }	
- 
+  .vehicleInputs {
+    width: 310px !important;
+  }
+  .carRegField {
+    width: 410px !important;
+  }
 }
 @media only screen and (min-width: 1024px) {
-	.addJobInputField{
-		width: 98% !important;
-		margin-right:10px;
-	
-	}	
- 
+  .addJobInputField {
+    width: 98% !important;
+    margin-right: 10px;
+  }
+
 }
 
 @media only screen and (max-width: 1024px) {
-
- 
- 
-
-
   .jobCardSingleForm label {
     font-size: 12px;
   }
   .vehicleCard {
     font-size: 21px;
-	width: 15rem;
+    width: 15rem;
   }
   .addJobLogoImg {
     width: 152px;
@@ -318,30 +314,23 @@
   .trustAuto {
     font-size: 52px;
   }
-.jobCardSelect2{
-	width:200px !important;
-}
-.imgWrap {
+
+  .imgWrap {
     height: 617px;
     margin-top: 36px;
-}
+  }
 
-.vehicleReportRightSide textarea {
-  height: 119px;
-}
-
-
+  .vehicleReportRightSide textarea {
+    height: 119px;
+  }
 }
 
 @media only screen and (max-width: 900px) {
-
-	.addJobInputField{
-	  width: 100% !important;
-	  margin-right:0px !important;
+  .addJobInputField {
+    width: 100% !important;
+    margin-right: 0px !important;
   }
-  
 }
-
 
 @media only screen and (max-width: 768px) {
   .addJobLogoImg {
@@ -398,14 +387,14 @@
     padding-right: 0px;
   }
 
-  .jobCardSelect2{
-	width:100% !important;
-}
-.imgWrap {
-  height: 300px;
-}
 
-
+  .imgWrap {
+    height: 300px;
+  }
+  .carRegField {
+    width: 100% !important;
+  }
+  
 }
 
 @media only screen and (max-width: 500px) {
@@ -430,30 +419,23 @@
     margin: 0 auto;
   }
 
-  .searchGroup input, .addJobBtn {
+  .searchGroup input,
+  .addJobBtn {
     width: 100%;
-}
-.carRegField{
-  width:100% !important;
-  
-}
-
-
+  }
+ 
 }
 
 @media only screen and (max-width: 375px) {
   .ownerInput {
-    width: 310px !important;
+    width: 250px !important;
   }
-
 }
 @media only screen and (max-width: 275px) {
   .ownerInput {
     width: 200px !important;
   }
-
 }
-
 
 /* CSS for responsive table */
 .table {

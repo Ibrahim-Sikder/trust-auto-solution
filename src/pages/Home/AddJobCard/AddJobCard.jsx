@@ -47,6 +47,7 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
+  console.log(showCustomerData)
   const inputRef = useRef(null); // Create a ref for the input element
   const [inputValue, setInputValue] = useState(""); // Controlled input value state
 
@@ -105,11 +106,13 @@ const AddJobCard = () => {
   const [value2, setValue2] = useState("");
   const [value3, setValue3] = useState("");
   const [reload, setReload] = useState(false);
+  // const [VModelValue, setVModelValue] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue:setVModelValue,
     formState: { errors },
   } = useForm();
 
@@ -238,6 +241,7 @@ const AddJobCard = () => {
   // Handle input changes
   const handleYearSelectInput = (event) => {
     const value = event.target.value;
+    console.log(value)
     // Check if the input is a number and does not exceed 4 digits
     if (/^\d{0,4}$/.test(value)) {
       setYearSelectInput(value);
@@ -247,11 +251,17 @@ const AddJobCard = () => {
       setFilteredOptions(filtered);
     }
   };
-  const handleOptionClick = (option) => {
-    setYearSelectInput(option.label);
-    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
-  };
 
+ 
+  const handleOptionClick = (option) => {
+    setYearSelectInput(option.value); 
+    setFilteredOptions([]);
+    setVModelValue("vehicle_model", option.label,{
+      shouldValidate:true
+    })
+    
+  };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -641,7 +651,7 @@ const AddJobCard = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div>
-          <div className=" flex md:flex-row flex-col items-center justify-between my-5 ">
+          <div className=" flex lg:flex-row flex-col items-center justify-between my-5 text-center ">
             <div>
               <div>
                 <b>
@@ -1292,6 +1302,7 @@ const AddJobCard = () => {
                 /> */}
 
                 <input
+                 focused={showCustomerData?.vehicle_model}
                   value={yearSelectInput}
                   onInput={handleYearSelectInput}
                   {...register("vehicle_model")}

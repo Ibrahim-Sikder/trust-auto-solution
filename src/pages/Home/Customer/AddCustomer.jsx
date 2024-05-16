@@ -99,6 +99,7 @@ const AddCustomer = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    console.log(data)
     setLoading(true);
     // const uniqueId = 'Id_' + Math.random().toString(36).substr(2, 9);
     const customerNamePrefix = "TAS-C:";
@@ -114,7 +115,6 @@ const AddCustomer = () => {
         `${import.meta.env.VITE_API_URL}/api/v1/customer`,
         data
       );
-
       if (response.data.message === "Successfully add to customer post") {
         setReload(!reload);
         Cookies.set("trust_auto_id", response.data.result.customerId);
@@ -279,8 +279,11 @@ const AddCustomer = () => {
     }
   };
   const handleOptionClick = (option) => {
-    setYearSelectInput(option.label);
-    setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
+    setYearSelectInput(option.value);
+    setFilteredOptions([]);
+    setValue("vehicle_model", option.label, {
+      shouldValidate: true,
+    });
   };
 
   const renderData = (customerData) => {
@@ -417,13 +420,13 @@ const AddCustomer = () => {
   return (
     <section>
       <div className=" addProductWraps">
-      <div className="flex justify-between pb-3 border-b-2 px-2">
-        <HeaderButton/>
-        <div className="flex items-end justify-end">
-          <NotificationAdd size={30} className="mr-2" />
-          <FaUserGear size={30} />
+        <div className="flex justify-between pb-3 border-b-2 px-2">
+          <HeaderButton />
+          <div className="flex items-end justify-end">
+            <NotificationAdd size={30} className="mr-2" />
+            <FaUserGear size={30} />
+          </div>
         </div>
-      </div>
         <div className="productHeadWrap">
           <div className="flex flex-wrap items-center justify-center">
             <HiOutlineUserGroup className="invoicIcon" />
@@ -517,10 +520,8 @@ const AddCustomer = () => {
                     )}
                   />
                   <TextField
-
                     {...register("customer_contact")}
                     className="productField2"
-
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth

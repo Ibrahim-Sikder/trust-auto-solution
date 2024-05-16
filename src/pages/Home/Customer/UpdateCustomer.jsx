@@ -67,6 +67,7 @@ const UpdateCustomer = () => {
 
   const [loading, setLoading] = useState(false);
   const [singleCard, setSingleCard] = useState({});
+  console.log(singleCard)
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -102,6 +103,7 @@ const UpdateCustomer = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log(data)
     setLoading(true);
 
     const values = {
@@ -160,14 +162,13 @@ const UpdateCustomer = () => {
           <div className="flex flex-wrap items-center justify-center">
             <HiOutlineUserGroup className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-sm font-bold md:text-2xl"> New Company </h3>
-              <span>Update New Company </span>
+              <h3 className="text-sm font-bold md:text-2xl"> Update Customer </h3>
+              <span>Update New Customer </span>
             </div>
           </div>
           <div className="productHome">
-            <span>Home / </span>
-            <span>Product / </span>
-            <span>New Company </span>
+            <span>Dashboard / </span>
+            <span>New Customer </span>
           </div>
         </div>
 
@@ -637,12 +638,13 @@ const UpdateCustomer = () => {
                   /> */}
 
                   <input
-                    value={yearSelectInput}
+                    value={singleCard?.vehicle_model}
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"
                     className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
                     placeholder="Vehicle Model"
+                    defaultValue={singleCard?.vehicle_model}
                   />
 
                   {yearSelectInput && (

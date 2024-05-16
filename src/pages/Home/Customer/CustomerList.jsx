@@ -269,7 +269,7 @@ const CustomerList = () => {
   return (
     <div className="w-full mt-5 mb-24">
       <div className="flex justify-between pb-3 border-b-2">
-        <HeaderButton/>
+        <HeaderButton />
         <div className="flex items-end justify-end">
           <NotificationAdd size={30} className="mr-2" />
           <FaUserGear size={30} />
@@ -285,7 +285,6 @@ const CustomerList = () => {
         </div>
         <div className="mt-2 productHome md:mt-0 ">
           <span>Dashboard / </span>
-          <span>Customer / </span>
           <span> Customer List</span>
         </div>
       </div>

@@ -406,7 +406,7 @@ const MoneyReceiptView = () => {
               <div>
                 <input
                   {...register("date_one", { required: true })}
-                  className="cashInput moneyViewInputField"
+                  className="cashInput moneyViewInputField cursor-pointer"
                   type="date"
                   autoComplete="off"
                 />

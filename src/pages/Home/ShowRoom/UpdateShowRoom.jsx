@@ -20,6 +20,8 @@ import { toast } from "react-toastify";
 
 import { HiOfficeBuilding } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
+import { NotificationAdd } from "@mui/icons-material";
+import { FaUserGear } from "react-icons/fa6";
 
 const UpdateShowRoom = () => {
   const [showRoomData, setShowRoomData] = useState({});
@@ -157,7 +159,13 @@ const UpdateShowRoom = () => {
   return (
     <section>
       <div className=" addProductWraps">
-       <HeaderButton/>
+      <div className="flex justify-between pb-3 border-b-2 px-2">
+          <HeaderButton />
+          <div className="flex items-end justify-end">
+            <NotificationAdd size={30} className="mr-2" />
+            <FaUserGear size={30} />
+          </div>
+        </div>
         <div className="productHeadWrap">
           <div className="flex items-center justify-center ">
             <HiOfficeBuilding className="invoicIcon" />
@@ -663,7 +671,7 @@ const UpdateShowRoom = () => {
                     }}
                   /> */}
                   <input
-                    value={yearSelectInput}
+                    value={showRoomData?.vehicle_model}
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"

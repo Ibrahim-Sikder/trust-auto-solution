@@ -2,11 +2,7 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import { FaFileInvoice, FaEye, FaTrashAlt, FaEdit } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -101,6 +97,7 @@ const UpdateCompany = () => {
 
   const [loading, setLoading] = useState(false);
   const [singleCard, setSingleCard] = useState({});
+  console.log(singleCard);
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -164,7 +161,7 @@ const UpdateCompany = () => {
   return (
     <section>
       <div className=" addProductWraps">
-      <div className="flex justify-between pb-3 border-b-2 px-2">
+        <div className="flex justify-between pb-3 border-b-2 px-2">
           <HeaderButton />
           <div className="flex items-end justify-end">
             <NotificationAdd size={30} className="mr-2" />
@@ -620,12 +617,13 @@ const UpdateCompany = () => {
                     }}
                   /> */}
                   <input
-                    value={yearSelectInput}
+                    value={singleCard.vehicle_model}
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"
                     className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
-                    placeholder="Vehicle Model"
+                    placeholder={singleCard.vehicle_model}
+                    defaultValue={singleCard.vehicle_model}
                   />
 
                   {yearSelectInput && (
