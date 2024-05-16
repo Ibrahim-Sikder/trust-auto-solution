@@ -87,6 +87,7 @@ const AddShowRoom = () => {
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
+ 
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
@@ -111,6 +112,26 @@ const AddShowRoom = () => {
     ) {
       setDriverPhoneNumber(newPhoneNumber);
     }
+  };
+  const handleCarRegistrationChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    if (value.length > 2) {
+      value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
+    }
+
+    if (value.length > 7) {
+      value = value.slice(0, 7); // Ensure the value does not exceed 7 characters
+    }
+
+    setRegistrationError(""); // Clear previous error
+    if (value.length !== 7) {
+      setRegistrationError("Car registration number must be 7 characters");
+    }
+
+    // Update input value
+    setValue("car_registration_no", value, {
+      shouldValidate: true,
+    });
   };
 
   const onSubmit = async (data) => {
@@ -614,23 +635,7 @@ const AddShowRoom = () => {
                           "Car registration number must be exactly 7 characters",
                       },
                     })}
-                    onChange={(e) => {
-                      let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-                      if (value.length > 2) {
-                        value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
-                      }
-
-                      setRegistrationError(""); // Clear previous error
-                      if (value.length !== 7) {
-                        setRegistrationError(
-                          "Car registration number must be 7 characters"
-                        );
-                      }
-                      // Update input value
-                      setValue("car_registration_no", value, {
-                        shouldValidate: true,
-                      });
-                    }}
+                    onChange={handleCarRegistrationChange}
                     error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
