@@ -84,11 +84,14 @@ const ShowRoomAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon ">
-                <p>
-                  {new Date(jobCardData[0]?.createdAt).toLocaleString("en-US", {
-                    month: "short",
-                  })}
+                <p className="text-[10px]">
+                  {jobCardData[0]
+                    ? `${new Date(
+                        jobCardData[0]?.createdAt
+                      ).toLocaleString("en-US", { month: "short" })}`
+                    : "No Job Card"}
                 </p>
+                <p></p>
                 {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[0]?.Id}>
                     <b>{jobCardData[0]?.date?.slice(0, 2)}</b>
@@ -118,10 +121,12 @@ const ShowRoomAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <p>
-                  {new Date(jobCardData[1]?.createdAt).toLocaleString("en-US", {
-                    month: "short",
-                  })}
+                <p className="text-[10px]" >
+                  {jobCardData[1]
+                    ? `${new Date(
+                        jobCardData[0]?.createdAt
+                      ).toLocaleString("en-US", { month: "short" })}`
+                    : "No Job Card"}
                 </p>
                 {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[1]?.Id}>
@@ -162,11 +167,13 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <p>
-                  {new Date(quotationData[0]?.createdAt).toLocaleString(
-                    "en-US",
-                    { month: "short" }
-                  )}
+                  {quotationData[0]
+                    ? `${new Date(
+                        quotationData[0]?.createdAt
+                      ).toLocaleString("en-US", { month: "short" })}`
+                    : "No Quotation"}
                 </p>
+
                 {quotationData && quotationData.length > 0 && (
                   <div key={quotationData[0]?.Id}>
                     <b>{quotationData[0]?.date?.slice(0, 2)}</b>
@@ -195,12 +202,14 @@ const ShowRoomAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <p>
-                  {new Date(quotationData[1]?.createdAt).toLocaleString(
-                    "en-US",
-                    { month: "short" }
-                  )}
+                <p className="text-[10px]">
+                  {quotationData[1]
+                    ? `${new Date(
+                        quotationData[1]?.createdAt
+                      ).toLocaleString("en-US", { month: "short" })}`
+                    : "No Quotation"}
                 </p>
+
                 {quotationData && quotationData?.length > 0 && (
                   <div key={quotationData[1]?.Id}>
                     <b>{quotationData[1]?.date?.slice(0, 2)}</b>
@@ -240,11 +249,15 @@ const ShowRoomAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon ">
-                <p>
-                  {new Date(invoiceData[0]?.createdAt).toLocaleString("en-US", {
-                    month: "short",
-                  })}
+                <p className="text-[10px]">
+                  {invoiceData[0]
+                    ? `${new Date(
+                        invoiceData[0]?.createdAt
+                      ).toLocaleString("en-US", { month: "short" })}`
+                    : "No Invoice"}
                 </p>
+
+                <p></p>
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[0]?.Id}>
                     <b>{invoiceData[0]?.date?.slice(0, 2)}</b>
@@ -273,11 +286,16 @@ const ShowRoomAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <p>
-                  {new Date(invoiceData[1]?.createdAt).toLocaleString("en-US", {
-                    month: "short",
-                  })}
+              <p>
+                  {invoiceData[1]
+                    ? `${new Date(
+                      invoiceData[1]?.createdAt
+                      ).toLocaleString("en-US", { month: "short" })}`
+                    : "No Invoice"}
                 </p>
+
+             
+
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[1]?.Id}>
                     <b>{invoiceData[1]?.date?.slice(0, 2)}</b>
@@ -318,11 +336,14 @@ const ShowRoomAccount = ({
                 <b className="block"></b>
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
-                    <p>
-                      {new Date(
-                        moneyReceiptData[0]?.createdAt
-                      ).toLocaleString("en-US", { month: "short" })}
+                    <p className="text-[10px]">
+                      {moneyReceiptData[0]
+                        ? `${new Date(
+                            moneyReceiptData[0]?.createdAt
+                          ).toLocaleString("en-US", { month: "short" })}`
+                        : "No Money Receipt"}
                     </p>
+
                     <b>{moneyReceiptData[0]?.createdAt?.slice(0, 2)}</b>
                   </div>
                 )}
@@ -358,10 +379,12 @@ const ShowRoomAccount = ({
                 <b className="block"></b>
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
-                    <p>
-                      {new Date(
-                        moneyReceiptData[0]?.createdAt
-                      ).toLocaleString("en-US", { month: "short" })}
+                    <p className="text-[10px]">
+                      {moneyReceiptData[1]
+                        ? `${new Date(
+                            moneyReceiptData[1]?.createdAt
+                          ).toLocaleString("en-US", { month: "short" })}`
+                        : "No Money Receipt"}
                     </p>
                     <b>{moneyReceiptData[1]?.createdAt?.slice(0, 2)}</b>
                   </div>

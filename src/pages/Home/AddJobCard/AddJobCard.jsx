@@ -651,7 +651,7 @@ const AddJobCard = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
         <div>
-          <div className=" flex lg:flex-row flex-col items-center justify-between my-5 text-center ">
+          <div className=" flex lg:flex-row flex-col items-center justify-between my-5 lg:text-left text-center ">
             <div>
               <div>
                 <b>
@@ -1596,35 +1596,35 @@ const AddJobCard = () => {
 
           <div className="mt-5 buttonGroup">
             <div>
-              <Button
+              <button
                 disabled={loading}
                 onClick={() => setClickControl("preview")}
               >
                 Preview
-              </Button>
+              </button>
 
-              <Button
+              <button
                 disabled={loading}
                 onClick={() => setClickControl("quotation")}
               >
                 Quotation
-              </Button>
+              </button>
 
-              <Button
+              <button
                 disabled={loading}
                 onClick={() => setClickControl("invoice")}
               >
                 Invoice
-              </Button>
+              </button>
             </div>
             <div className="submitQutationBtn">
-              <Button
+              <button
                 disabled={loading}
                 // onClick={handleAddToCard
                 type="submit"
               >
                 Add To Job Card{" "}
-              </Button>
+              </button>
             </div>
           </div>
           {/* <div className="pt-6 text-center text-red-400">{error}</div> */}

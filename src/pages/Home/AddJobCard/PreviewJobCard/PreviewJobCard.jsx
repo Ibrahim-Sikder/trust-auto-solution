@@ -172,7 +172,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Vehicle Category "
-                          defaultValue={previewData.mileage}
+                          defaultValue={previewData.vehicle_category}
                           disabled
                         />
                       </div>
@@ -281,7 +281,7 @@ const PreviewJobCard = () => {
                     <label>Note</label>
                     <textarea
                       className="note"
-                      defaultValue={previewData.vehicle_body_report}
+                      defaultValue={previewData.note}
                       readOnly
                     ></textarea>
                   </div>
