@@ -8,9 +8,10 @@ import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { countries } from "../../../constant";
 import TADatePickers from "../../../components/form/TADatePickers";
+import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 const UpdateInvoice = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
-console.log(specificInvoice)
+  console.log(specificInvoice);
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
@@ -328,16 +329,7 @@ console.log(specificInvoice)
             Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
           </span>
         </div>
-        <div className="space-y-1 text-justify">
-            <span className="block">
-              <span className="font-bold">Mobile:</span>+880 1821-216465
-            </span>
-            <span className="block">
-              <small className="font-bold">Email:</small>{" "}
-              trustautosolution@gmail.com
-            </span>
-            <span className="block font-bold ">www.trustautosolution.com</span>
-          </div>
+       <TrustAutoAddress/>
       </div>
       <div className="flex flex-col md:flex-row justify-between items-center">
         <div className="hidden"></div>

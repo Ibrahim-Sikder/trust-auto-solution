@@ -7,6 +7,7 @@ import {
   FaArrowRight,
   FaArrowLeft,
   FaEye,
+  FaGlobe,
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import "./Invoice.css";
@@ -26,6 +27,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { countries } from "../../../constant";
 import { Button } from "react-scroll";
+import { Email, WhatsApp } from "@mui/icons-material";
+import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 
 const theme = createTheme({
   // Your theme configuration
@@ -533,16 +536,7 @@ const Invoice = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-          <div className="space-y-1 text-justify">
-            <span className="block">
-              <span className="font-bold">Mobile:</span>+880 1821-216465
-            </span>
-            <span className="block">
-              <small className="font-bold">Email:</small>{" "}
-              trustautosolution@gmail.com
-            </span>
-            <span className="block font-bold ">www.trustautosolution.com</span>
-          </div>
+          <TrustAutoAddress/>
         </div>
       </div>
       <div className="mt-5">

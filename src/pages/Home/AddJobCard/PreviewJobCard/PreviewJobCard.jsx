@@ -343,7 +343,7 @@ const PreviewJobCard = () => {
               </p>
               <p className="text-xs">
                 {" "}
-                <b>Mobile:</b> 01821-216465, 01972-216465 , <b>Email:</b>{" "}
+                <b>Mobile:</b>+880 1821-216465, +880 1972-216465 , <b>Email:</b>{" "}
                 trustautosolution@gmail.com{" "}
               </p>
             </div>

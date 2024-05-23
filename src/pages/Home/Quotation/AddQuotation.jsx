@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { countries } from "../../../constant";
+import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 
 const AddQuotation = () => {
   const [select, setSelect] = useState(null);
@@ -197,7 +198,7 @@ const AddQuotation = () => {
         net_total: calculateFinalTotal(),
         input_data: items,
       };
-      console.log(values)
+      console.log(values);
 
       setLoading(true);
       const response = await axios.post(
@@ -507,16 +508,7 @@ const AddQuotation = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-          <div className="space-y-1 text-justify jobCardContactInfo">
-            <span className="block">
-              <span className="font-bold">Mobile:</span> 01821-216465
-            </span>
-            <span className="block">
-              <small className="font-bold">Email:</small>{" "}
-              trustautosolution@gmail.com
-            </span>
-            <span className="block font-bold ">trustautosolution.com</span>
-          </div>
+          <TrustAutoAddress/>
         </div>
       </div>
       <div className="mt-5">
@@ -595,7 +587,6 @@ const AddQuotation = () => {
               <div className="mt-3">
                 <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
                   <Autocomplete
-                   
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -616,7 +607,6 @@ const AddQuotation = () => {
                   <TextField
                     {...register("customer_contact")}
                     className="carRegField"
-               
                     variant="outlined"
                     fullWidth
                     type="tel"
@@ -942,7 +932,10 @@ const AddQuotation = () => {
           </h3>
           <div className="flex items-center searcList">
             <div className="searchGroup space-x-2">
-              <Button sx={{background:'#42A1DA'}} onClick={handleAllQuotation}>
+              <Button
+                sx={{ background: "#42A1DA" }}
+                onClick={handleAllQuotation}
+              >
                 All
               </Button>
               <input

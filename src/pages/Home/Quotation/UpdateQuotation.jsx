@@ -8,6 +8,7 @@ import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { countries } from "../../../constant";
+import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
 
@@ -297,19 +298,10 @@ const UpdateQuotation = () => {
             Trust Auto Solution{" "}
           </h2>
           <span className="text-[12px] lg:text-xl mt-5 block">
-              Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
-            </span>
-        </div>
-        <div className="space-y-1 text-justify jobCardContactInfo">
-          <span className="block">
-            <span className="font-bold">Mobile:</span> 345689789666
+            Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
           </span>
-          <span className="block">
-            <small className="font-bold">Email:</small>{" "}
-            trustautosolution@gmail.com
-          </span>
-          <span className="block font-bold ">trustautosolution.com</span>
         </div>
+        <TrustAutoAddress />
       </div>
 
       <div className="mt-5">
@@ -398,7 +390,6 @@ const UpdateQuotation = () => {
                 />
               </div>
               <div className="mt-3">
-
                 {/* <TextField
                   className="addJobInputField"
                   label="Phone"
@@ -415,10 +406,7 @@ const UpdateQuotation = () => {
                   }}
                 /> */}
                 <div className="flex sm:flex-row flex-col gap-1 items-center">
-             
-
                   <Autocomplete
-                  
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -837,11 +825,15 @@ const UpdateQuotation = () => {
           </div>
         </div>
         <div>
-         <div className="flex  justify-center align-items-center">
-         <Button sx={{background: '#42A1DA'}} onClick={handleOnSubmit} className="addJobBtn">
-            Update Quotation
-          </Button>
-         </div>
+          <div className="flex  justify-center align-items-center">
+            <Button
+              sx={{ background: "#42A1DA" }}
+              onClick={handleOnSubmit}
+              className="addJobBtn"
+            >
+              Update Quotation
+            </Button>
+          </div>
         </div>
 
         {error && <div className="pt-6 text-center text-red-400">{error}</div>}

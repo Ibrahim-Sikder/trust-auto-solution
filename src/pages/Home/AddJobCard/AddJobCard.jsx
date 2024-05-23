@@ -36,6 +36,7 @@ import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
 import { formatDate } from "../../../utils/formateDate";
 import { Email, WhatsApp } from "@mui/icons-material";
 import { FaLocationDot } from "react-icons/fa6";
+import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 
 const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
@@ -637,30 +638,8 @@ const AddJobCard = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-          {/* <div className="space-y-1 text-justify jobCardContactInfo">
-            <span className="block">
-              <span className="font-bold">Mobile:</span>+880 1821-216465
-            </span>
-            <span className="block">
-              <small className="font-bold">Email:</small>{" "}
-              trustautosolution@gmail.com
-            </span>
-            <span className="block font-bold ">www.trustautosolution.com</span>
-          </div> */}
-          <div className="space-y-2">
-            <div className="flex items-center ">
-              <FaGlobe className="hotlineIcon" />
-              <small className="ml-1">www.trustautosolution.com</small>
-            </div>
-            <div className="flex items-center">
-              <Email className="hotlineIcon" />
-              <small className="ml-1">trustautosolution@gmail.com</small>
-            </div>
-            <div className="flex items-center ">
-              <WhatsApp className="hotlineIcon" />
-              <small className="ml-1">+880 1821-216465</small>
-            </div>
-          </div>
+         
+         <TrustAutoAddress/>
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>

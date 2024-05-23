@@ -19,6 +19,9 @@ import {
 } from "../../../constant";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
 import { CalendarIcon } from "@mui/x-date-pickers";
+import { FaGlobe } from "react-icons/fa";
+import { Email, WhatsApp } from "@mui/icons-material";
+import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 
 const UpdateJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
@@ -252,16 +255,7 @@ const UpdateJobCard = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-          <div className="space-y-1 text-justify jobCardContactInfo">
-            <span className="block">
-              <span className="font-bold">Mobile:</span>+880 1821-216465
-            </span>
-            <span className="block">
-              <small className="font-bold">Email:</small>{" "}
-              trustautosolution@gmail.com
-            </span>
-            <span className="block font-bold ">www.trustautosolution.com</span>
-          </div>
+         <TrustAutoAddress/>
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -421,7 +415,7 @@ const UpdateJobCard = () => {
               <div className="mt-3">
                 <div className="flex items-center">
                   <Autocomplete
-                   sx={{marginRight:'2px'}}
+                    sx={{ marginRight: "2px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -446,7 +440,9 @@ const UpdateJobCard = () => {
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber ? phoneNumber : singleCard?.customer_contact}
+                    value={
+                      phoneNumber ? phoneNumber : singleCard?.customer_contact
+                    }
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
                     InputLabelProps={{
@@ -566,13 +562,16 @@ const UpdateJobCard = () => {
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={driverPhoneNumber ? driverPhoneNumber : singleCard?.driver_contact}
+                    value={
+                      driverPhoneNumber
+                        ? driverPhoneNumber
+                        : singleCard?.driver_contact
+                    }
                     onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
                     InputLabelProps={{
                       shrink: !!singleCard.driver_contact,
                     }}
-                   
                   />
                   {/* <TextField
                     className="carRegField"
@@ -646,7 +645,7 @@ const UpdateJobCard = () => {
                   )}
                 /> */}
                   <Autocomplete
-                  sx={{marginRight:'5px'}}
+                    sx={{ marginRight: "5px" }}
                     freeSolo
                     className="jobCardSelect2"
                     value={singleCard?.carReg_no || ""}
@@ -804,7 +803,7 @@ const UpdateJobCard = () => {
                     freeSolo
                     Vehicle
                     Name
-                    value={singleCard?.vehicle_name || ''}
+                    value={singleCard?.vehicle_name || ""}
                     options={filteredVehicles.map((option) => option.value)}
                     renderInput={(params) => (
                       <TextField

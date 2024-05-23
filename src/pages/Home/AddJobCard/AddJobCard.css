@@ -404,10 +404,6 @@
 }
 
 @media only screen and (max-width: 500px) {
-  .jobCardContactInfo {
-    margin-left: 20px;
-    margin-top: 10px;
-  }
   .trustAutoTitle {
     font-size: 22px !important;
   }
