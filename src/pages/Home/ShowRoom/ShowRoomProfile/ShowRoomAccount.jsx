@@ -121,7 +121,7 @@ const ShowRoomAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <p className="text-[10px]" >
+                <p className="text-[10px]">
                   {jobCardData[1]
                     ? `${new Date(
                         jobCardData[0]?.createdAt
@@ -286,15 +286,13 @@ const ShowRoomAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-              <p>
+                <p>
                   {invoiceData[1]
                     ? `${new Date(
-                      invoiceData[1]?.createdAt
+                        invoiceData[1]?.createdAt
                       ).toLocaleString("en-US", { month: "short" })}`
                     : "No Invoice"}
                 </p>
-
-             
 
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[1]?.Id}>
@@ -367,7 +365,9 @@ const ShowRoomAccount = ({
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${moneyReceiptData[0]?._id}`}>
+            <Link
+              to={`/dashboard/money-receipt-view?id=${moneyReceiptData[0]?._id}`}
+            >
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>

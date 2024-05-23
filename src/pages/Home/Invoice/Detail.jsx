@@ -63,7 +63,7 @@ const Detail = () => {
     // const itemsPerPage = calculateItemsPerPage();
     const totalPagesCount = Math.ceil(invoicePreview?.input_data?.length / 28);
     setTotalPages(totalPagesCount || 1);
-  }, [invoicePreview.input_data]);
+  }, [invoicePreview?.input_data]);
 
   useEffect(() => {
     const allPagesData = [];
@@ -78,7 +78,7 @@ const Detail = () => {
     }
 
     setPagesData(allPagesData);
-  }, [totalPages, invoicePreview.input_data]);
+  }, [totalPages, invoicePreview?.input_data]);
 
   const amountInWords = (amount) => {
     const numberWords = [
@@ -193,7 +193,7 @@ const Detail = () => {
     return `${takaInWords} only`;
   };
 
-  const totalAmountInWords = amountInWords(invoicePreview.due);
+  const totalAmountInWords = amountInWords(invoicePreview?.due);
 
   return (
     <div ref={componentRef} className="h-screen">
@@ -234,7 +234,7 @@ const Detail = () => {
                     <span className="w-[200px]">
                       {" "}
                       <b>Customer ID: </b>
-                      {invoicePreview.Id}
+                      {invoicePreview?.Id}
                     </span>
                     <b className="mr-[88px] uppercase">Invoice</b>
                     <b>Date: {formatDate(invoicePreview?.createdAt)}</b>
@@ -251,11 +251,11 @@ const Detail = () => {
                           <b>Address</b>
                         </div>
                         <div className="invoiceCustomerInfo">
-                          <small>: {invoicePreview.job_no}</small>
-                          <small>: {invoicePreview.company_name}</small>
-                          <small>: {invoicePreview.customer_name}</small>
-                          <small>: {invoicePreview.customer_contact}</small>
-                          <small>: {invoicePreview.customer_address}</small>
+                          <small>: {invoicePreview?.job_no}</small>
+                          <small>: {invoicePreview?.company_name}</small>
+                          <small>: {invoicePreview?.customer_name}</small>
+                          <small>: {invoicePreview?.customer_contact}</small>
+                          <small>: {invoicePreview?.customer_address}</small>
                         </div>
                       </div>
                       <div className="invoiceLine"></div>
@@ -268,11 +268,11 @@ const Detail = () => {
                           <b>Mileage </b>
                         </div>
                         <div className="invoiceCustomerInfo">
-                          <small>: {invoicePreview.car_registration_no}777777777777777777</small>
-                          <small>: {invoicePreview.chassis_no}</small>
-                          <small>: {invoicePreview.engine_no}</small>
-                          <small>: {invoicePreview.vehicle_name}</small>
-                          <small>: {invoicePreview.mileage}</small>
+                          <small>: {invoicePreview?.car_registration_no}777777777777777777</small>
+                          <small>: {invoicePreview?.chassis_no}</small>
+                          <small>: {invoicePreview?.engine_no}</small>
+                          <small>: {invoicePreview?.vehicle_name}</small>
+                          <small>: {invoicePreview?.mileage}</small>
                         </div>
                       </div>
                     </div>
@@ -327,12 +327,12 @@ const Detail = () => {
                         <b> Due </b>
                       </div>
                       <div>
-                        <small> : {invoicePreview.total_amount}</small>
-                        <small> : {invoicePreview.discount}</small>
-                        <small> : {invoicePreview.vat}%</small>
-                        <small> : {invoicePreview.net_total}</small>
-                        <small> : {invoicePreview.advance}</small>
-                        <small> : {invoicePreview.due}</small>
+                        <small> : {invoicePreview?.total_amount}</small>
+                        <small> : {invoicePreview?.discount}</small>
+                        <small> : {invoicePreview?.vat}%</small>
+                        <small> : {invoicePreview?.net_total}</small>
+                        <small> : {invoicePreview?.advance}</small>
+                        <small> : {invoicePreview?.due}</small>
                       </div>
                     </div>
                   </div>
@@ -362,7 +362,7 @@ const Detail = () => {
           {pageNumber === pagesData.length - 1 && (
             <div className="printInvoiceBtnGroup">
               <button onClick={handlePrint}>Print </button>
-              <button onClick={() => toPDF()}>Pdf </button>
+              {/* <button onClick={() => toPDF()}>Pdf </button> */}
 
               <Link to={`/dashboard/update-invoice?id=${id}`}>
                 <button> Edit </button>

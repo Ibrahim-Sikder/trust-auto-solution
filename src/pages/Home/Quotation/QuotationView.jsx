@@ -370,7 +370,7 @@ const Detail = () => {
             {pageNumber === pagesData?.length - 1 && (
               <div className="printInvoiceBtnGroup">
                 <button onClick={handlePrint}>Print </button>
-                <button onClick={() => toPDF()}>Pdf </button>
+                {/* <button onClick={() => toPDF()}>Pdf </button> */}
 
                 <Link to={`/dashboard/update-quotation?id=${id}`}>
                   <button> Edit </button>

@@ -54,7 +54,7 @@ const CompanyAccount = ({
       </Card>
       <Card>
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-semibold">Recent Quotation </h3>
+            <h3 className="text-xl font-semibold">Recent Vehicle </h3>
             <Link to="/dashboard/qutation">
               {" "}
               <FaRegEdit size={30} />
@@ -414,7 +414,7 @@ const CompanyAccount = ({
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${moneyReceiptData[0]?._id}`}>
+            <Link to={`/dashboard/money-receipt-view?id=${moneyReceiptData[0]?._id}`}>
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>

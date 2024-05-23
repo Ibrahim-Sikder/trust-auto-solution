@@ -120,7 +120,7 @@ const CustomerAccount = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
-                <p className="text-[10px]" >
+                <p className="text-[10px]">
                   {jobCardData[1]
                     ? `${new Date(
                         jobCardData[0]?.createdAt
@@ -361,10 +361,12 @@ const CustomerAccount = ({
                       <b> ৳{moneyReceiptData[0]?.total_amount}</b>
                     </div>
                   </div>
-                )}
+                )}     
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${moneyReceiptData[0]?._id}`}>
+            <Link
+              to={`/dashboard/money-receipt-view?id=${moneyReceiptData[0]?._id}`}
+            >
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>

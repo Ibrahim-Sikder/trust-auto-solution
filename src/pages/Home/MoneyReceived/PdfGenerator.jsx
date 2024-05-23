@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import { useRef, useEffect, useState } from 'react';
 import { useReactToPrint } from 'react-to-print';
@@ -183,7 +184,7 @@ const PdfGenerator = () => {
       </div>
       <div className="moneyReceiptBtnGroup mt-5">
         <button onClick={handlePrint}>Print </button>
-        <button onClick={downloadPdf}>Download </button>
+        {/* <button onClick={downloadPdf}>Download </button> */}
         <Link to={`/dashboard/money-receipt-update?id=${id}`}>
           <button> Edit </button>
         </Link>
