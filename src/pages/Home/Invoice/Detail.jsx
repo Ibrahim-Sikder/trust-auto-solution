@@ -216,14 +216,14 @@ const Detail = () => {
                     <div className="text-left">
                       <small className="block">
                         <small className="font-bold">Mobile:</small>{" "}
-                        01821-216465
+                        +880 1821-216465
                       </small>
                       <small className="block">
                         <small className="font-bold">Email:</small>{" "}
                         trustautosolution@gmail.com
                       </small>
                       <small className="block font-bold ">
-                        trustautosolution.com
+                        www.trustautosolution.com
                       </small>
                     </div>
                   </div>
@@ -231,20 +231,20 @@ const Detail = () => {
 
                 <div className="px-10">
                   <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
-                    <span>
+                    <span className="w-[200px]">
                       {" "}
-                      <b> ID: </b>
+                      <b>Customer ID: </b>
                       {invoicePreview.Id}
                     </span>
-                    <b className="mr-5 uppercase">Invoice</b>
-                    <b>Date: {invoicePreview?.date}</b>
+                    <b className="mr-[88px] uppercase">Invoice</b>
+                    <b>Date: {formatDate(invoicePreview?.createdAt)}</b>
                   </div>
 
                   {pageNumber === 0 && (
-                    <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
-                      <div className="flex justify-between w-[40%]">
+                    <div className="flex items-center justify-between mx-auto mt-2 ">
+                      <div className="flex justify-between w-[280px] overflow-hidden ">
                         <div className="invoiceCustomerInfo">
-                          <b>Job No</b>
+                          <b>Invoice No</b>
                           <b>Company</b>
                           <b>Customer</b>
                           <b>Phone</b>
@@ -259,7 +259,7 @@ const Detail = () => {
                         </div>
                       </div>
                       <div className="invoiceLine"></div>
-                      <div className="flex w-[40%] justify-between ">
+                      <div className="flex w-[280px] overflow-hidden  justify-between ">
                         <div className="invoiceCustomerInfo">
                           <b>Registration No </b>
                           <b>Chassis No </b>
@@ -268,7 +268,7 @@ const Detail = () => {
                           <b>Mileage </b>
                         </div>
                         <div className="invoiceCustomerInfo">
-                          <small>: {invoicePreview.car_registration_no}</small>
+                          <small>: {invoicePreview.car_registration_no}777777777777777777</small>
                           <small>: {invoicePreview.chassis_no}</small>
                           <small>: {invoicePreview.engine_no}</small>
                           <small>: {invoicePreview.vehicle_name}</small>
@@ -284,7 +284,7 @@ const Detail = () => {
                     <tr>
                       <th className="serialNo">SL No</th>
                       <th>Description</th>
-                      <th>Quantity </th>
+                      <th>Qty </th>
                       <th>Rate</th>
                       <th>Amount </th>
                     </tr>

@@ -8,6 +8,7 @@ import { usePDF } from "react-to-pdf";
 import { Link, useLocation } from "react-router-dom";
 
 import "../Invoice/Invoice.css"; // Add a separate CSS file for print styles
+import { formatDate } from "../../../utils/formateDate";
 
 const Detail = () => {
   const componentRef = useRef();
@@ -21,6 +22,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
+  console.log(invoicePreview)
 
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -226,7 +228,7 @@ const Detail = () => {
                           trustautosolution@gmail.com
                         </small>
                         <small className="block font-bold ">
-                          trustautosolution.com
+                        www.trustautosolution.com
                         </small>
                       </div>
                     </div>
@@ -235,36 +237,36 @@ const Detail = () => {
                   {pageNumber === 0 && (
                     <div className="px-10">
                       <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
-                        <span>
+                        <span className="w-[200px] ">
                           {" "}
                           <b>Customer ID:</b> {invoicePreview.Id}
                         </span>
-                        <b className="mr-5 uppercase">Quotation</b>
+                        <b className="mr-[88px] uppercase">Quotation</b>
                         <b>
                           Date:
-                          {invoicePreview?.date}
+                          {formatDate(invoicePreview?.createdAt)}
                         </b>
                       </div>
 
-                      <div className="flex items-center justify-between mx-auto mt-2 invoiceInformaiton">
-                        <div className="flex justify-between w-[40%]">
+                      <div className="flex items-center justify-between mx-auto mt-2 ">
+                        <div className="flex justify-between w-[280px] overflow-hidden ">
                           <div className="invoiceCustomerInfo">
-                            <b>Job No</b>
+                            <b>Quotation No</b>
                             <b>Company</b>
                             <b>Customer</b>
                             <b>Phone</b>
                             <b>Address</b>
                           </div>
                           <div className="invoiceCustomerInfo">
-                            <small>: {invoicePreview.job_no}</small>
+                            <small>: {invoicePreview.job_no}ssssssddddd</small>
                             <small>: {invoicePreview.company_name}</small>
                             <small>: {invoicePreview.customer_name}</small>
                             <small>: {invoicePreview.customer_contact}</small>
-                            <small>: {invoicePreview.customer_address}</small>
+                            <small>: {invoicePreview.customer_address}dddddddddddd</small>
                           </div>
                         </div>
                         <div className="invoiceLine"></div>
-                        <div className="flex w-[40%] justify-between ">
+                        <div className="flex w-[280px] justify-between overflow-hidden">
                           <div className="invoiceCustomerInfo">
                             <b>Registration No </b>
                             <b>Chassis No </b>
@@ -291,7 +293,7 @@ const Detail = () => {
                       <tr>
                         <th className="serialNo">SL No</th>
                         <th>Description</th>
-                        <th>Quantity </th>
+                        <th>Qty </th>
                         <th>Rate</th>
                         <th>Amount </th>
                       </tr>

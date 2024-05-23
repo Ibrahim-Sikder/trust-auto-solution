@@ -189,27 +189,7 @@
   
 }
 
-@media only screen and (max-width: 1440px) {
-  .secondInputField {
-    width: 687px;
-  }
-  .labelWrap label:nth-child(2) {
-    left: -147px !important;
-  }
-  .labelWrap label:nth-child(1) {
-    left: -2px !important;
-  }
-  .labelWrap label:nth-child(3) {
-    left: 258px !important;
-  }
 
-  .labelWrap label:nth-child(4) {
-    left: 86px !important;
-  }
-  .labelWrap label:nth-child(5) {
-    left: 14px !important;
-  }
-}
 
 @media only screen and (max-width: 1024px) {
   .invoiceHead {
@@ -439,6 +419,7 @@
 .netTotalAmounts small {
   font-size: 12px;
 }
+
 .invoiceLine {
   width: 1px;
   height: 80px;

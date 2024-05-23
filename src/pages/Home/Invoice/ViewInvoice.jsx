@@ -159,7 +159,7 @@ const ViewInvoice = () => {
                 <td>{card.job_no}</td>
                 <td>{card.car_registration_no}</td>
                 <td> {card.customer_contact} </td>
-                <td>{formatDate(card.date)}</td>
+                <td>{card.date}</td>
                 <td>
                   <div
                     onClick={() => handleIconPreview(card._id)}

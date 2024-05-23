@@ -384,7 +384,7 @@ const AddQuotation = () => {
               <td>{card.job_no}</td>
               <td>{card.car_registration_no}</td>
               <td> {card.customer_contact} </td>
-              <td>{formatDate(card.date)}</td>
+              <td>{card.date}</td>
               <td>
                 <div
                   onClick={() => handleIconPreview(card._id)}
@@ -795,7 +795,7 @@ const AddQuotation = () => {
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
-            <label>Quantity </label>
+            <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
           </div>
@@ -840,7 +840,7 @@ const AddQuotation = () => {
                       className="firstInputField"
                       autoComplete="off"
                       type="number"
-                      placeholder="Quantity"
+                      placeholder="Qty"
                       onChange={(e) => handleQuantityChange(i, e.target.value)}
                       required
                     />

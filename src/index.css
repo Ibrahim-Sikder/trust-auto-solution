@@ -234,48 +234,47 @@ input:focus {
 
 @media only screen and (min-width: 1441px) {
   .labelWrap label:nth-child(1) {
-    left: -60px !important;
+    left: -57px !important;
   }
   .drawer-content .labelWrap label:nth-child(1) {
-    left: -47px !important;
+    left: -40px !important;
   }
 
-  .labelWrap label:nth-child(2) {
-    left: -308px !important;
+    .labelWrap label:nth-child(2) {
+      left: -286px !important;
   }
 
   .drawer-content .labelWrap label:nth-child(2) {
-    left: -261px !important;
+    left: -237px !important;
   }
 
   .labelWrap label:nth-child(3) {
-    left: 550px !important;
+    left: 454px !important;
   }
 
   .drawer-content .labelWrap label:nth-child(3) {
-    left: 468px !important;
+    left: 374px !important;
   }
 
   .labelWrap label:nth-child(4) {
-    left: 273px !important;
+    left: 239px !important;
   }
   .drawer-content .labelWrap label:nth-child(4) {
-    left: 225px !important;
+    left: 190px !important;
   }
 
   .labelWrap label:nth-child(5) {
-    left: 80px !important;
-  }
-  .drawer-content .labelWrap label:nth-child(5) {
     left: 65px !important;
   }
-
-  .secondInputField {
-    width: 1260px;
+  .drawer-content .labelWrap label:nth-child(5) {
+    left: 47px !important;
   }
+  .secondInputField {
+    width: 1122px;
+}
 
   .drawer-content .secondInputField {
-    width: 1100px;
+    width: 960px;
   }
 
   .recentCard {
@@ -301,6 +300,53 @@ input:focus {
   .drawer-content .carRegField {
     width: 74% !important;
   }
+}
+@media only screen and (max-width: 1440px) {
+  .secondInputField {
+    width: 665px;
+  }
+  .drawer-content .secondInputField {
+    width: 570px;
+  }
+ 
+  .labelWrap label:nth-child(1) {
+    left: -12px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(1) {
+    left: -3px !important;
+  }
+
+
+  .labelWrap label:nth-child(2) {
+    left: -150px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(2) {
+    left: -122px !important;
+  }
+
+
+  .labelWrap label:nth-child(3) {
+    left: 223px !important;
+  }
+
+  .drawer-content .labelWrap label:nth-child(3) {
+    left: 177px !important;
+  }
+
+  .labelWrap label:nth-child(4) {
+    left: 100px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(4) {
+    left: 71px !important;
+  }
+
+  .labelWrap label:nth-child(5) {
+    left: 17px !important;
+  }
+  .drawer-content .labelWrap label:nth-child(5) {
+    left: 7px !important;
+  }
+
 }
 
 @media only screen and (min-width: 1024px) {

@@ -560,6 +560,7 @@ const Invoice = () => {
             </div>
           </div>
 
+
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
@@ -823,7 +824,7 @@ const Invoice = () => {
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
-            <label>Quantity </label>
+            <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
           </div>
@@ -868,7 +869,7 @@ const Invoice = () => {
                       className="firstInputField"
                       autoComplete="off"
                       type="number"
-                      placeholder="Quantity"
+                      placeholder="Qty"
                       onChange={(e) => handleQuantityChange(i, e.target.value)}
                       required
                     />

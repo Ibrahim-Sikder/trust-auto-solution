@@ -7,9 +7,10 @@ import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { countries } from "../../../constant";
+import TADatePickers from "../../../components/form/TADatePickers";
 const UpdateInvoice = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
-
+console.log(specificInvoice)
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
@@ -338,6 +339,14 @@ const UpdateInvoice = () => {
           <span className="block font-bold ">trustautosolution.com</span>
         </div>
       </div>
+      <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="hidden"></div>
+        <div className="vehicleCard">Update Invoice </div>
+
+        <div>
+          <TADatePickers />
+        </div>
+      </div>
 
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -528,11 +537,10 @@ const UpdateInvoice = () => {
             </div>
           </div>
 
-          <div className="vehicleCard">Update Invoice </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
-            <label>Quantity </label>
+            <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
           </div>
@@ -584,7 +592,7 @@ const UpdateInvoice = () => {
                             className="firstInputField"
                             autoComplete="off"
                             type="number"
-                            placeholder="Quantity"
+                            placeholder="Qty"
                             onChange={(e) =>
                               handleQuantityChange(i, e.target.value)
                             }
@@ -681,7 +689,7 @@ const UpdateInvoice = () => {
                         className="firstInputField"
                         autoComplete="off"
                         type="number"
-                        placeholder="Quantity"
+                        placeholder="Qty"
                         onChange={(e) =>
                           handleQuantityChange2(i, e.target.value)
                         }
@@ -783,7 +791,11 @@ const UpdateInvoice = () => {
           </div>
         </div>
         <div className="mb-12 flex justify-center ">
-          <Button sx={{background: '#42A1DA'}} onClick={handleOnSubmit} className="addJobBtn">
+          <Button
+            sx={{ background: "#42A1DA" }}
+            onClick={handleOnSubmit}
+            className="addJobBtn"
+          >
             Update Invoice{" "}
           </Button>
         </div>

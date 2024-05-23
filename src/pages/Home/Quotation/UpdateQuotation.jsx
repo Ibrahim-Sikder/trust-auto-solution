@@ -597,7 +597,7 @@ const UpdateQuotation = () => {
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Description </label>
-            <label>Quantity </label>
+            <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
           </div>
@@ -649,7 +649,7 @@ const UpdateQuotation = () => {
                             className="firstInputField"
                             autoComplete="off"
                             type="number"
-                            placeholder="Quantity"
+                            placeholder="Qty"
                             onChange={(e) =>
                               handleQuantityChange(i, e.target.value)
                             }
@@ -746,7 +746,7 @@ const UpdateQuotation = () => {
                         className="firstInputField"
                         autoComplete="off"
                         type="number"
-                        placeholder="Quantity"
+                        placeholder="Qty"
                         onChange={(e) =>
                           handleQuantityChange2(i, e.target.value)
                         }

@@ -318,7 +318,7 @@ const PreviewJobCard = () => {
                 />
               </div>
               <div>
-                <label className="block">For Vehicle Owner </label>
+                <label className="block">Submit by </label>
                 <input
                   // defaultValue={previewData.vehicle_owner}
                   disabled
@@ -329,10 +329,10 @@ const PreviewJobCard = () => {
           </div>
 
           <div className="footerContainer">
-            <div className="customerSignatureWrap2">
+            {/* <div className="customerSignatureWrap2">
               <b className="customerSignatur">Customer Signature : </b>
               <b className="customerSignatur">Trust Auto Solution</b>
-            </div>
+            </div> */}
             <div className="px-[8px]">
               <hr className="my-3 border border-[#110255]" />
             </div>
