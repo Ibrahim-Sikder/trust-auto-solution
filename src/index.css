@@ -232,6 +232,8 @@ input:focus {
   background-color: #555;
 }
 
+
+
 @media only screen and (min-width: 1441px) {
   .labelWrap label:nth-child(1) {
     left: -57px !important;

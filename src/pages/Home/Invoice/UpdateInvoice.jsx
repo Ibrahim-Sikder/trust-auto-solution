@@ -402,7 +402,6 @@ console.log(specificInvoice)
               </div> */}
               <div className="flex items-center mt-3 ">
                 <Autocomplete
-                  sx={{ marginRight: "2px" }}
                   className="jobCardSelect2"
                   freeSolo
                   options={countries}
@@ -421,7 +420,7 @@ console.log(specificInvoice)
                   )}
                 />
                 <TextField
-                  className="addJobInputField"
+                  className="carRegField"
                   label="Phone"
                   value={specificInvoice?.customer_contact}
                   {...register("customer_contact")}

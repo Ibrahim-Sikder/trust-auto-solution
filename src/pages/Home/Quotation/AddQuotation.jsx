@@ -593,9 +593,9 @@ const AddQuotation = () => {
                 />
               </div>
               <div className="mt-3">
-                <div className="flex md:flex-row flex-col gap-2 items-center mt-3">
+                <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
                   <Autocomplete
-                    sx={{ marginRight: "2px" }}
+                   
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -616,7 +616,7 @@ const AddQuotation = () => {
                   <TextField
                     {...register("customer_contact")}
                     className="carRegField"
-                    label="Customer Contact No (N)"
+               
                     variant="outlined"
                     fullWidth
                     type="tel"
@@ -624,7 +624,7 @@ const AddQuotation = () => {
                       phoneNumber ? phoneNumber : jobCardData?.customer_contact
                     }
                     onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
+                    placeholder="Customer Contact No (N)"
                     InputLabelProps={{
                       shrink: !!jobCardData?.customer_contact,
                     }}

@@ -414,11 +414,11 @@ const UpdateQuotation = () => {
                     shrink: !!specificInvoice.customer_contact,
                   }}
                 /> */}
-                <div className="flex sm:flex-row flex-col gap-2 items-center">
+                <div className="flex sm:flex-row flex-col gap-1 items-center">
              
 
                   <Autocomplete
-                    sx={{ marginRight: "2px" }}
+                  
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -437,7 +437,7 @@ const UpdateQuotation = () => {
                     )}
                   />
                   <TextField
-                    className="addJobInputField"
+                    className="carRegField"
                     label="Phone"
                     value={specificInvoice?.customer_contact}
                     {...register("customer_contact")}

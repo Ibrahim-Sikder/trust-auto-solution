@@ -638,9 +638,9 @@ const Invoice = () => {
                   }}
                 />
               </div> */}
-              <div className="flex sm:flex-row flex-col gap-2 items-center mt-3 ">
+              <div className="flex sm:flex-row flex-col gap-1 items-center mt-3 ">
                 <Autocomplete
-                  sx={{ marginRight: "2px" }}
+                
                  
                   className="jobCardSelect2"
                   freeSolo
@@ -660,7 +660,7 @@ const Invoice = () => {
                   )}
                 />
                 <TextField
-                  className="addJobInputField"
+                  className="carRegField"
                   label="Phone"
                   value={jobCardData?.customer_contact}
                   {...register("customer_contact")}

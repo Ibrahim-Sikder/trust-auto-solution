@@ -421,7 +421,7 @@ const UpdateJobCard = () => {
               <div className="mt-3">
                 <div className="flex items-center">
                   <Autocomplete
-                    sx={{ marginRight: "2px" }}
+                   sx={{marginRight:'2px'}}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -646,6 +646,7 @@ const UpdateJobCard = () => {
                   )}
                 /> */}
                   <Autocomplete
+                  sx={{marginRight:'5px'}}
                     freeSolo
                     className="jobCardSelect2"
                     value={singleCard?.carReg_no || ""}

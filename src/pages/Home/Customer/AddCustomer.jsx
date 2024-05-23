@@ -499,9 +499,9 @@ const AddCustomer = () => {
                     </span>
                   )}
                 </div> */}
-                <div className="flex xl:flex-row flex-col gap-2 items-center my-1">
+                <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
+                    sx={{ marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -571,9 +571,9 @@ const AddCustomer = () => {
                     </span>
                   )}
                 </div> */}
-                <div className="flex xl:flex-row flex-col gap-2 items-center my-1">
+                <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
+                    sx={{ marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}

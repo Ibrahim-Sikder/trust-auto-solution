@@ -871,7 +871,7 @@ const AddJobCard = () => {
                   <TextField
                     {...register("customer_contact")}
                     className="carRegField"
-                    label="Customer Contact No (N)"
+                    label=""
                     variant="outlined"
                     fullWidth
                     type="tel"
@@ -881,7 +881,7 @@ const AddJobCard = () => {
                         : showCustomerData?.customer_contact
                     }
                     onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
+                    placeholder="Customer Contact No (N)"
                     InputLabelProps={{
                       shrink: !!showCustomerData.customer_contact,
                     }}
@@ -1015,7 +1015,7 @@ const AddJobCard = () => {
                   <TextField
                     {...register("driver_contact")}
                     className="carRegField"
-                    label="Driver Contact No (N)"
+                    label=""
                     variant="outlined"
                     fullWidth
                     type="tel"
@@ -1025,7 +1025,7 @@ const AddJobCard = () => {
                         : showCustomerData?.driver_contact
                     }
                     onChange={handleDriverPhoneNumberChange}
-                    placeholder="Enter phone number"
+                    placeholder="Driver Contact Number "
                     InputLabelProps={{
                       shrink: !!showCustomerData.driver_contact,
                     }}
@@ -1093,6 +1093,7 @@ const AddJobCard = () => {
 
               <div className="flex  md:gap-0 gap-4 items-center">
                 <Autocomplete
+                sx={{marginRight:'5px'}}
                   freeSolo
                   className="jobCardSelect2"
                   id="free-solo-demo"
