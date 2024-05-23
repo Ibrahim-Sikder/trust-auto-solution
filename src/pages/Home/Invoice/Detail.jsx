@@ -268,7 +268,7 @@ const Detail = () => {
                           <b>Mileage </b>
                         </div>
                         <div className="invoiceCustomerInfo">
-                          <small>: {invoicePreview?.car_registration_no}777777777777777777</small>
+                          <small>: {invoicePreview?.car_registration_no}</small>
                           <small>: {invoicePreview?.chassis_no}</small>
                           <small>: {invoicePreview?.engine_no}</small>
                           <small>: {invoicePreview?.vehicle_name}</small>
@@ -344,7 +344,7 @@ const Detail = () => {
                 )}
               </div>
 
-              {pageNumber === pagesData?.length - 1 && (
+              {/* {pageNumber === pagesData?.length - 1 && (
                 <div>
                   <div className="customerSignatureWrap pt-5">
                     <b className="text-sm customerSignatur">
@@ -355,7 +355,7 @@ const Detail = () => {
                     </b>
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
 

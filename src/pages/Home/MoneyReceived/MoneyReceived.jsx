@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { Button } from "@mui/material";
- 
+import { FaLocationDot } from "react-icons/fa6";
 
 const MoneyReceiptView = () => {
   const {
@@ -272,21 +272,21 @@ const MoneyReceiptView = () => {
           <div>
             <div className="flex items-center mt-1">
               <FaGlobe className="hotlineIcon" />
-              <small className="ml-1">trustautosolution.com</small>
+              <small className="ml-1">www.trustautosolution.com</small>
             </div>
             <div className="flex items-center mt-1">
               <Email className="hotlineIcon" />
               <small className="ml-1">trustautosolution@gmail.com</small>
             </div>
             <div className="flex  mt-1">
-              <Home className="hotlineIcon"> </Home>
+              <FaLocationDot className="hotlineIcon"> </FaLocationDot>
               <small className="ml-1">
                 Ka-93/4/C Kuril Bishawroad, <br /> Dhaka-1212
               </small>
             </div>
             <div className="flex items-center mt-1">
               <WhatsApp className="hotlineIcon" />
-              <small className="ml-1">01821-216465</small>
+              <small className="ml-1">+880 1821-216465</small>
             </div>
           </div>
         </div>
@@ -331,7 +331,6 @@ const MoneyReceiptView = () => {
                 />{" "}
                 Advance{" "}
                 <input
-               
                   type="checkbox"
                   onClick={handleFinalPayment}
                   checked={finalPayment}

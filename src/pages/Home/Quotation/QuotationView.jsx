@@ -353,7 +353,7 @@ const Detail = () => {
                   )}
                 </div>
 
-                <div>
+                {/* <div>
                   {pageNumber === pagesData?.length - 1 && (
                     <div className="customerSignatureWrap">
                       <b className="text-sm customerSignatur">
@@ -364,7 +364,7 @@ const Detail = () => {
                       </b>
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
             {pageNumber === pagesData?.length - 1 && (

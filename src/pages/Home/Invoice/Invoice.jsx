@@ -535,13 +535,13 @@ const Invoice = () => {
           </div>
           <div className="space-y-1 text-justify">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 01821-216465
+              <span className="font-bold">Mobile:</span>+880 1821-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
               trustautosolution@gmail.com
             </span>
-            <span className="block font-bold ">trustautosolution.com</span>
+            <span className="block font-bold ">www.trustautosolution.com</span>
           </div>
         </div>
       </div>

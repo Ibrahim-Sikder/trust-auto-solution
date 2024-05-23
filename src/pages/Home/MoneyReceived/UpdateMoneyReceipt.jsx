@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { Button, ButtonBase } from "@mui/material";
+import { FaGlobe } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -254,22 +256,22 @@ const UpdateMoneyReceipt = () => {
         </div>
         <div>
           <div className="flex items-center mt-1">
-            <LocalPhone className="hotlineIcon" />
-            <b className="ml-1">+880 1821-216465</b>
+            <FaGlobe className="hotlineIcon" />
+            <small className="ml-1">www.trustautosolution.com</small>
           </div>
           <div className="flex items-center mt-1">
             <Email className="hotlineIcon" />
             <small className="ml-1">trustautosolution@gmail.com</small>
           </div>
-          <div className="flex items-center mt-1">
-            <Home className="hotlineIcon"> </Home>
+          <div className="flex  mt-1">
+            <FaLocationDot className="hotlineIcon"> </FaLocationDot>
             <small className="ml-1">
               Ka-93/4/C Kuril Bishawroad, <br /> Dhaka-1212
             </small>
           </div>
           <div className="flex items-center mt-1">
             <WhatsApp className="hotlineIcon" />
-            <small className="ml-1">+88 1972-216465</small>
+            <small className="ml-1">+880 1821-216465</small>
           </div>
         </div>
       </div>
@@ -300,7 +302,6 @@ const UpdateMoneyReceipt = () => {
           />
         </div>
         <div className="mt-5 flex md:flex-row flex-col payAdvance">
-          
           <div className="flex  receivedField">
             <label className="advanceText">
               <input

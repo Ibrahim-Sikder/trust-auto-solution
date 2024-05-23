@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaEye, FaGlobe } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -34,6 +34,8 @@ import {
 } from "../../../constant";
 import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
 import { formatDate } from "../../../utils/formateDate";
+import { Email, WhatsApp } from "@mui/icons-material";
+import { FaLocationDot } from "react-icons/fa6";
 
 const AddJobCard = () => {
   const [previousPostData, setPreviousPostData] = useState({});
@@ -47,7 +49,7 @@ const AddJobCard = () => {
 
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
-  console.log(showCustomerData)
+  console.log(showCustomerData);
   const inputRef = useRef(null); // Create a ref for the input element
   const [inputValue, setInputValue] = useState(""); // Controlled input value state
 
@@ -112,7 +114,7 @@ const AddJobCard = () => {
     register,
     handleSubmit,
     reset,
-    setValue:setVModelValue,
+    setValue: setVModelValue,
     formState: { errors },
   } = useForm();
 
@@ -171,7 +173,7 @@ const AddJobCard = () => {
         vehicle_owner: data.vehicle_owner,
       };
 
-      console.log(values)
+      console.log(values);
 
       setLoading(true);
       const response = await axios.post(
@@ -241,7 +243,7 @@ const AddJobCard = () => {
   // Handle input changes
   const handleYearSelectInput = (event) => {
     const value = event.target.value;
-    console.log(value)
+    console.log(value);
     // Check if the input is a number and does not exceed 4 digits
     if (/^\d{0,4}$/.test(value)) {
       setYearSelectInput(value);
@@ -252,16 +254,14 @@ const AddJobCard = () => {
     }
   };
 
- 
   const handleOptionClick = (option) => {
-    setYearSelectInput(option.value); 
+    setYearSelectInput(option.value);
     setFilteredOptions([]);
-    setVModelValue("vehicle_model", option.label,{
-      shouldValidate:true
-    })
-    
+    setVModelValue("vehicle_model", option.label, {
+      shouldValidate: true,
+    });
   };
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -637,15 +637,29 @@ const AddJobCard = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-          <div className="space-y-1 text-justify jobCardContactInfo">
+          {/* <div className="space-y-1 text-justify jobCardContactInfo">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 01821-216465
+              <span className="font-bold">Mobile:</span>+880 1821-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
               trustautosolution@gmail.com
             </span>
-            <span className="block font-bold ">trustautosolution.com</span>
+            <span className="block font-bold ">www.trustautosolution.com</span>
+          </div> */}
+          <div className="space-y-2">
+            <div className="flex items-center ">
+              <FaGlobe className="hotlineIcon" />
+              <small className="ml-1">www.trustautosolution.com</small>
+            </div>
+            <div className="flex items-center">
+              <Email className="hotlineIcon" />
+              <small className="ml-1">trustautosolution@gmail.com</small>
+            </div>
+            <div className="flex items-center ">
+              <WhatsApp className="hotlineIcon" />
+              <small className="ml-1">+880 1821-216465</small>
+            </div>
           </div>
         </div>
       </div>
@@ -1093,7 +1107,7 @@ const AddJobCard = () => {
 
               <div className="flex  md:gap-0 gap-4 items-center">
                 <Autocomplete
-                sx={{marginRight:'5px'}}
+                  sx={{ marginRight: "5px" }}
                   freeSolo
                   className="jobCardSelect2"
                   id="free-solo-demo"
@@ -1303,7 +1317,7 @@ const AddJobCard = () => {
                 /> */}
 
                 <input
-                 focused={showCustomerData?.vehicle_model}
+                  focused={showCustomerData?.vehicle_model}
                   value={yearSelectInput}
                   onInput={handleYearSelectInput}
                   {...register("vehicle_model")}
@@ -1637,7 +1651,7 @@ const AddJobCard = () => {
           <div className="flex items-center searcList space-x-2">
             <div className="searchGroup space-x-2">
               <Button
-              sx={{background:'#42A1DA'}}
+                sx={{ background: "#42A1DA" }}
                 onClick={handleAllAddToJobCard}
                 className=""
               >
@@ -1650,7 +1664,11 @@ const AddJobCard = () => {
                 placeholder="Search"
               />
             </div>
-            <Button sx={{background:'#42A1DA'}} onClick={handleFilterType} className="SearchBtn ">
+            <Button
+              sx={{ background: "#42A1DA" }}
+              onClick={handleFilterType}
+              className="SearchBtn "
+            >
               Search{" "}
             </Button>
           </div>

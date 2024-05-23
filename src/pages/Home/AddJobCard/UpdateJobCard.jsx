@@ -254,13 +254,13 @@ const UpdateJobCard = () => {
           </div>
           <div className="space-y-1 text-justify jobCardContactInfo">
             <span className="block">
-              <span className="font-bold">Mobile:</span> 345689789666
+              <span className="font-bold">Mobile:</span>+880 1821-216465
             </span>
             <span className="block">
               <small className="font-bold">Email:</small>{" "}
               trustautosolution@gmail.com
             </span>
-            <span className="block font-bold ">trustautosolution.com</span>
+            <span className="block font-bold ">www.trustautosolution.com</span>
           </div>
         </div>
       </div>
