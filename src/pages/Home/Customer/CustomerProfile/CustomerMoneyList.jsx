@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 const CustomerMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
+  console.log(moneyReceiptData)
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const navigate = useNavigate();
@@ -123,11 +124,12 @@ const CustomerMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
           <tr>
             <th>SL No</th>
             <th>Received with thanks from</th>
-            <th>Final Payment against bill no</th>
-            <th>Vehicle No </th>
-            <th>Check Number </th>
-            <th>Bank</th>
-            <th>Total Amount</th>
+            <th>Bill No</th>
+            <th>Vehicle No </th>          
+            <th>Payment Method</th>
+            <th>Payment By </th>
+            <th>Total Payment</th>
+            <th>Date</th>
             <th colSpan={3}>Action</th>
           </tr>
         </thead>
@@ -139,7 +141,8 @@ const CustomerMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
               <td>{card.against_bill_no}</td>
               <td>{card.vehicle_no}</td>
               <td> {card.cheque_no} </td>
-              <td> {card.bank} </td>
+              <td> {card.total_amount} </td>
+              <td>{card.date_one}</td>
               <td>{card.date_one}</td>
               <td>
                 <div

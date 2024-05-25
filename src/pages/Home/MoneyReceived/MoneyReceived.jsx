@@ -13,7 +13,14 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { FaGlobe } from "react-icons/fa";
 import TADatePickers from "../../../components/form/TADatePickers";
-import { Button } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { FaLocationDot } from "react-icons/fa6";
 
 const MoneyReceiptView = () => {
@@ -253,6 +260,12 @@ const MoneyReceiptView = () => {
     setCash(false);
   };
 
+  const [paymentMethod, setPaymentMethod] = useState("");
+
+  const handleChange = (event) => {
+    setPaymentMethod(event.target.value);
+  };
+
   return (
     <>
       <div className="moneyReceptWrap ">
@@ -329,9 +342,10 @@ const MoneyReceiptView = () => {
                   onClick={handleAdvanceSelect}
                   checked={advanceSelect}
                 />{" "}
-                Advance{" "}
+                Advance / against bill no 
                 <input
                   type="checkbox"
+                  className="ml-1"
                   onClick={handleFinalPayment}
                   checked={finalPayment}
                 />{" "}
@@ -371,7 +385,7 @@ const MoneyReceiptView = () => {
           </div>
           <div className="mt-5 payAdvance lg:flex-row flex flex-col gap-4">
             <div className="flex lg:flex-row flex-col ">
-              <div className="checqueText">
+              {/* <div className="checqueText">
                 {" "}
                 <input
                   type="checkbox"
@@ -385,7 +399,25 @@ const MoneyReceiptView = () => {
                   onClick={handleCheque}
                 />
                 <span className=" font-semibold">Cheque No:</span>{" "}
-              </div>
+              </div> */}
+              <FormControl sx={{ minWidth: 170, minHeight: '30px', marginRight: .5, }} size="small">
+                <InputLabel id="demo-select-small-label">
+                  Payment Method{" "}
+                </InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={paymentMethod}
+                  label="Payment Method "
+                  onChange={handleChange}
+                >
+                  <MenuItem value="Bkash">Bkash</MenuItem>
+                  <MenuItem value="Nagad">Nagad</MenuItem>
+                  <MenuItem value="Nagad">Rocket</MenuItem>
+                  <MenuItem value="Check">Check</MenuItem>
+                  <MenuItem value="Bank">Bank </MenuItem>
+                </Select>
+              </FormControl>
               <div>
                 <input
                   {...register("cheque_no", { required: true })}

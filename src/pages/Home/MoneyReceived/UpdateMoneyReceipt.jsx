@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
-import { Button, ButtonBase } from "@mui/material";
+import { Button, ButtonBase, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { FaGlobe } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 const UpdateMoneyReceipt = () => {
@@ -240,6 +240,12 @@ const UpdateMoneyReceipt = () => {
     setCash(false);
   };
 
+  const [paymentMethod, setPaymentMethod] = useState("");
+
+  const handleChange = (event) => {
+    setPaymentMethod(event.target.value);
+  };
+
   return (
     <div className="moneyReceptWrap ">
       <div className="flex items-center justify-between flex-col lg:flex-row gap-3 ">
@@ -309,7 +315,7 @@ const UpdateMoneyReceipt = () => {
                 onClick={handleAdvanceSelect}
                 checked={advanceSelect}
               />{" "}
-              Advance{" "}
+             Advance / against bill no 
               <input
                 type="checkbox"
                 onClick={handleFinalPayment}
@@ -340,7 +346,7 @@ const UpdateMoneyReceipt = () => {
           </div>
         </div>
         <div className="mt-5 payAdvance flex flex-col lg:flex-row">
-          <div className="flex flex-col md:flex-row ">
+          {/* <div className="flex flex-col md:flex-row ">
             <div className="checqueText space-x-1">
               {" "}
               <input type="checkbox" checked={cash} onClick={handleCash} />{" "}
@@ -357,8 +363,25 @@ const UpdateMoneyReceipt = () => {
                 autoComplete="off"
               />
             </div>
-          </div>
-
+          </div> */}
+          <FormControl sx={{ minWidth: 170, minHeight: '30px', marginRight: .5, }} size="small">
+                <InputLabel id="demo-select-small-label">
+                  Payment Method{" "}
+                </InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={paymentMethod}
+                  label="Payment Method "
+                  onChange={handleChange}
+                >
+                  <MenuItem value="Bkash">Bkash</MenuItem>
+                  <MenuItem value="Nagad">Nagad</MenuItem>
+                  <MenuItem value="Nagad">Rocket</MenuItem>
+                  <MenuItem value="Check">Check</MenuItem>
+                  <MenuItem value="Bank">Bank </MenuItem>
+                </Select>
+              </FormControl>
           <div className="flex mt-6 receivedField md:mt-0">
             <b className="date">Date: </b>
             <input
@@ -440,17 +463,7 @@ const UpdateMoneyReceipt = () => {
       <div className="">
         <small className="signature">Authorized Signature</small>
       </div>
-      <hr className="my-3" />
-      <div className="mt-5 text-center">
-        <p>
-          <b>Office: </b>Ka-93/4/C, Kuril Bishawroad, Dhaka-1229,
-          www.trustautosolution.com
-        </p>
-        <p>
-          <b>Mobile:</b> 01821-216465, 01972-216465 , <b>Email:</b>{" "}
-          trustautosolution@gmail.com
-        </p>
-      </div>
+     
     </div>
   );
 };

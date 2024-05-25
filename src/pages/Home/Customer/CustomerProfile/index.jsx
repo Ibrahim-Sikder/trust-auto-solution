@@ -173,7 +173,6 @@ const CustomerProfile = () => {
             <Tab>Quotation </Tab>
             <Tab>Invoice </Tab>
             <Tab>Money Receipt </Tab>
-            <Tab>Payment</Tab>
             <Tab>Message</Tab>
           </TabList>
 
@@ -217,9 +216,7 @@ const CustomerProfile = () => {
               id={id}
             />
           </TabPanel>
-          <TabPanel>
-            <SupplierPaymentList />
-          </TabPanel>
+         
           <TabPanel>
             <div>
               <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
