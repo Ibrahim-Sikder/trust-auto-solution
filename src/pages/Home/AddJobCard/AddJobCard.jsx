@@ -47,7 +47,7 @@ const AddJobCard = () => {
   const [idType, setIdType] = useState(null);
   const [showId, setShowId] = useState([]);
   const [customerId, setCustomerId] = useState(null);
-
+  const [newId, setNewId] = useState("customerId");
   // const [customerDetails, setCustomerDetails] = useState([]);
   const [showCustomerData, setShowCustomerData] = useState({});
   console.log(showCustomerData);
@@ -311,9 +311,11 @@ const AddJobCard = () => {
 
   const getIdWithIdType = (id) => {
     setIdType(id);
+    console.log(id);
 
     switch (id) {
       case "customerId":
+        console.log(customerId);
         getAndSetIds(
           `${import.meta.env.VITE_API_URL}/api/v1/customer`,
           (item) => item.customerId
@@ -508,7 +510,7 @@ const AddJobCard = () => {
               <td>{index + 1}</td>
               <td>{card.customer_name}</td>
               <td>{card.job_no}</td>
-              <td>{card.car_registration_no}</td>
+              <td>{`${card.carReg_no} ${card.car_registration_no}`}</td>
               <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>
@@ -638,8 +640,8 @@ const AddJobCard = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-         
-         <TrustAutoAddress/>
+
+          <TrustAutoAddress />
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -663,7 +665,7 @@ const AddJobCard = () => {
                 </span>
               </div>
               <div className="flex items-center mt-2">
-                <FormControl sx={{ m: 1, minWidth: 150 }} size="small">
+                <FormControl sx={{ m: 1, minWidth: 170 }} size="small">
                   <InputLabel id="demo-select-small-label">
                     Select Customer
                   </InputLabel>
@@ -672,7 +674,8 @@ const AddJobCard = () => {
                     id="demo-select-small"
                     className="py-1"
                     label="Select Customer"
-                    onChange={(e) => getIdWithIdType(e.target.value)}
+                    onChange={(e) => setNewId(e.target.value)}
+                    // onChange={(e) => getIdWithIdType(e.target.value)}
                   >
                     <MenuItem value="companyId">Company ID </MenuItem>
                     <MenuItem value="customerId">Customer ID</MenuItem>
@@ -752,134 +755,185 @@ const AddJobCard = () => {
           <div className="jobCardFieldWraps">
             <div className="jobCardFieldRightSide">
               <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  {...register("company_name")}
-                  label="Company Name (T)"
-                  focused={showCustomerData?.company_name}
-                  value={showCustomerData?.company_name}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      company_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.company_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle User Name (T)"
-                  {...register("username")}
-                  value={showCustomerData?.username}
-                  focused={showCustomerData?.username}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      username: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.username,
-                  }}
-                />
-                {/* {errors.username && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company Address (T)"
-                  {...register("company_address")}
-                  value={showCustomerData?.company_address}
-                  focused={showCustomerData?.company_address}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      company_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.company_address,
-                  }}
-                />
-                {/* {errors.company_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
-              </div>
 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Name (T)"
-                  {...register("customer_name")}
-                  value={showCustomerData?.customer_name}
-                  focused={showCustomerData?.customer_name}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      customer_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.customer_name,
-                  }}
-                />
-                {/* {errors.customer_name && (
+              {newId &&
+                (newId === "customerId" ? (
+                  <div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Customer Name (T)"
+                        {...register("customer_name")}
+                        value={showCustomerData?.customer_name}
+                        focused={showCustomerData?.customer_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            customer_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.customer_name,
+                        }}
+                      />
+                      {/* {errors.customer_name && (
               <span className="text-sm text-red-400">
                 This field is required.
               </span>
             )} */}
-              </div>
-              <div className="mt-3">
-                <div className="flex items-center">
-                  <Autocomplete
-                    sx={{ marginRight: "2px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
+                    </div>
+                    <div className="mt-3">
                       <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                        className="addJobInputField"
+                        label="Customer Email Address (T)"
+                        {...register("customer_email")}
+                        type="email"
+                        value={showCustomerData?.customer_email}
+                        focused={showCustomerData?.customer_email}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            customer_email: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.customer_email,
+                        }}
                       />
-                    )}
-                  />
-                  <TextField
-                    {...register("customer_contact")}
-                    className="carRegField"
-                    label=""
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      phoneNumber
-                        ? phoneNumber
-                        : showCustomerData?.customer_contact
-                    }
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Customer Contact No (N)"
-                    InputLabelProps={{
-                      shrink: !!showCustomerData.customer_contact,
-                    }}
-                  />
-                  {/* <TextField
+                      {/* {errors.customer_email && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Customer Address (T) "
+                        {...register("customer_address")}
+                        value={showCustomerData?.customer_address}
+                        focused={showCustomerData?.customer_address}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            customer_address: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.customer_address,
+                        }}
+                      />
+                      {/* {errors.customer_address && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        {...register("company_name")}
+                        label="Company Name (T)"
+                        focused={showCustomerData?.company_name}
+                        value={showCustomerData?.company_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            company_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.company_name,
+                        }}
+                      />
+                    </div>
+
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Company Address (T)"
+                        {...register("company_address")}
+                        value={showCustomerData?.company_address}
+                        focused={showCustomerData?.company_address}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            company_address: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.company_address,
+                        }}
+                      />
+                      {/* {errors.company_address && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Vehicle User Name (T)"
+                        {...register("username")}
+                        value={showCustomerData?.username}
+                        focused={showCustomerData?.username}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            username: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.username,
+                        }}
+                      />
+                      {/* {errors.username && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                    <div className="mt-3">
+                      <div className="flex items-center">
+                        <Autocomplete
+                          sx={{ marginRight: "2px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        <TextField
+                          {...register("customer_contact")}
+                          className="carRegField"
+                          label=""
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : showCustomerData?.customer_contact
+                          }
+                          onChange={handlePhoneNumberChange}
+                          placeholder="Customer Contact No (N)"
+                          InputLabelProps={{
+                            shrink: !!showCustomerData.customer_contact,
+                          }}
+                        />
+                        {/* <TextField
                     className="addJobInputField"
                     label="Customer Contact No (N)"
                     {...register("customer_contact", {
@@ -912,118 +966,72 @@ const AddJobCard = () => {
                     //     : customerConError  
                     // }
                   /> */}
-                </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Email Address (T)"
-                  {...register("customer_email")}
-                  type="email"
-                  value={showCustomerData?.customer_email}
-                  focused={showCustomerData?.customer_email}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      customer_email: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.customer_email,
-                  }}
-                />
-                {/* {errors.customer_email && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Address (T) "
-                  {...register("customer_address")}
-                  value={showCustomerData?.customer_address}
-                  focused={showCustomerData?.customer_address}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      customer_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.customer_address,
-                  }}
-                />
-                {/* {errors.customer_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Driver Name (T)"
-                  {...register("driver_name")}
-                  value={showCustomerData?.driver_name}
-                  focused={showCustomerData?.driver_name}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      driver_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.driver_name,
-                  }}
-                />
-                {/* {errors.driver_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
-              </div>
-              <div className="mt-3">
-                <div className="flex items-center">
-                  <Autocomplete
-                    sx={{ marginRight: "2px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
+                      </div>
+                    </div>
+
+                    <div className="mt-3">
                       <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                        className="addJobInputField"
+                        label="Driver Name (T)"
+                        {...register("driver_name")}
+                        value={showCustomerData?.driver_name}
+                        focused={showCustomerData?.driver_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            driver_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.driver_name,
+                        }}
                       />
-                    )}
-                  />
-                  <TextField
-                    {...register("driver_contact")}
-                    className="carRegField"
-                    label=""
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      driverPhoneNumber
-                        ? driverPhoneNumber
-                        : showCustomerData?.driver_contact
-                    }
-                    onChange={handleDriverPhoneNumberChange}
-                    placeholder="Driver Contact Number "
-                    InputLabelProps={{
-                      shrink: !!showCustomerData.driver_contact,
-                    }}
-                  />
-                  {/* <TextField
+                      {/* {errors.driver_name && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                    <div className="mt-3">
+                      <div className="flex items-center">
+                        <Autocomplete
+                          sx={{ marginRight: "2px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        <TextField
+                          {...register("driver_contact")}
+                          className="carRegField"
+                          label=""
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            driverPhoneNumber
+                              ? driverPhoneNumber
+                              : showCustomerData?.driver_contact
+                          }
+                          onChange={handleDriverPhoneNumberChange}
+                          placeholder="Driver Contact Number "
+                          InputLabelProps={{
+                            shrink: !!showCustomerData.driver_contact,
+                          }}
+                        />
+                        {/* <TextField
                     className="addJobInputField"
                     label="Driver Contact No (N)"
                     {...register("driver_contact", {
@@ -1055,31 +1063,571 @@ const AddJobCard = () => {
                     //     : driverConError  
                     // }
                   /> */}
-                </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Reference Name (T) "
-                  {...register("reference_name")}
-                  value={showCustomerData?.reference_name}
-                  focused={showCustomerData?.reference_name}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      reference_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.reference_name,
-                  }}
-                />
-                {/* {errors.reference_name && (
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Reference Name (T) "
+                        {...register("reference_name")}
+                        value={showCustomerData?.reference_name}
+                        focused={showCustomerData?.reference_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            reference_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.reference_name,
+                        }}
+                      />
+                      {/* {errors.reference_name && (
               <span className="text-sm text-red-400">
                 This field is required.
               </span>
             )} */}
-              </div>
+                    </div>
+                  </div>
+                ) : newId === "companyId" ? (
+                  <div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        {...register("company_name")}
+                        label="Company Name (T)"
+                        focused={showCustomerData?.company_name}
+                        value={showCustomerData?.company_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            company_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.company_name,
+                        }}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Vehicle User Name (T)"
+                        {...register("username")}
+                        value={showCustomerData?.username}
+                        focused={showCustomerData?.username}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            username: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.username,
+                        }}
+                      />
+                      {/* {errors.username && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Company Address (T)"
+                        {...register("company_address")}
+                        value={showCustomerData?.company_address}
+                        focused={showCustomerData?.company_address}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            company_address: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.company_address,
+                        }}
+                      />
+                      {/* {errors.company_address && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+
+                    <div className="mt-3">
+                      <div className="flex items-center">
+                        <Autocomplete
+                          sx={{ marginRight: "2px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        <TextField
+                          {...register("customer_contact")}
+                          className="carRegField"
+                          label=""
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : showCustomerData?.customer_contact
+                          }
+                          onChange={handlePhoneNumberChange}
+                          placeholder="Customer Contact No (N)"
+                          InputLabelProps={{
+                            shrink: !!showCustomerData.customer_contact,
+                          }}
+                        />
+                        {/* <TextField
+                    className="addJobInputField"
+                    label="Customer Contact No (N)"
+                    {...register("customer_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
+                    value={showCustomerData?.customer_contact}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        // Check if length is less than or equal to 10
+                        setCustomerConError("");
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          customer_contact: inputValue,
+                        });
+                      } else {
+                        setCustomerConError("Maximum 11 digits allowed.");
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!showCustomerData.customer_contact,
+                    }}
+                    error={!!errors.customer_contact || !!customerConError}
+                    // helperText={
+                    //   errors.customer_contact
+                    //     ? errors.customer_contact.message
+                    //     : customerConError  
+                    // }
+                  /> */}
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Company Email Address (N)"
+                        {...register("company_email")}
+                        type="email"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Driver Name (T)"
+                        {...register("driver_name")}
+                        value={showCustomerData?.driver_name}
+                        focused={showCustomerData?.driver_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            driver_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.driver_name,
+                        }}
+                      />
+                      {/* {errors.driver_name && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                    <div className="mt-3">
+                      <div className="flex items-center">
+                        <Autocomplete
+                          sx={{ marginRight: "2px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        <TextField
+                          {...register("driver_contact")}
+                          className="carRegField"
+                          label=""
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            driverPhoneNumber
+                              ? driverPhoneNumber
+                              : showCustomerData?.driver_contact
+                          }
+                          onChange={handleDriverPhoneNumberChange}
+                          placeholder="Driver Contact Number "
+                          InputLabelProps={{
+                            shrink: !!showCustomerData.driver_contact,
+                          }}
+                        />
+                        {/* <TextField
+                    className="addJobInputField"
+                    label="Driver Contact No (N)"
+                    {...register("driver_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
+                    value={showCustomerData?.driver_contact}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        setDriverConError("");
+                        setShowCustomerData({
+                          ...showCustomerData,
+                          driver_contact: inputValue,
+                        });
+                      } else {
+                        setDriverConError("Maximum 11 digits allowed.");
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!showCustomerData.driver_contact,
+                    }}
+                    error={!!errors.driver_contact || !!driverConError}
+                    // helperText={
+                    //   errors.driver_contact
+                    //     ? errors.driver_contact.message
+                    //     : driverConError  
+                    // }
+                  /> */}
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Reference Name (T) "
+                        {...register("reference_name")}
+                        value={showCustomerData?.reference_name}
+                        focused={showCustomerData?.reference_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            reference_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.reference_name,
+                        }}
+                      />
+                      {/* {errors.reference_name && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+                  </div>
+                ) : newId === "showRoomId" ? (
+                  <div>
+                    <div>
+                      <TextField
+                        className="addJobInputField"
+                        on
+                        label="Show Room Name (T)"
+                        {...register("showRoom_name")}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Vehicle User Name (T)"
+                        {...register("username")}
+                        value={showCustomerData?.username}
+                        focused={showCustomerData?.username}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            username: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.username,
+                        }}
+                      />
+                      {/* {errors.username && (
+          <span className="text-sm text-red-400">
+            This field is required.
+          </span>
+        )} */}
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        on
+                        label="Show Room Address (T)"
+                        {...register("showRoom_address")}
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        {...register("company_name")}
+                        label="Company Name (T)"
+                        focused={showCustomerData?.company_name}
+                        value={showCustomerData?.company_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            company_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.company_name,
+                        }}
+                      />
+                    </div>
+
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Company Address (T)"
+                        {...register("company_address")}
+                        value={showCustomerData?.company_address}
+                        focused={showCustomerData?.company_address}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            company_address: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.company_address,
+                        }}
+                      />
+                      {/* {errors.company_address && (
+          <span className="text-sm text-red-400">
+            This field is required.
+          </span>
+        )} */}
+                    </div>
+
+                    <div className="mt-3">
+                      <div className="flex items-center my-1">
+                        <Autocomplete
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        <TextField
+                          {...register("company_contact")}
+                          className="carRegField"
+                          label="Company Contact No (N)"
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={phoneNumber}
+                          onChange={handlePhoneNumberChange}
+                          placeholder="Enter phone number"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Company Email Address (N)"
+                        {...register("company_email")}
+                        type="email"
+                      />
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Company Address (T)"
+                        {...register("company_address")}
+                        value={showCustomerData?.company_address}
+                        focused={showCustomerData?.company_address}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            company_address: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.company_address,
+                        }}
+                      />
+                      {/* {errors.company_address && (
+              <span className="text-sm text-red-400">
+                This field is required.
+              </span>
+            )} */}
+                    </div>
+
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Driver Name (T)"
+                        {...register("driver_name")}
+                        value={showCustomerData?.driver_name}
+                        focused={showCustomerData?.driver_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            driver_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.driver_name,
+                        }}
+                      />
+                      {/* {errors.driver_name && (
+          <span className="text-sm text-red-400">
+            This field is required.
+          </span>
+        )} */}
+                    </div>
+                    <div className="mt-3">
+                      <div className="flex items-center">
+                        <Autocomplete
+                          sx={{ marginRight: "2px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                        <TextField
+                          {...register("driver_contact")}
+                          className="carRegField"
+                          label=""
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            driverPhoneNumber
+                              ? driverPhoneNumber
+                              : showCustomerData?.driver_contact
+                          }
+                          onChange={handleDriverPhoneNumberChange}
+                          placeholder="Driver Contact Number "
+                          InputLabelProps={{
+                            shrink: !!showCustomerData.driver_contact,
+                          }}
+                        />
+                        {/* <TextField
+                className="addJobInputField"
+                label="Driver Contact No (N)"
+                {...register("driver_contact", {
+                  pattern: {
+                    value: /^\d{11}$/,
+                    message: "Please enter a valid 11-digit number.",
+                  },
+                })}
+                value={showCustomerData?.driver_contact}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  if (inputValue.length <= 11) {
+                    setDriverConError("");
+                    setShowCustomerData({
+                      ...showCustomerData,
+                      driver_contact: inputValue,
+                    });
+                  } else {
+                    setDriverConError("Maximum 11 digits allowed.");
+                  }
+                }}
+                InputLabelProps={{
+                  shrink: !!showCustomerData.driver_contact,
+                }}
+                error={!!errors.driver_contact || !!driverConError}
+                // helperText={
+                //   errors.driver_contact
+                //     ? errors.driver_contact.message
+                //     : driverConError  
+                // }
+              /> */}
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <TextField
+                        className="addJobInputField"
+                        label="Reference Name (T) "
+                        {...register("reference_name")}
+                        value={showCustomerData?.reference_name}
+                        focused={showCustomerData?.reference_name}
+                        onChange={(e) =>
+                          setShowCustomerData({
+                            ...showCustomerData,
+                            reference_name: e.target.value,
+                          })
+                        }
+                        InputLabelProps={{
+                          shrink: !!showCustomerData.reference_name,
+                        }}
+                      />
+                      {/* {errors.reference_name && (
+          <span className="text-sm text-red-400">
+            This field is required.
+          </span>
+        )} */}
+                    </div>
+                  </div>
+                ) : null)}
             </div>
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>

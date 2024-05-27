@@ -415,7 +415,7 @@ const MoneyReceiptView = () => {
                   <MenuItem value="Nagad">Nagad</MenuItem>
                   <MenuItem value="Nagad">Rocket</MenuItem>
                   <MenuItem value="Check">Check</MenuItem>
-                  <MenuItem value="Bank">Bank </MenuItem>
+                  <MenuItem value="Bank">Bank Transfer</MenuItem>
                 </Select>
               </FormControl>
               <div>

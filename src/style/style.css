@@ -1,0 +1,359 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.btnPurple{
+	@apply bg-red-400 text-white font-bold 
+}
+@layer base{
+	h1{
+		@apply text-3xl font-semibold 
+	}
+	h2{
+	 @apply	text-2xl font-semibold
+	}
+}
+
+
+
+.drawerflex {
+    width: 100% !important;
+    display: flex;
+    justify-content: space-between;
+  }
+  .drawwerLeftSide,
+  .activeSideBar {
+    width: 15% !important;
+    transition: all 0.5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
+  }
+  .sideBarActive {
+    width: 0% !important;
+    transition: all 0.5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
+  }
+  .drawer-content {
+    position: absolute !important;
+    right: 0px !important;
+    width: 85%;
+    transition: all 0.5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
+  }
+  .activeDrawer {
+    width: 92%;
+    position: absolute !important;
+    right: 31px !important;
+    transition: all 0.5s cubic-bezier(0.55, 0.54, 0.68, 0.63);
+  }
+  .menu :where(li:not(.menu-title) > *:not(ul):not(details):not(.menu-title)),
+  .menu :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
+    padding-left: 0rem !important;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0rem !important;
+  }
+  
+  .css-15v22id-MuiAccordionDetails-root {
+    padding: 0px 0px 0px !important;
+    padding-bottom: 0px !important;
+  }
+  .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root {
+    min-height: 38px !important;
+  }
+  
+  .css-o4b71y-MuiAccordionSummary-content.Mui-expanded,
+  .css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
+    margin: 0px !important;
+  }
+  
+  table {
+    width: 100%;
+  }
+  .table :where(thead, tfoot) {
+    white-space: pre-wrap;
+    font-size: 0.7rem;
+    line-height: 1.5rem;
+    font-weight: 300;
+    color: hsl(var(--bc) / 0.6);
+  }
+  
+  .table :where(th, td) {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    vertical-align: middle;
+    white-space: pre-wrap;
+  }
+  .table :where(td) {
+    border-right: 1px solid #ddd;
+    text-align: center;
+    font-size: 12px;
+  }
+  .table :where(td):nth-last-of-type() {
+    border-bottom: 3px solid #ddd !important;
+  }
+  .table :where(th) {
+    border: 1px solid #fff;
+    text-align: center;
+    background: #42a1da;
+    font-size: 14px;
+    color: white;
+    transition: all 0.5s ease-in-out;
+  }
+  .table tr:hover {
+    background: #11e43438;
+  }
+  .table {
+    width: 100%;
+    text-align: left;
+    font-size: 0.6em;
+    line-height: 1.75rem;
+    border-radius: var(--rounded-box, 1rem);
+  }
+  .ql-container.ql-snow {
+    border: none !important;
+  }
+  select:focus,
+  input:focus {
+    outline: none;
+  }
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 1em !important;
+  }
+  .css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 4px 0 5px !important;
+    height: 40px !important;
+    width: 500px !important;
+    padding: 5px 14px !important;
+  }
+  
+  .css-1elwnq4-MuiPaper-root-MuiAccordion-root {
+    transition: all 1s ease !important;
+  }
+  .css-hyum1k-MuiToolbar-root {
+    min-height: 35px !important;
+    padding: 0px !important;
+    background-color: white !important;
+    width: 200px !important;
+  }
+  .css-1776fzg-MuiInputBase-root .MuiInputBase-input {
+    border: 1px solid #ddd !important;
+    border-radius: 2px !important;
+    margin-left: -8px !important;
+  }
+  
+  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 16.2px !important;
+  }
+  
+  .css-w9q2zk-Input2 {
+    height: 35px !important;
+  }
+  
+  /* time picker css */
+  
+  .css-oucraa-MuiStack-root > .MuiTextField-root,
+  .css-oucraa-MuiStack-root > .MuiPickersTextField-root {
+    min-width: 100px !important ;
+  }
+  .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
+    height: 35px;
+    width: 130px;
+    margin: 0 auto;
+  }
+  .css-oucraa-MuiStack-root > .MuiTextField-root,
+  .css-oucraa-MuiStack-root > .MuiPickersTextField-root {
+    min-width: 130px;
+  }
+  
+  .css-oucraa-MuiStack-root > .MuiTextField-root,
+  .css-oucraa-MuiStack-root > .MuiPickersTextField-root {
+    min-width: 50px;
+  }
+  .css-v0pjtz-MuiStack-root {
+    overflow: hidden !important;
+    padding-top: 3px !important;
+  }
+  
+  .css-l0h214-MuiResponsiveChart-container {
+    height: 500px !important;
+  }
+  
+  .sectionMargin {
+    margin-top: 80px;
+  }
+  .profitCard {
+    width: 430px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 3px;
+  }
+  .drawer-content .profitCard {
+    width: 395px;
+    margin-bottom: 10px;
+  }
+  
+  /* width of the scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  
+  /* handle hover effect */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  
+  
+  @media only screen and (min-width: 1441px) {
+    .labelWrap label:nth-child(1) {
+        left: -43px !important;
+    }
+    .drawer-content .labelWrap label:nth-child(1) {
+        left: -27px !important;
+    }
+  
+      .labelWrap label:nth-child(2) {
+        left: -242px !important;
+    }
+  
+    .drawer-content .labelWrap label:nth-child(2) {
+        left: -195px !important;
+    }
+  
+    .labelWrap label:nth-child(3) {
+        left: 377px !important;
+    }
+  
+    .drawer-content .labelWrap label:nth-child(3) {
+        left: 303px !important;
+    }
+  
+    .labelWrap label:nth-child(4) {
+        left: 194px !important;
+    }
+    .drawer-content .labelWrap label:nth-child(4) {
+        left: 149px !important;
+    }
+  
+    .labelWrap label:nth-child(5) {
+        left: 49px !important;
+    }
+    .drawer-content .labelWrap label:nth-child(5) {
+        left: 36px !important;
+    }
+    .secondInputField {
+      width: 971px;
+  }
+  
+    .drawer-content .secondInputField {
+      width: 820px;
+    }
+  
+    .recentCard {
+      width: 966px;
+    }
+    .drawer-content .recentCard {
+      width: 885px;
+    }
+  
+    .earningCardWrap {
+      width: 639px;
+    }
+    .drawer-content .earningCardWrap {
+      width: 580px;
+    }
+  
+    .jobCardSelect2 {
+      width: 210px !important;
+    }
+    .carRegField {
+      width: 76% !important;
+    }
+    .drawer-content .carRegField {
+      width: 74% !important;
+    }
+  }
+  @media only screen and (max-width: 1440px) {
+    .secondInputField {
+      width: 665px;
+    }
+    .drawer-content .secondInputField {
+      width: 570px;
+    }
+   
+    .labelWrap label:nth-child(1) {
+      left: -12px !important;
+    }
+    .drawer-content .labelWrap label:nth-child(1) {
+      left: -3px !important;
+    }
+  
+  
+    .labelWrap label:nth-child(2) {
+      left: -150px !important;
+    }
+    .drawer-content .labelWrap label:nth-child(2) {
+      left: -122px !important;
+    }
+  
+  
+    .labelWrap label:nth-child(3) {
+      left: 223px !important;
+    }
+  
+    .drawer-content .labelWrap label:nth-child(3) {
+      left: 177px !important;
+    }
+  
+    .labelWrap label:nth-child(4) {
+      left: 100px !important;
+    }
+    .drawer-content .labelWrap label:nth-child(4) {
+      left: 71px !important;
+    }
+  
+    .labelWrap label:nth-child(5) {
+      left: 17px !important;
+    }
+    .drawer-content .labelWrap label:nth-child(5) {
+      left: 7px !important;
+    }
+  
+  }
+  
+  @media only screen and (min-width: 1024px) {
+    .activeDrawer {
+      width: 92%;
+    }
+  }
+  
+  @media only screen and (max-width: 1024px) {
+    .activeDrawer,
+    .drawer-content {
+      right: 12px !important;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .drawwerLeftSide,
+    .activeSideBar {
+      width: 32% !important;
+    }
+    .activeToggle {
+      left: 246px;
+    }
+  }
+  

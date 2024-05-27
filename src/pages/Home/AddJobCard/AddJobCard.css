@@ -280,12 +280,13 @@
     width: 638px !important;
   }
   .carRegField {
-    width: 636px !important;
+    width: 558px !important;
   }
   .drawer-content .carRegField{
     width: 560px !important;
   }
 }
+
 @media only screen and (max-width: 1440px) {
   .vehicleInputs {
     width: 310px !important;

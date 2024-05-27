@@ -56,6 +56,10 @@ const UpdateInvoice = () => {
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
   ]);
+  const [serviceItems, setServiceItems] = useState([
+    { servicesDescription: "", quantity: "", rate: "", total: "" },
+  ]);
+
 
   const handleRemove = (index) => {
     if (!index) {
@@ -71,6 +75,26 @@ const UpdateInvoice = () => {
 
   const handleAddClick = () => {
     setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
+  };
+
+  const handleServiceDescriptionRemove = (index) => {
+    if (!index) {
+      const list = [...serviceItems];
+
+      setServiceItems(list);
+    } else {
+      const list = [...serviceItems];
+      list.splice(index, 1);
+      setServiceItems(list);
+    }
+  };
+
+
+  const handleServiceDescriptionAdd = () => {
+    setServiceItems([
+      ...serviceItems,
+      { servicesDescription: "", quantity: "", rate: "", total: "" },
+    ]);
   };
 
   useEffect(() => {
@@ -530,7 +554,7 @@ const UpdateInvoice = () => {
 
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
-            <label>Description </label>
+            <label> Parts description </label>
             <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
@@ -620,7 +644,7 @@ const UpdateInvoice = () => {
               </>
             )}
           </div>
-        </form>
+          <div>
         {!addButton && (
           <button
             onClick={() => setAddButton(!addButton)}
@@ -639,14 +663,14 @@ const UpdateInvoice = () => {
         )}
         {addButton && (
           <>
-            {items.map((item, i) => {
+            {serviceItems.map((item, i) => {
               return (
                 <div key={i}>
                   <div className="qutationForm">
                     <div>
-                      {items.length !== 0 && (
+                      {serviceItems.length !== 0 && (
                         <button
-                          onClick={() => handleRemove(i)}
+                          onClick={() => handleServiceDescriptionRemove(i)}
                           className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                         >
                           Remove
@@ -710,6 +734,208 @@ const UpdateInvoice = () => {
                   </div>
 
                   <div className="addInvoiceItem">
+                    {serviceItems.length - 1 === i && (
+                      <div
+                        onClick={handleServiceDescriptionAdd}
+                        className="flex justify-end mt-2"
+                      >
+                        <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
+                          Add
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
+        </div>
+        
+        <div className="flex items-center justify-around labelWrap">
+            <label>SL No </label>
+            <label> Service description </label>
+            <label>Qty </label>
+            <label>Rate</label>
+            <label>Amount </label>
+          </div>
+
+          <div>
+            {specificInvoice?.input_data?.length > 0 && (
+              <>
+                {specificInvoice?.input_data?.map((item, i) => {
+                  return (
+                    <div key={i}>
+                      <div className="qutationForm">
+                        <div onClick={() => setRemoveButton("remove")}>
+                          {items.length !== 0 && (
+                            <button
+                              onClick={() => handleRemoveButton(i)}
+                              className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="SL No "
+                            defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="secondInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Description"
+                            onChange={(e) =>
+                              handleDescriptionChange(
+                                i,
+                                e.target.value || item.description
+                              )
+                            }
+                            defaultValue={item.description}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Qty"
+                            onChange={(e) =>
+                              handleQuantityChange(i, e.target.value)
+                            }
+                            required
+                            defaultValue={item.quantity}
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Rate"
+                            onChange={(e) =>
+                              handleRateChange(i, e.target.value)
+                            }
+                            required
+                            defaultValue={item.rate}
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Amount"
+                            value={item.total}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
+        </form>
+        <div>
+        {!addButton && (
+          <button
+            onClick={() => setAddButton(!addButton)}
+            className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
+          >
+            Add new
+          </button>
+        )}
+        {addButton && (
+          <button
+            onClick={() => setAddButton(!addButton)}
+            className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
+          >
+            Cancel
+          </button>
+        )}
+        {addButton && (
+          <>
+            {items.map((item, i) => {
+              return (
+                <div key={i}>
+                  <div className="qutationForm">
+                    <div>
+                      {items.length !== 0 && (
+                        <button
+                          onClick={() => handleRemove(i)}
+                          className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        className="firstInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="SL No "
+                        defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="secondInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="Parts Description"
+                        onChange={(e) =>
+                          handleDescriptionChange2(i, e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="firstInputField"
+                        autoComplete="off"
+                        type="number"
+                        placeholder="Qty"
+                        onChange={(e) =>
+                          handleQuantityChange2(i, e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="thirdInputField"
+                        autoComplete="off"
+                        type="number"
+                        placeholder="Rate"
+                        onChange={(e) => handleRateChange2(i, e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="thirdInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="Amount"
+                        value={item.total}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+
+                  <div className="addInvoiceItem">
                     {items.length - 1 === i && (
                       <div
                         onClick={handleAddClick}
@@ -726,6 +952,8 @@ const UpdateInvoice = () => {
             })}
           </>
         )}
+        </div>
+       
         <div className="discountFieldWrap">
           <div className="flex items-center">
             <b className="mr-2"> Total Amount: </b>

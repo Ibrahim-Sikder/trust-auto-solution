@@ -13,7 +13,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading/Loading";
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 import { formatDate } from "../../../utils/formateDate";
@@ -49,6 +49,9 @@ const AddQuotation = () => {
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
+  ]);
+  const [serviceItems, setServiceItems] = useState([
+    { servicesDescription: "", quantity: "", rate: "", total: "" },
   ]);
 
   // for customer id edit
@@ -95,6 +98,28 @@ const AddQuotation = () => {
   const handleAddClick = () => {
     setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
   };
+
+  const handleServiceDescriptionRemove = (index) => {
+    if (!index) {
+      const list = [...serviceItems];
+
+      setServiceItems(list);
+    } else {
+      const list = [...serviceItems];
+      list.splice(index, 1);
+      setServiceItems(list);
+    }
+  };
+
+
+  const handleServiceDescriptionAdd = () => {
+    setServiceItems([
+      ...serviceItems,
+      { servicesDescription: "", quantity: "", rate: "", total: "" },
+    ]);
+  };
+
+
 
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -784,7 +809,7 @@ const AddQuotation = () => {
           </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
-            <label>Description </label>
+            <label>Parts description </label>
             <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
@@ -872,6 +897,101 @@ const AddQuotation = () => {
               </div>
             );
           })}
+          <Box sx={{ marginTop: "50px" }}>
+            <div className="flex items-center justify-around labelWrap">
+              <label>SL No </label>
+              <label>Service description </label>
+              <label>Qty </label>
+              <label>Rate</label>
+              <label>Amount </label>
+            </div>
+            {serviceItems.map((item, i) => {
+              return (
+                <div key={i}>
+                  <div className="qutationForm">
+                    <div className="removeBtn">
+                      {serviceItems.length !== 0 && (
+                        <button
+                          onClick={() => handleServiceDescriptionRemove(i)}
+                          className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        className="firstInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="SL No "
+                        defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="secondInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="Description"
+                        onChange={(e) =>
+                          handleDescriptionChange(i, e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="firstInputField"
+                        autoComplete="off"
+                        type="number"
+                        placeholder="Qty"
+                        onChange={(e) =>
+                          handleQuantityChange(i, e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="thirdInputField"
+                        autoComplete="off"
+                        type="number"
+                        placeholder="Rate"
+                        onChange={(e) => handleRateChange(i, e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <input
+                        className="thirdInputField"
+                        autoComplete="off"
+                        type="text"
+                        placeholder="Amount"
+                        value={item.total}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+
+                  <div className="addInvoiceItem">
+                    {serviceItems.length - 1 === i && (
+                      <div
+                        onClick={handleServiceDescriptionAdd}
+                        className="flex justify-end mt-2 addQuotationBtns "
+                      >
+                        <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white p-2 rounded-md">
+                          Add
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </Box>
+
           <div className="discountFieldWrap">
             <div className="flex items-center ">
               <b className="mr-2 hideAmountText"> Total Amount: </b>
