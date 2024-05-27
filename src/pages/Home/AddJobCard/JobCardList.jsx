@@ -152,7 +152,7 @@ const JobCardList = () => {
               <td>{index + 1}</td>
               <td>{card.customer_name}</td>
               <td>{card.job_no}</td>
-              <td>{card.car_registration_no}</td>
+              <td>{`${card.carReg_no} ${card.car_registration_no}`}</td>
               <td> {card.customer_contact} </td>
               <td>{card.date}</td>
               <td>

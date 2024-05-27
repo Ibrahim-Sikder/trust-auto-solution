@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import "../Invoice/Invoice.css"; // Add a separate CSS file for print styles
 import { formatDate } from "../../../utils/formateDate";
+import { Divider } from "@mui/material";
 
 const Detail = () => {
   const componentRef = useRef();
@@ -22,7 +23,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
-  console.log(invoicePreview)
+  console.log(invoicePreview);
 
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +65,6 @@ const Detail = () => {
   });
 
   useEffect(() => {
-    
     const totalPagesCount = Math.ceil(invoicePreview?.input_data?.length / 28);
     setTotalPages(totalPagesCount || 1);
   }, [calculateItemsPerPage, invoicePreview?.input_data]);
@@ -228,7 +228,7 @@ const Detail = () => {
                           trustautosolution@gmail.com
                         </small>
                         <small className="block font-bold ">
-                        www.trustautosolution.com
+                          www.trustautosolution.com
                         </small>
                       </div>
                     </div>
@@ -262,7 +262,9 @@ const Detail = () => {
                             <small>: {invoicePreview.company_name}</small>
                             <small>: {invoicePreview.customer_name}</small>
                             <small>: {invoicePreview.customer_contact}</small>
-                            <small>: {invoicePreview.customer_address}dddddddddddd</small>
+                            <small>
+                              : {invoicePreview.customer_address}dddddddddddd
+                            </small>
                           </div>
                         </div>
                         <div className="invoiceLine"></div>
@@ -287,7 +289,6 @@ const Detail = () => {
                       </div>
                     </div>
                   )}
-
                   <table className="mt-5 invoiceTable2 qutationTables">
                     <thead className="tableWrap">
                       <tr>
@@ -303,7 +304,6 @@ const Detail = () => {
                         {pageData?.map((data, index) => (
                           <tr key={data._id}>
                             <td>
-                            
                               {pageNumber === 0 && index + 1}
                               {pageNumber === 1 && 28 + index + 1}
                               {pageNumber === 2 && pageNumber * 30 + index}
@@ -321,6 +321,49 @@ const Detail = () => {
                       </>
                     </tbody>
                   </table>
+                  <div className="flex items-center justify-end text-[12px] mt-2">
+                    <span>Total Amount :</span>
+                    <b className="ml-3 ">৳ 5456765</b>
+                  </div>
+                  <table className="mt-5 invoiceTable2 qutationTables">
+                    <thead className="tableWrap">
+                      <tr>
+                        <th className="serialNo">SL No</th>
+                        <th>Description</th>
+                        <th>Qty </th>
+                        <th>Rate</th>
+                        <th>Amount </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <>
+                        {pageData?.map((data, index) => (
+                          <tr key={data._id}>
+                            <td>
+                              {pageNumber === 0 && index + 1}
+                              {pageNumber === 1 && 28 + index + 1}
+                              {pageNumber === 2 && pageNumber * 30 + index}
+                              {pageNumber === 3 && pageNumber * 30 + index + 1}
+                              {pageNumber === 4 && pageNumber * 30 + index + 2}
+                              {pageNumber === 5 && pageNumber * 30 + index + 3}
+                              {pageNumber === 6 && pageNumber * 30 + index + 4}
+                            </td>
+                            <td>{data.description}</td>
+                            <td>{data.quantity}</td>
+                            <td>{data.rate}</td>
+                            <td>{data.total}</td>
+                          </tr>
+                        ))}
+                      </>
+                    </tbody>
+                  </table>
+                  <div className="flex items-center justify-end text-[12px] mt-2">
+                    <span>Total Amount :</span>
+                    <b className="ml-3 ">৳ 5456765</b>
+                  </div>
+                  <div className="flex  justify-end ">
+                    <Divider sx={{ width: "200px", marginTop: "5px" }} />
+                  </div>
                   {pageNumber === pagesData?.length - 1 && (
                     <div className="flex justify-between items-end mt-3 border-b-[1px] pb-3 border-[#ddd]">
                       <div className="mt-5 text-[12px] invisible">
@@ -328,7 +371,7 @@ const Detail = () => {
                       </div>
                       <div className="flex netTotalAmounts">
                         <div className="">
-                          <b> Total Amount </b>
+                          <b>Sub Total </b>
                           <b> Discount </b>
                           <b> VAT </b>
                           <b> Net Total </b>
@@ -336,10 +379,10 @@ const Detail = () => {
                           <b> Due </b> */}
                         </div>
                         <div>
-                          <small> : {invoicePreview.total_amount}</small>
+                          <small> : ৳ {invoicePreview.total_amount}</small>
                           <small> : {invoicePreview.discount}</small>
                           <small> : {invoicePreview.vat}%</small>
-                          <small> : {invoicePreview.net_total}</small>
+                          <small> : ৳ {invoicePreview.net_total}</small>
                           {/* <small> : {invoicePreview.advance}</small>
                           <small> : {invoicePreview.due}</small> */}
                         </div>

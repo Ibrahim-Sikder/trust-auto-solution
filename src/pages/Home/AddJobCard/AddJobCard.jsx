@@ -754,12 +754,13 @@ const AddJobCard = () => {
 
           <div className="jobCardFieldWraps">
             <div className="jobCardFieldRightSide">
-              <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
+             
 
               {newId &&
                 (newId === "customerId" ? (
                   <div>
-                    <div className="mt-3">
+                  <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
+                    <div>
                       <TextField
                         className="addJobInputField"
                         label="Customer Name (T)"
@@ -1091,7 +1092,8 @@ const AddJobCard = () => {
                   </div>
                 ) : newId === "companyId" ? (
                   <div>
-                    <div className="mt-3">
+                  <h3 className="mb-5 text-xl font-bold ">Company Information </h3>
+                    <div>
                       <TextField
                         className="addJobInputField"
                         {...register("company_name")}
@@ -1360,6 +1362,7 @@ const AddJobCard = () => {
                   </div>
                 ) : newId === "showRoomId" ? (
                   <div>
+                  <h3 className="mb-5 text-xl font-bold ">Show Room Information </h3>
                     <div>
                       <TextField
                         className="addJobInputField"
