@@ -469,23 +469,7 @@ const AddCompany = () => {
                     {...register("company_address")}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Company Contact No (N)"
-                    {...register("company_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                  />
-                  {errors.company_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.company_contact.message}
-                    </span>
-                  )}
-                </div> */}
+               
                 <div className="flex items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: '5px' }}
@@ -515,7 +499,6 @@ const AddCompany = () => {
                     type="tel"
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
                   />
                 </div>
                 <div>

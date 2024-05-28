@@ -4,6 +4,7 @@ import { FaCarSide, FaFileInvoice, FaInfo, FaRegEdit } from "react-icons/fa";
 import Card from "../../../../components/Card/Card";
 import { Link } from "react-router-dom";
 import { HiOutlineEye } from "react-icons/hi";
+import { formatDate } from "../../../../utils/formateDate";
 const CustomerAccount = ({
   profileData,
   jobCardData,
@@ -11,7 +12,6 @@ const CustomerAccount = ({
   moneyReceiptData,
   invoiceData,
 }) => {
-  console.log(moneyReceiptData);
 
   return (
     <div className="customerProfileWrap">
@@ -22,13 +22,19 @@ const CustomerAccount = ({
             <div className="space-y-2">
               <div>
                 Customer Name :{" "}
-                <b className="capitalize ">{profileData?.company_name} </b>
+                <b className="capitalize ">{profileData?.customer_name} </b>
               </div>
               <div>
                 Vehicle Name : <b>{profileData?.vehicle_name} </b>
               </div>
               <div>
-                Registration No : <b>{profileData?.car_registration_no}</b>
+                Registration No :{" "}
+                <b>
+                  {`${profileData?.carReg_no} ${profileData?.car_registration_no}`}{" "}
+                </b>
+              </div>
+              <div>
+                Vehicle Model : <b>{`${profileData?.vehicle_model}`} </b>
               </div>
             </div>
 
@@ -42,6 +48,9 @@ const CustomerAccount = ({
               </div>
               <div>
                 Reference Name : <b> {profileData?.reference_name}</b>
+              </div>
+              <div>
+                Date : <b> {formatDate(profileData?.createdAt)}</b>
               </div>
             </div>
           </div>
@@ -90,7 +99,7 @@ const CustomerAccount = ({
                       ).toLocaleString("en-US", { month: "short" })}`
                     : "No Job Card"}
                 </p>
-                <p></p>
+
                 {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[0]?.Id}>
                     <b>{jobCardData[0]?.date?.slice(0, 2)}</b>
@@ -99,13 +108,15 @@ const CustomerAccount = ({
               </div>
               <div className="ml-3">
                 {jobCardData && invoiceData?.length > 0 && (
-                  <div key={jobCardData[0]?.Id}>
-                    <b>{jobCardData[0]?.vehicle_name}</b>
+                  <div key={jobCardData[0]?.Id} className="flex items-center ">
+                    <span>Vehicle Name : </span>
+                    <small className="ml-3">{jobCardData[0]?.vehicle_name}</small>
                   </div>
                 )}
                 {jobCardData && jobCardData.length > 0 && (
-                  <div key={jobCardData[0]?.Id}>
-                    <b>{jobCardData[0]?.job_no}</b>
+                  <div key={jobCardData[0]?.Id} className="flex items-center">
+                    <span>Job No : </span>
+                    <small className="ml-3">{jobCardData[0]?.job_no}</small>
                   </div>
                 )}
               </div>
@@ -135,13 +146,18 @@ const CustomerAccount = ({
               </div>
               <div className="ml-3">
                 {jobCardData && jobCardData?.length > 0 && (
-                  <div key={jobCardData[1]?.Id}>
-                    <b>{jobCardData[1]?.vehicle_name}</b>
+                  <div key={jobCardData[1]?.Id} className="flex items-center ">
+                    <span>Vehicle Name :</span>
+                    <small className="ml-3">{jobCardData[1]?.vehicle_name}</small>
                   </div>
                 )}
                 {jobCardData && jobCardData?.length > 0 && (
-                  <div key={jobCardData[1]?.job_no}>
-                    <b>{jobCardData[1]?.job_no}</b>
+                  <div
+                    key={jobCardData[1]?.job_no}
+                    className="flex items-center"
+                  >
+                    <span>Job No : </span>
+                    <small className="ml-3">{jobCardData[1]?.job_no}</small>
                   </div>
                 )}
               </div>
@@ -182,12 +198,20 @@ const CustomerAccount = ({
               <div className="ml-3">
                 {quotationData && quotationData.length > 0 && (
                   <div key={quotationData[0]?.Id}>
-                    <b>{quotationData[0]?.vehicle_name}</b>
+                    <span className="mr-3">Quotation Number :</span>
+                    <small>{quotationData[0]?.job_no}</small>
                   </div>
                 )}
                 {quotationData && quotationData.length > 0 && (
                   <div key={quotationData[0]?.Id}>
-                    <b>৳{quotationData[0]?.net_total}</b>
+                    <span className="mr-3">Vehicle Name :</span>
+                    <small>{quotationData[0]?.vehicle_name}</small>
+                  </div>
+                )}
+                {quotationData && quotationData.length > 0 && (
+                  <div key={quotationData[0]?.Id}>
+                    <span className="mr-3">Total Amount :</span>
+                    <small>৳{quotationData[0]?.net_total}</small>
                   </div>
                 )}
               </div>
@@ -216,14 +240,22 @@ const CustomerAccount = ({
                 )}
               </div>
               <div className="ml-3">
-                {quotationData && quotationData?.length > 0 && (
+                {quotationData && quotationData.length > 0 && (
                   <div key={quotationData[1]?.Id}>
-                    <b>{quotationData[1]?.vehicle_name}</b>
+                    <span className="mr-3">Quotation Number :</span>
+                    <small>{quotationData[1]?.job_no}</small>
                   </div>
                 )}
-                {quotationData && quotationData?.length > 0 && (
+                {quotationData && quotationData.length > 0 && (
                   <div key={quotationData[1]?.Id}>
-                    <b>৳{quotationData[1]?.net_total}</b>
+                    <span className="mr-3">Vehicle Name :</span>
+                    <small>{quotationData[1]?.vehicle_name}</small>
+                  </div>
+                )}
+                {quotationData && quotationData.length > 0 && (
+                  <div key={quotationData[1]?.Id}>
+                    <span className="mr-3">Total Amount :</span>
+                    <small>৳{quotationData[1]?.net_total}</small>
                   </div>
                 )}
               </div>
@@ -265,12 +297,20 @@ const CustomerAccount = ({
               </div>
               <div className="ml-3">
                 {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[0]?.Id}>
-                    <b>{invoiceData[0]?.vehicle_name}</b>
+                  <div key={invoiceData[0]?.Id} className="flex items-center ">
+                    <b className="mr-3">Invoice No : </b>
+                    <span>{invoiceData[0]?.job_no}</span>
+                  </div>
+                )}
+                {invoiceData && invoiceData?.length > 0 && (
+                  <div key={invoiceData[0]?.Id} className="flex items-center ">
+                    <b className="mr-3">Vehicle Name : </b>
+                    <span>{invoiceData[0]?.vehicle_name}</span>
                   </div>
                 )}
                 {invoiceData && invoiceData.length > 0 && (
                   <div key={invoiceData[0]?.Id}>
+                    <b className="mr-3">Total Amount :</b>
                     <b>৳{invoiceData[0]?.net_total}</b>
                   </div>
                 )}
@@ -301,12 +341,20 @@ const CustomerAccount = ({
               </div>
               <div className="ml-3">
                 {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[1]?.Id}>
-                    <b>{invoiceData[1]?.vehicle_name}</b>
+                  <div key={invoiceData[1]?.Id} className="flex items-center ">
+                    <b className="mr-3">Invoice No : </b>
+                    <span>{invoiceData[1]?.job_no}</span>
+                  </div>
+                )}
+                {invoiceData && invoiceData?.length > 0 && (
+                  <div key={invoiceData[1]?.Id} className="flex items-center ">
+                    <b className="mr-3">Vehicle Name : </b>
+                    <span>{invoiceData[1]?.vehicle_name}</span>
                   </div>
                 )}
                 {invoiceData && invoiceData.length > 0 && (
                   <div key={invoiceData[1]?.Id}>
+                    <b className="mr-3">Total Amount :</b>
                     <b>৳{invoiceData[1]?.net_total}</b>
                   </div>
                 )}
@@ -349,8 +397,16 @@ const CustomerAccount = ({
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
                     <div className="flex items-center">
+                      <span className="mr-3 ">Against bill no :</span>
+                      <span> {moneyReceiptData[0]?.against_bill_no}</span>
+                    </div>
+                  </div>
+                )}
+                {moneyReceiptData && moneyReceiptData?.length > 0 && (
+                  <div key={moneyReceiptData[0]?.Id}>
+                    <div className="flex items-center">
                       <span className="mr-2">Remaining :</span>
-                      <b> ৳{moneyReceiptData[0]?.remaining}</b>
+                      <small> ৳{moneyReceiptData[0]?.remaining}</small>
                     </div>
                   </div>
                 )}
@@ -358,10 +414,10 @@ const CustomerAccount = ({
                   <div key={moneyReceiptData[0]?.Id}>
                     <div className="flex items-center">
                       <span className="mr-2">Total Amount : </span>
-                      <b> ৳{moneyReceiptData[0]?.total_amount}</b>
+                      <small> ৳{moneyReceiptData[0]?.total_amount}</small>
                     </div>
                   </div>
-                )}     
+                )}
               </div>
             </div>
             <Link
@@ -393,8 +449,16 @@ const CustomerAccount = ({
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
                     <div className="flex items-center">
+                      <span className="mr-3 ">Against bill no :</span>
+                      <span> {moneyReceiptData[1]?.against_bill_no}</span>
+                    </div>
+                  </div>
+                )}
+                {moneyReceiptData && moneyReceiptData?.length > 0 && (
+                  <div key={moneyReceiptData[1]?.Id}>
+                    <div className="flex items-center">
                       <span className="mr-2">Remaining :</span>
-                      <b> ৳{moneyReceiptData[1]?.remaining}</b>
+                      <small> ৳{moneyReceiptData[1]?.remaining}</small>
                     </div>
                   </div>
                 )}
@@ -402,13 +466,13 @@ const CustomerAccount = ({
                   <div key={moneyReceiptData[1]?.Id}>
                     <div className="flex items-center">
                       <span className="mr-2">Total Amount : </span>
-                      <b> ৳{moneyReceiptData[1]?.total_amount}</b>
+                      <small> ৳{moneyReceiptData[1]?.total_amount}</small>
                     </div>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${moneyReceiptData[0]?._id}`}>
+            <Link to={`/dashboard/detail?id=${moneyReceiptData[1]?._id}`}>
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>

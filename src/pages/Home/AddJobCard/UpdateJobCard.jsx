@@ -32,6 +32,7 @@ const UpdateJobCard = () => {
   const [registrationError, setRegistrationError] = useState("");
 
   const [singleCard, setSingleCard] = useState({});
+  console.log(singleCard);
 
   const [technicianDateShow, setTechnicianDateShow] = useState(false);
   const [showCalender, setShowCalender] = useState(false);
@@ -255,7 +256,7 @@ const UpdateJobCard = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-         <TrustAutoAddress/>
+          <TrustAutoAddress />
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
@@ -342,114 +343,156 @@ const UpdateJobCard = () => {
 
           <div className="jobCardFieldWraps">
             <div className="jobCardFieldRightSide">
-              <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  {...register("company_name")}
-                  label="Company Name (T)"
-                  value={singleCard?.company_name}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      company_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.company_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle User Name (T)"
-                  {...register("username")}
-                  value={singleCard?.username}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      username: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard?.username,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company Address (T)"
-                  {...register("company_address")}
-                  value={singleCard?.company_address}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      company_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.company_address,
-                  }}
-                />
-              </div>
+              {singleCard.Id === "TAS-C:000179" ? (
+                <div>
+                  <h3 className="mb-5 text-xl font-bold ">
+                    Customer Information{" "}
+                  </h3>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Customer Name (T)"
+                      {...register("customer_name")}
+                      value={singleCard?.customer_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          customer_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.customer_name,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Customer Email Address (T)"
+                      {...register("customer_email")}
+                      type="email"
+                      value={singleCard?.customer_email}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          customer_email: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.customer_email,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Customer Address (T) "
+                      {...register("customer_address")}
+                      value={singleCard?.customer_address}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          customer_address: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.customer_address,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      {...register("company_name")}
+                      label="Company Name (T)"
+                      value={singleCard?.company_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          company_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.company_name,
+                      }}
+                    />
+                  </div>
 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Name (T)"
-                  {...register("customer_name")}
-                  value={singleCard?.customer_name}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      customer_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.customer_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <div className="flex items-center">
-                  <Autocomplete
-                    sx={{ marginRight: "2px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Company Address (T)"
+                      {...register("company_address")}
+                      value={singleCard?.company_address}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          company_address: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.company_address,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Vehicle User Name (T)"
+                      {...register("username")}
+                      value={singleCard?.username}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          username: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard?.username,
+                      }}
+                    />
+                  </div>
+
+                  <div className="mt-3">
+                    <div className="flex items-center">
+                      <Autocomplete
+                        sx={{ marginRight: "2px" }}
+                        className="jobCardSelect2"
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
                       />
-                    )}
-                  />
-                  <TextField
-                    {...register("customer_contact")}
-                    className="carRegField"
-                    label="Customer Contact No (N)"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      phoneNumber ? phoneNumber : singleCard?.customer_contact
-                    }
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
-                    InputLabelProps={{
-                      shrink: !!singleCard.customer_contact,
-                    }}
-                  />
-                  {/* <TextField
+                      <TextField
+                        {...register("customer_contact")}
+                        className="carRegField"
+                        label="Customer Contact No (N)"
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          phoneNumber
+                            ? phoneNumber
+                            : singleCard?.customer_contact
+                        }
+                        onChange={handlePhoneNumberChange}
+                        placeholder="Enter phone number"
+                        InputLabelProps={{
+                          shrink: !!singleCard.customer_contact,
+                        }}
+                      />
+                      {/* <TextField
                     className="carRegField"
                     label="Customer Contact No (N)"
                     {...register("customer_contact", {
@@ -480,100 +523,66 @@ const UpdateJobCard = () => {
                     //     : ""
                     // }
                   /> */}
-                </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Email Address (T)"
-                  {...register("customer_email")}
-                  type="email"
-                  value={singleCard?.customer_email}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      customer_email: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.customer_email,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Address (T) "
-                  {...register("customer_address")}
-                  value={singleCard?.customer_address}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      customer_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.customer_address,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Driver Name (T)"
-                  {...register("driver_name")}
-                  value={singleCard?.driver_name}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      driver_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.driver_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <div className="flex items-center">
-                  <Autocomplete
-                    sx={{ marginRight: "2px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                    </div>
+                  </div>
+
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Driver Name (T)"
+                      {...register("driver_name")}
+                      value={singleCard?.driver_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          driver_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.driver_name,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <div className="flex items-center">
+                      <Autocomplete
+                        sx={{ marginRight: "2px" }}
+                        className="jobCardSelect2"
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
                       />
-                    )}
-                  />
-                  <TextField
-                    {...register("driver_contact")}
-                    className="carRegField"
-                    label="Customer Contact No (N)"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      driverPhoneNumber
-                        ? driverPhoneNumber
-                        : singleCard?.driver_contact
-                    }
-                    onChange={handleDriverPhoneNumberChange}
-                    placeholder="Enter phone number"
-                    InputLabelProps={{
-                      shrink: !!singleCard.driver_contact,
-                    }}
-                  />
-                  {/* <TextField
+                      <TextField
+                        {...register("driver_contact")}
+                        className="carRegField"
+                        label="Customer Contact No (N)"
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          driverPhoneNumber
+                            ? driverPhoneNumber
+                            : singleCard?.driver_contact
+                        }
+                        onChange={handleDriverPhoneNumberChange}
+                        placeholder="Enter phone number"
+                        InputLabelProps={{
+                          shrink: !!singleCard.driver_contact,
+                        }}
+                      />
+                      {/* <TextField
                     className="carRegField"
                     label="Driver Contact No (N)"
                     {...register("driver_contact", {
@@ -602,25 +611,435 @@ const UpdateJobCard = () => {
                     //   errors.driver_contact ? errors.driver_contact.message : ""
                     // }
                   /> */}
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Reference Name (T) "
+                      {...register("reference_name")}
+                      value={singleCard?.reference_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          reference_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.reference_name,
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Reference Name (T) "
-                  {...register("reference_name")}
-                  value={singleCard?.reference_name}
-                  onChange={(e) =>
-                    setSingleCard({
-                      ...singleCard,
-                      reference_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!singleCard.reference_name,
-                  }}
-                />
-              </div>
+              ) : singleCard.Id === "TAS-Co:000022" ? (
+                <div>
+                  <h3 className="mb-5 text-xl font-bold ">
+                    Company Information{" "}
+                  </h3>
+
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      {...register("company_name")}
+                      label="Company Name (T)"
+                      value={singleCard?.company_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          company_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.company_name,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Vehicle User Name (T)"
+                      {...register("username")}
+                      value={singleCard?.username}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          username: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard?.username,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Company Address (T)"
+                      {...register("company_address")}
+                      value={singleCard?.company_address}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          company_address: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.company_address,
+                      }}
+                    />
+                  </div>
+
+                  <div className="mt-3">
+                    <div className="flex items-center">
+                      <Autocomplete
+                        sx={{ marginRight: "2px" }}
+                        className="jobCardSelect2"
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                      <TextField
+                        {...register("customer_contact")}
+                        className="carRegField"
+                        label="Company Contact No (N) (new field) "
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          phoneNumber
+                            ? phoneNumber
+                            : singleCard?.company_contact
+                        }
+                        onChange={handlePhoneNumberChange}
+                        placeholder="Enter phone number"
+                        InputLabelProps={{
+                          shrink: !!singleCard.company_contact,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Company Email Address (N) (new field) "
+                      {...register("company_email")}
+                      type="email"
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Driver Name (T)"
+                      {...register("driver_name")}
+                      value={singleCard?.driver_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          driver_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.driver_name,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <div className="flex items-center">
+                      <Autocomplete
+                        sx={{ marginRight: "2px" }}
+                        className="jobCardSelect2"
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                      <TextField
+                        {...register("driver_contact")}
+                        className="carRegField"
+                        label="Driver Contact No (N)"
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          driverPhoneNumber
+                            ? driverPhoneNumber
+                            : singleCard?.driver_contact
+                        }
+                        onChange={handleDriverPhoneNumberChange}
+                        placeholder="Enter phone number"
+                        InputLabelProps={{
+                          shrink: !!singleCard.driver_contact,
+                        }}
+                      />
+                      {/* <TextField
+                    className="carRegField"
+                    label="Driver Contact No (N)"
+                    {...register("driver_contact", {
+                      pattern: {
+                        value: /^\d{11}$/,
+                        message: "Please enter a valid 11-digit number.",
+                      },
+                    })}
+                    value={singleCard?.driver_contact}
+                    onChange={(e) => {
+                      if (e.target.value.length <= 11) {
+                        setDriverConError("");
+                        setSingleCard({
+                          ...singleCard,
+                          driver_contact: e.target.value,
+                        });
+                      } else {
+                        setDriverConError("Maximum 11 digits allowed.");
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!singleCard.driver_contact,
+                    }}
+                    error={!!errors.driver_contact || !!driverConError}
+                    // helperText={
+                    //   errors.driver_contact ? errors.driver_contact.message : ""
+                    // }
+                  /> */}
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Reference Name (T) "
+                      {...register("reference_name")}
+                      value={singleCard?.reference_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          reference_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.reference_name,
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : singleCard.Id === "TAS-S:000997" ? (
+                <div>
+                  <h3 className="mb-5 text-xl font-bold ">
+                    Show Room Information{" "}
+                  </h3>
+                  <div>
+                    <TextField
+                      className="addJobInputField"
+                      on
+                      label="Show Room Name (T) (new field) "
+                      {...register("showRoom_name")}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Vehicle User Name (T)"
+                      {...register("username")}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      on
+                      label="Show Room Address (T) (new field) "
+                      {...register("showRoom_address")}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      {...register("company_name")}
+                      label="Company Name (T)"
+                      value={singleCard?.company_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          company_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.company_name,
+                      }}
+                    />
+                  </div>
+
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Company Address (T)"
+                      {...register("company_address")}
+                      value={singleCard?.company_address}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          company_address: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.company_address,
+                      }}
+                    />
+                  </div>
+
+                  <div className="mt-3">
+                    <div className="flex items-center">
+                      <Autocomplete
+                        sx={{ marginRight: "2px" }}
+                        className="jobCardSelect2"
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber("");
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                      <TextField
+                        {...register("company_contact")}
+                        className="carRegField"
+                        label="Company Contact No (N) (new field) "
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          phoneNumber
+                            ? phoneNumber
+                            : singleCard?.company_contact
+                        }
+                        onChange={handlePhoneNumberChange}
+                        placeholder="Enter phone number"
+                        InputLabelProps={{
+                          shrink: !!singleCard.company_contact,
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Company Email Address (N) (new field) "
+                      {...register("company_email")}
+                      type="email"
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Company Address (T)"
+                      {...register("company_address")}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Driver Name (T)"
+                      {...register("driver_name")}
+                      value={singleCard?.driver_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          driver_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.driver_name,
+                      }}
+                    />
+                  </div>
+                  <div className="mt-3">
+                    <div className="flex items-center">
+                      <Autocomplete
+                        sx={{ marginRight: "2px" }}
+                        className="jobCardSelect2"
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber("");
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                      <TextField
+                        {...register("driver_contact")}
+                        className="carRegField"
+                        label="Driver Contact No (N)"
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          driverPhoneNumber
+                            ? driverPhoneNumber
+                            : singleCard?.driver_contact
+                        }
+                        onChange={handleDriverPhoneNumberChange}
+                        InputLabelProps={{
+                          shrink: !!singleCard.driver_contact,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <TextField
+                      className="addJobInputField"
+                      label="Reference Name (T) "
+                      {...register("reference_name")}
+                      value={singleCard?.reference_name}
+                      onChange={(e) =>
+                        setSingleCard({
+                          ...singleCard,
+                          reference_name: e.target.value,
+                        })
+                      }
+                      InputLabelProps={{
+                        shrink: !!singleCard.reference_name,
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : null}
             </div>
 
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">

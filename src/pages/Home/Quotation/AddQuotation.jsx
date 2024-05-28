@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 
 import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
-import { countries } from "../../../constant";
+import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 
 const AddQuotation = () => {
@@ -111,15 +111,12 @@ const AddQuotation = () => {
     }
   };
 
-
   const handleServiceDescriptionAdd = () => {
     setServiceItems([
       ...serviceItems,
       { servicesDescription: "", quantity: "", rate: "", total: "" },
     ]);
   };
-
-
 
   const [grandTotal, setGrandTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
@@ -533,7 +530,7 @@ const AddQuotation = () => {
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
             </span>
           </div>
-          <TrustAutoAddress/>
+          <TrustAutoAddress />
         </div>
       </div>
       <div className="mt-5">
@@ -688,9 +685,24 @@ const AddQuotation = () => {
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
-              <div className="mt-3">
+              <div className="flex mt-3  md:gap-0 gap-4 items-center">
+                <Autocomplete
+                  sx={{ marginRight: "5px" }}
+                  freeSolo
+                  className="jobCardSelect2 "
+                  id="free-solo-demo"
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Reg No ( New field ) "
+                      {...register("carReg_no")}
+                    />
+                  )}
+                />
+
                 <TextField
-                  className="addJobInputField"
+                  className="carRegField"
                   label="Car R (N)"
                   {...register("car_registration_no", {
                     pattern: {
@@ -733,6 +745,7 @@ const AddQuotation = () => {
                   error={!!errors.car_registration_no || !!registrationError}
                 />
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"

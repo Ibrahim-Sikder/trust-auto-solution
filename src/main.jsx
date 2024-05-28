@@ -11,7 +11,6 @@ import Providers from "./lib/Providers/Providers.jsx";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./Theme.jsx";
 const queryClient = new QueryClient();
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -20,8 +19,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <PrintProvider>
             <ToastContainer />
             <RouterProvider router={router} />
+           
           </PrintProvider>
         </Providers>
+        
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>

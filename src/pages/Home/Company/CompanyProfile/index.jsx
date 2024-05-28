@@ -1,12 +1,8 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { HiLocationMarker } from "react-icons/hi";
 import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
 import { ImUserTie } from "react-icons/im";
 import "../../Customer/Customer.css";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-
-import { FaFacebookF, FaRocketchat, FaWhatsapp } from "react-icons/fa";
 import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
 import CompanyAccount from "./CompanyAccount";
 import CompanyVehicleDetails from "./CompanyVehicleDetails";
@@ -15,21 +11,21 @@ import CompanyQuotationList from "./CompanyQuotationList";
 import CompanyInvoiceList from "./CompanyInvoiceList";
 import CompanyMoneyList from "./CompanyMoneyList";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { Tabs, Tab, Box, Typography } from "@mui/material";
+import Message from "../../../../shared/Message/Message";
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
-console.log(profileData)
+  console.log(profileData);
   const [jobCardData, setJobCardData] = useState([]);
-
   const [quotationData, setQuotationData] = useState([]);
-  console.log(quotationData)
+  console.log(quotationData);
   const [invoiceData, setInvoiceData] = useState([]);
-console.log(invoiceData)
+  console.log(invoiceData);
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-console.log(moneyReceiptData)
+  console.log(moneyReceiptData);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -78,6 +74,7 @@ console.log(moneyReceiptData)
         });
     }
   }, [id]);
+
   useEffect(() => {
     if (id) {
       fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, {
@@ -113,21 +110,53 @@ console.log(moneyReceiptData)
     }
   }, [id]);
 
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const tabStyles = {
+    width: 115,
+    height: "35px",
+    margin: 0.5,
+    backgroundColor: "#42A1DA",
+    color: "white",
+    borderRadius: 10,
+    padding: "0px",
+    fontSize: "11px",
+    lineHeight: "20px",
+    minHeight: "unset",
+    "&.Mui-selected": {
+      backgroundColor: "#F77F00",
+      color: "#fff",
+    },
+  };
+
+  const tabsStyles = {
+    "& .MuiTabs-indicator": {
+      display: "none",
+    },
+    "& .MuiTabs-flexContainer": {
+      borderBottom: "none",
+    },
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center  ">
+      <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center">
         <div className="flex justify-between w-full">
-          <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5 ">
-            <div className="flex flex-wrap ml-5 ">
-              <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3 ">
+          <div className="bg-[#F77F00] border rounded-md py-5 px-3 relative top-20 left-5">
+            <div className="flex flex-wrap ml-5">
+              <div className="w-24 h-24 bg-[#42A1DA] border rounded-xl mr-3 p-3">
                 <ImUserTie size="80" className="text-white" />
               </div>
               <div>
-              <div className="flex items-center">
+                <div className="flex items-center">
                   <span> Company ID : </span>{" "}
                   <span className="ml-3 font-semibold ">
                     {profileData?.companyId}
@@ -150,7 +179,7 @@ console.log(moneyReceiptData)
               </div>
             </div>
           </div>
-          <div className="bg-[#F77F00] border h-14 rounded-md p-3 relative top-32 md:right-5  right-20 ">
+          <div className="bg-[#F77F00] border h-14 rounded-md p-3 relative top-32 md:right-5 right-20">
             <div className="flex items-center">
               <b>Due</b> /<b>Paid</b>
             </div>
@@ -159,94 +188,100 @@ console.log(moneyReceiptData)
       </div>
 
       <div className="mt-32 text-black">
-        <Tabs className="tabList">
-          <TabList>
-            <Tab>Account</Tab>
-            <Tab>Vehicle List</Tab>
-            <Tab>Jobs Card </Tab>
-            <Tab>Quotation </Tab>
-            <Tab>Invoice </Tab>
-            <Tab>Money Receipt </Tab>
-            <Tab>Payment</Tab>
-            <Tab>Message</Tab>
-          </TabList>
+        <Box sx={{ width: "100%" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="company profile tabs"
+            sx={tabsStyles}
+          >
+            <Tab sx={tabStyles} label="Account" />
+            <Tab sx={tabStyles} label="Vehicle List" />
+            <Tab sx={tabStyles} label="Jobs Card" />
+            <Tab sx={tabStyles} label="Quotation" />
+            <Tab sx={tabStyles} label="Invoice" />
+            <Tab sx={tabStyles} label="Money Receipt" />
+            <Tab sx={tabStyles} label="Payment" />
+            <Tab sx={tabStyles} label="Message" />
+          </Tabs>
+        </Box>
 
-          <TabPanel>
-            <CompanyAccount
-              profileData={profileData}
-              jobCardData={jobCardData}
-              quotationData={quotationData}
-              invoiceData={invoiceData}
-              moneyReceiptData={moneyReceiptData}
-            />
-          </TabPanel>
-          <TabPanel>
-            <CompanyVehicleDetails />
-          </TabPanel>
-          <TabPanel>
-            <CompanyJobCardList
-              jobCardData={jobCardData}
-              setJobCardData={setJobCardData}
-              id={id}
-            />
-          </TabPanel>
-          <TabPanel>
-            <CompanyQuotationList
-              quotationData={quotationData}
-              setQuotationData={setQuotationData}
-              id={id}
-            />
-          </TabPanel>
-          <TabPanel>
-            <CompanyInvoiceList
-              invoiceData={invoiceData}
-              setInvoiceData={setInvoiceData}
-              id={id}
-            />
-          </TabPanel>
-          <TabPanel>
-            <CompanyMoneyList
-              moneyReceiptData={moneyReceiptData}
-              setMoneyReceiptData={setMoneyReceiptData}
-              id={id}
-            />
-          </TabPanel>
-          <TabPanel>
-            <SupplierPaymentList />
-          </TabPanel>
-          <TabPanel>
-            <div>
-              <div className="flex items-center justify-between cursor-pointer w-[500px] mx-auto my-20">
-                <div className="shadow-lg bg-[#24CC63] text-white p-3 rounded-lg ">
-                  <Link to="/dashboard/message">
-                    <FaWhatsapp size={100} />
-                  </Link>
-                </div>
-                <div className="shadow-lg bg-[#1974EC] text-white p-3 rounded-lg ">
-                  <Link to="/dashboard/message">
-                    {" "}
-                    <FaFacebookF size={100} />
-                  </Link>
-                </div>
-                <div className="shadow-lg bg-[#2864D9] text-white p-3 rounded-lg ">
-                  <Link to="/dashboard/message">
-                    {" "}
-                    <FaRocketchat size={100} />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </TabPanel>
-        </Tabs>
+        <TabPanel value={value} index={0}>
+          <CompanyAccount
+            profileData={profileData}
+            jobCardData={jobCardData}
+            quotationData={quotationData}
+            invoiceData={invoiceData}
+            moneyReceiptData={moneyReceiptData}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <CompanyVehicleDetails />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <CompanyJobCardList
+            jobCardData={jobCardData}
+            setJobCardData={setJobCardData}
+            id={id}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <CompanyQuotationList
+            quotationData={quotationData}
+            setQuotationData={setQuotationData}
+            id={id}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <CompanyInvoiceList
+            invoiceData={invoiceData}
+            setInvoiceData={setInvoiceData}
+            id={id}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <CompanyMoneyList
+            moneyReceiptData={moneyReceiptData}
+            setMoneyReceiptData={setMoneyReceiptData}
+            id={id}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          <SupplierPaymentList />
+        </TabPanel>
+        <TabPanel value={value} index={7}>
+         <Message/>
+        </TabPanel>
+      </div>
 
-        <div>
-          <p className="my-5 text-center">
-            © Copyright 2024 | Trust Auto Solution | All Rights Reserved
-          </p>
-        </div>
+      <div>
+        <p className="my-5 text-center">
+          © Copyright 2024 | Trust Auto Solution | All Rights Reserved
+        </p>
       </div>
     </div>
   );
 };
 
 export default CompanyProfile;
+
+// Define TabPanel component
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}

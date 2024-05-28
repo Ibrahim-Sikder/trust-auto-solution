@@ -25,7 +25,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { formatDate } from "../../../utils/formateDate";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TADatePickers from "../../../components/form/TADatePickers";
-import { countries } from "../../../constant";
+import { cmDmOptions, countries } from "../../../constant";
 import { Button } from "react-scroll";
 import { Email, WhatsApp } from "@mui/icons-material";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
@@ -711,10 +711,24 @@ const Invoice = () => {
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
+              <div className="flex mt-3  md:gap-0 gap-4 items-center">
+                <Autocomplete
+                  sx={{ marginRight: "5px" }}
+                  freeSolo
+                  className="jobCardSelect2 "
+                  id="free-solo-demo"
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Reg No ( New field ) "
+                      {...register("carReg_no")}
+                    />
+                  )}
+                />
 
-              <div className="mt-3">
                 <TextField
-                  className="addJobInputField"
+                   className="carRegField"
                   label="Car R (N)"
                   {...register("car_registration_no", {
                     pattern: {
@@ -757,6 +771,7 @@ const Invoice = () => {
                   error={!!errors.car_registration_no || !!registrationError}
                 />
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"

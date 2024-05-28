@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { countries } from "../../../constant";
+import { cmDmOptions, countries } from "../../../constant";
 import TADatePickers from "../../../components/form/TADatePickers";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 const UpdateInvoice = () => {
@@ -60,7 +60,6 @@ const UpdateInvoice = () => {
     { servicesDescription: "", quantity: "", rate: "", total: "" },
   ]);
 
-
   const handleRemove = (index) => {
     if (!index) {
       const list = [...items];
@@ -88,7 +87,6 @@ const UpdateInvoice = () => {
       setServiceItems(list);
     }
   };
-
 
   const handleServiceDescriptionAdd = () => {
     setServiceItems([
@@ -353,7 +351,7 @@ const UpdateInvoice = () => {
             Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
           </span>
         </div>
-       <TrustAutoAddress/>
+        <TrustAutoAddress />
       </div>
       <div className="flex flex-col md:flex-row justify-between items-center">
         <div className="hidden"></div>
@@ -467,10 +465,24 @@ const UpdateInvoice = () => {
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
+              <div className="flex mt-3  md:gap-0 gap-4 items-center">
+                <Autocomplete
+                  sx={{ marginRight: "5px" }}
+                  freeSolo
+                  className="jobCardSelect2 "
+                  id="free-solo-demo"
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Reg No ( New field ) "
+                      {...register("carReg_no")}
+                    />
+                  )}
+                />
 
-              <div className="mt-3">
                 <TextField
-                  className="addJobInputField"
+                   className="carRegField"
                   label="Car R (N)"
                   {...register("car_registration_no", {
                     pattern: {
@@ -513,6 +525,7 @@ const UpdateInvoice = () => {
                   error={!!errors.car_registration_no || !!registrationError}
                 />
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -645,114 +658,116 @@ const UpdateInvoice = () => {
             )}
           </div>
           <div>
-        {!addButton && (
-          <button
-            onClick={() => setAddButton(!addButton)}
-            className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
-          >
-            Add new
-          </button>
-        )}
-        {addButton && (
-          <button
-            onClick={() => setAddButton(!addButton)}
-            className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
-          >
-            Cancel
-          </button>
-        )}
-        {addButton && (
-          <>
-            {serviceItems.map((item, i) => {
-              return (
-                <div key={i}>
-                  <div className="qutationForm">
-                    <div>
-                      {serviceItems.length !== 0 && (
-                        <button
-                          onClick={() => handleServiceDescriptionRemove(i)}
-                          className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
-                    <div>
-                      <input
-                        className="firstInputField"
-                        autoComplete="off"
-                        type="text"
-                        placeholder="SL No "
-                        defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="secondInputField"
-                        autoComplete="off"
-                        type="text"
-                        placeholder="Description"
-                        onChange={(e) =>
-                          handleDescriptionChange2(i, e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="firstInputField"
-                        autoComplete="off"
-                        type="number"
-                        placeholder="Qty"
-                        onChange={(e) =>
-                          handleQuantityChange2(i, e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="thirdInputField"
-                        autoComplete="off"
-                        type="number"
-                        placeholder="Rate"
-                        onChange={(e) => handleRateChange2(i, e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="thirdInputField"
-                        autoComplete="off"
-                        type="text"
-                        placeholder="Amount"
-                        value={item.total}
-                        readOnly
-                      />
-                    </div>
-                  </div>
-
-                  <div className="addInvoiceItem">
-                    {serviceItems.length - 1 === i && (
-                      <div
-                        onClick={handleServiceDescriptionAdd}
-                        className="flex justify-end mt-2"
-                      >
-                        <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
-                          Add
-                        </button>
+            {!addButton && (
+              <button
+                onClick={() => setAddButton(!addButton)}
+                className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
+              >
+                Add new
+              </button>
+            )}
+            {addButton && (
+              <button
+                onClick={() => setAddButton(!addButton)}
+                className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
+              >
+                Cancel
+              </button>
+            )}
+            {addButton && (
+              <>
+                {serviceItems.map((item, i) => {
+                  return (
+                    <div key={i}>
+                      <div className="qutationForm">
+                        <div>
+                          {serviceItems.length !== 0 && (
+                            <button
+                              onClick={() => handleServiceDescriptionRemove(i)}
+                              className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="SL No "
+                            defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="secondInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Description"
+                            onChange={(e) =>
+                              handleDescriptionChange2(i, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Qty"
+                            onChange={(e) =>
+                              handleQuantityChange2(i, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Rate"
+                            onChange={(e) =>
+                              handleRateChange2(i, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Amount"
+                            value={item.total}
+                            readOnly
+                          />
+                        </div>
                       </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </>
-        )}
-        </div>
-        
-        <div className="flex items-center justify-around labelWrap">
+
+                      <div className="addInvoiceItem">
+                        {serviceItems.length - 1 === i && (
+                          <div
+                            onClick={handleServiceDescriptionAdd}
+                            className="flex justify-end mt-2"
+                          >
+                            <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
+                              Add
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
+
+          <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label> Service description </label>
             <label>Qty </label>
@@ -847,113 +862,113 @@ const UpdateInvoice = () => {
           </div>
         </form>
         <div>
-        {!addButton && (
-          <button
-            onClick={() => setAddButton(!addButton)}
-            className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
-          >
-            Add new
-          </button>
-        )}
-        {addButton && (
-          <button
-            onClick={() => setAddButton(!addButton)}
-            className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
-          >
-            Cancel
-          </button>
-        )}
-        {addButton && (
-          <>
-            {items.map((item, i) => {
-              return (
-                <div key={i}>
-                  <div className="qutationForm">
-                    <div>
-                      {items.length !== 0 && (
-                        <button
-                          onClick={() => handleRemove(i)}
-                          className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+          {!addButton && (
+            <button
+              onClick={() => setAddButton(!addButton)}
+              className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
+            >
+              Add new
+            </button>
+          )}
+          {addButton && (
+            <button
+              onClick={() => setAddButton(!addButton)}
+              className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
+            >
+              Cancel
+            </button>
+          )}
+          {addButton && (
+            <>
+              {items.map((item, i) => {
+                return (
+                  <div key={i}>
+                    <div className="qutationForm">
+                      <div>
+                        {items.length !== 0 && (
+                          <button
+                            onClick={() => handleRemove(i)}
+                            className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                      <div>
+                        <input
+                          className="firstInputField"
+                          autoComplete="off"
+                          type="text"
+                          placeholder="SL No "
+                          defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="secondInputField"
+                          autoComplete="off"
+                          type="text"
+                          placeholder="Parts Description"
+                          onChange={(e) =>
+                            handleDescriptionChange2(i, e.target.value)
+                          }
+                          required
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="firstInputField"
+                          autoComplete="off"
+                          type="number"
+                          placeholder="Qty"
+                          onChange={(e) =>
+                            handleQuantityChange2(i, e.target.value)
+                          }
+                          required
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="thirdInputField"
+                          autoComplete="off"
+                          type="number"
+                          placeholder="Rate"
+                          onChange={(e) => handleRateChange2(i, e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <input
+                          className="thirdInputField"
+                          autoComplete="off"
+                          type="text"
+                          placeholder="Amount"
+                          value={item.total}
+                          readOnly
+                        />
+                      </div>
+                    </div>
+
+                    <div className="addInvoiceItem">
+                      {items.length - 1 === i && (
+                        <div
+                          onClick={handleAddClick}
+                          className="flex justify-end mt-2"
                         >
-                          Remove
-                        </button>
+                          <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
+                            Add
+                          </button>
+                        </div>
                       )}
                     </div>
-                    <div>
-                      <input
-                        className="firstInputField"
-                        autoComplete="off"
-                        type="text"
-                        placeholder="SL No "
-                        defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="secondInputField"
-                        autoComplete="off"
-                        type="text"
-                        placeholder="Parts Description"
-                        onChange={(e) =>
-                          handleDescriptionChange2(i, e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="firstInputField"
-                        autoComplete="off"
-                        type="number"
-                        placeholder="Qty"
-                        onChange={(e) =>
-                          handleQuantityChange2(i, e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="thirdInputField"
-                        autoComplete="off"
-                        type="number"
-                        placeholder="Rate"
-                        onChange={(e) => handleRateChange2(i, e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="thirdInputField"
-                        autoComplete="off"
-                        type="text"
-                        placeholder="Amount"
-                        value={item.total}
-                        readOnly
-                      />
-                    </div>
                   </div>
-
-                  <div className="addInvoiceItem">
-                    {items.length - 1 === i && (
-                      <div
-                        onClick={handleAddClick}
-                        className="flex justify-end mt-2"
-                      >
-                        <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
-                          Add
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </>
-        )}
+                );
+              })}
+            </>
+          )}
         </div>
-       
+
         <div className="discountFieldWrap">
           <div className="flex items-center">
             <b className="mr-2"> Total Amount: </b>

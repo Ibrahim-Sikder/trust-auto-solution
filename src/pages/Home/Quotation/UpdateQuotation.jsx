@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
-import { countries } from "../../../constant";
+import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 const UpdateQuotation = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
@@ -489,9 +489,24 @@ const UpdateQuotation = () => {
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
 
-              <div className="mt-3">
+              <div className="flex mt-3  md:gap-0 gap-4 items-center">
+                <Autocomplete
+                  sx={{ marginRight: "5px" }}
+                  freeSolo
+                  className="jobCardSelect2 "
+                  id="free-solo-demo"
+                  options={cmDmOptions.map((option) => option.label)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Vehicle Reg No ( New field ) "
+                      {...register("carReg_no")}
+                    />
+                  )}
+                />
+
                 <TextField
-                  className="addJobInputField"
+                  className="carRegField"
                   label="Car R (N)"
                   {...register("car_registration_no", {
                     pattern: {
@@ -534,6 +549,7 @@ const UpdateQuotation = () => {
                   error={!!errors.car_registration_no || !!registrationError}
                 />
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -898,7 +914,6 @@ const UpdateQuotation = () => {
               </>
             )}
           </div>
-          
         </form>
         <div>
           {!addButton && (

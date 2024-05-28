@@ -142,7 +142,7 @@ const CustomerMoneyList = ({ moneyReceiptData, setMoneyReceiptData, id }) => {
               <td>{card.vehicle_no}</td>
               <td> {card.cheque_no} </td>
               <td> {card.total_amount} </td>
-              <td>{card.date_one}</td>
+              <td>{card.total_amount}</td>
               <td>{card.date_one}</td>
               <td>
                 <div
