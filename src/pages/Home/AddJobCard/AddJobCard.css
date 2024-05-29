@@ -280,7 +280,7 @@
     width: 638px !important;
   }
   .carRegField {
-    width: 558px !important;
+    width: 635px !important;
   }
   .drawer-content .carRegField{
     width: 560px !important;
@@ -291,9 +291,9 @@
   .vehicleInputs {
     width: 310px !important;
   }
-  .carRegField {
+  /* .carRegField {
     width: 410px !important;
-  }
+  } */
 }
 @media only screen and (min-width: 1024px) {
   .addJobInputField {
@@ -398,9 +398,9 @@
   .imgWrap {
     height: 300px;
   }
-  .carRegField {
+  /* .carRegField {
     width: 100% !important;
-  }
+  } */
   
 }
 

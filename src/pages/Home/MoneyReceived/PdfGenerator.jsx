@@ -67,6 +67,7 @@ const PdfGenerator = () => {
   };
 
 
+
   return (
     <section className="viewMoneyReceiptWrap">
       <div className="moneyWraps">
@@ -173,7 +174,7 @@ const PdfGenerator = () => {
               </div>
               <div className="wordTaka mt-2 receivedField flex items-center justify-center">
                 <label className="tkText">in word (taka) </label>
-                <span>{specificMoneyReceipt.taka_in_word}</span>
+                <span className='text-[12px]'>{specificMoneyReceipt.taka_in_word}</span>
               </div>
             </div>
             <div className="mt-5">

@@ -482,23 +482,7 @@ const AddCustomer = () => {
                     {...register("customer_name")}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Customer Contact No (N)"
-                    {...register("customer_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                  />
-                  {errors.customer_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.customer_contact.message}
-                    </span>
-                  )}
-                </div> */}
+                
                 <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
                   <Autocomplete
                     sx={{ marginLeft: "5px" }}

@@ -17,13 +17,14 @@
   justify-content: center;
   flex-direction: column;
 }
+
 .moneyFormWrap {
   border: 1px solid black;
-  padding: 10px 18px;
-  border-radius: 5px;
-  width: 760px;
-  background: #fff;
+  border-radius: 3px;
+  width: 800px;
   margin: 0 auto;
+  padding: 30px 10px;
+  background:#fff;
 }
 .logoWrap {
   width: 175px;

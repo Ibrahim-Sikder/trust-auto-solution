@@ -385,21 +385,7 @@ const MoneyReceiptView = () => {
           </div>
           <div className="mt-5 payAdvance lg:flex-row flex flex-col gap-4">
             <div className="flex lg:flex-row flex-col ">
-              {/* <div className="checqueText">
-                {" "}
-                <input
-                  type="checkbox"
-                  checked={cash}
-                  onClick={handleCash}
-                />{" "}
-                <span className=" font-semibold">Cash </span>
-                <input
-                  type="checkbox"
-                  checked={cheque}
-                  onClick={handleCheque}
-                />
-                <span className=" font-semibold">Cheque No:</span>{" "}
-              </div> */}
+              
               <FormControl sx={{ minWidth: 170, minHeight: '30px', marginRight: .5, }} size="small">
                 <InputLabel id="demo-select-small-label">
                   Payment Method{" "}

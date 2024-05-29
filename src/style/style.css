@@ -220,47 +220,47 @@
   
   @media only screen and (min-width: 1441px) {
     .labelWrap label:nth-child(1) {
-        left: -43px !important;
+      left: -48px !important;
     }
     .drawer-content .labelWrap label:nth-child(1) {
-        left: -27px !important;
+      left: -33px !important;
     }
   
       .labelWrap label:nth-child(2) {
-        left: -242px !important;
+        left: -267px !important;
     }
   
     .drawer-content .labelWrap label:nth-child(2) {
-        left: -195px !important;
+      left: -219px !important;
     }
   
     .labelWrap label:nth-child(3) {
-        left: 377px !important;
+      left: 428px !important;
     }
   
     .drawer-content .labelWrap label:nth-child(3) {
-        left: 303px !important;
+      left: 346px !important;
     }
   
     .labelWrap label:nth-child(4) {
-        left: 194px !important;
+      left: 221px !important;
     }
     .drawer-content .labelWrap label:nth-child(4) {
-        left: 149px !important;
+      left: 175px !important;
     }
   
     .labelWrap label:nth-child(5) {
-        left: 49px !important;
+      left: 59px !important;
     }
     .drawer-content .labelWrap label:nth-child(5) {
-             left: 36px !important;
+      left: 47px !important;
     }
     .secondInputField {
-      width: 971px;
+      width: 1118px;
   }
   
     .drawer-content .secondInputField {
-      width: 820px;
+      width: 960px;
     }
   
     .recentCard {
@@ -280,12 +280,7 @@
     .jobCardSelect2 {
       width: 210px !important;
     }
-    .carRegField {
-      width: 76% !important;
-    }
-    .drawer-content .carRegField {
-      width: 74% !important;
-    }
+ 
   }
   @media only screen and (max-width: 1440px) {
     .secondInputField {

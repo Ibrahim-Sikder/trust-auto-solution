@@ -142,6 +142,7 @@
 
 
 
+
 .printInvoiceBtnGroup button {
   background: #42a1da;
   color: #fff;
@@ -217,9 +218,6 @@
     width: 95px;
   }
 
-  .secondInputField {
-    width: 487px;
-  }
 
   .labelWrap label {
     font-size: 12px;
@@ -270,9 +268,7 @@
     display: none;
   }
 
-  .secondInputField {
-    width: 100%;
-  }
+ 
   .invoiceHeader {
     flex-direction: column;
   }

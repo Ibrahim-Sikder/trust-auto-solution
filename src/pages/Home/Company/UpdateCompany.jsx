@@ -177,9 +177,8 @@ const UpdateCompany = () => {
             </div>
           </div>
           <div className="productHome">
-            <span>Home / </span>
-            <span>Product / </span>
-            <span>New Customer </span>
+            <span>Dashboard / </span>
+            <span>Update Company </span>
           </div>
         </div>
 
