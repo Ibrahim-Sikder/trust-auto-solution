@@ -318,7 +318,7 @@ const PreviewJobCard = () => {
                 />
               </div>
               <div>
-                <label className="block">Submit by </label>
+                <label className="block">I explained the car </label>
                 <input
                   // defaultValue={previewData.vehicle_owner}
                   disabled

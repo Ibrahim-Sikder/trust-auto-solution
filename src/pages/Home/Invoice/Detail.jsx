@@ -251,11 +251,15 @@ const Detail = () => {
                           <b>Address</b>
                         </div>
                         <div className="invoiceCustomerInfo">
-                          <small>: {invoicePreview?.job_no}</small>
+                          <small>
+                            : {invoicePreview?.job_no}55555555555555
+                          </small>
                           <small>: {invoicePreview?.company_name}</small>
                           <small>: {invoicePreview?.customer_name}</small>
                           <small>: {invoicePreview?.customer_contact}</small>
-                          <small>: {invoicePreview?.customer_address}</small>
+                          <small>
+                            : {invoicePreview?.customer_address}5555555555555
+                          </small>
                         </div>
                       </div>
                       <div className="invoiceLine"></div>
@@ -272,7 +276,9 @@ const Detail = () => {
                           <small>: {invoicePreview?.chassis_no}</small>
                           <small>: {invoicePreview?.engine_no}</small>
                           <small>: {invoicePreview?.vehicle_name}</small>
-                          <small>: {invoicePreview?.mileage}</small>
+                          <small>
+                            : {invoicePreview?.mileage}5555555555555
+                          </small>
                         </div>
                       </div>
                     </div>
@@ -346,15 +352,41 @@ const Detail = () => {
                       ))}
                     </>
                   </tbody>
-                 
                 </table>
                 <div className="flex items-center justify-end text-[12px] mt-2">
-                    <span>Total Amount :</span>
-                    <b className="ml-3 ">৳ 5456765</b>
-                  </div>
-                 <div className="flex  justify-end ">
-                 <Divider sx={{width:'200px', marginTop: '5px'}} />
-                 </div>
+                  <span>Total Amount :</span>
+                  <b className="ml-3 ">৳ 5456765</b>
+                </div>
+                <table className="mt-5 invoiceTable2 qutationTables pt-10">
+                  <thead className="tableWrap">
+                    <tr>
+                      <th colSpan={3}>Summary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <>
+                      {pageData?.map((data, index) => (
+                        <>
+                          <tr rowSpan={2} key={data?._id}>
+                            <td >Total parts amount </td>
+
+                            <td className="specificWidth">87654356</td>
+                          </tr>
+                          <tr rowSpan={3} key={data?._id}>
+                            <td >Total parts amount </td>
+
+                            <td className="specificWidth">87654356</td>
+                          </tr>
+                         
+                        </>
+                      ))}
+                    </>
+                  </tbody>
+                </table>
+
+                {/* <div className="flex  justify-end ">
+                  <Divider sx={{ width: "200px", marginTop: "5px" }} />
+                </div> */}
                 {pageNumber === pagesData?.length - 1 && (
                   <div className="flex justify-between items-end mt-5 border-b-[1px] pb-3 border-[#ddd]">
                     <div className="mt-5 text-[12px] invisible">

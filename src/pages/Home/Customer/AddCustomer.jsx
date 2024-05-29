@@ -452,6 +452,29 @@ const AddCustomer = () => {
                 <div>
                   <TextField
                     className="productField"
+                    onC
+                    label="Customer Name (T)"
+                    {...register("customer_name")}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    className="productField"
+                    label="Customer Email Address (T)"
+                    {...register("customer_email")}
+                    type="email"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    className="productField"
+                    label="Customer Address (T) "
+                    {...register("customer_address")}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    className="productField"
                     on
                     label="Company Name (T)"
                     {...register("company_name")}
@@ -474,14 +497,7 @@ const AddCustomer = () => {
                   />
                 </div>
 
-                <div>
-                  <TextField
-                    className="productField"
-                    onC
-                    label="Customer Name (T)"
-                    {...register("customer_name")}
-                  />
-                </div>
+               
                 
                 <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
                   <Autocomplete
@@ -512,24 +528,9 @@ const AddCustomer = () => {
                     type="tel"
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
                   />
                 </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Customer Email Address (T)"
-                    {...register("customer_email")}
-                    type="email"
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Customer Address (T) "
-                    {...register("customer_address")}
-                  />
-                </div>
+                
                 <div>
                   <TextField
                     className="productField"

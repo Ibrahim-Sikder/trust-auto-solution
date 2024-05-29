@@ -140,7 +140,7 @@ const PdfGenerator = () => {
               </div>
               <div className="payAdvance mt-2">
                 <div className="flex items-center justify-center  receivedField">
-                  <label className="checqueText2">Cash/Cheque No: </label>
+                  <label className="checqueText2">Bkash</label>
                   <span className="text-sm">{specificMoneyReceipt.cheque_no}</span>{" "}
                 </div>
                 <div className="flex items-center justify-center receivedField">

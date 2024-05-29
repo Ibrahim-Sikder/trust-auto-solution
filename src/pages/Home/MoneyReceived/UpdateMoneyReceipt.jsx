@@ -10,7 +10,14 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { formatDate } from "../../../utils/formateDate";
 import TADatePickers from "../../../components/form/TADatePickers";
-import { Button, ButtonBase, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  ButtonBase,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { FaGlobe } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 const UpdateMoneyReceipt = () => {
@@ -245,6 +252,11 @@ const UpdateMoneyReceipt = () => {
   const handleChange = (event) => {
     setPaymentMethod(event.target.value);
   };
+  const [billNo, setBillNo] = useState(" Final Payment / against bill no");
+
+  const handleChange2 = (event) => {
+    setBillNo(event.target.value);
+  };
 
   return (
     <div className="moneyReceptWrap ">
@@ -307,33 +319,34 @@ const UpdateMoneyReceipt = () => {
             {...register("thanks_from")}
           />
         </div>
-        <div className="mt-5 flex md:flex-row flex-col payAdvance">
-          <div className="flex  receivedField">
-            <label className="advanceText">
-              <input
-                type="checkbox"
-                onClick={handleAdvanceSelect}
-                checked={advanceSelect}
-              />{" "}
-             Advance / against bill no 
-              <input
-                type="checkbox"
-                onClick={handleFinalPayment}
-                checked={finalPayment}
-              />{" "}
-              Final Payment / against bill no
-            </label>
-            <div>
-              <input
-                defaultValue={specificMoneyReceipt.against_bill_no}
-                {...register("against_bill_no")}
-                className=" moneyViewInputField advanceInput "
-                type="number"
-                onChange={(e) => setJob_no(e.target.value)}
-                autoComplete="off"
-              />
-            </div>
-          </div>
+        <div className="mt-5 flex md:flex-row flex-col ">
+          
+         <div>
+         <FormControl
+            sx={{ minWidth: 200, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
+            size="small"
+          >
+            <InputLabel id="demo-select-small-label">
+              Against bill no
+            </InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={billNo}
+              label="Payment Method "
+              onChange={handleChange2}
+            >
+              <MenuItem value=" Final Payment / against bill no">
+                {" "}
+                Final Payment / against bill no
+              </MenuItem>
+              <MenuItem value="Advance / against bill no ">
+                {" "}
+                Advance / against bill no{" "}
+              </MenuItem>
+            </Select>
+          </FormControl>
+         </div>
           <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
             <label className="vehicleText2">Vehicle No: </label>
             <input
@@ -364,24 +377,27 @@ const UpdateMoneyReceipt = () => {
               />
             </div>
           </div> */}
-          <FormControl sx={{ minWidth: 170, minHeight: '30px', marginRight: .5, }} size="small">
-                <InputLabel id="demo-select-small-label">
-                  Payment Method{" "}
-                </InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={paymentMethod}
-                  label="Payment Method "
-                  onChange={handleChange}
-                >
-                  <MenuItem value="Bkash">Bkash</MenuItem>
-                  <MenuItem value="Nagad">Nagad</MenuItem>
-                  <MenuItem value="Nagad">Rocket</MenuItem>
-                  <MenuItem value="Check">Check</MenuItem>
-                  <MenuItem value="Bank">Bank </MenuItem>
-                </Select>
-              </FormControl>
+          <FormControl
+            sx={{ minWidth: 170, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
+            size="small"
+          >
+            <InputLabel id="demo-select-small-label">
+              Payment Method{" "}
+            </InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={paymentMethod}
+              label="Payment Method "
+              onChange={handleChange}
+            >
+              <MenuItem value="Bkash">Bkash</MenuItem>
+              <MenuItem value="Nagad">Nagad</MenuItem>
+              <MenuItem value="Nagad">Rocket</MenuItem>
+              <MenuItem value="Check">Check</MenuItem>
+              <MenuItem value="Bank">Bank </MenuItem>
+            </Select>
+          </FormControl>
           <div className="flex mt-6 receivedField md:mt-0">
             <b className="date">Date: </b>
             <input
@@ -463,7 +479,6 @@ const UpdateMoneyReceipt = () => {
       <div className="">
         <small className="signature">Authorized Signature</small>
       </div>
-     
     </div>
   );
 };

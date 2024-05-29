@@ -182,6 +182,10 @@
   margin-top: 30px;
 }
 
+.specificWidth{
+  width:130px !important
+}
+
 @media only screen and (min-width: 1440px) {
   .labelWrap label {
     display: block;

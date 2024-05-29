@@ -261,9 +261,13 @@ const MoneyReceiptView = () => {
   };
 
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [billNo, setBillNo] = useState(" Final Payment / against bill no");
 
   const handleChange = (event) => {
     setPaymentMethod(event.target.value);
+  };
+  const handleChange2 = (event) => {
+    setBillNo(event.target.value);
   };
 
   return (
@@ -334,9 +338,9 @@ const MoneyReceiptView = () => {
               )}
             </div>
           </div>
-          <div className="mt-5 lg:flex-row  flex flex-col gap-4 payAdvance">
-            <div className="flex f receivedField">
-              <label className="advanceText">
+          <div className="mt-5 lg:flex-row  flex flex-col gap-4 ">
+            <div className="flex f ">
+              {/* <label className="advanceText">
                 <input
                   type="checkbox"
                   onClick={handleAdvanceSelect}
@@ -350,11 +354,35 @@ const MoneyReceiptView = () => {
                   checked={finalPayment}
                 />{" "}
                 Final Payment / against bill no
-              </label>
-              <div>
-                <input
+              </label> */}
+              <FormControl
+                sx={{ minWidth: 170, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
+                size="small"
+              >
+                <InputLabel id="demo-select-small-label">
+                  Against bill no
+                </InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={billNo}
+                  label="Payment Method "
+                  onChange={handleChange2}
+                >
+                  <MenuItem value=" Final Payment / against bill no">
+                    {" "}
+                    Final Payment / against bill no
+                  </MenuItem>
+                  <MenuItem value="Advance / against bill no ">
+                    {" "}
+                    Advance / against bill no{" "}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+             <div>
+             <input
                   {...register("against_bill_no", { required: true })}
-                  className=" moneyViewInputField advanceInput "
+                  className="moneyViewInputField advanceInput "
                   type="number"
                   onChange={(e) => setJob_no(e.target.value)}
                   autoComplete="off"
@@ -364,29 +392,33 @@ const MoneyReceiptView = () => {
                     This field is required
                   </span>
                 )}
-              </div>
+             </div>
             </div>
+            <div>
             <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
               <label className="vehicleText">Vehicle No: </label>
-              <div>
-                <input
+              <input
                   {...register("vehicle_no", { required: true })}
                   className=" moneyViewInputField advanceInput"
                   type="text"
                   autoComplete="off"
                 />
-                {errors.vehicle_no && (
-                  <span className="text-sm text-red-400">
+                <br />
+               
+            </div>
+            {errors.vehicle_no && (
+                  <span className="text-sm text-red-400 ml-24">
                     This field is required
                   </span>
                 )}
-              </div>
             </div>
           </div>
           <div className="mt-5 payAdvance lg:flex-row flex flex-col gap-4">
             <div className="flex lg:flex-row flex-col ">
-              
-              <FormControl sx={{ minWidth: 170, minHeight: '30px', marginRight: .5, }} size="small">
+              <FormControl
+                sx={{ minWidth: 170, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
+                size="small"
+              >
                 <InputLabel id="demo-select-small-label">
                   Payment Method{" "}
                 </InputLabel>
