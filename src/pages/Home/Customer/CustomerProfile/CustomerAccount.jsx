@@ -12,7 +12,6 @@ const CustomerAccount = ({
   moneyReceiptData,
   invoiceData,
 }) => {
-
   return (
     <div className="customerProfileWrap">
       <div className="justify-between block mt-5 md:flex">
@@ -106,17 +105,19 @@ const CustomerAccount = ({
                   </div>
                 )}
               </div>
-              <div className="ml-3">
+              <div className="ml-3 ">
                 {jobCardData && invoiceData?.length > 0 && (
                   <div key={jobCardData[0]?.Id} className="flex items-center ">
-                    <span>Vehicle Name : </span>
-                    <small className="ml-3">{jobCardData[0]?.vehicle_name}</small>
+                    <b className="recentJobs">Vehicle Name </b>
+                    :<small className="ml-3">
+                       {jobCardData[0]?.vehicle_name}
+                    </small>
                   </div>
                 )}
                 {jobCardData && jobCardData.length > 0 && (
                   <div key={jobCardData[0]?.Id} className="flex items-center">
-                    <span>Job No : </span>
-                    <small className="ml-3">{jobCardData[0]?.job_no}</small>
+                    <b className="recentJobs">Job No  </b>
+                    :<small className="ml-3">  {jobCardData[0]?.job_no}</small>
                   </div>
                 )}
               </div>
@@ -147,8 +148,10 @@ const CustomerAccount = ({
               <div className="ml-3">
                 {jobCardData && jobCardData?.length > 0 && (
                   <div key={jobCardData[1]?.Id} className="flex items-center ">
-                    <span>Vehicle Name :</span>
-                    <small className="ml-3">{jobCardData[1]?.vehicle_name}</small>
+                    <b className="recentJobs">Vehicle Name </b>
+                    <small className="ml-3">
+                      : {jobCardData[1]?.vehicle_name}
+                    </small>
                   </div>
                 )}
                 {jobCardData && jobCardData?.length > 0 && (
@@ -156,8 +159,8 @@ const CustomerAccount = ({
                     key={jobCardData[1]?.job_no}
                     className="flex items-center"
                   >
-                    <span>Job No : </span>
-                    <small className="ml-3">{jobCardData[1]?.job_no}</small>
+                    <b className="recentJobs"> Job No </b>
+                     : <small className="ml-3 ">{jobCardData[1]?.job_no}</small>
                   </div>
                 )}
               </div>
@@ -197,21 +200,21 @@ const CustomerAccount = ({
               </div>
               <div className="ml-3">
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0]?.Id}>
-                    <span className="mr-3">Quotation Number :</span>
-                    <small>{quotationData[0]?.job_no}</small>
+                  <div key={quotationData[0]?.Id} className="flex items-center ">
+                    <b  className="recentJobs">Quotation Number </b>
+                    : <small className="ml-3">{quotationData[0]?.job_no}</small>
                   </div>
                 )}
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0]?.Id}>
-                    <span className="mr-3">Vehicle Name :</span>
-                    <small>{quotationData[0]?.vehicle_name}</small>
+                  <div key={quotationData[0]?.Id} className="flex items-center">
+                    <b className="recentJobs">Vehicle Name</b>
+                    : <small className="ml-3">{quotationData[0]?.vehicle_name}</small>
                   </div>
                 )}
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0]?.Id}>
-                    <span className="mr-3">Total Amount :</span>
-                    <small>৳{quotationData[0]?.net_total}</small>
+                  <div key={quotationData[0]?.Id} className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>
+                    : <small className="ml-3">৳{quotationData[0]?.net_total}</small>
                   </div>
                 )}
               </div>
@@ -241,21 +244,21 @@ const CustomerAccount = ({
               </div>
               <div className="ml-3">
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1]?.Id}>
-                    <span className="mr-3">Quotation Number :</span>
-                    <small>{quotationData[1]?.job_no}</small>
+                  <div key={quotationData[1]?.Id} className="flex items-center">
+                    <b className="recentJobs">Quotation Number </b>
+                    : <small className="ml-3">{quotationData[1]?.job_no}</small>
                   </div>
                 )}
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1]?.Id}>
-                    <span className="mr-3">Vehicle Name :</span>
-                    <small>{quotationData[1]?.vehicle_name}</small>
+                  <div key={quotationData[1]?.Id} className="flex items-center">
+                    <b className="recentJobs">Vehicle Name </b>
+                    : <small className="ml-3">{quotationData[1]?.vehicle_name}</small>
                   </div>
                 )}
                 {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1]?.Id}>
-                    <span className="mr-3">Total Amount :</span>
-                    <small>৳{quotationData[1]?.net_total}</small>
+                  <div key={quotationData[1]?.Id} className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>
+                    : <small className="ml-3">৳{quotationData[1]?.net_total}</small>
                   </div>
                 )}
               </div>
@@ -298,20 +301,20 @@ const CustomerAccount = ({
               <div className="ml-3">
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[0]?.Id} className="flex items-center ">
-                    <b className="mr-3">Invoice No : </b>
-                    <span>{invoiceData[0]?.job_no}</span>
+                    <b className="recentJobs">Invoice No  </b>
+                    : <span className="ml-3">{invoiceData[0]?.job_no}</span>
                   </div>
                 )}
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[0]?.Id} className="flex items-center ">
-                    <b className="mr-3">Vehicle Name : </b>
-                    <span>{invoiceData[0]?.vehicle_name}</span>
+                    <b className="recentJobs">Vehicle Name  </b>
+                    : <span className="ml-3">{invoiceData[0]?.vehicle_name}</span>
                   </div>
                 )}
                 {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0]?.Id}>
-                    <b className="mr-3">Total Amount :</b>
-                    <b>৳{invoiceData[0]?.net_total}</b>
+                  <div key={invoiceData[0]?.Id} className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>
+                    : <span className="ml-3">৳{invoiceData[0]?.net_total}</span>
                   </div>
                 )}
               </div>
@@ -342,20 +345,20 @@ const CustomerAccount = ({
               <div className="ml-3">
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[1]?.Id} className="flex items-center ">
-                    <b className="mr-3">Invoice No : </b>
-                    <span>{invoiceData[1]?.job_no}</span>
+                    <b className="recentJobs">Invoice No  </b>
+                    :<span className="ml-3">{invoiceData[1]?.job_no}</span>
                   </div>
                 )}
                 {invoiceData && invoiceData?.length > 0 && (
                   <div key={invoiceData[1]?.Id} className="flex items-center ">
-                    <b className="mr-3">Vehicle Name : </b>
-                    <span>{invoiceData[1]?.vehicle_name}</span>
+                    <b className="recentJobs">Vehicle Name  </b>
+                    : <span className="ml-3">{invoiceData[1]?.vehicle_name}</span>
                   </div>
                 )}
                 {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[1]?.Id}>
-                    <b className="mr-3">Total Amount :</b>
-                    <b>৳{invoiceData[1]?.net_total}</b>
+                  <div key={invoiceData[1]?.Id} className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>
+                    : <span className="ml-3">৳{invoiceData[1]?.net_total}</span>
                   </div>
                 )}
               </div>
@@ -397,24 +400,24 @@ const CustomerAccount = ({
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
                     <div className="flex items-center">
-                      <span className="mr-3 ">Against bill no :</span>
-                      <span> {moneyReceiptData[0]?.against_bill_no}</span>
+                      <b className="recentJobs">Against bill no</b>
+                      :<span className="ml-3"> {moneyReceiptData[0]?.against_bill_no}</span>
                     </div>
                   </div>
                 )}
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
                     <div className="flex items-center">
-                      <span className="mr-2">Remaining :</span>
-                      <small> ৳{moneyReceiptData[0]?.remaining}</small>
+                      <b className="recentJobs">Remaining </b>
+                     :  <small className="ml-3"> ৳{moneyReceiptData[0]?.remaining}</small>
                     </div>
                   </div>
                 )}
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[0]?.Id}>
                     <div className="flex items-center">
-                      <span className="mr-2">Total Amount : </span>
-                      <small> ৳{moneyReceiptData[0]?.total_amount}</small>
+                      <b className="recentJobs">Total Amount </b>
+                     :  <small className="ml-3"> ৳{moneyReceiptData[0]?.total_amount}</small>
                     </div>
                   </div>
                 )}
@@ -449,24 +452,24 @@ const CustomerAccount = ({
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
                     <div className="flex items-center">
-                      <span className="mr-3 ">Against bill no :</span>
-                      <span> {moneyReceiptData[1]?.against_bill_no}</span>
+                      <b className="recentJobs">Against bill no</b>
+                      : <span className="ml-3"> {moneyReceiptData[1]?.against_bill_no}</span>
                     </div>
                   </div>
                 )}
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
                     <div className="flex items-center">
-                      <span className="mr-2">Remaining :</span>
-                      <small> ৳{moneyReceiptData[1]?.remaining}</small>
+                      <b className="recentJobs">Remaining</b>
+                     :  <small className="ml-3"> ৳{moneyReceiptData[1]?.remaining}</small>
                     </div>
                   </div>
                 )}
                 {moneyReceiptData && moneyReceiptData?.length > 0 && (
                   <div key={moneyReceiptData[1]?.Id}>
                     <div className="flex items-center">
-                      <span className="mr-2">Total Amount : </span>
-                      <small> ৳{moneyReceiptData[1]?.total_amount}</small>
+                      <b className="recentJobs" >Total Amount </b>
+                     :  <small className="ml-3"> ৳{moneyReceiptData[1]?.total_amount}</small>
                     </div>
                   </div>
                 )}

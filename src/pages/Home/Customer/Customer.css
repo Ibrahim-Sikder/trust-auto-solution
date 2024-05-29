@@ -34,7 +34,10 @@
 .customerSelect{
   width:300px !important;
 }
+.recentJobs{
 
+  width:150px;
+}
 
 @media only screen and (max-width:1024px){
  
