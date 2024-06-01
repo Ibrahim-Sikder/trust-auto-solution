@@ -5,7 +5,7 @@ import { ImUserTie } from "react-icons/im";
 import "../../Customer/Customer.css";
 import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
 import CompanyAccount from "./CompanyAccount";
-import CompanyVehicleDetails from "./CompanyVehicleDetails";
+ 
 import CompanyJobCardList from "./CompanyJobCardList";
 import CompanyQuotationList from "./CompanyQuotationList";
 import CompanyInvoiceList from "./CompanyInvoiceList";
@@ -15,17 +15,23 @@ import {  useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import Message from "../../../../shared/Message/Message";
+import VehicleDetails from "../../Customer/CustomerProfile/VehicleDetails";
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({});
-  console.log(profileData);
+  // console.log(profileData);
+
   const [jobCardData, setJobCardData] = useState([]);
   const [quotationData, setQuotationData] = useState([]);
-  console.log(quotationData);
+
+  // console.log(quotationData);
+
   const [invoiceData, setInvoiceData] = useState([]);
-  console.log(invoiceData);
+  // console.log(invoiceData);
+
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-  console.log(moneyReceiptData);
+  // console.log(moneyReceiptData);
+
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -165,7 +171,7 @@ const CompanyProfile = () => {
                 <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>{profileData.company_contact}</span>
+                    <span>{profileData?.fullCompanyNum} </span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
@@ -216,7 +222,7 @@ const CompanyProfile = () => {
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <CompanyVehicleDetails />
+          <VehicleDetails/>
         </TabPanel>
         <TabPanel value={value} index={2}>
           <CompanyJobCardList

@@ -165,7 +165,7 @@ const CustomerProfile = () => {
                 <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>{profileData?.customer_contact}</span>
+                    <span>{profileData?.customer_country_code} {profileData?.customer_contact}</span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />

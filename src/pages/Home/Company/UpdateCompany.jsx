@@ -59,6 +59,8 @@ const UpdateCompany = () => {
 
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
+  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
@@ -97,10 +99,14 @@ const UpdateCompany = () => {
 
   const [loading, setLoading] = useState(false);
   const [singleCard, setSingleCard] = useState({});
+
   console.log(singleCard);
+
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
+
+
   useEffect(() => {
     if (id) {
       setLoading(true);
@@ -121,10 +127,15 @@ const UpdateCompany = () => {
       username: data.username || singleCard.username,
       company_address: data.company_address || singleCard.company_address,
 
+      company_country_code: data.company_country_code  || singleCard.company_country_code,
+
       company_contact: data.company_contact || singleCard.company_contact,
       company_email: data.company_email || singleCard.company_email,
 
       driver_name: data.driver_name || singleCard.driver_name,
+
+      driver_country_code: data.driver_country_code  || singleCard.driver_country_code,
+
       driver_contact: data.driver_contact || singleCard.driver_contact,
       reference_name: data.reference_name || singleCard.reference_name,
       carReg_no: data.carReg_no || singleCard.carReg_no,
@@ -241,40 +252,14 @@ const UpdateCompany = () => {
                     }}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Company Contact No (N)"
-                    {...register("company_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                    value={singleCard?.company_contact}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        company_contact: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.company_contact,
-                    }}
-                  />
-                  {errors.company_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.company_contact.message}
-                    </span>
-                  )}
-                </div> */}
+                
                 <div className="flex items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option) => option.code}
                     value={countryCode}
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
@@ -283,8 +268,14 @@ const UpdateCompany = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("company_country_code")}
                         label="Select Country Code"
                         variant="outlined"
+                        value={singleCard?.company_country_code}
+                        focused={singleCard?.company_country_code}
+                        InputLabelProps={{
+                          shrink: !!singleCard.company_country_code,
+                        }}
                       />
                     )}
                   />
@@ -341,50 +332,30 @@ const UpdateCompany = () => {
                     }}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Driver Contact No (N)"
-                    {...register("driver_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                    value={singleCard?.driver_contact}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        driver_contact: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.driver_contact,
-                    }}
-                  />
-                  {errors.driver_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.driver_contact.message}
-                    </span>
-                  )}
-                </div> */}
+                 
                 <div className="flex items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
+                    getOptionLabel={(option) => option.code}
+                    value={driverCountryCode}
                     onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                      setDriverCountryCode(newValue);
+                      setPhoneNumber("");  
                     }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("driver_country_code")}
                         label="Select Country Code"
                         variant="outlined"
+                        value={singleCard?.driver_country_code}
+                        focused={singleCard?.driver_country_code}
+                        InputLabelProps={{
+                          shrink: !!singleCard.driver_country_code,
+                        }}
                       />
                     )}
                   />
@@ -430,15 +401,16 @@ const UpdateCompany = () => {
               <div>
                 <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
-                  <Autocomplete
-                    className="customerSelect"
+                <Autocomplete
+                    freeSolo
+                    className="productField"
                     value={singleCard?.carReg_no || ""}
-                    options={carBrands.map((option) => option.label)}
+                    options={cmDmOptions.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Car Reg No "
-                        // Handle input props manually
+                        label="Fuel Type "
+                        {...register("carReg_no")}
                         InputLabelProps={{
                           shrink: !!singleCard?.carReg_no,
                         }}
@@ -527,21 +499,7 @@ const UpdateCompany = () => {
                 </div>
 
                 <div>
-                  {/* <Autocomplete
-                     className="productField"
-                    value={singleCard?.vehicle_brand || ""}
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Brand"
-                        // Handle input props manually
-                        InputLabelProps={{
-                          shrink: !!singleCard?.vehicle_brand,
-                        }}
-                      />
-                    )}
-                  /> */}
+                   
                   <Autocomplete
                     freeSolo
                     className="productField"
@@ -552,7 +510,7 @@ const UpdateCompany = () => {
                       <TextField
                         {...params}
                         label="Vehicle Brand"
-                        // Handle input props manually
+                        {...register("vehicle_brand")}
                         InputLabelProps={{
                           shrink: !!singleCard?.vehicle_brand,
                         }}
@@ -561,21 +519,7 @@ const UpdateCompany = () => {
                   />
                 </div>
                 <div>
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Name "
-                    {...register("vehicle_name")}
-                    value={singleCard?.vehicle_name}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        vehicle_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.vehicle_name,
-                    }}
-                  /> */}
+                   
                   <Autocomplete
                     className="productField"
                     freeSolo
@@ -591,30 +535,11 @@ const UpdateCompany = () => {
                       />
                     )}
                     getOptionLabel={(option) => option || ""}
-                    // disabled={!selectedBrand}
+                    
                   />
                 </div>
                 <div className="relative ">
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Model (N)"
-                    {...register("vehicle_model", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid model number.",
-                      },
-                    })}
-                    value={singleCard?.vehicle_model}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        vehicle_model: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.vehicle_model,
-                    }}
-                  /> */}
+                   
                   <input
                     value={singleCard.vehicle_model}
                     onInput={handleYearSelectInput}
@@ -652,7 +577,7 @@ const UpdateCompany = () => {
                       <TextField
                         {...params}
                         label="Vehicle Category"
-                        // Handle input props manually
+                        {...register("vehicle_category")}
                         InputLabelProps={{
                           shrink: !!singleCard?.vehicle_category,
                         }}
@@ -713,7 +638,7 @@ const UpdateCompany = () => {
                       <TextField
                         {...params}
                         label="Fuel Type "
-                        // Handle input props manually
+                        {...register("fuel_type")}
                         InputLabelProps={{
                           shrink: !!singleCard?.fuel_type,
                         }}
@@ -730,65 +655,7 @@ const UpdateCompany = () => {
           </form>
         </div>
       </div>
-      {/* <div className="w-full mt-5 mb-24">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-3xl font-bold text-center "> Customer List: </h3>
-          <div className="flex items-center">
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon className="searchIcon" />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-              Search
-            </button>
-          </div>
-        </div>
-        <div className="overflow-x-auto ">
-          <table className="table ">
-            <thead className="tableWrap">
-              <tr>
-                <th>SL</th>
-                <th>Customer Name </th>
-                <th>Phone Number </th>
-                <th>Reference Name </th>
-                <th colSpan={3}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>01</td>
-                <td>Car </td>
-                <td>BMW2343</td>
-                <td>BDT1005</td>
-                <td>
-                  <div className="editIconWrap edit2">
-                    <Link to="/dashboard/update-product">
-                      <FaEye className="editIcon" />
-                    </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap edit">
-                    <Link to="/dashboard/update-customer">
-                      <FaEdit className="editIcon" />
-                    </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap">
-                    <FaTrashAlt className="deleteIcon" />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> */}
+       
     </section>
   );
 };

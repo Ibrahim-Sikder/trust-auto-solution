@@ -67,8 +67,7 @@ const UpdateCustomer = () => {
 
   const [loading, setLoading] = useState(false);
   const [singleCard, setSingleCard] = useState({});
-  console.log(singleCard)
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -84,26 +83,38 @@ const UpdateCustomer = () => {
     }
   }, [id]);
 
-  // country code set 
+  // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
+  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 10 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 10 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setPhoneNumber(newPhoneNumber);
     }
   };
   const handleDriverPhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 10 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 10 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setDriverPhoneNumber(newPhoneNumber);
     }
   };
 
   const onSubmit = async (data) => {
-    console.log(data)
     setLoading(true);
 
     const values = {
@@ -111,10 +122,18 @@ const UpdateCustomer = () => {
       username: data.username || singleCard.username,
       company_address: data.company_address || singleCard.company_address,
       customer_name: data.customer_name || singleCard.customer_name,
+
+      customer_country_code:
+        data.customer_country_code || singleCard.customer_country_code,
+
       customer_contact: data.customer_contact || singleCard.customer_contact,
       customer_email: data.customer_email || singleCard.customer_email,
       customer_address: data.customer_address || singleCard.customer_address,
       driver_name: data.driver_name || singleCard.driver_name,
+
+      driver_country_code:
+        data.driver_country_code || singleCard.driver_country_code,
+
       driver_contact: data.driver_contact || singleCard.driver_contact,
       reference_name: data.reference_name || singleCard.reference_name,
       carReg_no: data.carReg_no || singleCard.carReg_no,
@@ -151,18 +170,21 @@ const UpdateCustomer = () => {
   return (
     <section>
       <div className=" addProductWraps">
-      <div className="flex justify-between pb-3 border-b-2 px-2 ">
-        <HeaderButton/>
-        <div className="flex items-end justify-end">
-          <NotificationAdd size={30} className="mr-2" />
-          <FaUserGear size={30} />
+        <div className="flex justify-between pb-3 border-b-2 px-2 ">
+          <HeaderButton />
+          <div className="flex items-end justify-end">
+            <NotificationAdd size={30} className="mr-2" />
+            <FaUserGear size={30} />
+          </div>
         </div>
-      </div>
         <div className="productHeadWrap">
           <div className="flex flex-wrap items-center justify-center">
             <HiOutlineUserGroup className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-sm font-bold md:text-2xl"> Update Customer </h3>
+              <h3 className="text-sm font-bold md:text-2xl">
+                {" "}
+                Update Customer{" "}
+              </h3>
               <span>Update New Customer </span>
             </div>
           </div>
@@ -251,35 +273,14 @@ const UpdateCustomer = () => {
                     }}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Customer Contact No (N)"
-                    {...register("customer_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                    value={singleCard.customer_contact}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        customer_contact: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.customer_contact,
-                    }}
-                  />
-                </div> */}
+
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option) => option.code}
                     value={countryCode}
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
@@ -289,21 +290,29 @@ const UpdateCustomer = () => {
                       <TextField
                         {...params}
                         label="Select Country Code"
+                        {...register("customer_country_code")}
                         variant="outlined"
+                        value={singleCard?.customer_country_code}
+                        focused={singleCard?.customer_country_code}
+                        InputLabelProps={{
+                          shrink: !!singleCard.customer_country_code,
+                        }}
                       />
                     )}
                   />
                   <TextField
-                   {...register("customer_contact")}
+                    {...register("customer_contact")}
                     className="productField2"
                     label="Customer Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber ? phoneNumber : singleCard.customer_contact}
+                    value={
+                      phoneNumber ? phoneNumber : singleCard.customer_contact
+                    }
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-                    focused ={singleCard.customer_contact}
+                    focused={singleCard.customer_contact}
                     InputLabelProps={{
                       shrink: !!singleCard.customer_contact,
                     }}
@@ -361,59 +370,48 @@ const UpdateCustomer = () => {
                     }}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Driver Contact No (N)"
-                    {...register("driver_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                    value={singleCard.driver_contact}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        driver_contact: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.driver_contact,
-                    }}
-                  />
-                </div> */}
+
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
+                    getOptionLabel={(option) => option.code}
+                    value={driverCountryCode || singleCard.driver_country_code}
                     onChange={(event, newValue) => {
-                      setCountryCode(newValue);
+                      setDriverCountryCode(newValue);
                       setPhoneNumber(""); // Reset the phone number when changing country codes
                     }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("driver_country_code")}
                         label="Select Country Code"
                         variant="outlined"
+                        value={singleCard?.driver_country_code}
+                        focused={singleCard?.driver_country_code}
+                        InputLabelProps={{
+                          shrink: !!singleCard.driver_country_code,
+                        }}
                       />
                     )}
                   />
                   <TextField
-                   {...register("driver_contact")}
+                    {...register("driver_contact")}
                     className="productField2"
                     label="Driver Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={driverPhoneNumber ? driverPhoneNumber : singleCard.driver_contact}
+                    value={
+                      driverPhoneNumber
+                        ? driverPhoneNumber
+                        : singleCard.driver_contact
+                    }
                     onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
-                    focused ={singleCard.driver_contact}
+                    focused={singleCard.driver_contact}
                     InputLabelProps={{
                       shrink: !!singleCard.driver_contact,
                     }}
@@ -442,39 +440,30 @@ const UpdateCustomer = () => {
                 <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
                 <div className="flex items-center mt-1 productField">
                   {/* <Autocomplete
-                    className="jobCardSelect"
-                    Car
-                    Registration
-                    No
+                    className="customerSelect"
+                    value={singleCard?.carReg_no || ""}
                     options={cmDmOptions.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Car Reg No"
+                        label="Car Reg No "
                         {...register("carReg_no")}
+                        InputLabelProps={{
+                          shrink: !!singleCard?.carReg_no,
+                        }}
                       />
                     )}
-                    value={singleCard.carReg_no}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        carReg_no: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.carReg_no,
-                    }}
                   /> */}
-
                   <Autocomplete
-                    className="customerSelect"
+                    freeSolo
+                    className="productField"
                     value={singleCard?.carReg_no || ""}
-                    options={carBrands.map((option) => option.label)}
+                    options={cmDmOptions.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Car Reg No "
-                        // Handle input props manually
+                        label="Fuel Type "
+                        {...register("carReg_no")}
                         InputLabelProps={{
                           shrink: !!singleCard?.carReg_no,
                         }}
@@ -573,7 +562,7 @@ const UpdateCustomer = () => {
                       <TextField
                         {...params}
                         label="Vehicle Brand"
-                        // Handle input props manually
+                        {...register("vehicle_brand")}
                         InputLabelProps={{
                           shrink: !!singleCard?.vehicle_brand,
                         }}
@@ -582,21 +571,6 @@ const UpdateCustomer = () => {
                   />
                 </div>
                 <div>
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Name "
-                    {...register("vehicle_name")}
-                    value={singleCard.vehicle_name}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        vehicle_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.vehicle_name,
-                    }}
-                  /> */}
                   <Autocomplete
                     className="productField"
                     freeSolo
@@ -612,39 +586,18 @@ const UpdateCustomer = () => {
                       />
                     )}
                     getOptionLabel={(option) => option || ""}
-                    // disabled={!selectedBrand}
                   />
                 </div>
                 <div className="relative mt-3">
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Model (N)"
-                    {...register("vehicle_model", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid model number.",
-                      },
-                    })}
-                    value={singleCard.vehicle_model}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        vehicle_model: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.vehicle_model,
-                    }}
-                  /> */}
-
                   <input
-                    value={singleCard?.vehicle_model}
+                    // value={singleCard?.vehicle_model || ""}
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"
                     className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
                     placeholder="Vehicle Model"
                     defaultValue={singleCard?.vehicle_model}
+                    
                   />
 
                   {yearSelectInput && (
@@ -670,7 +623,7 @@ const UpdateCustomer = () => {
                       <TextField
                         {...params}
                         label="Vehicle Category"
-                        // Handle input props manually
+                        {...register("vehicle_category")}
                         InputLabelProps={{
                           shrink: !!singleCard?.vehicle_category,
                         }}
@@ -727,7 +680,7 @@ const UpdateCustomer = () => {
                       <TextField
                         {...params}
                         label="Fuel Type "
-                        // Handle input props manually
+                        {...register("fuel_type")}
                         InputLabelProps={{
                           shrink: !!singleCard?.fuel_type,
                         }}
@@ -744,65 +697,6 @@ const UpdateCustomer = () => {
           </form>
         </div>
       </div>
-      {/* <div className="w-full mt-5 mb-24">
-        <div className="flex items-center justify-between mb-5">
-          <h3 className="text-3xl font-bold text-center "> Customer List: </h3>
-          <div className="flex items-center">
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon className="searchIcon" />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-2">
-              Search
-            </button>
-          </div>
-        </div>
-        <div className="overflow-x-auto ">
-          <table className="table ">
-            <thead className="tableWrap">
-              <tr>
-                <th>SL</th>
-                <th>Customer Name </th>
-                <th>Phone Number </th>
-                <th>Reference Name </th>
-                <th colSpan={3}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>01</td>
-                <td>Car </td>
-                <td>BMW2343</td>
-                <td>BDT1005</td>
-                <td>
-                  <div className="editIconWrap edit2">
-                    <Link to="/dashboard/update-product">
-                      <FaEye className="editIcon" />
-                    </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap edit">
-                    <Link to="/dashboard/update-customer">
-                      <FaEdit className="editIcon" />
-                    </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap">
-                    <FaTrashAlt className="deleteIcon" />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> */}
     </section>
   );
 };

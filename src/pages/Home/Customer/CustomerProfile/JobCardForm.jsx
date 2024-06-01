@@ -16,13 +16,14 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const JobCardForm = ({ onClose }) => {
+const JobCardForm = ({ onClose, reload, setReload }) => {
   const [registrationError, setRegistrationError] = useState("");
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
   const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -33,7 +34,7 @@ const JobCardForm = ({ onClose }) => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    data.customerId = id;
+    data.Id = id;
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/vehicle`,
@@ -45,6 +46,7 @@ const JobCardForm = ({ onClose }) => {
         onClose();
         setLoading(false);
         reset();
+        setReload(!reload);
       }
     } catch (error) {
       toast.error(error.message);
@@ -82,6 +84,27 @@ const JobCardForm = ({ onClose }) => {
   const handleOptionClick = (option) => {
     setYearSelectInput(option.label);
     setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
+  };
+
+  const handleCarRegistrationChange = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    if (value.length > 2) {
+      value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
+    }
+
+    if (value.length > 7) {
+      value = value.slice(0, 7); // Ensure the value does not exceed 7 characters
+    }
+
+    setRegistrationError(""); // Clear previous error
+    if (value.length !== 7) {
+      setRegistrationError("Car registration number must be 7 characters");
+    }
+
+    // Update input value
+    setValue("car_registration_no", value, {
+      shouldValidate: true,
+    });
   };
 
   return (
@@ -133,23 +156,7 @@ const JobCardForm = ({ onClose }) => {
                           "Car registration number must be exactly 7 characters",
                       },
                     })}
-                    onChange={(e) => {
-                      let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-                      if (value.length > 2) {
-                        value = value.slice(0, 2) + "-" + value.slice(2); // Add hyphen after first two numbers
-                      }
-
-                      setRegistrationError(""); // Clear previous error
-                      if (value.length !== 7) {
-                        setRegistrationError(
-                          "Car registration number must be 7 characters"
-                        );
-                      }
-                      // Update input value
-                      setValue("car_registration_no", value, {
-                        shouldValidate: true,
-                      });
-                    }}
+                    onChange={handleCarRegistrationChange}
                     error={!!errors.car_registration_no || !!registrationError}
                   />
                 </div>
@@ -170,7 +177,7 @@ const JobCardForm = ({ onClose }) => {
               </div>
               <div className="mt-3">
                 <Autocomplete
-                className="addJobInputField"
+                  className="addJobInputField"
                   freeSolo
                   onInputChange={(event, newValue) => {
                     handleBrandChange(newValue);
@@ -190,7 +197,7 @@ const JobCardForm = ({ onClose }) => {
               </div>
               <div className="mt-3">
                 <Autocomplete
-                className="addJobInputField"
+                  className="addJobInputField"
                   freeSolo
                   Vehicle
                   Name
@@ -242,7 +249,7 @@ const JobCardForm = ({ onClose }) => {
               </div>
               <div>
                 <Autocomplete
-                 className="addJobInputField"
+                  className="addJobInputField"
                   freeSolo
                   Vehicle
                   Types
@@ -252,13 +259,13 @@ const JobCardForm = ({ onClose }) => {
                       {...params}
                       label=" Vehicle Categories "
                       {...register("vehicle_category")}
-                    />                           
+                    />
                   )}
                 />
               </div>
               <div className="mt-3">
                 <TextField
-                 className="addJobInputField"
+                  className="addJobInputField"
                   freeSolo
                   label="Color & Code (T&N) "
                   {...register("color_code")}
@@ -266,7 +273,7 @@ const JobCardForm = ({ onClose }) => {
               </div>
               <div className="mt-3">
                 <TextField
-                 className="addJobInputField"
+                  className="addJobInputField"
                   label="Mileage (N)"
                   {...register("mileage", {
                     pattern: {
@@ -284,7 +291,7 @@ const JobCardForm = ({ onClose }) => {
               </div>
               <div className="mt-3">
                 <Autocomplete
-                 className="addJobInputField"
+                  className="addJobInputField"
                   freeSolo
                   Fuel
                   Type

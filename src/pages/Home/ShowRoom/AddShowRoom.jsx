@@ -4,7 +4,7 @@
 import TextField from "@mui/material/TextField";
 import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Pagination } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
@@ -30,11 +30,10 @@ import { NotificationAdd } from "@mui/icons-material";
 const AddShowRoom = () => {
   const [filterType, setFilterType] = useState("");
   const [showRoomData, setShowRoomData] = useState([]);
+  const [showRoomPage, setShowRoomPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [noMatching, setNoMatching] = useState(null);
 
-  // const [brand, setBrand] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [getFuelType, setGetFuelType] = useState("");
   const [reload, setReload] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -88,15 +87,16 @@ const AddShowRoom = () => {
 
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
+  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
- 
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
     if (
       /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
+      newPhoneNumber.length <= 10 &&
       (newPhoneNumber === "" ||
         !newPhoneNumber.startsWith("0") ||
         newPhoneNumber.length > 1)
@@ -108,7 +108,7 @@ const AddShowRoom = () => {
     const newPhoneNumber = e.target.value;
     if (
       /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
+      newPhoneNumber.length <= 10 &&
       (newPhoneNumber === "" ||
         !newPhoneNumber.startsWith("0") ||
         newPhoneNumber.length > 1)
@@ -139,15 +139,9 @@ const AddShowRoom = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    // const uniqueId = "Id_" + Math.random().toString(36).substr(2, 9);
-    // const showRoomNamePrefix = data.showRoom_name.substring(0, 4);
-    const showRoomNamePrefix = "TAS-S:";
-    const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999
-    const paddedNumber = randomNumber.toString().padStart(6, "0"); // Ensures the number is 3 digits long
 
-    // Concatenate the name and the number to form the unique ID
-    const uniqueId = `${showRoomNamePrefix}${paddedNumber}`;
-    data.showRoomId = uniqueId;
+    data.company_country_code = countryCode.code;
+    data.driver_country_code = driverCountryCode.code;
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/v1/showRoom`,
@@ -157,39 +151,43 @@ const AddShowRoom = () => {
       if (response.data.message === "Successfully add to show room post") {
         setReload(!reload);
         toast.success("Successfully add to show room post");
-        Cookies.set("customer_type", "show_room");
+
         navigate("/dashboard/show-room-list");
         setLoading(false);
         reset();
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error?.message || "Something went wrong!");
       setLoading(false);
     }
   };
   useEffect(() => {
     setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom`)
-      .then((res) => res.json())
-      .then((data) => {
-        setShowRoomData(data);
+    try {
+      fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/showRoom?page=${currentPage}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setShowRoomData(data);
+          setShowRoomData(data?.allShowRoom);
+          setShowRoomPage(data?.totalPages);
+          if (data?.allShowRoom?.length === 0) {
+            setCurrentPage((pre) => pre - 1);
+          }
 
-        setLoading(false);
-      });
-  }, [reload]);
+          setLoading(false);
+        });
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong!");
+      setLoading(false);
+    }
+  }, [currentPage, reload]);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/show-room-profile?id=${e}`);
   };
   // pagination
-
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("showRoom")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -211,6 +209,7 @@ const AddShowRoom = () => {
 
         if (data.message == "Show room card delete successful") {
           setShowRoomData(showRoomData?.filter((pkg) => pkg._id !== id));
+          setReload(!reload);
         }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
@@ -218,161 +217,6 @@ const AddShowRoom = () => {
       }
     }
   };
-
-  useEffect(() => {
-    sessionStorage.setItem("showRoom", currentPage.toString());
-  }, [currentPage]);
-
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("showRoom")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("showRoom", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(showRoomData?.length / limit); i++) {
-    pages.push(i);
-  }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(showRoomData)) {
-    currentItems = showRoomData.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  const renderData = (showRoomData) => {
-    return (
-      <table className="table">
-        <thead className="tableWrap">
-          <tr>
-            <th>SL No</th>
-            <th>Customer Name</th>
-
-            <th>Car Number </th>
-            <th>Mobile Number</th>
-            <th>Date</th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {showRoomData?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{card.showRoomId}</td>
-              <td>{card?.company_name}</td>
-
-              <td>{card.car_registration_no}</td>
-              <td> {card.company_contact} </td>
-
-              <td>
-                <div
-                  onClick={() => handleIconPreview(card.showRoomId)}
-                  className="flex items-center justify-center cursor-pointer"
-                >
-                  <FaUserTie size={25} className="" />
-                </div>
-              </td>
-
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-show-room?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("showRoom", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
-  };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("showRoom", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
 
   const handleFilterType = async () => {
     try {
@@ -399,13 +243,25 @@ const AddShowRoom = () => {
     }
   };
 
-  const handleAllCustomer = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom`)
-      .then((res) => res.json())
-      .then((data) => {
-        setShowRoomData(data);
-        setNoMatching(null);
-      });
+  const handleAllShowRoom = () => {
+    setLoading(true);
+    try {
+      fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/showRoom?page=${currentPage}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setShowRoomData(data);
+          setShowRoomData(data?.allShowRoom);
+          setShowRoomPage(data?.totalPages);
+          setNoMatching(null);
+
+          setLoading(false);
+        });
+    } catch (error) {
+      toast.error(error?.message || "Something went wrong!");
+      setLoading(false);
+    }
   };
 
   return (
@@ -474,14 +330,13 @@ const AddShowRoom = () => {
                   />
                 </div>
 
-                
                 <div className="flex items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option) => option.code}
                     value={countryCode}
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
@@ -529,33 +384,17 @@ const AddShowRoom = () => {
                     {...register("driver_name")}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Driver Contact No (N)"
-                    {...register("driver_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                  />
-                  {errors.driver_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.driver_contact.message}
-                    </span>
-                  )}
-                </div> */}
+
                 <div className="flex items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
+                    getOptionLabel={(option) => option.code}
+                    value={driverCountryCode}
                     onChange={(event, newValue) => {
-                      setCountryCode(newValue);
+                      setDriverCountryCode(newValue);
                       setPhoneNumber(""); // Reset the phone number when changing country codes
                     }}
                     renderInput={(params) => (
@@ -642,20 +481,6 @@ const AddShowRoom = () => {
                 </div>
 
                 <div>
-                  {/* <Autocomplete
-                    className="productField"
-                    id="free-solo-demo"
-                    Vehicle
-                    Brand
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Brand"
-                        {...register("vehicle_brand")}
-                      />
-                    )}
-                  /> */}
                   <Autocomplete
                     className="productField"
                     freeSolo
@@ -699,27 +524,7 @@ const AddShowRoom = () => {
                   />
                 </div>
                 <div>
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Model (N)"
-                    {...register("vehicle_model", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid model number.",
-                      },
-                    })}
-                  /> */}
                   <div className="relative ">
-                    {/* <TextField
-                    className="productField"
-                    label="Vehicle Model (N)"
-                    {...register("vehicle_model", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid model number.",
-                      },
-                    })}
-                  /> */}
                     <input
                       value={yearSelectInput}
                       onInput={handleYearSelectInput}
@@ -823,12 +628,13 @@ const AddShowRoom = () => {
           <h3 className="text-3xl font-bold text-center "> Show Room List: </h3>
           <div className="flex items-center">
             <button
-              onClick={handleAllCustomer}
+              onClick={handleAllShowRoom}
               className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
             >
               All
             </button>
             <input
+              onChange={(e) => setFilterType(e.target.value)}
               type="text"
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
@@ -848,58 +654,75 @@ const AddShowRoom = () => {
           </div>
         ) : (
           <div>
-            {showRoomData?.length === 0 ||
-            currentItems.length === 0 ||
-            noMatching ? (
+            {showRoomData?.length === 0 || noMatching ? (
               <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
             ) : (
-              <>
-                <section>
-                  {renderData(currentItems)}
-                  <ul
-                    className={
-                      minPageNumberLimit < 5
-                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
-                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
-                    }
-                  >
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentPage === pages[0] ? true : false}
-                      className={
-                        currentPage === pages[0]
-                          ? "text-gray-600"
-                          : "text-gray-300"
-                      }
-                    >
-                      Previous
-                    </button>
-                    <span
-                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
-                    >
-                      {pageDecrementBtn}
-                    </span>
-                    {renderPagesNumber}
-                    {pageIncrementBtn}
-                    <button
-                      onClick={handleNext}
-                      disabled={
-                        currentPage === pages[pages?.length - 1] ? true : false
-                      }
-                      className={
-                        currentPage === pages[pages?.length - 1]
-                          ? "text-gray-700"
-                          : "text-gray-300 pl-1"
-                      }
-                    >
-                      Next
-                    </button>
-                  </ul>
-                </section>
-              </>
+              <section>
+                <table className="table">
+                  <thead className="tableWrap">
+                    <tr>
+                      <th>SL No</th>
+                      <th>Show room Name</th>
+
+                      <th>Car Number </th>
+                      <th>Mobile Number</th>
+
+                      <th colSpan={3}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {showRoomData?.map((card) => (
+                      <tr key={card._id}>
+                        <td>{card?.showRoomId}</td>
+                        <td>{card?.showRoom_name}</td>
+
+                        <td>{card?.fullRegNum}</td>
+                        <td> {card?.fullCompanyNum} </td>
+
+                        <td>
+                          <div
+                            onClick={() => handleIconPreview(card.showRoomId)}
+                            className="flex items-center justify-center cursor-pointer"
+                          >
+                            <FaUserTie size={25} className="" />
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="editIconWrap edit">
+                            <Link
+                              to={`/dashboard/update-show-room?id=${card._id}`}
+                            >
+                              <FaEdit className="editIcon" />
+                            </Link>
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            onClick={() => deletePackage(card._id)}
+                            className="editIconWrap"
+                          >
+                            <FaTrashAlt className="deleteIcon" />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
             )}
+          </div>
+        )}
+        {showRoomData?.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={showRoomPage}
+              page={currentPage}
+              color="primary"
+              onChange={(_, page) => setCurrentPage(page)}
+            />
           </div>
         )}
       </div>
