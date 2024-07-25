@@ -1,29 +1,43 @@
 /* eslint-disable no-unused-vars */
-import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../../../../public/assets/logo.png";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import logo from "../../../../public/assets/logo.png";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { cmDmOptions, countries } from "../../../constant";
 import TADatePickers from "../../../components/form/TADatePickers";
+import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
+
+import { ErrorMessage } from "../../../components/error-message";
+import {
+  useRemoveInvoiceMutation,
+  useUpdateInvoiceMutation,
+} from "../../../redux/api/invoice";
+
 const UpdateInvoice = () => {
   const [specificInvoice, setSpecificInvoice] = useState({});
-  console.log(specificInvoice);
+  const [partsTotal, setPartsTotal] = useState(0);
+  const [serviceTotal, setServiceTotal] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [vat, setVAT] = useState(0);
+
+  const [discount, setDiscount] = useState("");
+  const [vat, setVAT] = useState("");
   const [advance, setAdvance] = useState(0);
 
   const [error, setError] = useState("");
   const [registrationError, setRegistrationError] = useState("");
 
-  const [reload, setReload] = useState(false);
-
   const [removeButton, setRemoveButton] = useState("");
+  const [reload, setReload] = useState(false);
   const [addButton, setAddButton] = useState(false);
+  const [serviceAddButton, setServiceAddButton] = useState(false);
+  const partsDiscountRef = useRef(null);
+  const netTotalAmountRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
 
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
@@ -42,6 +56,13 @@ const UpdateInvoice = () => {
     }
   };
 
+  const [items, setItems] = useState([
+    { description: "", quantity: "", rate: "", total: "" },
+  ]);
+  const [serviceItems, setServiceItems] = useState([
+    { description: "", quantity: "", rate: "", total: "" },
+  ]);
+
   const {
     register,
     handleSubmit,
@@ -49,16 +70,10 @@ const UpdateInvoice = () => {
     formState: { errors },
   } = useForm();
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const id = new URLSearchParams(location.search).get("id");
-
-  const [items, setItems] = useState([
-    { description: "", quantity: "", rate: "", total: "" },
-  ]);
-  const [serviceItems, setServiceItems] = useState([
-    { servicesDescription: "", quantity: "", rate: "", total: "" },
-  ]);
+  const [updateInvoice, { isLoading: updateLoading, error: updateError }] =
+    useUpdateInvoiceMutation();
+  const [removeInvoice, { isLoading: removeLoading, error: removeError }] =
+    useRemoveInvoiceMutation();
 
   const handleRemove = (index) => {
     if (!index) {
@@ -70,10 +85,6 @@ const UpdateInvoice = () => {
       list.splice(index, 1);
       setItems(list);
     }
-  };
-
-  const handleAddClick = () => {
-    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
   };
 
   const handleServiceDescriptionRemove = (index) => {
@@ -88,27 +99,14 @@ const UpdateInvoice = () => {
     }
   };
 
-  const handleServiceDescriptionAdd = () => {
-    setServiceItems([
-      ...serviceItems,
-      { servicesDescription: "", quantity: "", rate: "", total: "" },
-    ]);
-  };
-
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/one/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoices/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setSpecificInvoice(data);
-        setDiscount(data.discount);
-        setVAT(data.vat);
+        setSpecificInvoice(data.data);
       });
   }, [id, reload]);
 
-  // useEffect(() => {
-  //   const totalSum = items?.reduce((sum, item) => sum + Number(item.total), 0);
-  //   setGrandTotal(totalSum);
-  // }, [items]);
   useEffect(() => {
     const totalSum = specificInvoice.input_data?.reduce(
       (sum, item) => sum + Number(item.total),
@@ -117,13 +115,36 @@ const UpdateInvoice = () => {
 
     const totalSum2 = items.reduce((sum, item) => sum + Number(item.total), 0);
 
+    const serviceTotalSum = specificInvoice?.service_input_data?.reduce(
+      (sum, item) => sum + Number(item.total),
+      0
+    );
+
+    const serviceTotalSum2 = serviceItems.reduce(
+      (sum, item) => sum + Number(item.total),
+      0
+    );
+
     const newTotalSum = isNaN(totalSum) ? 0 : totalSum;
     const newTotalSum2 = isNaN(totalSum2) ? 0 : totalSum2;
+    const newServiceTotalSum = isNaN(serviceTotalSum) ? 0 : serviceTotalSum;
+    const newServiceTotalSum2 = isNaN(serviceTotalSum2) ? 0 : serviceTotalSum2;
 
-    let newGrandTotal = newTotalSum + newTotalSum2;
-    newGrandTotal = parseFloat(newGrandTotal.toFixed(2));
-    setGrandTotal(newGrandTotal);
-  }, [items, specificInvoice.input_data]);
+    const newGrandTotal = newTotalSum + newTotalSum2;
+    const newServiceGrandTotal = newServiceTotalSum + newServiceTotalSum2;
+
+    const totalGrand = parseFloat(newGrandTotal + newServiceGrandTotal).toFixed(
+      2
+    );
+    setPartsTotal(newGrandTotal);
+    setServiceTotal(newServiceGrandTotal);
+    setGrandTotal(totalGrand);
+  }, [
+    items,
+    serviceItems,
+    specificInvoice.input_data,
+    specificInvoice?.service_input_data,
+  ]);
 
   const handleDescriptionChange = (index, value) => {
     const newItems = [...specificInvoice.input_data];
@@ -143,18 +164,33 @@ const UpdateInvoice = () => {
 
     setItems(newItems);
   };
+  const handleServiceDescriptionChange = (index, value) => {
+    const newItems = [...specificInvoice.service_input_data];
+    newItems[index] = {
+      ...newItems[index],
+      description: value,
+    };
+    setSpecificInvoice((prevState) => ({
+      ...prevState,
+      service_input_data: newItems,
+    }));
+  };
+  const handleServiceDescriptionChange2 = (index, value) => {
+    const newItems = [...serviceItems];
+
+    newItems[index].description = value;
+
+    setServiceItems(newItems);
+  };
 
   const handleQuantityChange = (index, value) => {
-    // Ensure value is a valid number
     if (!isNaN(value)) {
       const newItems = [...specificInvoice.input_data];
-      // Round the quantity to the nearest integer
-      const roundedQuantity = Math.round(Number(value));
-      newItems[index] = {
-        ...newItems[index],
-        quantity: roundedQuantity,
-        total: (roundedQuantity * newItems[index].rate).toFixed(2),
-      };
+      const roundedValue = Math.round(value);
+      newItems[index].quantity = Number(roundedValue);
+
+      newItems[index].total = Number(roundedValue) * newItems[index].rate;
+      newItems[index].total = Number(newItems[index].total.toFixed(2));
       setSpecificInvoice((prevState) => ({
         ...prevState,
         input_data: newItems,
@@ -163,43 +199,86 @@ const UpdateInvoice = () => {
   };
 
   const handleQuantityChange2 = (index, value) => {
+    const newItems = [...items];
+    const roundedValue = Math.round(value);
+    newItems[index].quantity = Number(roundedValue);
+
+    newItems[index].total = Number(roundedValue) * newItems[index].rate;
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setItems(newItems);
+  };
+  const handleServiceQuantityChange = (index, value) => {
     if (!isNaN(value)) {
-      const newItems = [...items];
+      const newItems = [...specificInvoice.service_input_data];
       const roundedValue = Math.round(value);
       newItems[index].quantity = Number(roundedValue);
-      newItems[index].total = roundedValue * newItems[index].rate;
-      newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-      setItems(newItems);
-    }
-  };
 
-  const handleRateChange = (index, value) => {
-    if (!isNaN(value)) {
-      const newItems = [...specificInvoice.input_data];
-      newItems[index] = {
-        ...newItems[index],
-        rate: Number(value).toFixed(2),
-        total: (newItems[index].quantity * Number(value)).toFixed(2),
-      };
+      newItems[index].total = Number(roundedValue) * newItems[index].rate;
+      newItems[index].total = Number(newItems[index].total.toFixed(2));
       setSpecificInvoice((prevState) => ({
         ...prevState,
-        input_data: newItems,
+        service_input_data: newItems,
       }));
     }
   };
 
+  const handleServiceQuantityChange2 = (index, value) => {
+    const newItems = [...serviceItems];
+    const roundedValue = Math.round(value);
+    newItems[index].quantity = Number(roundedValue);
+
+    newItems[index].total = Number(roundedValue) * newItems[index].rate;
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setServiceItems(newItems);
+  };
+
+  const handleRateChange = (index, value) => {
+    const newItems = [...specificInvoice.input_data];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setSpecificInvoice((prevState) => ({
+      ...prevState,
+      input_data: newItems,
+    }));
+  };
+
   const handleRateChange2 = (index, value) => {
-    if (!isNaN(value)) {
-      const newItems = [...items];
-      newItems[index].rate = parseFloat(value).toFixed(2);
-      newItems[index].total = newItems[index].quantity * newItems[index].rate;
-      newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
-      setItems(newItems);
-    }
+    const newItems = [...items];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setItems(newItems);
+  };
+  const handleServiceRateChange = (index, value) => {
+    const newItems = [...specificInvoice.service_input_data];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setSpecificInvoice((prevState) => ({
+      ...prevState,
+      service_input_data: newItems,
+    }));
+  };
+
+  const handleServiceRateChange2 = (index, value) => {
+    const newItems = [...serviceItems];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setServiceItems(newItems);
   };
 
   const handleDiscountChange = (value) => {
-    const parsedValue = value === "" ? 0 : parseFloat(value);
+    const parsedValue = Number(value);
 
     if (!isNaN(parsedValue)) {
       setDiscount(parsedValue);
@@ -207,15 +286,14 @@ const UpdateInvoice = () => {
   };
 
   const handleVATChange = (value) => {
-    const parsedValue = value === "" ? 0 : parseFloat(value);
+    const parsedValue = Number(value);
 
     if (!isNaN(parsedValue)) {
       setVAT(parsedValue);
     }
   };
-
   const handleAdvance = (value) => {
-    const parsedValue = value === "" ? 0 : parseFloat(value);
+    const parsedValue = Number(value);
 
     if (!isNaN(parsedValue)) {
       setAdvance(parsedValue);
@@ -223,19 +301,60 @@ const UpdateInvoice = () => {
   };
 
   const calculateFinalTotal = () => {
-    const discountAsPercentage = discount;
+    let finalTotal;
+    let differenceExistAndNewGrandTotal;
+    let vatAsPercentage;
+    let discountAsPercentage;
 
     let totalAfterDiscount;
-    if (grandTotal) {
-      totalAfterDiscount = grandTotal - discountAsPercentage;
+
+    if (grandTotal > specificInvoice.total_amount) {
+      differenceExistAndNewGrandTotal =
+        grandTotal - specificInvoice.total_amount;
+    } else if (grandTotal < specificInvoice.total_amount) {
+      differenceExistAndNewGrandTotal =
+        grandTotal - specificInvoice.total_amount;
     } else {
-      totalAfterDiscount = specificInvoice.total_amount - discountAsPercentage;
+      differenceExistAndNewGrandTotal = 0;
     }
 
-    const vatAsPercentage = vat / 100;
-    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
+    if (discount > 0) {
+      discountAsPercentage = discount;
+    }
+    if (discount === 0) {
+      discountAsPercentage = 0;
+    }
+    if (discount === "") {
+      discountAsPercentage = specificInvoice.discount;
+    }
 
-    finalTotal = parseFloat(finalTotal.toFixed(2));
+    const differenceWithoutDiscount =
+      specificInvoice.total_amount + differenceExistAndNewGrandTotal;
+
+    if (discountAsPercentage === 0) {
+      totalAfterDiscount = differenceWithoutDiscount;
+    } else if (discountAsPercentage === "") {
+      totalAfterDiscount = differenceWithoutDiscount - specificInvoice.discount;
+    } else {
+      totalAfterDiscount = differenceWithoutDiscount - discountAsPercentage;
+    }
+
+    if (vat === 0) {
+      vatAsPercentage = 0;
+    }
+    if (vat > 0) {
+      vatAsPercentage = vat;
+    }
+
+    if (vat === "") {
+      vatAsPercentage = specificInvoice.vat;
+    }
+
+    const totalAfterTax =
+      totalAfterDiscount + totalAfterDiscount * (vatAsPercentage / 100);
+
+    finalTotal = parseFloat(totalAfterTax).toFixed(2);
+
     return finalTotal;
   };
 
@@ -245,22 +364,64 @@ const UpdateInvoice = () => {
       return due;
     } else {
       const due = calculateFinalTotal() - specificInvoice.advance;
-      return due;
+      return parseFloat(due).toFixed(2);
     }
   };
 
-  const handleRemoveButton = (i) => {
-    if (!specificInvoice.Id) {
-      return toast.error("Unauthorized");
+  const handleAddClick = () => {
+    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificInvoice?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
     }
-    axios
-      .put(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, { index: i })
-      .then((response) => {
-        if (response.data.message === "Deleted successful") {
-          setReload(!reload);
-        }
-      })
-      .catch((error) => {});
+  };
+
+  const handleServiceDescriptionAdd = () => {
+    setServiceItems([
+      ...serviceItems,
+      { description: "", quantity: "", rate: "", total: "" },
+    ]);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificInvoice?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handlePartsAddButton = () => {
+    setAddButton(!addButton);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificInvoice?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handleServiceAddButton = () => {
+    setServiceAddButton(!serviceAddButton);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificInvoice?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handleRemoveButton = async (i, name) => {
+    const values = {
+      id: id,
+      data: { index: i, invoice_name: name },
+    };
+
+    const res = await removeInvoice(values).unwrap();
+    if (res.success) {
+      setReload(!reload);
+      toast.success(res.message);
+    }
   };
 
   const input_data = [
@@ -274,57 +435,47 @@ const UpdateInvoice = () => {
         total: item.total,
       })),
   ];
+  const service_input_data = [
+    ...(specificInvoice?.service_input_data || []),
+    ...serviceItems
+      .filter((item) => item.total !== undefined && item.total !== "")
+      .map((item) => ({
+        description: item.description,
+        quantity: item.quantity,
+        rate: item.rate,
+        total: item.total,
+      })),
+  ];
 
   const onSubmit = async (data) => {
-    if (!specificInvoice.Id) {
-      return toast.error("Unauthorized");
-    }
     setRemoveButton("");
+
     try {
       const values = {
-        username: specificInvoice.username || data.username,
-        Id: data.customerId || specificInvoice.Id,
-        job_no: data.job_no || specificInvoice.job_no,
-        date: specificInvoice.date,
-
-        company_name: data.company_name || specificInvoice.company_name,
-        customer_name: data.customer_name || specificInvoice.customer_name,
-        customer_contact:
-          data.customer_contact || specificInvoice.customer_contact,
-        customer_address:
-          data.customer_address || specificInvoice.customer_address,
-
-        car_registration_no:
-          data.car_registration_no || specificInvoice.car_registration_no,
-        chassis_no: data.chassis_no || specificInvoice.chassis_no,
-        engine_no: data.engine_no || specificInvoice.engine_no,
-        vehicle_name: data.vehicle_name || specificInvoice.vehicle_name,
-        mileage: data.mileage || specificInvoice.mileage,
-
+        parts_total: partsTotal || specificInvoice.parts_total,
+        service_total: serviceTotal || specificInvoice.serviceTotal,
         total_amount: grandTotal || specificInvoice?.total_amount,
         discount: discount || specificInvoice?.discount,
-
-        vat: vat || specificInvoice?.vat,
+        vat: vat === 0 || vat > 0 ? vat : specificInvoice?.vat,
+        net_total: calculateFinalTotal() || specificInvoice.net_total,
         advance: advance || specificInvoice.advance,
         due: calculateDue() || specificInvoice.due,
-
-        net_total: calculateFinalTotal(),
         input_data: input_data,
+        service_input_data: service_input_data,
+      };
+
+      const newValue = {
+        id: id,
+        data: values,
       };
 
       if (removeButton === "") {
-        const response = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/v1/invoice/one/${id}`,
-          values
-        );
-
-        if (response.data.message === "Successfully update card.") {
-          setError("");
+        const res = await updateInvoice(newValue).unwrap();
+        if (res.success) {
+          toast.success(res.message);
+          setReload(!reload);
           navigate("/dashboard/invoice-view");
         }
-      }
-      if (removeButton === "remove") {
-        handleRemoveButton();
       }
     } catch (error) {
       if (error.response) {
@@ -332,68 +483,92 @@ const UpdateInvoice = () => {
       }
     }
   };
+
   const handleOnSubmit = () => {
     handleSubmit(onSubmit)();
   };
+
   return (
     <div className="px-5 py-10">
-      <div className="flex md:flex-row flex-col items-center justify-between w-full mt-5 mb-2 border-b-2 border-[#42A1DA]">
-        <img
-          src={logo}
-          alt="logo"
-          className="md:block hidden w-[70px] md:w-[210px]"
-        />
+      <div className=" addJobCardHeads">
+        <img src={logo} alt="logo" className=" addJobLogoImg" />
         <div>
           <h2 className=" trustAutoTitle trustAutoTitleQutation">
             Trust Auto Solution{" "}
           </h2>
-          <span className="mt-5 block text-center">
+          <span className="text-[12px] lg:text-xl mt-5 block">
             Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
           </span>
         </div>
         <TrustAutoAddress />
       </div>
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <div className="hidden"></div>
-        <div className="vehicleCard">Update Invoice </div>
-
-        <div>
-          <TADatePickers />
-        </div>
-      </div>
 
       <div className="mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex md:flex-row flex-col justify-between items-center">
+            <div className="hidden"></div>
+            <div className="vehicleCard">Update Invoice </div>
+
+            <div>
+              <TADatePickers />
+            </div>
+          </div>
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
               <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
+                  type="number"
                   className="addJobInputField"
                   label="Serial No"
                   {...register("job_no")}
                   value={specificInvoice?.job_no}
-                  focused={specificInvoice?.job_no}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      job_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.job_no,
+                  }}
                 />
               </div>
+
               <div className="mt-3">
                 <TextField
+                  readonly
                   className="addJobInputField"
                   label="Customer Id"
                   {...register("customerId")}
                   value={specificInvoice?.Id}
-                  focused={specificInvoice?.Id}
-                  required
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      Id: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.Id,
+                  }}
                 />
               </div>
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Company"
+                  label="Company Name "
                   value={specificInvoice?.company_name}
-                  focused={specificInvoice?.company_name}
                   {...register("company_name")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      company_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.company_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -401,70 +576,95 @@ const UpdateInvoice = () => {
                   className="addJobInputField"
                   label="Customer"
                   value={specificInvoice?.customer_name}
-                  focused={specificInvoice?.customer_name}
                   {...register("customer_name")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      customer_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.customer_name,
+                  }}
                 />
               </div>
-              {/* <div className="mt-3">
-                <TextField
+              <div className="mt-3">
+                {/* <TextField
                   className="addJobInputField"
                   label="Phone"
                   value={specificInvoice?.customer_contact}
-                  focused={specificInvoice?.customer_contact}
                   {...register("customer_contact")}
-                />
-              </div> */}
-              <div className="flex items-center mt-3 ">
-                <Autocomplete
-                  className="jobCardSelect2"
-                  freeSolo
-                  options={countries}
-                  getOptionLabel={(option) => option.label}
-                  value={countryCode}
-                  onChange={(event, newValue) => {
-                    setCountryCode(newValue);
-                    setPhoneNumber(""); // Reset the phone number when changing country codes
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Select Country Code"
-                      variant="outlined"
-                    />
-                  )}
-                />
-                <TextField
-                  className="carRegField"
-                  label="Phone"
-                  value={specificInvoice?.customer_contact}
-                  {...register("customer_contact")}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    if (inputValue.length <= 11) {
-                      setSpecificInvoice({
-                        ...specificInvoice,
-                        customer_contact: inputValue,
-                      });
-                    }
-                  }}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      customer_contact: e.target.value,
+                    })
+                  }
                   InputLabelProps={{
                     shrink: !!specificInvoice.customer_contact,
                   }}
-                />
+                /> */}
+                <div className="flex sm:flex-row flex-col gap-1 items-center">
+                  <Autocomplete
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    className="carRegField"
+                    label="Phone"
+                    value={specificInvoice?.customer_contact}
+                    {...register("customer_contact")}
+                    onChange={(e) => {
+                      const inputValue = e.target.value;
+                      if (inputValue.length <= 11) {
+                        setSpecificInvoice({
+                          ...specificInvoice,
+                          customer_contact: inputValue,
+                        });
+                      }
+                    }}
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.customer_contact,
+                    }}
+                  />
+                </div>
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Address"
                   value={specificInvoice?.customer_address}
-                  focused={specificInvoice?.customer_address}
                   {...register("customer_address")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      customer_address: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.customer_address,
+                  }}
                 />
               </div>
             </div>
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
+
               <div className="flex mt-3  md:gap-0 gap-4 items-center">
                 <Autocomplete
                   sx={{ marginRight: "5px" }}
@@ -482,7 +682,7 @@ const UpdateInvoice = () => {
                 />
 
                 <TextField
-                   className="carRegField"
+                  className="carRegField"
                   label="Car R (N)"
                   {...register("car_registration_no", {
                     pattern: {
@@ -531,8 +731,16 @@ const UpdateInvoice = () => {
                   className="addJobInputField"
                   label="Chassis No"
                   value={specificInvoice?.chassis_no}
-                  focused={specificInvoice?.chassis_no}
                   {...register("chassis_no")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      chassis_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.chassis_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -540,8 +748,16 @@ const UpdateInvoice = () => {
                   className="addJobInputField"
                   label="Engine & CC"
                   value={specificInvoice?.engine_no}
-                  focused={specificInvoice?.engine_no}
                   {...register("engine_no")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      engine_no: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.engine_no,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -549,8 +765,16 @@ const UpdateInvoice = () => {
                   className="addJobInputField"
                   label="Vehicle Name"
                   value={specificInvoice?.vehicle_name}
-                  focused={specificInvoice?.vehicle_name}
                   {...register("vehicle_name")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      vehicle_name: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.vehicle_name,
+                  }}
                 />
               </div>
               <div className="mt-3">
@@ -558,8 +782,16 @@ const UpdateInvoice = () => {
                   className="addJobInputField"
                   label="Mileage"
                   value={specificInvoice?.mileage}
-                  focused={specificInvoice?.mileage}
                   {...register("mileage")}
+                  onChange={(e) =>
+                    setSpecificInvoice({
+                      ...specificInvoice,
+                      mileage: e.target.value,
+                    })
+                  }
+                  InputLabelProps={{
+                    shrink: !!specificInvoice.mileage,
+                  }}
                 />
               </div>
             </div>
@@ -567,7 +799,7 @@ const UpdateInvoice = () => {
 
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
-            <label> Parts description </label>
+            <label>Parts description </label>
             <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
@@ -582,7 +814,8 @@ const UpdateInvoice = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                              onClick={() => handleRemoveButton(i)}
+                            disabled={removeLoading}
+                              onClick={() => handleRemoveButton(i, "parts")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
                               Remove
@@ -606,10 +839,7 @@ const UpdateInvoice = () => {
                             type="text"
                             placeholder="Description"
                             onChange={(e) =>
-                              handleDescriptionChange(
-                                i,
-                                e.target.value || item.description
-                              )
+                              handleDescriptionChange(i, e.target.value)
                             }
                             defaultValue={item.description}
                             required
@@ -660,7 +890,7 @@ const UpdateInvoice = () => {
           <div>
             {!addButton && (
               <button
-                onClick={() => setAddButton(!addButton)}
+                onClick={handlePartsAddButton}
                 className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
               >
                 Add new
@@ -668,7 +898,7 @@ const UpdateInvoice = () => {
             )}
             {addButton && (
               <button
-                onClick={() => setAddButton(!addButton)}
+                onClick={handlePartsAddButton}
                 className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
               >
                 Cancel
@@ -676,14 +906,14 @@ const UpdateInvoice = () => {
             )}
             {addButton && (
               <>
-                {serviceItems.map((item, i) => {
+                {items.map((item, i) => {
                   return (
                     <div key={i}>
                       <div className="qutationForm">
                         <div>
-                          {serviceItems.length !== 0 && (
+                          {items.length !== 0 && (
                             <button
-                              onClick={() => handleServiceDescriptionRemove(i)}
+                              onClick={() => handleRemove(i)}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
                               Remove
@@ -749,9 +979,9 @@ const UpdateInvoice = () => {
                       </div>
 
                       <div className="addInvoiceItem">
-                        {serviceItems.length - 1 === i && (
+                        {items.length - 1 === i && (
                           <div
-                            onClick={handleServiceDescriptionAdd}
+                            onClick={handleAddClick}
                             className="flex justify-end mt-2"
                           >
                             <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
@@ -766,26 +996,25 @@ const UpdateInvoice = () => {
               </>
             )}
           </div>
-
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
-            <label> Service description </label>
+            <label>Service description </label>
             <label>Qty </label>
             <label>Rate</label>
             <label>Amount </label>
           </div>
-
           <div>
-            {specificInvoice?.input_data?.length > 0 && (
+            {specificInvoice?.service_input_data?.length > 0 && (
               <>
-                {specificInvoice?.input_data?.map((item, i) => {
+                {specificInvoice?.service_input_data?.map((item, i) => {
                   return (
                     <div key={i}>
                       <div className="qutationForm">
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                              onClick={() => handleRemoveButton(i)}
+                            disabled={removeLoading}
+                              onClick={() => handleRemoveButton(i, "service")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
                               Remove
@@ -809,10 +1038,7 @@ const UpdateInvoice = () => {
                             type="text"
                             placeholder="Description"
                             onChange={(e) =>
-                              handleDescriptionChange(
-                                i,
-                                e.target.value || item.description
-                              )
+                              handleServiceDescriptionChange(i, e.target.value)
                             }
                             defaultValue={item.description}
                             required
@@ -825,7 +1051,7 @@ const UpdateInvoice = () => {
                             type="number"
                             placeholder="Qty"
                             onChange={(e) =>
-                              handleQuantityChange(i, e.target.value)
+                              handleServiceQuantityChange(i, e.target.value)
                             }
                             required
                             defaultValue={item.quantity}
@@ -838,7 +1064,7 @@ const UpdateInvoice = () => {
                             type="number"
                             placeholder="Rate"
                             onChange={(e) =>
-                              handleRateChange(i, e.target.value)
+                              handleServiceRateChange(i, e.target.value)
                             }
                             required
                             defaultValue={item.rate}
@@ -862,32 +1088,32 @@ const UpdateInvoice = () => {
           </div>
         </form>
         <div>
-          {!addButton && (
+          {!serviceAddButton && (
             <button
-              onClick={() => setAddButton(!addButton)}
+              onClick={handleServiceAddButton}
               className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
             >
               Add new
             </button>
           )}
-          {addButton && (
+          {serviceAddButton && (
             <button
-              onClick={() => setAddButton(!addButton)}
+              onClick={handleServiceAddButton}
               className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
             >
               Cancel
             </button>
           )}
-          {addButton && (
+          {serviceAddButton && (
             <>
-              {items.map((item, i) => {
+              {serviceItems.map((item, i) => {
                 return (
                   <div key={i}>
                     <div className="qutationForm">
                       <div>
                         {items.length !== 0 && (
                           <button
-                            onClick={() => handleRemove(i)}
+                            onClick={() => handleServiceDescriptionRemove(i)}
                             className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                           >
                             Remove
@@ -909,9 +1135,9 @@ const UpdateInvoice = () => {
                           className="secondInputField"
                           autoComplete="off"
                           type="text"
-                          placeholder="Parts Description"
+                          placeholder="Description"
                           onChange={(e) =>
-                            handleDescriptionChange2(i, e.target.value)
+                            handleServiceDescriptionChange2(i, e.target.value)
                           }
                           required
                         />
@@ -923,7 +1149,7 @@ const UpdateInvoice = () => {
                           type="number"
                           placeholder="Qty"
                           onChange={(e) =>
-                            handleQuantityChange2(i, e.target.value)
+                            handleServiceQuantityChange2(i, e.target.value)
                           }
                           required
                         />
@@ -934,7 +1160,9 @@ const UpdateInvoice = () => {
                           autoComplete="off"
                           type="number"
                           placeholder="Rate"
-                          onChange={(e) => handleRateChange2(i, e.target.value)}
+                          onChange={(e) =>
+                            handleServiceRateChange2(i, e.target.value)
+                          }
                           required
                         />
                       </div>
@@ -953,7 +1181,7 @@ const UpdateInvoice = () => {
                     <div className="addInvoiceItem">
                       {items.length - 1 === i && (
                         <div
-                          onClick={handleAddClick}
+                          onClick={handleServiceDescriptionAdd}
                           className="flex justify-end mt-2"
                         >
                           <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
@@ -968,16 +1196,15 @@ const UpdateInvoice = () => {
             </>
           )}
         </div>
-
         <div className="discountFieldWrap">
           <div className="flex items-center">
-            <b className="mr-2"> Total Amount: </b>
+            <b> Total Amount: </b>
             <span>
               {grandTotal ? grandTotal : specificInvoice.total_amount}
             </span>
           </div>
           <div>
-            <b className="mr-2"> Discount: </b>
+            <b> Discount: </b>
             <input
               className="py-1 text-center"
               onChange={(e) => handleDiscountChange(e.target.value)}
@@ -985,27 +1212,29 @@ const UpdateInvoice = () => {
               type="text"
               placeholder="Discount"
               defaultValue={specificInvoice.discount}
+              ref={partsDiscountRef}
             />
           </div>
           <div>
-            <b className="mr-2">Vat: </b>
+            <b>Vat: </b>
             <input
               className="text-center"
               onChange={(e) => handleVATChange(e.target.value)}
               autoComplete="off"
               type="text"
               placeholder="Vat"
-              defaultValue={specificInvoice.vat}
+              defaultValue={specificInvoice?.vat}
             />
           </div>
-          <div className="flex items-center ">
-            <b className="mr-3">Final Total: </b>
-            <span>
-              {calculateFinalTotal()
-                ? calculateFinalTotal()
-                : specificInvoice.net_total}
-            </span>
-            {/* <b>Net Total: </b> */}
+          <div>
+            <div className="flex items-center ">
+              <b className="mr-3">Final Total: </b>
+              <span>
+                {calculateFinalTotal()
+                  ? calculateFinalTotal()
+                  : specificInvoice.net_total}
+              </span>
+            </div>
           </div>
           <div>
             <b className="mr-2">Advance: </b>
@@ -1024,14 +1253,23 @@ const UpdateInvoice = () => {
             <span>{calculateDue() ? calculateDue() : specificInvoice.due}</span>
           </div>
         </div>
-        <div className="mb-12 flex justify-center ">
-          <Button
-            sx={{ background: "#42A1DA" }}
-            onClick={handleOnSubmit}
-            className="addJobBtn"
-          >
-            Update Invoice{" "}
-          </Button>
+
+        <div>
+          <div className="flex  justify-center align-items-center">
+            <Button
+              sx={{ background: "#42A1DA" }}
+              onClick={handleOnSubmit}
+              className="addJobBtn"
+              disabled={updateLoading}
+            >
+              Update Invoice
+            </Button>
+          </div>
+          <div className="my-2">
+            {updateError && (
+              <ErrorMessage messages={updateError?.data?.errorSources} />
+            )}
+          </div>
         </div>
 
         {error && <div className="pt-6 text-center text-red-400">{error}</div>}

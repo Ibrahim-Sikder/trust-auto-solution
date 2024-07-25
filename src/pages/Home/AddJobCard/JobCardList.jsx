@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaTrashAlt,
   FaEdit,
@@ -14,34 +14,34 @@ import swal from "sweetalert";
 import Loading from "../../../components/Loading/Loading";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import {
+  useDeleteJobCardMutation,
+  useGetAllJobCardsQuery,
+} from "../../../redux/api/jobCard";
+import { Pagination } from "@mui/material";
+import { HiOutlineSearch } from "react-icons/hi";
+
 const JobCardList = () => {
-  const [select, setSelect] = useState(null);
-  const [allJobCard, setAllJobCard] = useState([]);
-  const [noMatching, setNoMatching] = useState(null);
   const [filterType, setFilterType] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const textInputRef = useRef(null);
   const navigate = useNavigate();
-  const username = "683231669175";
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setAllJobCard(data);
-      });
-  }, [username]);
+
+  const limit = 10;
+  const { data: allJobCards, isLoading: jobCardLoading } =
+    useGetAllJobCardsQuery({
+      limit,
+      page: currentPage,
+      searchTerm: filterType,
+    });
+
+  const [deleteJobCard, { isLoading: deleteLoading }] =
+    useDeleteJobCardMutation();
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
   };
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("job")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -53,17 +53,7 @@ const JobCardList = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/jobCard/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Job card delete successful") {
-          setAllJobCard(allJobCard?.filter((pkg) => pkg._id !== id));
-        }
+        await deleteJobCard(id).unwrap();
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -71,198 +61,11 @@ const JobCardList = () => {
     }
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("job", currentPage.toString());
-  }, [currentPage]);
-  // ...
-
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("job")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  // ...
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("job", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(allJobCard?.length / limit); i++) {
-    pages.push(i);
-  }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(allJobCard)) {
-    currentItems = allJobCard.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  // ...
-
-  const renderData = (allJobCard) => {
-    return (
-      <table className="table">
-        <thead className="tableWrap">
-          <tr>
-            <th>SL No</th>
-            <th>Customer Name</th>
-            <th>Order Number </th>
-            <th>Car Number </th>
-            <th>Mobile Number</th>
-            <th>Date</th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {allJobCard?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{index + 1}</td>
-              <td>{card.customer_name}</td>
-              <td>{card.job_no}</td>
-              <td>{`${card.carReg_no} ${card.car_registration_no}`}</td>
-              <td> {card.customer_contact} </td>
-              <td>{card.date}</td>
-              <td>
-                <div
-                  onClick={() => handleIconPreview(card._id)}
-                  className="editIconWrap edit2"
-                >
-                  {/* <Link to="/dashboard/preview"> */}
-                  <FaEye className="editIcon" />
-                  {/* </Link> */}
-                </div>
-              </td>
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-jobcard?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
-  };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        select,
-        filterType,
-      };
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setAllJobCard(response.data.result);
-        setNoMatching(null);
-        setLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-      }
-    } catch (error) {
-      setLoading(false);
-    }
-  };
   const handleAllAddToJobCard = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllJobCard(data);
-        setNoMatching(null);
-      });
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
   };
   return (
     <div>
@@ -295,92 +98,121 @@ const JobCardList = () => {
           <div className="productHome">
             <span>Home / </span>
             <span>Job Card List </span>
-           
           </div>
         </div>
 
-        <div className="flex-wrap flex items-center justify-between mb-5 bg-[#F1F3F6] py-5 px-3">
-          <h3 className="mb-3 text-3xl font-bold">All Job Card List:</h3>
-          <div className="flex items-center searcList">
-            <div
-              onClick={handleAllAddToJobCard}
-              className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-            >
-              All
-            </div>
-            <div className="searchGroup">
+        <div className="w-full mt-5 mb-24">
+          <div className="flex flex-wrap items-center justify-between mb-5">
+            <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl">
+              {" "}
+              Customer List:{" "}
+            </h3>
+            <div className="flex flex-wrap items-center">
+              <button
+                onClick={handleAllAddToJobCard}
+                className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
+              >
+                All
+              </button>
               <input
                 onChange={(e) => setFilterType(e.target.value)}
-                autoComplete="off"
                 type="text"
-                placeholder={select}
+                placeholder="Search"
+                className="border py-2 px-3 rounded-md border-[#ddd]"
+                ref={textInputRef}
+              />
+              <button
+                className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
+                disabled={filterType === ""}
+              >
+                {" "}
+                <HiOutlineSearch size={25} />
+              </button>
+            </div>
+          </div>
+          {jobCardLoading ? (
+            <div className="flex items-center justify-center text-xl">
+              <Loading />
+            </div>
+          ) : (
+            <div>
+              {allJobCards?.data?.jobCards?.length === 0 ? (
+                <div className="flex items-center justify-center h-full text-xl text-center">
+                  No matching card found.
+                </div>
+              ) : (
+                <section>
+                  <table className="table">
+                    <thead className="tableWrap">
+                      <tr>
+                        <th>Order Number </th>
+
+                        <th>User Id</th>
+                        <th>User type</th>
+                        <th>Mobile Number</th>
+                        <th>Date</th>
+                        <th colSpan={3}>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allJobCards?.data?.jobCards?.map((card) => {
+                        return (
+                          <tr key={card?._id}>
+                            <td>{card?.job_no}</td>
+
+                            <td>{card?.Id}</td>
+
+                            <td>{card?.user_type}</td>
+
+                            <td>{card?.customer[0]?.fullCustomerNum}</td>
+                            <td>{card?.date}</td>
+                            <td>
+                              <div
+                                onClick={() => handleIconPreview(card._id)}
+                                className="flex items-center justify-center cursor-pointer"
+                              >
+                                <FaEye className="h-[22px] w-[22px]" />
+                              </div>
+                            </td>
+
+                            <td>
+                              <div className="editIconWrap edit">
+                                <Link
+                                  to={`/dashboard/update-jobcard?id=${card._id}`}
+                                >
+                                  <FaEdit className="editIcon" />
+                                </Link>
+                              </div>
+                            </td>
+                            <td>
+                              <button
+                                disabled={deleteLoading}
+                                onClick={() => deletePackage(card?._id)}
+                                className="editIconWrap"
+                              >
+                                <FaTrashAlt className="deleteIcon" />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </section>
+              )}
+            </div>
+          )}
+          {allJobCards?.data?.jobCards?.length > 0 && (
+            <div className="flex justify-center mt-4">
+              <Pagination
+                count={allJobCards?.data?.meta?.totalPages}
+                page={currentPage}
+                color="primary"
+                onChange={(_, page) => setCurrentPage(page)}
               />
             </div>
-            <button onClick={handleFilterType} className="SearchBtn ">
-              Search{" "}
-            </button>
-          </div>
+          )}
         </div>
-        {loading ? (
-          <div className="flex items-center justify-center text-xl">
-            <Loading />
-          </div>
-        ) : (
-          <div>
-            {allJobCard?.length === 0 ||
-            currentItems.length === 0 ||
-            noMatching ? (
-              <div className="flex items-center justify-center h-full text-xl text-center">
-                No matching card found.
-              </div>
-            ) : (
-              <>
-                <section>
-                  {renderData(currentItems)}
-                  <ul
-                    className={
-                      minPageNumberLimit < 5
-                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
-                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
-                    }
-                  >
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentPage === pages[0] ? true : false}
-                      className={
-                        currentPage === pages[0]
-                          ? "text-gray-600"
-                          : "text-gray-300"
-                      }
-                    >
-                      Previous
-                    </button>
-                    <span
-                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
-                    >
-                      {pageDecrementBtn}
-                    </span>
-                    {renderPagesNumber}
-                    {pageIncrementBtn}
-                    <button
-                      onClick={handleNext}
-                      disabled={
-                        currentPage === pages[pages?.length - 1] ? true : false
-                      }
-                      className={
-                        currentPage === pages[pages?.length - 1]
-                          ? "text-gray-700"
-                          : "text-gray-300 pl-1"
-                      }
-                    >
-                      Next
-                    </button>
-                  </ul>
-                </section>
-              </>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

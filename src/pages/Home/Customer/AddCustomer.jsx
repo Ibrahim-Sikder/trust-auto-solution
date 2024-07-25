@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
 import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
@@ -16,7 +14,7 @@ import {
   vehicleTypes,
 } from "../../../constant";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
@@ -25,26 +23,50 @@ import { HiOutlineSearch, HiOutlineUserGroup } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import {
+  useCreateCustomerMutation,
+  useDeleteCustomerMutation,
+  useGetAllCustomersQuery,
+} from "../../../redux/api/customerApi";
+import { ErrorMessage } from "../../../components/error-message";
 
 const AddCustomer = () => {
+  const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
-
-  const [customerData, setCustomerData] = useState([]);
-  const [customerPage, setCustomerPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [noMatching, setNoMatching] = useState(null);
-
-  const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
-
   const [registrationError, setRegistrationError] = useState("");
 
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
+
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState([]);
+
+  const limit = 10;
+
+  const {
+    data,
+    isLoading: customerLoading,
+    refetch,
+  } = useGetAllCustomersQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
+
+  const [createCustomer, { isLoading, error }] = useCreateCustomerMutation();
+
+  const [
+    deleteCustomer,
+    { isLoading: customerDeleteLoading, error: deleteError },
+  ] = useDeleteCustomerMutation();
+  
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
@@ -95,57 +117,57 @@ const AddCustomer = () => {
   const {
     register,
     handleSubmit,
-    reset,
+
     setValue,
     formState: { errors },
   } = useForm();
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setLoading(true);
-    try {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/customer?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setCustomerData(data?.allCustomer);
-          setCustomerPage(data?.totalPages);
-          if (data?.allCustomer?.length === 0) {
-            setCurrentPage((pre) => pre - 1);
-          }
-
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
-      setLoading(false);
-    }
-  }, [currentPage, reload]);
-
   const onSubmit = async (data) => {
-    setLoading(true);
+    const customer = {
+      company_name: data.company_name,
+      vehicle_username: data.vehicle_username,
+      company_address: data.company_address,
+      customer_name: data.customer_name,
+      customer_contact: data.customer_contact,
+      customer_country_code: countryCode.code,
+      customer_email: data.customer_email,
+      customer_address: data.customer_address,
+      driver_name: data.driver_name,
+      driver_contact: data.driver_contact,
+      driver_country_code: driverCountryCode.code,
+      reference_name: data.reference_name,
+    };
 
-    data.customer_country_code = countryCode.code;
-    data.driver_country_code = driverCountryCode.code;
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/customer`,
-        data
-      );
+    data.vehicle_model = Number(data.vehicle_model);
+    data.mileage = Number(data.mileage);
 
-      if (response.data.message === "Successfully add to customer post") {
-        setReload(!reload);
+    // Extract vehicle information
+    const vehicle = {
+      carReg_no: data.carReg_no,
+      car_registration_no: data.car_registration_no,
+      chassis_no: data.chassis_no,
+      engine_no: data.engine_no,
+      vehicle_brand: data.vehicle_brand,
+      vehicle_name: data.vehicle_name,
+      vehicle_model: data.vehicle_model,
+      vehicle_category: data.vehicle_category,
+      color_code: data.color_code,
+      mileage: data.mileage,
+      fuel_type: data.fuel_type,
+    };
 
-        navigate("/dashboard/customer-list");
-        toast.success("Successfully add to customer post");
-        setLoading(false);
-        reset();
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.message);
-      setLoading(false);
+    const newData = {
+      customer,
+      vehicle,
+    };
+
+    const res = await createCustomer(newData).unwrap();
+    if (res.success) {
+      navigate("/dashboard/customer-list");
+      toast.success("Successfully add to customer post");
+      refetch();
     }
   };
 
@@ -163,18 +185,9 @@ const AddCustomer = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/customer/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
+        await deleteCustomer(id).unwrap();
+        refetch();
 
-        if (data.message == "Customer card delete successful") {
-          setCustomerData(customerData?.filter((pkg) => pkg._id !== id));
-          setReload(!reload);
-        }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -182,8 +195,11 @@ const AddCustomer = () => {
     }
   };
 
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  if (deleteError) {
+    toast.error(error?.message);
+  }
+
+  
 
   const handleBrandChange = (event, newValue) => {
     setSelectedBrand(newValue);
@@ -193,9 +209,8 @@ const AddCustomer = () => {
     setFilteredVehicles(filtered);
   };
 
-  // year select only number 4 digit
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [yearSelectInput, setYearSelectInput] = useState("");
+ 
+ 
 
   // Handle input changes
   const handleYearSelectInput = (event) => {
@@ -217,47 +232,38 @@ const AddCustomer = () => {
     });
   };
 
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/customer/all`,
-        data
-      );
+  // useEffect(() => {
+  //   const errorSources = error?.data?.errorSources;
 
-      if (response.data.message === "Filter successful") {
-        setCustomerData(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
+  //   if (errorSources && Array.isArray(errorSources)) {
+  //     errorSources.forEach((source) => {
+  //       if (source?.message) {
+  //         const parsedMessages = JSON.parse(source.message)[0];
+
+  //         setErrorMessage(JSON.parse(parsedMessages.message));
+  //       }
+  //     });
+  //   }
+  // }, [error?.data?.errorSources]);
+
+  if (customerLoading) {
+    return (
+      <div className="flex items-center justify-center text-xl">
+        <Loading />
+      </div>
+    );
+  }
 
   const handleAllCustomer = () => {
-    try {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/customer?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setCustomerData(data?.allCustomer);
-          setCustomerPage(data?.totalPages);
-          setNoMatching(null);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
     }
   };
 
+
+
+  
   return (
     <section>
       <div className=" addProductWraps">
@@ -290,6 +296,7 @@ const AddCustomer = () => {
                 <h3 className="mb-1 text-xl font-bold">
                   Customer Information{" "}
                 </h3>
+
                 <div>
                   <TextField
                     className="productField"
@@ -303,7 +310,7 @@ const AddCustomer = () => {
                     className="productField"
                     onC
                     label="Vehicle User Name (T)"
-                    {...register("username")}
+                    {...register("vehicle_username")}
                   />
                 </div>
                 <div>
@@ -314,7 +321,6 @@ const AddCustomer = () => {
                     {...register("company_address")}
                   />
                 </div>
-
                 <div>
                   <TextField
                     className="productField"
@@ -323,7 +329,6 @@ const AddCustomer = () => {
                     {...register("customer_name")}
                   />
                 </div>
-
                 <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
                   <Autocomplete
                     sx={{ marginLeft: "5px" }}
@@ -475,20 +480,7 @@ const AddCustomer = () => {
                 </div>
 
                 <div>
-                  {/* <Autocomplete
-                    className="productField"
-                    id="free-solo-demo"
-                    Vehicle
-                    Brand
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Brand"
-                        {...register("vehicle_brand")}
-                      />
-                    )}
-                  /> */}
+                   
                   <Autocomplete
                     className="productField"
                     freeSolo
@@ -532,16 +524,7 @@ const AddCustomer = () => {
                   />
                 </div>
                 <div className="relative mt-3 ">
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Model (N)"
-                    {...register("vehicle_model", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid model number.",
-                      },
-                    })}
-                  /> */}
+                   
                   <input
                     value={yearSelectInput}
                     onInput={handleYearSelectInput}
@@ -628,8 +611,12 @@ const AddCustomer = () => {
               </div>
             </div>
 
+            <div className="my-2">
+              {error && <ErrorMessage messages={error.data.errorSources} />}
+            </div>
+
             <div className="mt-2 ml-3 savebtn">
-              <button disabled={loading}>Add Customer </button>
+              <button disabled={isLoading}>Add Customer </button>
             </div>
           </form>
         </div>
@@ -652,9 +639,9 @@ const AddCustomer = () => {
               type="text"
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
+              ref={textInputRef}
             />
             <button
-              onClick={handleFilterType}
               className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
               disabled={filterType === ""}
             >
@@ -663,13 +650,13 @@ const AddCustomer = () => {
             </button>
           </div>
         </div>
-        {searchLoading ? (
+        {customerLoading ? (
           <div className="flex items-center justify-center text-xl">
             <Loading />
           </div>
         ) : (
           <div>
-            {customerData?.length === 0 || noMatching ? (
+            {data?.data?.customers?.length === 0 ? (
               <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
@@ -687,56 +674,64 @@ const AddCustomer = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {customerData?.map((card, index) => (
-                      <tr key={card?._id}>
-                        <td>{card?.customerId}</td>
-                        <td>{card?.customer_name}</td>
-                        <td>{card?.fullRegNum}</td>
-                        <td>
-                          {card?.fullCustomerNum}
-                        </td>
+                    {data?.data?.customers?.map((card) => {
+                      const lastVehicle = card?.vehicles
+                        ? [...card.vehicles].sort(
+                            (a, b) =>
+                              new Date(b.createdAt) - new Date(a.createdAt)
+                          )[0]
+                        : null;
 
-                        <td>{card?.vehicle_name}</td>
+                      return (
+                        <tr key={card?._id}>
+                          <td>{card?.customerId}</td>
+                          <td>{card?.customer_name}</td>
+                          <td>{lastVehicle?.fullRegNum}</td>
+                          <td>{card?.fullCustomerNum}</td>
 
-                        <td>
-                          <div
-                            onClick={() => handleIconPreview(card?.customerId)}
-                            className="flex items-center justify-center cursor-pointer"
-                          >
-                            <FaUserTie size={25} className="" />
-                          </div>
-                        </td>
+                          <td>{lastVehicle?.vehicle_name}</td>
 
-                        <td>
-                          <div className="editIconWrap edit">
-                            <Link
-                              to={`/dashboard/update-customer?id=${card?._id}`}
+                          <td>
+                            <div
+                              onClick={() => handleIconPreview(card?._id)}
+                              className="flex items-center justify-center cursor-pointer"
                             >
-                              <FaEdit className="editIcon" />
-                            </Link>
-                          </div>
-                        </td>
-                        <td>
-                          <div
-                            onClick={() => deletePackage(card?._id)}
-                            className="editIconWrap"
-                          >
-                            <FaTrashAlt className="deleteIcon" />
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                              <FaUserTie size={25} className="" />
+                            </div>
+                          </td>
+
+                          <td>
+                            <div className="editIconWrap edit">
+                              <Link
+                                to={`/dashboard/update-customer?id=${card?._id}`}
+                              >
+                                <FaEdit className="editIcon" />
+                              </Link>
+                            </div>
+                          </td>
+                          <td>
+                            <button
+                              disabled={customerDeleteLoading}
+                              onClick={() => deletePackage(card?._id)}
+                              className="editIconWrap"
+                            >
+                              <FaTrashAlt className="deleteIcon" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </section>
             )}
           </div>
         )}
-        {customerData?.length > 0 && (
+        {data?.data?.customers?.length > 0 && (
           <div className="flex justify-center mt-4">
             <Pagination
-              count={customerPage}
-              page={currentPage} // Add this line to indicate the current page
+              count={data?.data?.meta?.totalPages}
+              page={currentPage}
               color="primary"
               onChange={(_, page) => setCurrentPage(page)}
             />

@@ -4,52 +4,45 @@ import { Link, useNavigate } from "react-router-dom";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import { HiOutlineSearch, HiOutlineUserGroup } from "react-icons/hi";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import swal from "sweetalert";
-import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { Pagination } from "@mui/material";
 import { toast } from "react-toastify";
-const CompanyList = () => {
-  const [filterType, setFilterType] = useState("");
-  const [companyData, setCompanyData] = useState([]);
-  const [companyPage, setCompanyPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+import {
+  useDeleteCompanyMutation,
+  useGetAllCompaniesQuery,
+} from "../../../redux/api/companyApi";
 
-  const [noMatching, setNoMatching] = useState(null);
-  const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
+
+const CompanyList = () => {
+  const textInputRef = useRef(null);
+  const [filterType, setFilterType] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/company-profile?id=${e}`);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    try {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/company?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setCompanyData(data?.allCompany);
-          setCompanyPage(data?.totalPages);
-          if (data?.allCompany?.length === 0) {
-            setCurrentPage((pre) => pre - 1);
-          }
+  const limit = 10;
 
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
-      setLoading(false);
-    }
-  }, [currentPage, reload]);
+  const {
+    data: companyData,
+    isLoading: companyLoading,
+    refetch,
+  } = useGetAllCompaniesQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
 
-  // pagination
+  const [
+    deleteCompany,
+    { isLoading: companyDeleteLoading, error: deleteError },
+  ] = useDeleteCompanyMutation();
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -61,18 +54,8 @@ const CompanyList = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Company card delete successful") {
-          setCompanyData(companyData?.filter((pkg) => pkg._id !== id));
-          setReload(!reload);
-        }
+        await deleteCompany(id).unwrap();
+        refetch();
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -80,50 +63,24 @@ const CompanyList = () => {
     }
   };
 
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/company/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setCompanyData(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
-
   const handleAllCompany = () => {
-    try {
-      setLoading(true);
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/company?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setCompanyData(data?.allCompany);
-          setCompanyPage(data?.totalPages);
-          setNoMatching(null);
-
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
-      setLoading(false);
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
     }
   };
+
+  if (companyLoading) {
+    return (
+      <div className="flex items-center justify-center text-xl">
+        <Loading />
+      </div>
+    );
+  }
+
+  if (deleteError) {
+    toast.error(deleteError?.message);
+  }
 
   return (
     <div className="w-full mt-5 mb-24">
@@ -163,24 +120,22 @@ const CompanyList = () => {
             placeholder="Search"
             className="border py-2 px-3 rounded-md border-[#ddd]"
             onChange={(e) => setFilterType(e.target.value)}
+            ref={textInputRef}
           />
-          <button
-            onClick={handleFilterType}
-            className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1"
-          >
+          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
             {" "}
             <HiOutlineSearch size={22} />
           </button>
         </div>
       </div>
 
-      {searchLoading ? (
+      {companyLoading ? (
         <div className="flex flex-wrap items-center justify-center text-xl">
           <Loading />
         </div>
       ) : (
         <div>
-          {companyData?.length === 0 || noMatching ? (
+          {companyData?.data?.companies?.length === 0 ? (
             <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
@@ -191,52 +146,63 @@ const CompanyList = () => {
                   <thead className="tableWrap">
                     <tr>
                       <th>SL No</th>
-                      <th>Company ID</th>
+                      <th>Company Id</th>
                       <th>Company Name</th>
 
                       <th>Car Number </th>
-                      <th>Mobile Number</th>
-                      <th>Date</th>
+                      <th> Mobile Number</th>
+                      <th>Vehicle Name </th>
                       <th colSpan={3}>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {companyData?.map((card, index) => (
-                      <tr key={card._id}>
-                        <td>{index + 1}</td>
-                        <td>{card?.companyId}</td>
-                        <td>{card?.company_name}</td>
-                        <td>{card?.fullRegNum}</td>
-                        <td> {card?.fullCompanyNum} </td>
+                    {companyData?.data?.companies?.map((card, index) => {
+                      const lastVehicle = card?.vehicles
+                        ? [...card.vehicles].sort(
+                            (a, b) =>
+                              new Date(b.createdAt) - new Date(a.createdAt)
+                          )[0]
+                        : null;
+                      return (
+                        <tr key={card._id}>
+                          <td>{index + 1}</td>
+                          <td>{card.companyId}</td>
+                          <td>{card?.company_name}</td>
 
-                        <td>
-                          <div
-                            onClick={() => handleIconPreview(card.companyId)}
-                            className="flex items-center justify-center cursor-pointer"
-                          >
-                            <FaUserTie size={25} className="" />
-                          </div>
-                        </td>
+                          <td>{lastVehicle?.fullRegNum}</td>
+                          <td>{card?.fullCompanyNum} </td>
+                          <td>{lastVehicle?.vehicle_name}</td>
 
-                        <td>
-                          <div className="editIconWrap edit">
-                            <Link
-                              to={`/dashboard/update-company?id=${card._id}`}
+                          <td>
+                            <div
+                              onClick={() => handleIconPreview(card.companyId)}
+                              className="flex items-center justify-center cursor-pointer"
                             >
-                              <FaEdit className="editIcon" />
-                            </Link>
-                          </div>
-                        </td>
-                        <td>
-                          <div
-                            onClick={() => deletePackage(card._id)}
-                            className="editIconWrap"
-                          >
-                            <FaTrashAlt className="deleteIcon" />
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                              <FaUserTie size={25} className="" />
+                            </div>
+                          </td>
+
+                          <td>
+                            <div className="editIconWrap edit">
+                              <Link
+                                to={`/dashboard/update-company?id=${card?._id}`}
+                              >
+                                <FaEdit className="editIcon" />
+                              </Link>
+                            </div>
+                          </td>
+                          <td>
+                            <button
+                              disabled={companyDeleteLoading}
+                              onClick={() => deletePackage(card?._id)}
+                              className="editIconWrap"
+                            >
+                              <FaTrashAlt className="deleteIcon" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </section>
@@ -244,10 +210,10 @@ const CompanyList = () => {
           )}
         </div>
       )}
-      {companyData?.length > 0 && (
+      {companyData?.data?.companies?.length > 0 && (
         <div className="flex justify-center mt-4">
           <Pagination
-            count={companyPage}
+            count={companyData?.data?.meta?.totalPages}
             page={currentPage}
             color="primary"
             onChange={(_, page) => setCurrentPage(page)}

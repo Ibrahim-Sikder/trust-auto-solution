@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,7 +7,7 @@ import { FaUserGear } from "react-icons/fa6";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
@@ -14,46 +15,33 @@ import { HiOutlineSearch } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { Pagination } from "@mui/material";
 import { toast } from "react-toastify";
+import {
+  useDeleteShowRoomMutation,
+  useGetAllShowRoomsQuery,
+} from "../../../redux/api/showRoomApi";
 const ShowRoomList = () => {
+  const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
-  const [showRoomData, setShowRoomData] = useState([]);
-  const [showRoomPage, setShowRoomPage] = useState(0);
+
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [noMatching, setNoMatching] = useState(null);
-
-  const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
-
   const navigate = useNavigate();
-  useEffect(() => {
-    setLoading(true);
-    try {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/showRoom?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setShowRoomData(data);
-          setShowRoomData(data?.allShowRoom);
-          setShowRoomPage(data?.totalPages);
-          if (data?.allShowRoom?.length === 0) {
-            setCurrentPage((pre) => pre - 1);
-          }
+  const limit = 10;
 
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
-      setLoading(false);
-    }
-  }, [currentPage, reload]);
+  const { data, isLoading: showroomLoading } = useGetAllShowRoomsQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
+
+  const [
+    deleteShowroom,
+    { isLoading: showroomDeleteLoading, error: deleteError },
+  ] = useDeleteShowRoomMutation();
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/show-room-profile?id=${e}`);
   };
-  // pagination
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -65,18 +53,7 @@ const ShowRoomList = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/showRoom/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Show room card delete successful") {
-          setShowRoomData(showRoomData?.filter((pkg) => pkg._id !== id));
-          setReload(!reload)
-        }
+        await deleteShowroom(id);
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -84,49 +61,14 @@ const ShowRoomList = () => {
     }
   };
 
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/showRoom/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setShowRoomData(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
+  if (deleteError) {
+    toast.error(error?.message);
+  }
 
   const handleAllShowRoom = () => {
-    setLoading(true);
-    try {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/showRoom?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setShowRoomData(data);
-          setShowRoomData(data?.allShowRoom);
-          setShowRoomPage(data?.totalPages);
-          setNoMatching(null);
-
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
-      setLoading(false);
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
     }
   };
 
@@ -167,24 +109,22 @@ const ShowRoomList = () => {
             type="text"
             placeholder="Search"
             className="border py-2 px-3 rounded-md border-[#ddd]"
+            ref={textInputRef}
           />
-          <button
-            onClick={handleFilterType}
-            className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
-          >
+          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1">
             {" "}
             <HiOutlineSearch size={25} />
           </button>
         </div>
       </div>
 
-      {searchLoading ? (
+      {showroomLoading ? (
         <div className="flex items-center justify-center text-xl">
           <Loading />
         </div>
       ) : (
         <div>
-          {showRoomData?.length === 0 || noMatching ? (
+          {data?.data?.showrooms?.length === 0 ? (
             <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
@@ -198,57 +138,67 @@ const ShowRoomList = () => {
 
                     <th>Car Number </th>
                     <th>Mobile Number</th>
-
+                    <th>Vehicle Name </th>
                     <th colSpan={3}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {showRoomData?.map((card) => (
-                    <tr key={card._id}>
-                      <td>{card?.showRoomId}</td>
-                      <td>{card?.showRoom_name}</td>
+                  {data?.data?.showrooms?.map((card) => {
+                    const lastVehicle = card?.vehicles
+                      ? [...card.vehicles].sort(
+                          (a, b) =>
+                            new Date(b.createdAt) - new Date(a.createdAt)
+                        )[0]
+                      : null;
 
-                      <td>{card?.fullRegNum}</td>
-                      <td> {card?.fullCompanyNum} </td>
+                    return (
+                      <tr key={card._id}>
+                        <td>{card?.showRoomId}</td>
+                        <td>{card?.showRoom_name}</td>
 
-                      <td>
-                        <div
-                          onClick={() => handleIconPreview(card.showRoomId)}
-                          className="flex items-center justify-center cursor-pointer"
-                        >
-                          <FaUserTie size={25} className="" />
-                        </div>
-                      </td>
-
-                      <td>
-                        <div className="editIconWrap edit">
-                          <Link
-                            to={`/dashboard/update-show-room?id=${card._id}`}
+                        <td>{lastVehicle?.fullRegNum}</td>
+                        <td> {card?.fullCompanyNum} </td>
+                        <td>{lastVehicle?.vehicle_name}</td>
+                        <td>
+                          <div
+                            onClick={() => handleIconPreview(card._id)}
+                            className="flex items-center justify-center cursor-pointer"
                           >
-                            <FaEdit className="editIcon" />
-                          </Link>
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          onClick={() => deletePackage(card._id)}
-                          className="editIconWrap"
-                        >
-                          <FaTrashAlt className="deleteIcon" />
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            <FaUserTie size={25} className="" />
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="editIconWrap edit">
+                            <Link
+                              to={`/dashboard/update-show-room?id=${card._id}`}
+                            >
+                              <FaEdit className="editIcon" />
+                            </Link>
+                          </div>
+                        </td>
+                        <td>
+                          <button
+                            disabled={showroomDeleteLoading}
+                            onClick={() => deletePackage(card._id)}
+                            className="editIconWrap"
+                          >
+                            <FaTrashAlt className="deleteIcon" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </section>
           )}
         </div>
       )}
-      {showRoomData?.length > 0 && (
+      {data?.data?.showrooms?.length > 0 && (
         <div className="flex justify-center mt-4">
           <Pagination
-            count={showRoomPage}
+            count={data?.data?.meta?.totalPages}
             page={currentPage}
             color="primary"
             onChange={(_, page) => setCurrentPage(page)}

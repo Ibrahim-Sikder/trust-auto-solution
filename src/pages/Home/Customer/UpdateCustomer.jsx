@@ -1,18 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-no-undef */
-
 import TextField from "@mui/material/TextField";
-import { FaFileInvoice, FaEye, FaTrashAlt, FaEdit } from "react-icons/fa";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import InputMask from "react-input-mask";
+
 import { toast } from "react-toastify";
 import {
   carBrands,
   cmDmOptions,
   countries,
-  fuelType,
   vehicleModels,
   vehicleName,
   vehicleTypes,
@@ -22,19 +20,28 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import {
+  useGetSingleCustomerQuery,
+  useUpdateCustomerMutation,
+} from "../../../redux/api/customerApi";
+import Loading from "../../../components/Loading/Loading";
+import { ErrorMessage } from "../../../components/error-message";
 
 const UpdateCustomer = () => {
-  const [selectedBrand, setSelectedBrand] = useState("");
-
-  const [registrationError, setRegistrationError] = useState("");
+  const [errorMessage, setErrorMessage] = useState([]);
 
   // year select only number 4 digit
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [yearSelectInput, setYearSelectInput] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
 
-  const handleBrandChange = (event, newValue) => {
-    setSelectedBrand(newValue);
+  const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
+
+  const handleBrandChange = (_, newValue) => {
     const filtered = vehicleName.filter(
       (vehicle) => vehicle.label === newValue
     );
@@ -59,29 +66,21 @@ const UpdateCustomer = () => {
   };
 
   const {
+    data: singleCard,
+    isLoading,
+    refetch,
+  } = useGetSingleCustomerQuery(id);
+  
+  const [updateCustomer, { isLoading: updateLoading, error }] =
+    useUpdateCustomerMutation();
+
+  const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
-
-  const [loading, setLoading] = useState(false);
-  const [singleCard, setSingleCard] = useState({});
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const id = new URLSearchParams(location.search).get("id");
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer/one/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setSingleCard(data);
-          setLoading(false);
-        });
-    }
-  }, [id]);
 
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
@@ -114,57 +113,121 @@ const UpdateCustomer = () => {
     }
   };
 
+  useEffect(() => {
+    if (singleCard?.data) {
+      reset({
+        company_name: singleCard?.data?.company_name,
+        vehicle_username: singleCard?.data?.vehicle_username,
+        company_address: singleCard?.data?.company_address,
+        customer_name: singleCard?.data?.customer_name,
+        customer_country_code: singleCard?.data?.customer_country_code,
+        customer_contact: phoneNumber || singleCard?.data?.customer_contact,
+        customer_email: singleCard?.data?.customer_email,
+        customer_address: singleCard?.data?.customer_address,
+        driver_name: singleCard?.data?.driver_name,
+        driver_country_code: singleCard?.data?.driver_country_code,
+        driver_contact: driverPhoneNumber || singleCard?.data?.driver_contact,
+        reference_name: singleCard?.data?.reference_name,
+
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+        vehicle_model: getDataWithChassisNo?.vehicle_model,
+        vehicle_category: getDataWithChassisNo?.vehicle_category,
+        color_code: getDataWithChassisNo?.color_code,
+        mileage: getDataWithChassisNo?.mileage,
+        fuel_type: getDataWithChassisNo?.fuel_type,
+      });
+    }
+  }, [
+    singleCard,
+    reset,
+    phoneNumber,
+    driverPhoneNumber,
+    getDataWithChassisNo?.carReg_no,
+    getDataWithChassisNo?.car_registration_no,
+    getDataWithChassisNo?.engine_no,
+    getDataWithChassisNo?.vehicle_brand,
+    getDataWithChassisNo?.vehicle_name,
+    getDataWithChassisNo?.vehicle_model,
+    getDataWithChassisNo?.vehicle_category,
+    getDataWithChassisNo?.color_code,
+    getDataWithChassisNo?.mileage,
+    getDataWithChassisNo?.fuel_type,
+  ]);
+
   const onSubmit = async (data) => {
-    setLoading(true);
+    const customer = {
+      company_name: data.company_name,
+      vehicle_username: data.vehicle_username,
+      company_address: data.company_address,
+      customer_name: data.customer_name,
+      customer_contact: data.customer_contact,
+      customer_country_code: countryCode.code,
+      customer_email: data.customer_email,
+      customer_address: data.customer_address,
+      driver_name: data.driver_name,
+      driver_contact: data.driver_contact,
+      driver_country_code: driverCountryCode.code,
+      reference_name: data.reference_name,
+    };
 
-    const values = {
-      company_name: data.company_name || singleCard.company_name,
-      username: data.username || singleCard.username,
-      company_address: data.company_address || singleCard.company_address,
-      customer_name: data.customer_name || singleCard.customer_name,
+    data.vehicle_model = Number(data.vehicle_model);
+    data.mileage = Number(data.mileage);
 
-      customer_country_code:
-        data.customer_country_code || singleCard.customer_country_code,
+    // Extract vehicle information
+    const vehicle = {
+      carReg_no: data.carReg_no,
+      car_registration_no: data.car_registration_no,
+      chassis_no: data.chassis_no,
+      engine_no: data.engine_no,
+      vehicle_brand: data.vehicle_brand,
+      vehicle_name: data.vehicle_name,
+      vehicle_model: data.vehicle_model,
+      vehicle_category: data.vehicle_category,
+      color_code: data.color_code,
+      mileage: data.mileage,
+      fuel_type: data.fuel_type,
+    };
+    const newData = {
+      customer,
+      vehicle,
+    };
 
-      customer_contact: data.customer_contact || singleCard.customer_contact,
-      customer_email: data.customer_email || singleCard.customer_email,
-      customer_address: data.customer_address || singleCard.customer_address,
-      driver_name: data.driver_name || singleCard.driver_name,
-
-      driver_country_code:
-        data.driver_country_code || singleCard.driver_country_code,
-
-      driver_contact: data.driver_contact || singleCard.driver_contact,
-      reference_name: data.reference_name || singleCard.reference_name,
-      carReg_no: data.carReg_no || singleCard.carReg_no,
-      car_registration_no:
-        data.car_registration_no || singleCard.car_registration_no,
-      chassis_no: data.chassis_no || singleCard.chassis_no,
-      engine_no: data.engine_no || singleCard.engine_no,
-      vehicle_brand: data.vehicle_brand || singleCard.vehicle_brand,
-      vehicle_name: data.vehicle_name || singleCard.vehicle_name,
-      vehicle_model: data.vehicle_model || singleCard.vehicle_model,
-      vehicle_category: data.vehicle_category || singleCard.vehicle_category,
-      color_code: data.color_code || singleCard.color_code,
-      mileage: data.mileage || singleCard.mileage,
-      fuel_type: data.fuel_type || singleCard.fuel_type,
+    const updateData = {
+      id: id,
+      data: newData,
     };
 
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/customer/one/${id}`,
-        values
-      );
-      if (response.data.message === "Successfully update card.") {
+      const res = await updateCustomer(updateData).unwrap();
+      if (res.success) {
+        toast.success(res.message);
         navigate("/dashboard/customer-list");
-        toast.success("Update successful.");
-        setLoading(false);
+        refetch();
         reset();
       }
-    } catch (error) {
-      toast.error(error.message);
-      setLoading(false);
+    } catch (err) {
+      toast.error("Failed to update customer");
     }
+  };
+
+   
+  if (isLoading ) {
+    return (
+      <div className="flex items-center justify-center text-xl">
+        <Loading />
+      </div>
+    );
+  }
+
+  const handleChassisChange = (_, newValue) => {
+    const filtered = singleCard?.data?.vehicles?.find(
+      (vehicle) => vehicle.chassis_no === newValue
+    );
+    setGetDataWithChassisNo(filtered);
   };
 
   return (
@@ -206,16 +269,7 @@ const UpdateCustomer = () => {
                     className="productField"
                     label="Company Name (T)"
                     {...register("company_name")}
-                    value={singleCard?.company_name}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        company_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard?.company_name,
-                    }}
+                    focused={singleCard?.data?.company_name || ""}
                   />
                 </div>
                 <div>
@@ -223,17 +277,8 @@ const UpdateCustomer = () => {
                     className="productField"
                     onC
                     label="Vehicle User Name (T)"
-                    {...register("username")}
-                    value={singleCard?.username}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        username: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.username,
-                    }}
+                    {...register("vehicle_username")}
+                    focused={singleCard?.data?.vehicle_username || ""}
                   />
                 </div>
                 <div>
@@ -242,16 +287,7 @@ const UpdateCustomer = () => {
                     on
                     label="Company Address (T)"
                     {...register("company_address")}
-                    value={singleCard.company_address}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        company_address: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.company_address,
-                    }}
+                    focused={singleCard?.data?.company_address || ""}
                   />
                 </div>
 
@@ -261,16 +297,7 @@ const UpdateCustomer = () => {
                     onC
                     label="Customer Name (T)"
                     {...register("customer_name")}
-                    value={singleCard.customer_name}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        customer_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.customer_name,
-                    }}
+                    focused={singleCard?.data?.customer_name || ""}
                   />
                 </div>
 
@@ -281,10 +308,12 @@ const UpdateCustomer = () => {
                     freeSolo
                     options={countries}
                     getOptionLabel={(option) => option.code}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
+                    value={
+                      countryCode || singleCard?.data?.customer_country_code
+                    }
+                    onChange={(_, newValue) => {
                       setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                      setPhoneNumber("");
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -292,11 +321,7 @@ const UpdateCustomer = () => {
                         label="Select Country Code"
                         {...register("customer_country_code")}
                         variant="outlined"
-                        value={singleCard?.customer_country_code}
-                        focused={singleCard?.customer_country_code}
-                        InputLabelProps={{
-                          shrink: !!singleCard.customer_country_code,
-                        }}
+                        focused={singleCard?.data?.customer_country_code || ""}
                       />
                     )}
                   />
@@ -308,14 +333,13 @@ const UpdateCustomer = () => {
                     fullWidth
                     type="tel"
                     value={
-                      phoneNumber ? phoneNumber : singleCard.customer_contact
+                      phoneNumber
+                        ? phoneNumber
+                        : singleCard?.data?.customer_contact
                     }
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-                    focused={singleCard.customer_contact}
-                    InputLabelProps={{
-                      shrink: !!singleCard.customer_contact,
-                    }}
+                    focused={singleCard?.data?.customer_contact || ""}
                   />
                 </div>
                 <div>
@@ -323,16 +347,7 @@ const UpdateCustomer = () => {
                     className="productField"
                     label="Customer Email Address (T)"
                     {...register("customer_email")}
-                    value={singleCard.customer_email}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        customer_email: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.customer_email,
-                    }}
+                    focused={singleCard?.data?.customer_email || ""}
                   />
                 </div>
                 <div>
@@ -340,34 +355,15 @@ const UpdateCustomer = () => {
                     className="productField"
                     label="Customer Address (T) "
                     {...register("customer_address")}
-                    value={singleCard.customer_address}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        customer_address: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.customer_address,
-                    }}
+                    focused={singleCard?.data?.customer_address || ""}
                   />
                 </div>
                 <div>
                   <TextField
                     className="productField"
-                    o
                     label="Driver Name (T)"
                     {...register("driver_name")}
-                    value={singleCard.driver_name}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        driver_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.driver_name,
-                    }}
+                    focused={singleCard?.data?.driver_name || ""}
                   />
                 </div>
 
@@ -378,10 +374,12 @@ const UpdateCustomer = () => {
                     freeSolo
                     options={countries}
                     getOptionLabel={(option) => option.code}
-                    value={driverCountryCode || singleCard.driver_country_code}
+                    value={
+                      driverCountryCode || singleCard?.data?.driver_country_code
+                    }
                     onChange={(event, newValue) => {
                       setDriverCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                      setPhoneNumber("");
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -389,11 +387,7 @@ const UpdateCustomer = () => {
                         {...register("driver_country_code")}
                         label="Select Country Code"
                         variant="outlined"
-                        value={singleCard?.driver_country_code}
-                        focused={singleCard?.driver_country_code}
-                        InputLabelProps={{
-                          shrink: !!singleCard.driver_country_code,
-                        }}
+                        focused={singleCard?.data?.driver_country_code || ""}
                       />
                     )}
                   />
@@ -407,14 +401,11 @@ const UpdateCustomer = () => {
                     value={
                       driverPhoneNumber
                         ? driverPhoneNumber
-                        : singleCard.driver_contact
+                        : singleCard?.data?.driver_contact
                     }
                     onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
-                    focused={singleCard.driver_contact}
-                    InputLabelProps={{
-                      shrink: !!singleCard.driver_contact,
-                    }}
+                    focused={singleCard?.data?.driver_contact || ""}
                   />
                 </div>
                 <div>
@@ -422,132 +413,75 @@ const UpdateCustomer = () => {
                     className="productField"
                     label="Reference Name (T) "
                     {...register("reference_name")}
-                    value={singleCard.reference_name}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        reference_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.reference_name,
-                    }}
+                    focused={singleCard?.data?.reference_name || ""}
                   />
                 </div>
               </div>
 
               <div className="mt-5 lg:mt-0">
                 <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
+                <Autocomplete
+                  disableClearable
+                  freeSolo
+                  className="productField"
+                  onChange={handleChassisChange}
+                  options={singleCard?.data?.vehicles.map(
+                    (option) => option.chassis_no
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Select Chassis no"
+                      {...register("chassis_no")}
+                      inputProps={{
+                        ...params.inputProps,
+                        maxLength:
+                          getDataWithChassisNo?.chassis_no?.length || 30,
+                      }}
+                    />
+                  )}
+                />
                 <div className="flex items-center mt-1 productField">
-                  {/* <Autocomplete
-                    className="customerSelect"
-                    value={singleCard?.carReg_no || ""}
-                    options={cmDmOptions.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Car Reg No "
-                        {...register("carReg_no")}
-                        InputLabelProps={{
-                          shrink: !!singleCard?.carReg_no,
-                        }}
-                      />
-                    )}
-                  /> */}
                   <Autocomplete
                     freeSolo
                     className="productField"
-                    value={singleCard?.carReg_no || ""}
                     options={cmDmOptions.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Fuel Type "
+                        label="CarReg no"
                         {...register("carReg_no")}
-                        InputLabelProps={{
-                          shrink: !!singleCard?.carReg_no,
-                        }}
+                        focused={getDataWithChassisNo?.carReg_no || ""}
                       />
                     )}
                   />
 
-                  <TextField
-                    className="carRegField"
-                    label="Car R (N)"
-                    {...register("car_registration_no", {
-                      pattern: {
-                        value: /^[\d-]+$/,
-                        message: "Only numbers and hyphens are allowed",
-                      },
-                      minLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                      maxLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                    })}
-                    value={singleCard?.car_registration_no}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length === 7) {
-                        setRegistrationError("");
-                      } else if (value.length < 7) {
-                        setRegistrationError(
-                          "Car registration number must be 7 characters"
-                        );
-                      }
-                      const formattedValue = value
-                        .replace(/\D/g, "")
-                        .slice(0, 6)
-                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                      setSingleCard({
-                        ...singleCard,
-                        car_registration_no: formattedValue,
-                      });
-                    }}
-                    InputLabelProps={{
-                      shrink: !!singleCard.car_registration_no,
-                    }}
-                    error={!!errors.car_registration_no || !!registrationError}
-                  />
+                  <InputMask
+                    mask="**-****"
+                    maskChar={null}
+                    {...register("car_registration_no")}
+                  >
+                    {(inputProps) => (
+                      <TextField
+                        {...inputProps}
+                        {...register("car_registration_no")}
+                        className="carRegField"
+                        label="Car R (N)"
+                        focused={
+                          getDataWithChassisNo?.car_registration_no || ""
+                        }
+                      />
+                    )}
+                  </InputMask>
                 </div>
 
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Chassis No (T&N)"
-                    {...register("chassis_no")}
-                    value={singleCard.chassis_no}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        chassis_no: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.chassis_no,
-                    }}
-                  />
-                </div>
+                <div></div>
                 <div>
                   <TextField
                     className="productField"
                     label="ENGINE NO & CC (T&N) "
                     {...register("engine_no")}
-                    value={singleCard.engine_no}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        engine_no: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.engine_no,
-                    }}
+                    focused={getDataWithChassisNo?.engine_no || ""}
                   />
                 </div>
 
@@ -555,7 +489,6 @@ const UpdateCustomer = () => {
                   <Autocomplete
                     freeSolo
                     className="productField"
-                    value={singleCard?.vehicle_brand || ""}
                     onChange={handleBrandChange}
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
@@ -563,9 +496,7 @@ const UpdateCustomer = () => {
                         {...params}
                         label="Vehicle Brand"
                         {...register("vehicle_brand")}
-                        InputLabelProps={{
-                          shrink: !!singleCard?.vehicle_brand,
-                        }}
+                        focused={getDataWithChassisNo?.vehicle_brand || ""}
                       />
                     )}
                   />
@@ -576,13 +507,13 @@ const UpdateCustomer = () => {
                     freeSolo
                     Vehicle
                     Name
-                    value={singleCard?.vehicle_name || ""}
                     options={filteredVehicles.map((option) => option.value)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Vehicle Name "
                         {...register("vehicle_name")}
+                        focused={getDataWithChassisNo?.vehicle_name || ""}
                       />
                     )}
                     getOptionLabel={(option) => option || ""}
@@ -590,14 +521,12 @@ const UpdateCustomer = () => {
                 </div>
                 <div className="relative mt-3">
                   <input
-                    // value={singleCard?.vehicle_model || ""}
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"
                     className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
                     placeholder="Vehicle Model"
-                    defaultValue={singleCard?.vehicle_model}
-                    
+                    defaultValue={getDataWithChassisNo?.vehicle_model}
                   />
 
                   {yearSelectInput && (
@@ -624,9 +553,7 @@ const UpdateCustomer = () => {
                         {...params}
                         label="Vehicle Category"
                         {...register("vehicle_category")}
-                        InputLabelProps={{
-                          shrink: !!singleCard?.vehicle_category,
-                        }}
+                        focused={getDataWithChassisNo?.vehicle_category || ""}
                       />
                     )}
                   />
@@ -636,20 +563,12 @@ const UpdateCustomer = () => {
                     className="productField"
                     label="Color & Code (T&N) "
                     {...register("color_code")}
-                    value={singleCard.color_code}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        color_code: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.color_code,
-                    }}
+                    focused={getDataWithChassisNo?.color_code || ""}
                   />
                 </div>
                 <div>
                   <TextField
+                   type="number"
                     className="productField"
                     label="Mileage (N)"
                     {...register("mileage", {
@@ -658,32 +577,20 @@ const UpdateCustomer = () => {
                         message: "Please enter a valid number.",
                       },
                     })}
-                    value={singleCard.mileage}
-                    onChange={(e) =>
-                      setSingleCard({
-                        ...singleCard,
-                        mileage: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!singleCard.mileage,
-                    }}
+                    focused={getDataWithChassisNo?.mileage || ""}
                   />
                 </div>
                 <div>
                   <Autocomplete
                     freeSolo
                     className="productField"
-                    value={singleCard?.fuel_type || ""}
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Fuel Type "
                         {...register("fuel_type")}
-                        InputLabelProps={{
-                          shrink: !!singleCard?.fuel_type,
-                        }}
+                        focused={getDataWithChassisNo?.fuel_type || ""}
                       />
                     )}
                   />
@@ -691,8 +598,12 @@ const UpdateCustomer = () => {
               </div>
             </div>
 
+            <div className="my-2">
+              {error && <ErrorMessage messages={error.data.errorSources} />}
+            </div>
+
             <div className="flex justify-end mt-2 ml-3 savebtn">
-              <button disabled={loading}>Update Customer </button>
+              <button disabled={updateLoading}>Update Customer </button>
             </div>
           </form>
         </div>

@@ -10,14 +10,29 @@ import {
   FaUserTie,
   FaCloudUploadAlt,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { Autocomplete, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+} from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { countries } from "../../../constant";
+import {
+  useCreateEmployeeMutation,
+  useDeleteEmployeeMutation,
+  useGetAllEmployeesQuery,
+} from "../../../redux/api/employee";
+import { ErrorMessage } from "../../../components/error-message";
+import Loading from "../../../components/Loading/Loading";
+import { HiOutlineSearch } from "react-icons/hi";
 
 const AddEmployee = () => {
   const [active, setActive] = useState("");
@@ -30,17 +45,18 @@ const AddEmployee = () => {
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
 
-
-  // set country code 
+  // set country code
   const [countryCode, setCountryCode] = useState(countries[0]);
+  const [guardianCountryCode, setGuardianCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [guardianPhoneNumber, setGuardianPhoneNumber] = useState("");
 
-  const handlePhoneNumberChange = (e) => {
-    const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
-      setPhoneNumber(newPhoneNumber);
-    }
-  };
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
+  const textInputRef = useRef(null);
+  const limit = 10;
+
   const {
     register,
     handleSubmit,
@@ -48,20 +64,26 @@ const AddEmployee = () => {
     formState: { errors },
   } = useForm();
 
+  const [createEmployee, { isLoading: createLoading, error: createError }] =
+    useCreateEmployeeMutation();
+  const [deleteEmployee, { isLoading: deleteLoading, error: deleteError }] =
+    useDeleteEmployeeMutation();
+
+  const {
+    data: employees,
+    isLoading: employeesLoading,
+    error: employeesError,
+  } = useGetAllEmployeesQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
+
+   
+
   const handleChange = (event) => {
     setActive(event.target.value);
   };
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-      .then((response) => {
-        setGetAllEmployee(response.data.employee);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }, [reload]);
 
   const handleImageUpload = async (e) => {
     try {
@@ -69,10 +91,13 @@ const AddEmployee = () => {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (data.message === "Image uploaded successful") {
@@ -85,68 +110,17 @@ const AddEmployee = () => {
   };
 
   const onSubmit = async (data) => {
-    setError("");
+    data.country_code = countryCode.code;
+    data.guardian_country_code = guardianCountryCode.code;
+    data.image = url;
+    data.nid_number = Number(data.nid_number);
 
-    const randomNumber = Math.floor(Math.random() * 1000);
-    const paddedNumber = randomNumber.toString().padStart(4, "0");
-    const uniqueId = `TAS${paddedNumber}`;
-
-    try {
-      const values = {
-        employeeId: uniqueId,
-        full_name: data.full_name,
-        date_of_birth: data.date_of_birth,
-        nid_number: data.nid_number,
-        blood_group: data.blood_group,
-        phone_number: data.phone_number,
-        email: data.email,
-        gender: data.gender,
-        join_date: data.join_date,
-        designation: data.designation,
-        status: data.status,
-        password: data.password,
-        confirm_password: data.confirm_password,
-        father_name: data.father_name,
-        mother_name: data.mother_name,
-        nationality: data.nationality,
-        religion: data.religion,
-
-        country: data.country,
-        city: data.city,
-        address: data.address,
-        image: url,
-      };
-
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee`,
-        values
-      );
-
-      if (response.data.message === "Successfully employee post") {
-        toast.success("Successfully employee added.");
-        setLoading(false);
-
-        setReload(!reload);
-        reset();
-        setError("");
-      }
-    } catch (error) {
-      if (error.response) {
-        setLoading(false);
-        setError(error.response.data.message);
-      }
+    const res = await createEmployee(data).unwrap();
+    if (res.success) {
+      toast.success(res.message);
+      navigate("/dashboard/employee-list");
     }
   };
-
-  // pagination
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("supplier")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -158,18 +132,7 @@ const AddEmployee = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/employee/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Employee delete successful") {
-          setGetAllEmployee(getAllEmployee?.filter((pkg) => pkg._id !== id));
-          setReload(!reload);
-        }
+        await deleteEmployee(id).unwrap();
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -177,194 +140,44 @@ const AddEmployee = () => {
     }
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("supplier", currentPage.toString());
-  }, [currentPage]);
-
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("supplier")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("supplier", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(getAllEmployee?.length / limit); i++) {
-    pages.push(i);
-  }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(getAllEmployee)) {
-    currentItems = getAllEmployee?.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  const renderData = (getAllEmployee) => {
-    return (
-      <table className="table">
-        <thead className="tableWrap">
-          <tr>
-            <th>SL</th>
-            <th>Employee Name </th>
-            <th>Phone Number </th>
-            <th>Email</th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {getAllEmployee?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{index + 1}</td>
-              <td>{card?.full_name}</td>
-              <td>{card?.phone_number}</td>
-              <td>{card?.email}</td>
-              <td>
-                <div className="flex items-center justify-center ">
-                  <Link to="/dashboard/employee-profile">
-                    <FaUserTie size={25} className="" />
-                  </Link>
-                </div>
-              </td>
-
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-employee?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("supplier", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 10 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
     }
   };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("supplier", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setGetAllEmployee(response.data.result);
-        setNoMatching(null);
-        setLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
+  const handleGuardianPhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 10 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setGuardianPhoneNumber(newPhoneNumber);
     }
   };
 
   const handleAllEmployee = () => {
-    try {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-        .then((res) => res.json())
-        .then((data) => {
-          setGetAllEmployee(data.employee);
-          setNoMatching(null);
-        });
-    } catch (error) {
-      toast.error("Something went wrong");
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
     }
   };
+
+  if (employeesError) {
+    toast.error(employeesError?.data?.message);
+  }
+  if (deleteError) {
+    toast.error(deleteError?.data?.message);
+  }
 
   return (
     <section>
@@ -423,7 +236,7 @@ const AddEmployee = () => {
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option) => option.code}
                     value={countryCode}
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
@@ -438,6 +251,7 @@ const AddEmployee = () => {
                     )}
                   />
                   <TextField
+                    {...register("phone_number")}
                     className="productField2"
                     label="Phone No"
                     variant="outlined"
@@ -486,30 +300,12 @@ const AddEmployee = () => {
                   {...register("designation")}
                 />
 
-                {/* <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
+                <FormControl className="productField">
+                  <InputLabel htmlFor="grouped-native-select">
                     Select Status
                   </InputLabel>
                   <Select
                     className="productField"
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={active}
-                    label="Select Status"
-                    onChange={handleChange}
-                    {...register("status")}
-                  >
-                    <MenuItem>Select</MenuItem>
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
-                  </Select>
-                </FormControl> */}
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Select Status 
-                  </InputLabel>
-                  <Select
-                   className="productField"
                     native
                     id="grouped-native-select"
                     label="Select Status "
@@ -527,6 +323,7 @@ const AddEmployee = () => {
                   label="Password"
                   id="Password"
                   {...register("password")}
+                  type="password"
                 />
                 <TextField
                   className="productField"
@@ -534,6 +331,7 @@ const AddEmployee = () => {
                   label="Confirm Password "
                   id="Confirm Password  "
                   {...register("confirm_password")}
+                  type="password"
                 />
               </div>
 
@@ -554,19 +352,45 @@ const AddEmployee = () => {
                 <TextField
                   className="productField"
                   fullWidth
-                  label="New Field "
+                  label="Guardian Name"
                   {...register("guardian_name")}
                 />
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.code}
+                    value={guardianCountryCode}
+                    onChange={(event, newValue) => {
+                      setGuardianCountryCode(newValue);
+                      setGuardianPhoneNumber("");
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Country Code"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                  <TextField
+                    {...register("guardian_contact")}
+                    className="productField2"
+                    label="Guardian Phone No"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={guardianPhoneNumber}
+                    onChange={handleGuardianPhoneNumberChange}
+                  />
+                </div>
+
                 <TextField
                   className="productField"
                   fullWidth
-                  label="New Field "
-                  {...register("guardian_contact")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="New Field "
+                  label="Relationship"
                   {...register("relationship")}
                 />
                 <TextField
@@ -599,7 +423,7 @@ const AddEmployee = () => {
                   className="productField"
                   fullWidth
                   label="Local Address "
-                  {...register("address")}
+                  {...register("local_address")}
                 />
                 <div className="productField">
                   <input
@@ -630,13 +454,14 @@ const AddEmployee = () => {
                 </div>
               </div>
             </div>
+            <div className="my-2">
+              {createError && (
+                <ErrorMessage messages={createError.data.errorSources} />
+              )}
+            </div>
             <div className="flex justify-end">
               <div className="submitQutationBtn">
-                <button
-                  // onClick={handleAddToCard}
-                  type="submit"
-                  disabled={loading || imageLoading}
-                >
+                <button type="submit" disabled={createLoading}>
                   Add Employee
                 </button>
               </div>
@@ -645,88 +470,108 @@ const AddEmployee = () => {
         </div>
       </div>
       <div className="w-full mt-5 mb-24">
-        <div className="mt-20 overflow-x-auto">
-          <div className="flex flex-wrap items-center justify-between mb-5">
-            <h3 className="mb-3 text-sm font-bold lg:text-3xl">
-              Employee List:
-            </h3>
-            <div className="flex items-center searcList">
-              <div
-                onClick={handleAllEmployee}
-                className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-              >
-                All
-              </div>
-              <div className="searchGroup">
-                <input
-                  onChange={(e) => setFilterType(e.target.value)}
-                  autoComplete="off"
-                  type="text"
-                  placeholder="Search"
-                />
-              </div>
-              <button onClick={handleFilterType} className="SearchBtn ">
-                Search{" "}
-              </button>
-            </div>
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl">
+            {" "}
+            Employee List:{" "}
+          </h3>
+          <div className="flex flex-wrap items-center">
+            <button
+              onClick={handleAllEmployee}
+              className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
+            >
+              All
+            </button>
+            <input
+              onChange={(e) => setFilterType(e.target.value)}
+              type="text"
+              placeholder="Search"
+              className="border py-2 px-3 rounded-md border-[#ddd]"
+              ref={textInputRef}
+            />
+            <button
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
+              disabled={filterType === ""}
+            >
+              {" "}
+              <HiOutlineSearch size={25} />
+            </button>
           </div>
         </div>
-        {loading ? (
+        {employeesLoading ? (
           <div className="flex items-center justify-center text-xl">
-            Loading...
+            <Loading />
           </div>
         ) : (
           <div>
-            {getAllEmployee?.length === 0 || currentItems.length === 0 ? (
+            {employees?.data?.employees?.length === 0 ? (
               <div className="flex items-center justify-center h-full text-xl text-center">
-                No matching suppliers found.
+                No matching card found.
               </div>
             ) : (
-              <>
-                <section>
-                  {renderData(currentItems)}
-                  <ul
-                    className={
-                      minPageNumberLimit < 5
-                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
-                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
-                    }
-                  >
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentPage === pages[0] ? true : false}
-                      className={
-                        currentPage === pages[0]
-                          ? "text-gray-600"
-                          : "text-gray-300"
-                      }
-                    >
-                      Previous
-                    </button>
-                    <span
-                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
-                    >
-                      {pageDecrementBtn}
-                    </span>
-                    {renderPagesNumber}
-                    {pageIncrementBtn}
-                    <button
-                      onClick={handleNext}
-                      disabled={
-                        currentPage === pages[pages?.length - 1] ? true : false
-                      }
-                      className={
-                        currentPage === pages[pages?.length - 1]
-                          ? "text-gray-700"
-                          : "text-gray-300 pl-1"
-                      }
-                    >
-                      Next
-                    </button>
-                  </ul>
-                </section>
-              </>
+              <section>
+                <table className="table">
+                  <thead className="tableWrap">
+                    <tr>
+                      <th>SL</th>
+                      <th>Employee Id </th>
+                      <th>Employee Name </th>
+                      <th>Phone Number </th>
+                      <th>Email</th>
+                      <th colSpan={3}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {employees?.data?.employees?.map((card, index) => (
+                      <tr key={card._id}>
+                        <td>{index + 1}</td>
+                        <td>{card?.employeeId}</td>
+                        <td>{card?.full_name}</td>
+                        <td>{card?.full_phone_number}</td>
+                        <td>{card?.email}</td>
+                        <td>
+                          <div className="flex items-center justify-center ">
+                            <Link to="/dashboard/employee-profile">
+                              <FaUserTie size={25} className="" />
+                            </Link>
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="editIconWrap edit">
+                            <Link
+                              to={`/dashboard/update-employee?id=${card._id}`}
+                            >
+                              <FaEdit className="editIcon" />
+                            </Link>
+                          </div>
+                        </td>
+
+                        <td>
+                          <button
+                            disabled={deleteLoading}
+                            onClick={() => deletePackage(card._id)}
+                            className="editIconWrap"
+                          >
+                            <FaTrashAlt className="deleteIcon" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
             )}
+          </div>
+        )}
+        {employees?.data?.employees?.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={employees?.data?.meta?.totalPages}
+              page={currentPage}
+              color="primary"
+              onChange={(_, page) => setCurrentPage(page)}
+            />
           </div>
         )}
       </div>

@@ -13,8 +13,9 @@ import {
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { toast } from "react-toastify";
+import { ErrorMessage } from "../../../../components/error-message.tsx";
+import { useCreateVehicleMutation } from "../../../../redux/api/vehicle";
 
 const JobCardForm = ({ onClose, reload, setReload }) => {
   const [registrationError, setRegistrationError] = useState("");
@@ -23,6 +24,8 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
   const id = new URLSearchParams(location.search).get("id");
 
   const [loading, setLoading] = useState(false);
+
+  const [createVehicle, { isLoading, error }] = useCreateVehicleMutation();
 
   const {
     register,
@@ -33,25 +36,33 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setLoading(true);
     data.Id = id;
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/vehicle`,
-        data
-      );
+    data.vehicle_model = Number(data.vehicle_model);
+    data.mileage = Number(data.mileage);
 
-      if (response.data.message === "Successfully add to vehicle post") {
-        toast.success("Successfully add to vehicle post");
-        onClose();
-        setLoading(false);
-        reset();
-        setReload(!reload);
-      }
-    } catch (error) {
-      toast.error(error.message);
-      setLoading(false);
+    const res = await createVehicle(data).unwrap();
+    if (res.success) {
+      onClose();
+      toast.success(res.message);
     }
+    console.log(res);
+    // try {
+    //   const response = await axios.post(
+    //     `${import.meta.env.VITE_API_URL}/api/v1/vehicle`,
+    //     data
+    //   );
+
+    //   if (response.data.message === "Successfully add to vehicle post") {
+    //     toast.success("Successfully add to vehicle post");
+    //     onClose();
+    //     setLoading(false);
+    //     reset();
+    //     setReload(!reload);
+    //   }
+    // } catch (error) {
+    //   toast.error(error.message);
+    //   setLoading(false);
+    // }
   };
 
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -305,6 +316,9 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
                   )}
                 />
               </div>
+            </div>
+            <div className="my-2">
+              {error && <ErrorMessage messages={error?.data?.errorSources} />}
             </div>
             <button
               disabled={loading}

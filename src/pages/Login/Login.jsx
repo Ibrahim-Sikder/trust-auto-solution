@@ -79,6 +79,7 @@ const Login = () => {
                     type="email"
                     className="inputFiel"
                     autoComplete="off"
+                    defaultValue={"trustautosolution@gmail.com"}
                   />
                 </div>
                 <div className="singleSignupForm passwordWrap">
@@ -90,6 +91,7 @@ const Login = () => {
                     placeholder="Password"
                     className="inputFiel"
                     autoComplete="off"
+                    defaultValue="trust@#Auto33"
                   />
                   <div onClick={handleShowPassword} className="showIconWrap">
                     {showPassword ? (

@@ -22,6 +22,8 @@ import {
   Select,
 } from "@mui/material";
 import { FaLocationDot } from "react-icons/fa6";
+import Loading from "../../../components/Loading/Loading";
+import { useGetSingleJobCardWithJobNoQuery } from "../../../redux/api/jobCard";
 
 const MoneyReceiptView = () => {
   const {
@@ -50,6 +52,8 @@ const MoneyReceiptView = () => {
   const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
   const year = parsedDate.getFullYear();
   const formattedDate = `${day}-${month}-${year}`;
+
+  const { data, isLoading } = useGetSingleJobCardWithJobNoQuery(job_no);
 
   const amountInWords = (amount) => {
     const numberWords = [
@@ -178,16 +182,18 @@ const MoneyReceiptView = () => {
   };
 
   useEffect(() => {
-    if (job_no) {
-      setLoading(true);
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/invoice/${job_no}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setJobCardData(data);
-          setLoading(false);
-        });
+    if (data?.data) {
+      reset({
+        vehicle_no: data?.data?.vehicle[0]?.fullRegNum,
+         
+      });
     }
-  }, [job_no]);
+  }, [data?.data, data?.data?.vehicle, reset])
+
+
+
+
+  console.log(data)
 
   const formatDate = (dateString) => {
     const parsedDate = new Date(dateString);
@@ -203,7 +209,7 @@ const MoneyReceiptView = () => {
     const dateTwo = formatDate(data.date_two);
 
     const values = {
-      Id: jobCardData?.Id,
+      Id: data?.data?.Id,
       job_no: job_no,
       default_date: selectedDate || formattedDate || jobCardData.date,
       thanks_from: data.thanks_from,
@@ -270,6 +276,10 @@ const MoneyReceiptView = () => {
     setBillNo(event.target.value);
   };
 
+  // if(isLoading){
+  //   return <Loading/>
+  // }
+
   return (
     <>
       <div className="moneyReceptWrap ">
@@ -311,10 +321,10 @@ const MoneyReceiptView = () => {
           <Button>Receipt</Button>
         </div>
         <div className="flex justify-between mt-5 md:mt-0 items-center lg:mt-0  mb-5">
-          <b>Job No: {jobCardData?.job_no ? jobCardData?.job_no : 0}</b>
+          <b>Job No: {data?.data?.job_no ? data?.data?.job_no : 0}</b>
 
           <TADatePickers
-            date={jobCardData?.date}
+            date={data?.data?.date}
             handleDateChange={handleDateChange}
             selectedDate={selectedDate}
           />
@@ -340,23 +350,14 @@ const MoneyReceiptView = () => {
           </div>
           <div className="mt-5 lg:flex-row  flex flex-col gap-4 ">
             <div className="flex f ">
-              {/* <label className="advanceText">
-                <input
-                  type="checkbox"
-                  onClick={handleAdvanceSelect}
-                  checked={advanceSelect}
-                />{" "}
-                Advance / against bill no 
-                <input
-                  type="checkbox"
-                  className="ml-1"
-                  onClick={handleFinalPayment}
-                  checked={finalPayment}
-                />{" "}
-                Final Payment / against bill no
-              </label> */}
+               
               <FormControl
-                sx={{ minWidth: 170, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
+                sx={{
+                  minWidth: 170,
+                  minHeight: "30px",
+                  marginRight: 0.5,
+                  backgroundColor: "#D9D9D9",
+                }}
                 size="small"
               >
                 <InputLabel id="demo-select-small-label">
@@ -379,11 +380,11 @@ const MoneyReceiptView = () => {
                   </MenuItem>
                 </Select>
               </FormControl>
-             <div>
-             <input
+              <div>
+                <input
                   {...register("against_bill_no", { required: true })}
                   className="moneyViewInputField advanceInput "
-                  type="number"
+                  // type="number"
                   onChange={(e) => setJob_no(e.target.value)}
                   autoComplete="off"
                 />
@@ -392,31 +393,35 @@ const MoneyReceiptView = () => {
                     This field is required
                   </span>
                 )}
-             </div>
+              </div>
             </div>
             <div>
-            <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
-              <label className="vehicleText">Vehicle No: </label>
-              <input
+              <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
+                <label className="vehicleText">Vehicle No: </label>
+                <input
                   {...register("vehicle_no", { required: true })}
                   className=" moneyViewInputField advanceInput"
                   type="text"
                   autoComplete="off"
                 />
                 <br />
-               
-            </div>
-            {errors.vehicle_no && (
-                  <span className="text-sm text-red-400 ml-24">
-                    This field is required
-                  </span>
-                )}
+              </div>
+              {errors.vehicle_no && (
+                <span className="text-sm text-red-400 ml-24">
+                  This field is required
+                </span>
+              )}
             </div>
           </div>
           <div className="mt-5 payAdvance lg:flex-row flex flex-col gap-4">
             <div className="flex lg:flex-row flex-col ">
               <FormControl
-                sx={{ minWidth: 170, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
+                sx={{
+                  minWidth: 170,
+                  minHeight: "30px",
+                  marginRight: 0.5,
+                  backgroundColor: "#D9D9D9",
+                }}
                 size="small"
               >
                 <InputLabel id="demo-select-small-label">

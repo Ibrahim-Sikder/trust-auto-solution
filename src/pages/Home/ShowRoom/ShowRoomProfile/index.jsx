@@ -3,7 +3,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
 import { ImUserTie } from "react-icons/im";
 import "../../Customer/Customer.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import ShowRoomAccount from "./ShowRoomAccount";
 import ShowRoomVehicleDetails from "./ShowRoomVehicleDetails";
@@ -13,11 +13,10 @@ import ShowRoomInvoiceList from "./ShowRoomInvoiceList";
 import ShowRoomMoneyList from "./ShowRoomMoneyList";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import Message from "../../../../shared/Message/Message";
+import { useGetSingleShowRoomQuery } from "../../../../redux/api/showRoomApi";
+import Loading from "../../../../components/Loading/Loading";
 
 const ShowRoomProfile = () => {
-  const [loading, setLoading] = useState(false);
-  const [profileData, setProfileData] = useState({});
-  console.log(profileData);
   const [jobCardData, setJobCardData] = useState([]);
   const [quotationData, setQuotationData] = useState([]);
   const [invoiceData, setInvoiceData] = useState([]);
@@ -25,85 +24,7 @@ const ShowRoomProfile = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setProfileData(data);
-          setLoading(false);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setJobCardData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setQuotationData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setInvoiceData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setMoneyReceiptData(data.card);
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    }
-  }, [id]);
+  const { data: profileData, isLoading } = useGetSingleShowRoomQuery(id);
 
   const [value, setValue] = useState(0);
 
@@ -136,9 +57,12 @@ const ShowRoomProfile = () => {
       borderBottom: "none",
     },
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center text-xl">
+        <Loading />
+      </div>
+    );
   }
 
   return (
@@ -154,21 +78,21 @@ const ShowRoomProfile = () => {
                 <div className="flex items-center">
                   <span> Show Room ID : </span>{" "}
                   <span className="ml-3 font-semibold ">
-                    {profileData?.showRoomId}
+                    {profileData?.data?.showRoomId}
                   </span>
                 </div>
                 <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>{profileData?.company_contact}</span>
+                    <span>{profileData?.data?.fullCompanyNum}</span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>{profileData?.company_email} </span>
+                    <span>{profileData?.data?.company_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span>{profileData?.company_address} </span>
+                    <span>{profileData?.data?.company_address} </span>
                   </div>
                 </div>
               </div>

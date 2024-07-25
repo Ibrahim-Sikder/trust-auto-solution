@@ -15,124 +15,179 @@ import {
 } from "../../../constant";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import InputMask from "react-input-mask";
 import { toast } from "react-toastify";
 
 import { HiOfficeBuilding } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import {
+  useGetSingleShowRoomQuery,
+  useUpdateShowRoomMutation,
+} from "../../../redux/api/showRoomApi";
+import { ErrorMessage } from "../../../components/error-message";
+import Loading from "../../../components/Loading/Loading";
 
 const UpdateShowRoom = () => {
-  const [showRoomData, setShowRoomData] = useState({});
-
-  const [registrationError, setRegistrationError] = useState("");
-
-  const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState([]);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   const navigate = useNavigate();
 
-
-  // country code 
+  // country code
   const [countryCode, setCountryCode] = useState(countries[0]);
+  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
+
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setPhoneNumber(newPhoneNumber);
     }
   };
 
-
   const handleDriverPhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
-    if (/^\d*$/.test(newPhoneNumber) && newPhoneNumber.length <= 11 && (newPhoneNumber === '' || (!newPhoneNumber.startsWith('0') || newPhoneNumber.length > 1))) {
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
       setDriverPhoneNumber(newPhoneNumber);
     }
   };
 
   const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+    data: singleCard,
+    isLoading,
+    refetch,
+  } = useGetSingleShowRoomQuery(id);
+
+  const [updateShowroom, { isLoading: updateLoading, error }] =
+    useUpdateShowRoomMutation();
+
+  const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/showRoom/one/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setShowRoomData(data);
+    if (singleCard?.data) {
+      reset({
+        showRoom_name: singleCard?.data?.showRoom_name,
+        vehicle_username: singleCard?.data?.vehicle_username,
+        showRoom_address: singleCard?.data?.showRoom_address,
+        company_name: singleCard?.data?.company_name,
+        company_contact: phoneNumber || singleCard?.data?.company_contact,
+        company_country_code: singleCard?.data?.company_country_code,
+        company_email: singleCard?.data?.company_email,
+        company_address: singleCard?.data?.company_address,
+        driver_name: singleCard?.data?.driver_name,
+        driver_country_code: singleCard?.data?.driver_country_code,
+        driver_contact: driverPhoneNumber || singleCard?.data?.driver_contact,
+        reference_name: singleCard?.data?.reference_name,
 
-        setLoading(false);
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+        vehicle_model: getDataWithChassisNo?.vehicle_model,
+        vehicle_category: getDataWithChassisNo?.vehicle_category,
+        color_code: getDataWithChassisNo?.color_code,
+        mileage: getDataWithChassisNo?.mileage,
+        fuel_type: getDataWithChassisNo?.fuel_type,
       });
-  }, [id, reload]);
+    }
+  }, [
+    singleCard,
+    reset,
+    phoneNumber,
+    driverPhoneNumber,
+    getDataWithChassisNo?.carReg_no,
+    getDataWithChassisNo?.car_registration_no,
+    getDataWithChassisNo?.engine_no,
+    getDataWithChassisNo?.vehicle_brand,
+    getDataWithChassisNo?.vehicle_name,
+    getDataWithChassisNo?.vehicle_model,
+    getDataWithChassisNo?.vehicle_category,
+    getDataWithChassisNo?.color_code,
+    getDataWithChassisNo?.mileage,
+    getDataWithChassisNo?.fuel_type,
+  ]);
 
   const onSubmit = async (data) => {
-    setLoading(true);
+    const showroom = {
+      showRoom_name: data.showRoom_name,
+      vehicle_username: data.vehicle_username,
+      showRoom_address: data.showRoom_address,
+      company_name: data.company_name,
+      company_contact: data.company_contact,
+      company_country_code: countryCode.code,
+      company_email: data.company_email,
+      company_address: data.company_address,
+      driver_name: data.driver_name,
+      driver_contact: data.driver_contact,
+      driver_country_code: driverCountryCode.code,
+      reference_name: data.reference_name,
+    };
+
+    data.vehicle_model = Number(data.vehicle_model);
+    data.mileage = Number(data.mileage);
+
+    // Extract vehicle information
+    const vehicle = {
+      carReg_no: data.carReg_no,
+      car_registration_no: data.car_registration_no,
+      chassis_no: data.chassis_no,
+      engine_no: data.engine_no,
+      vehicle_brand: data.vehicle_brand,
+      vehicle_name: data.vehicle_name,
+      vehicle_model: data.vehicle_model,
+      vehicle_category: data.vehicle_category,
+      color_code: data.color_code,
+      mileage: data.mileage,
+      fuel_type: data.fuel_type,
+    };
+
+    const newData = {
+      showroom,
+      vehicle,
+    };
+
+    const updateData = {
+      id: id,
+      data: newData,
+    };
+
     try {
-      const values = {
-        showRoomId: showRoomData.showRoomId,
-        showRoom_name: data.showRoom_name || showRoomData.showRoom_name,
-        username: data.username || showRoomData.username,
-        showRoom_address:
-          data.showRoom_address || showRoomData.showRoom_address,
-        company_name: data.company_name || showRoomData.company_name,
-        company_address: data.company_address || showRoomData.company_address,
-        company_contact: data.company_contact || showRoomData.company_contact,
-        company_email: data.company_email || showRoomData.company_email,
-        driver_name: data.driver_name || showRoomData.driver_name,
-        driver_contact: data.driver_contact || showRoomData.driver_contact,
-        reference_name: data.reference_name || showRoomData.reference_name,
-
-        carReg_no: data.carReg_no || showRoomData.carReg_no,
-        car_registration_no:
-          data.car_registration_no || showRoomData.car_registration_no,
-        chassis_no: data.chassis_no || showRoomData.chassis_no,
-        engine_no: data.engine_no || showRoomData.engine_no,
-        vehicle_brand: data.vehicle_brand || showRoomData.vehicle_brand,
-        vehicle_name: data.vehicle_name || showRoomData.vehicle_name,
-        vehicle_model: data.vehicle_model || showRoomData.vehicle_model,
-        vehicle_category:
-          data.vehicle_category || showRoomData.vehicle_category,
-        color_code: data.color_code || showRoomData.color_code,
-        mileage: data.mileage || showRoomData.mileage,
-        fuel_type: data.fuel_type || showRoomData.fuel_type,
-      };
-
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/showRoom/one/${id}`,
-        values
-      );
-
-      if (response.data.message === "Successfully update card.") {
-        setReload(!reload);
+      const res = await updateShowroom(updateData).unwrap();
+      if (res.success) {
+        toast.success(res.message);
         navigate("/dashboard/show-room-list");
-        toast.success("Successfully add to show room post");
-        setLoading(false);
+        refetch();
         reset();
       }
-    } catch (error) {
-      toast.error(error.message);
-      setLoading(false);
+    } catch (err) {
+      toast.error("Failed to update customer");
     }
   };
 
-  const [selectedBrand, setSelectedBrand] = useState("");
-  //   const [filteredVehicles, setFilteredVehicles] = useState([]);
-
-  // year select only number 4 digit
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [yearSelectInput, setYearSelectInput] = useState("");
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
   const handleBrandChange = (event, newValue) => {
-    setSelectedBrand(newValue);
     const filtered = vehicleName.filter(
       (vehicle) => vehicle.label === newValue
     );
@@ -156,10 +211,25 @@ const UpdateShowRoom = () => {
     setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
   };
 
+  const handleChassisChange = (_, newValue) => {
+    const filtered = singleCard?.data?.vehicles?.find(
+      (vehicle) => vehicle.chassis_no === newValue
+    );
+    setGetDataWithChassisNo(filtered);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center text-xl">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
     <section>
       <div className=" addProductWraps">
-      <div className="flex justify-between pb-3 border-b-2 px-2">
+        <div className="flex justify-between pb-3 border-b-2 px-2">
           <HeaderButton />
           <div className="flex items-end justify-end">
             <NotificationAdd size={30} className="mr-2" />
@@ -197,17 +267,7 @@ const UpdateShowRoom = () => {
                     on
                     label="Show Room Name (T)"
                     {...register("showRoom_name")}
-                    defaultValue={showRoomData.showRoom_name}
-                    value={showRoomData.showRoom_name}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        showRoom_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.showRoom_name,
-                    }}
+                    focused={singleCard?.data?.showRoom_name || ""}
                   />
                 </div>
                 <div>
@@ -215,18 +275,8 @@ const UpdateShowRoom = () => {
                     className="productField"
                     onC
                     label="Vehicle User Name (T)"
-                    {...register("username")}
-                    defaultValue={showRoomData.username}
-                    value={showRoomData.username}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        username: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.username,
-                    }}
+                    {...register("vehicle_username")}
+                    focused={singleCard?.data?.vehicle_username || ""}
                   />
                 </div>
                 <div>
@@ -235,17 +285,7 @@ const UpdateShowRoom = () => {
                     on
                     label="Show Room Address (T)"
                     {...register("showRoom_address")}
-                    defaultValue={showRoomData.showRoom_address}
-                    value={showRoomData.showRoom_address}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        showRoom_address: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.showRoom_address,
-                    }}
+                    focused={singleCard?.data?.showRoom_address || ""}
                   />
                 </div>
 
@@ -255,56 +295,20 @@ const UpdateShowRoom = () => {
                     onC
                     label="Company Name (T)"
                     {...register("company_name")}
-                    defaultValue={showRoomData.company_name}
-                    value={showRoomData.company_name}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        company_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.company_name,
-                    }}
+                    focused={singleCard?.data?.company_name || ""}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Company Contact No (N)"
-                    {...register("company_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                    defaultValue={showRoomData.company_contact}
-                    value={showRoomData.company_contact}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        company_contact: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.company_contact,
-                    }}
-                  />
-                  {errors.company_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.company_contact.message}
-                    </span>
-                  )}
-                </div> */}
 
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
                     getOptionLabel={(option) => option.label}
-                    value={countryCode}
+                    value={
+                      countryCode || singleCard?.data?.customer_country_code
+                    }
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
                       setPhoneNumber(""); // Reset the phone number when changing country codes
@@ -313,24 +317,27 @@ const UpdateShowRoom = () => {
                       <TextField
                         {...params}
                         label="Select Country Code"
+                        {...register("company_country_code")}
                         variant="outlined"
+                        focused={singleCard?.data?.company_country_code || ""}
                       />
                     )}
                   />
                   <TextField
-                   {...register("company_contact")}
+                    {...register("company_contact")}
                     className="productField2"
                     label="Company Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber ? phoneNumber : showRoomData.company_contact}
+                    value={
+                      phoneNumber
+                        ? phoneNumber
+                        : singleCard?.data?.company_contact
+                    }
                     onChange={handlePhoneNumberChange}
                     placeholder="Enter phone number"
-                    focused ={showRoomData.company_contact}
-                    InputLabelProps={{
-                      shrink: !!showRoomData.company_contact,
-                    }}
+                    focused={singleCard?.data?.company_contact || ""}
                   />
                 </div>
                 <div>
@@ -339,17 +346,7 @@ const UpdateShowRoom = () => {
                     label="Company Email Address (N)"
                     {...register("company_email")}
                     type="email"
-                    defaultValue={showRoomData.company_email}
-                    value={showRoomData.company_email}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        company_email: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.company_email,
-                    }}
+                    focused={singleCard?.data?.company_email || ""}
                   />
                 </div>
                 <div>
@@ -357,17 +354,7 @@ const UpdateShowRoom = () => {
                     className="productField"
                     label="Company Address (T) "
                     {...register("company_address")}
-                    defaultValue={showRoomData.company_address}
-                    value={showRoomData.company_address}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        company_address: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.company_address,
-                    }}
+                    focused={singleCard?.data?.company_address || ""}
                   />
                 </div>
                 <div>
@@ -376,307 +363,170 @@ const UpdateShowRoom = () => {
                     o
                     label="Driver Name (T)"
                     {...register("driver_name")}
-                    defaultValue={showRoomData.driver_name}
-                    value={showRoomData.driver_name}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        driver_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.driver_name,
-                    }}
+                    focused={singleCard?.data?.driver_name || ""}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Driver Contact No (N)"
-                    {...register("driver_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                    defaultValue={showRoomData.driver_contact}
-                    value={showRoomData.driver_contact}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        driver_contact: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.driver_contact,
-                    }}
-                  />
-                  {errors.driver_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.driver_contact.message}
-                    </span>
-                  )}
-                </div> */}
 
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
                     getOptionLabel={(option) => option.label}
-                    value={countryCode}
+                    value={
+                      driverCountryCode || singleCard?.data?.driver_country_code
+                    }
                     onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                      setDriverCountryCode(newValue);
+                      setPhoneNumber("");
                     }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Select Country Code"
                         variant="outlined"
+                        focused={singleCard?.data?.driver_country_code || ""}
                       />
                     )}
                   />
                   <TextField
-                   {...register("driver_contact")}
+                    {...register("driver_contact")}
                     className="productField2"
                     label="Driver Contact No (N)"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={driverPhoneNumber ? driverPhoneNumber : showRoomData.driver_contact}
+                    value={
+                      driverPhoneNumber
+                        ? driverPhoneNumber
+                        : singleCard?.data?.driver_contact
+                    }
                     onChange={handleDriverPhoneNumberChange}
                     placeholder="Enter phone number"
-                    focused ={showRoomData.driver_contact}
-                    InputLabelProps={{
-                      shrink: !!showRoomData.driver_contact,
-                    }}
+                    focused={singleCard?.data?.driver_contact || ""}
                   />
                 </div>
-
 
                 <div>
                   <TextField
                     className="productField"
                     label="Reference Name (T) "
                     {...register("reference_name")}
-                    defaultValue={showRoomData.reference_name}
-                    value={showRoomData.reference_name}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        reference_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.reference_name,
-                    }}
+                    focused={singleCard?.data?.reference_name || ""}
                   />
                 </div>
               </div>
 
-              <div className="mt-5 md:mt-0">
-                <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
-                  Vehicle Information{" "}
-                </h3>
+              <div className="mt-5 lg:mt-0">
+                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
+                <Autocomplete
+                  disableClearable
+                  freeSolo
+                  className="productField"
+                  onChange={handleChassisChange}
+                  options={singleCard?.data?.vehicles.map(
+                    (option) => option.chassis_no
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Select Chassis no"
+                      {...register("chassis_no")}
+                      inputProps={{
+                        ...params.inputProps,
+                        maxLength:
+                          getDataWithChassisNo?.chassis_no?.length || 30,
+                      }}
+                    />
+                  )}
+                />
                 <div className="flex items-center mt-1 productField">
                   <Autocomplete
-                    className="addJobInputField"
-                    value={showRoomData?.carReg_no || ""}
-                    options={carBrands.map((option) => option.label)}
+                    freeSolo
+                    className="productField"
+                    options={cmDmOptions.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Car Reg No "
-                        // Handle input props manually
-                        InputLabelProps={{
-                          shrink: !!showRoomData?.carReg_no,
-                        }}
+                        label="CarReg no"
+                        {...register("carReg_no")}
+                        focused={getDataWithChassisNo?.carReg_no || ""}
                       />
                     )}
                   />
 
-                  <TextField
-                    className="carRegNumbers"
-                    label="Car R (N)"
-                    {...register("car_registration_no", {
-                      pattern: {
-                        value: /^[\d-]+$/,
-                        message: "Only numbers and hyphens are allowed",
-                      },
-                      minLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                      maxLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 6 digits",
-                      },
-                    })}
-                    value={showRoomData?.car_registration_no}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length === 7) {
-                        setRegistrationError("");
-                      } else if (value.length < 7) {
-                        setRegistrationError(
-                          "Car registration number must be 7 characters"
-                        );
-                      }
-                      const formattedValue = value
-                        .replace(/\D/g, "")
-                        .slice(0, 6)
-                        .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                      setShowRoomData({
-                        ...showRoomData,
-                        car_registration_no: formattedValue,
-                      });
-                    }}
-                    InputLabelProps={{
-                      shrink: !!showRoomData.car_registration_no,
-                    }}
-                    error={!!errors.car_registration_no || !!registrationError}
-                  />
+                  <InputMask
+                    mask="**-****"
+                    maskChar={null}
+                    {...register("car_registration_no")}
+                  >
+                    {(inputProps) => (
+                      <TextField
+                        {...inputProps}
+                        {...register("car_registration_no")}
+                        className="carRegField"
+                        label="Car R (N)"
+                        focused={
+                          getDataWithChassisNo?.car_registration_no || ""
+                        }
+                      />
+                    )}
+                  </InputMask>
                 </div>
 
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Chassis No (T&N)"
-                    {...register("chassis_no")}
-                    defaultValue={showRoomData.chassis_no}
-                    value={showRoomData.chassis_no}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        chassis_no: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.chassis_no,
-                    }}
-                  />
-                </div>
+                <div></div>
                 <div>
                   <TextField
                     className="productField"
                     label="ENGINE NO & CC (T&N) "
                     {...register("engine_no")}
-                    defaultValue={showRoomData.engine_no}
-                    value={showRoomData.engine_no}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        engine_no: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.engine_no,
-                    }}
+                    focused={getDataWithChassisNo?.engine_no || ""}
                   />
                 </div>
 
                 <div>
-                  {/* <Autocomplete
-                  className="addJobInputField"
-                  value={showRoomData?.vehicle_brand || ""}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Brand "
-                      // Handle input props manually
-                      InputLabelProps={{
-                        shrink: !!showRoomData?.vehicle_brand,
-                      }}
-                    />
-                  )}
-                /> */}
                   <Autocomplete
                     freeSolo
                     className="productField"
-                    value={showRoomData?.vehicle_brand || ""}
                     onChange={handleBrandChange}
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Vehicle Brand"
-                        // Handle input props manually
-                        InputLabelProps={{
-                          shrink: !!showRoomData?.vehicle_brand,
-                        }}
+                        {...register("vehicle_brand")}
+                        focused={getDataWithChassisNo?.vehicle_brand || ""}
                       />
                     )}
                   />
                 </div>
                 <div>
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Name "
-                    {...register("vehicle_name")}
-                    defaultValue={showRoomData.vehicle_name}
-                    value={showRoomData.vehicle_name}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        vehicle_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.vehicle_name,
-                    }}
-                  /> */}
                   <Autocomplete
                     className="productField"
                     freeSolo
                     Vehicle
                     Name
-                    value={showRoomData?.vehicle_name || ""}
                     options={filteredVehicles.map((option) => option.value)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Vehicle Name "
                         {...register("vehicle_name")}
+                        focused={getDataWithChassisNo?.vehicle_name || ""}
                       />
                     )}
                     getOptionLabel={(option) => option || ""}
-                    // disabled={!selectedBrand}
                   />
                 </div>
-                <div className="relative">
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Model (N)"
-                    {...register("vehicle_model", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid model number.",
-                      },
-                    })}
-                    defaultValue={showRoomData.vehicle_model}
-                    value={showRoomData.vehicle_model}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        company_name: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.vehicle_model,
-                    }}
-                  /> */}
+                <div className="relative mt-3">
                   <input
-                    value={showRoomData?.vehicle_model}
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"
                     className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
                     placeholder="Vehicle Model"
+                    defaultValue={getDataWithChassisNo?.vehicle_model}
                   />
 
                   {yearSelectInput && (
@@ -691,41 +541,19 @@ const UpdateShowRoom = () => {
                       ))}
                     </ul>
                   )}
-                  {errors.vehicle_model && (
-                    <span className="text-sm text-red-400">
-                      {errors.vehicle_model.message}
-                    </span>
-                  )}
                 </div>
-                <div className="mt-3">
-                  {/* <Autocomplete
-                  className="addJobInputField"
-                  value={showRoomData?.vehicle_category || ""}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Category "
-                      // Handle input props manually
-                      InputLabelProps={{
-                        shrink: !!showRoomData?.vehicle_category,
-                      }}
-                    />
-                  )}
-                /> */}
+                <div>
                   <Autocomplete
                     freeSolo
                     className="productField"
-                    value={showRoomData?.vehicle_category || ""}
+                    value={singleCard?.vehicle_category || ""}
                     options={vehicleTypes.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Vehicle Category"
-                        // Handle input props manually
-                        InputLabelProps={{
-                          shrink: !!showRoomData?.vehicle_category,
-                        }}
+                        {...register("vehicle_category")}
+                        focused={getDataWithChassisNo?.vehicle_category || ""}
                       />
                     )}
                   />
@@ -735,86 +563,45 @@ const UpdateShowRoom = () => {
                     className="productField"
                     label="Color & Code (T&N) "
                     {...register("color_code")}
-                    defaultValue={showRoomData.color_code}
-                    value={showRoomData.color_code}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        color_code: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.color_code,
-                    }}
+                    focused={getDataWithChassisNo?.color_code || ""}
                   />
                 </div>
                 <div>
                   <TextField
+                    type="number"
                     className="productField"
-                    label="Mileage (N) "
+                    label="Mileage (N)"
                     {...register("mileage", {
                       pattern: {
                         value: /^\d+$/,
                         message: "Please enter a valid number.",
                       },
                     })}
-                    defaultValue={showRoomData.mileage}
-                    value={showRoomData.mileage}
-                    onChange={(e) =>
-                      setShowRoomData({
-                        ...showRoomData,
-                        mileage: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!showRoomData.mileage,
-                    }}
+                    focused={getDataWithChassisNo?.mileage || ""}
                   />
-                  {errors.mileage && (
-                    <span className="text-sm text-red-400">
-                      {errors.mileage.message}
-                    </span>
-                  )}
                 </div>
                 <div>
-                  {/* <Autocomplete
-                  className="addJobInputField"
-                  value={showRoomData?.fuel_type || ""}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Fuel Type "
-                      // Handle input props manually
-                      InputLabelProps={{
-                        shrink: !!showRoomData?.fuel_type,
-                      }}
-                    />
-                  )}
-                /> */}
-
                   <Autocomplete
                     freeSolo
                     className="productField"
-                    value={showRoomData?.fuel_type || ""}
                     options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         label="Fuel Type "
-                        // Handle input props manually
-                        InputLabelProps={{
-                          shrink: !!showRoomData?.fuel_type,
-                        }}
+                        {...register("fuel_type")}
+                        focused={getDataWithChassisNo?.fuel_type || ""}
                       />
                     )}
                   />
                 </div>
               </div>
             </div>
-
+            <div className="my-2">
+              {error && <ErrorMessage messages={error.data.errorSources} />}
+            </div>
             <div className="mt-2 ml-3 savebtn">
-              <button disabled={loading}>Update Show Room </button>
+              <button disabled={updateLoading}>Update Show Room </button>
             </div>
           </form>
         </div>

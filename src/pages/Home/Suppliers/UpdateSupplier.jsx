@@ -15,6 +15,13 @@ import { countries } from "../../../constant";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import {
+  useGetSingleSupplierQuery,
+  useUpdateSupplierMutation,
+} from "../../../redux/api/supplier";
+import { ErrorMessage } from "../../../components/error-message";
+import Loading from "../../../components/Loading/Loading";
+
 const UpdateSupplier = () => {
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
@@ -31,18 +38,6 @@ const UpdateSupplier = () => {
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const handlePhoneNumberChange = (e) => {
-    const newPhoneNumber = e.target.value;
-    if (
-      /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
-      (newPhoneNumber === "" ||
-        !newPhoneNumber.startsWith("0") ||
-        newPhoneNumber.length > 1)
-    ) {
-      setPhoneNumber(newPhoneNumber);
-    }
-  };
   const {
     register,
     handleSubmit,
@@ -50,16 +45,28 @@ const UpdateSupplier = () => {
     formState: { errors },
   } = useForm();
 
+  const { data: singleSupplier, isLoading: supplierLoading } =
+    useGetSingleSupplierQuery(id);
+
+  const [updateSupplier, { isLoading: updateLoading, error: updateError }] =
+    useUpdateSupplierMutation();
+
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/supplier/one/${id}`)
-      .then((response) => {
-        setGetSingleSuppliers(response.data.supplier);
-      })
-      .catch((error) => {
-        setError(error.message);
+    if (singleSupplier?.data) {
+      reset({
+        full_name: singleSupplier?.data?.full_name,
+        country_code: singleSupplier?.data?.country_code,
+        phone_number: singleSupplier?.data?.phone_number,
+        email: singleSupplier?.data?.email,
+        vendor: singleSupplier?.data?.vendor,
+        shop_name: singleSupplier?.data?.shop_name,
+        country: singleSupplier?.data?.country,
+        city: singleSupplier?.data?.city,
+        state: singleSupplier?.data?.state,
+        image: url ? url : singleSupplier?.data?.image,
       });
-  }, [reload, id]);
+    }
+  }, [getSingleSuppliers.image, reset, singleSupplier?.data, url]);
 
   const handleImageUpload = async (e) => {
     try {
@@ -86,41 +93,35 @@ const UpdateSupplier = () => {
   };
 
   const onSubmit = async (data) => {
-    setError("");
-    try {
-      const values = {
-        full_name: data.full_name || getSingleSuppliers.full_name,
-        phone_number: data.phone_number || getSingleSuppliers.phone_number,
-        email: data.email || getSingleSuppliers.email,
-        vendor: data.vendor || getSingleSuppliers.vendor,
-        shop_name: data.shop_name || getSingleSuppliers.shop_name,
-        country: data.country || getSingleSuppliers.country,
-        city: data.city || getSingleSuppliers.city,
-        address: data.address || getSingleSuppliers.address,
-        image: url ? url : getSingleSuppliers.image,
-      };
+    const values = {
+      id,
+      data,
+    };
 
-      setLoading(true);
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/supplier/one/${id}`,
-        values
-      );
+    const response = await updateSupplier(values).unwrap();
 
-      if (response.data.message === "Successfully update card.") {
-        toast.success("Successfully update supplier");
-        setLoading(false);
-        setReload(!reload);
-        reset();
-        setError("");
-        navigate("/dashboard/supplier-list");
-      }
-    } catch (error) {
-      if (error.response) {
-        setLoading(false);
-        setError(error.response.data.message);
-      }
+    if (response.success) {
+      toast.success(response.message);
+      navigate("/dashboard/supplier-list");
     }
   };
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
+
+  if (supplierLoading) {
+    return <Loading />;
+  }
 
   return (
     <section>
@@ -159,34 +160,9 @@ const UpdateSupplier = () => {
                   label="Full Name "
                   id="Full Name "
                   {...register("full_name")}
-                  value={getSingleSuppliers.full_name}
-                  onChange={(e) =>
-                    setGetSingleSuppliers({
-                      ...getSingleSuppliers,
-                      full_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleSuppliers.full_name,
-                  }}
+                  focused={singleSupplier?.data?.full_name || ""}
                 />
-                {/* <TextField
-                  className="productField"
-                  fullWidth
-                  label="Phone Number "
-                  id="Phone Number "
-                  {...register("phone_number")}
-                  value={getSingleSuppliers.phone_number}
-                  onChange={(e) =>
-                    setGetSingleSuppliers({
-                      ...getSingleSuppliers,
-                      phone_number: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleSuppliers.phone_number,
-                  }}
-                /> */}
+
                 <div className="flex items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: "5px" }}
@@ -204,17 +180,24 @@ const UpdateSupplier = () => {
                         {...params}
                         label="Select Country Code"
                         variant="outlined"
+                        {...register("country_code")}
                       />
                     )}
                   />
                   <TextField
+                    {...register("phone_number")}
                     className="productField2"
                     label="Phone No"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
+                    value={
+                      phoneNumber
+                        ? phoneNumber
+                        : singleSupplier?.data?.phone_number
+                    }
                     onChange={handlePhoneNumberChange}
+                    focused={singleSupplier?.data?.phone_number || ""}
                   />
                 </div>
 
@@ -224,37 +207,35 @@ const UpdateSupplier = () => {
                   label="Email Address "
                   id="Email Address "
                   {...register("email")}
-                  value={getSingleSuppliers.email}
-                  onChange={(e) =>
-                    setGetSingleSuppliers({
-                      ...getSingleSuppliers,
-                      email: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleSuppliers.email,
-                  }}
+                  focused={singleSupplier?.data?.email}
                 />
                 <div>
                   <FormControl className="productField">
-                    <InputLabel htmlFor="grouped-native-select">
+                    <InputLabel htmlFor={singleSupplier?.data?.vendor}>
                       Vendor Categories
                     </InputLabel>
                     <Select
                       className="addJobInputField"
                       native
                       id="grouped-native-select"
-                      label="Car Registration No  "
+                      label="Vendor Categories"
                       {...register("vendor")}
-                      value={getSingleSuppliers?.vendor}
+                      focused={singleSupplier?.data?.vendor}
                     >
-                      <option value="Acura">New Parts </option>
-                      <option value="Acura">Recondition Parts</option>
-                      <option value="Acura">New & Recondition Parts</option>
-                      <option value="Acura">Body Items</option>
-                      <option value="Acura">Engine & Suspension Items</option>
-                      <option value="Acura">Electric Items</option>
-                      <option value="Acura">Others</option>
+                      <option>{singleSupplier?.data?.vendor} </option>
+                      <option value="New Parts">New Parts </option>
+                      <option value="Recondition Parts">
+                        Recondition Parts
+                      </option>
+                      <option value="New & Recondition Parts">
+                        New & Recondition Parts
+                      </option>
+                      <option value="Body Items">Body Items</option>
+                      <option value="Engine & Suspension Items">
+                        Engine & Suspension Items
+                      </option>
+                      <option value="Electric Items">Electric Items</option>
+                      <option value="Others">Others</option>
                     </Select>
                   </FormControl>
                 </div>
@@ -264,16 +245,7 @@ const UpdateSupplier = () => {
                   label="Shop Name"
                   id="Password"
                   {...register("shop_name")}
-                  value={getSingleSuppliers.shop_name}
-                  onChange={(e) =>
-                    setGetSingleSuppliers({
-                      ...getSingleSuppliers,
-                      shop_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleSuppliers.shop_name,
-                  }}
+                  focused={singleSupplier?.data?.shop_name}
                 />
               </div>
 
@@ -285,48 +257,21 @@ const UpdateSupplier = () => {
                   fullWidth
                   label="Country "
                   {...register("country")}
-                  value={getSingleSuppliers.country}
-                  onChange={(e) =>
-                    setGetSingleSuppliers({
-                      ...getSingleSuppliers,
-                      country: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleSuppliers.country,
-                  }}
+                  focused={singleSupplier?.data?.country}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Town/City "
                   {...register("city")}
-                  value={getSingleSuppliers.city}
-                  onChange={(e) =>
-                    setGetSingleSuppliers({
-                      ...getSingleSuppliers,
-                      city: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleSuppliers.city,
-                  }}
+                  focused={singleSupplier?.data?.city}
                 />
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Address "
-                  {...register("address")}
-                  value={getSingleSuppliers.address}
-                  onChange={(e) =>
-                    setGetSingleSuppliers({
-                      ...getSingleSuppliers,
-                      address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleSuppliers.address,
-                  }}
+                  label="State "
+                  {...register("state")}
+                  focused={singleSupplier?.data?.state}
                 />
                 <div className="productField">
                   <input
@@ -346,7 +291,7 @@ const UpdateSupplier = () => {
                       <span>Uploading...</span>
                     ) : (
                       <>
-                        {url || getSingleSuppliers.image ? (
+                        {url || singleSupplier?.data?.image ? (
                           <div>
                             {/* Check if url exists, if yes, render it */}
                             {url && (
@@ -358,12 +303,12 @@ const UpdateSupplier = () => {
                               </span>
                             )}
                             {/* Check if getSingleSuppliers.image exists, if yes, render it */}
-                            {getSingleSuppliers.image && (
+                            {singleSupplier?.data?.image && (
                               <span className="overflow-hidden">
-                                {getSingleSuppliers.image.slice(0, 4)}
+                                {singleSupplier?.data?.image.slice(0, 4)}
                                 {/* Display only the first 4 characters */}
-                                {getSingleSuppliers.image.slice(
-                                  getSingleSuppliers.image.lastIndexOf(".")
+                                {singleSupplier?.data?.image.slice(
+                                  singleSupplier?.data?.image.lastIndexOf(".")
                                 )}{" "}
                                 {/* Display file extension */}
                               </span>
@@ -378,79 +323,17 @@ const UpdateSupplier = () => {
                 </div>
               </div>
             </div>
-            <div className="text-start text-red-400 py-2">{error}</div>
+            <div className="text-start text-red-400 py-2">
+              {updateError && (
+                <ErrorMessage messages={updateError?.data?.errorSources} />
+              )}{" "}
+            </div>
             <div className="mt-2 savebtn">
-              <button disabled={loading || imageLoading}>
-                Update Supplier{" "}
-              </button>
+              <button disabled={updateLoading}>Update Supplier </button>
             </div>
           </form>
         </div>
       </div>
-      {/* <div className="w-full mt-5 mb-24">
-        <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="text-3xl font-bold text-center "> Supplier List: </h3>
-          <div className="flex items-center mt-2 md:mt-0 ">
-            {/**
-          <button
-            onClick={handleAllCustomer}
-            className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
-          >
-            All
-          </button>
-          */}
-      {/* <input
-              type="text"
-              placeholder="Search"
-              className="border py-2 px-3 rounded-md border-[#ddd]"
-            />
-            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
-              {" "}
-              <HiOutlineSearch size={25} />
-            </button>
-          </div>
-        </div>
-        <div className="overflow-x-auto ">
-          <table className="table ">
-            <thead className="tableWrap">
-              <tr>
-                <th>SL</th>
-                <th>Supplier Name </th>
-                <th>Phone Number </th>
-                <th>Email</th>
-                <th colSpan={3}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>01</td>
-                <td>Car </td>
-                <td>BMW2343</td>
-                <td>BDT1005</td>
-                <td>
-                  <div className="flex items-center justify-center ">
-                    <Link to="/dashboard/Supplier-profile">
-                      <FaUserTie className="invoicIcon" />
-                    </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap edit">
-                    <Link to="/dashboard/update-Supplier">
-                      <FaEdit className="editIcon" />
-                    </Link>
-                  </div>
-                </td>
-                <td>
-                  <div className="editIconWrap">
-                    <FaTrashAlt className="deleteIcon" />
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table> */}
-      {/* </div>
-      </div> */}
     </section>
   );
 };

@@ -20,7 +20,7 @@ import {
 } from "../../../constant";
 import { HiOutlineSearch, HiOutlineUserGroup } from "react-icons/hi";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
@@ -28,20 +28,36 @@ import Loading from "../../../components/Loading/Loading";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import {
+  useCreateCompanyMutation,
+  useDeleteCompanyMutation,
+  useGetAllCompaniesQuery,
+} from "../../../redux/api/companyApi";
+import { ErrorMessage } from "../../../components/error-message";
 
 const AddCompany = () => {
+
+  const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
-  const [companyData, setCompanyData] = useState([]);
-  const [companyPage, setCompanyPage] = useState(0);
+ 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [noMatching, setNoMatching] = useState(null);
+ 
 
   const [registrationError, setRegistrationError] = useState("");
 
-  const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
+ 
+
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
+
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState([]);
 
   const {
     register,
@@ -53,8 +69,22 @@ const AddCompany = () => {
 
   const navigate = useNavigate();
 
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const limit = 10;
+
+  const {
+    data: companyData,
+    isLoading: companyLoading,
+    refetch,
+  } = useGetAllCompaniesQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
+  const [createCompany, { isLoading, error }] = useCreateCompanyMutation();
+  const [
+    deleteCompany,
+    { isLoading: companyDeleteLoading, error: deleteError },
+  ] = useDeleteCompanyMutation();
 
   const handleBrandChange = (event, newValue) => {
     setSelectedBrand(newValue);
@@ -65,8 +95,6 @@ const AddCompany = () => {
   };
 
   // year select only number 4 digit
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [yearSelectInput, setYearSelectInput] = useState("");
 
   // Handle input changes
   const handleYearSelectInput = (event) => {
@@ -88,11 +116,6 @@ const AddCompany = () => {
     });
   };
   // country code set
-  const [countryCode, setCountryCode] = useState(countries[0]);
-  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
-
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
@@ -141,48 +164,51 @@ const AddCompany = () => {
   };
 
   const onSubmit = async (data) => {
-    setLoading(true);
-    data.company_country_code = countryCode.code;
-    data.driver_country_code = driverCountryCode.code;
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/company`,
-        data
-      );
-      if (response.data.message === "Successfully add to company post") {
-        setReload(!reload);
-        toast.success("Successfully add to company post");
-        navigate("/dashboard/company-list");
-        setLoading(false);
-        reset();
-      }
-    } catch (error) {
-      toast.error(error.message);
-      setLoading(false);
+    const company = {
+      company_name: data.company_name,
+      vehicle_username: data.vehicle_username,
+      company_address: data.company_address,
+      company_contact: data.company_contact,
+      company_country_code: countryCode.code,
+      company_email: data.company_email,
+      customer_address: data.customer_address,
+      driver_name: data.driver_name,
+      driver_contact: data.driver_contact,
+      driver_country_code: driverCountryCode.code,
+      reference_name: data.reference_name,
+    };
+
+    data.vehicle_model = Number(data.vehicle_model);
+    data.mileage = Number(data.mileage);
+
+    // Extract vehicle information
+    const vehicle = {
+      carReg_no: data.carReg_no,
+      car_registration_no: data.car_registration_no,
+      chassis_no: data.chassis_no,
+      engine_no: data.engine_no,
+      vehicle_brand: data.vehicle_brand,
+      vehicle_name: data.vehicle_name,
+      vehicle_model: data.vehicle_model,
+      vehicle_category: data.vehicle_category,
+      color_code: data.color_code,
+      mileage: data.mileage,
+      fuel_type: data.fuel_type,
+    };
+
+    const newData = {
+      company,
+      vehicle,
+    };
+
+    const res = await createCompany(newData).unwrap();
+    
+    if (res.success) {
+      toast.success("Successfully add to company post");
+      navigate("/dashboard/company-list");
+      refetch();
     }
   };
-
-  useEffect(() => {
-    setLoading(true);
-    try {
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/company?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setCompanyData(data?.allCompany);
-          setCompanyPage(data?.totalPages);
-          if (data?.allCompany?.length === 0) {
-            setCurrentPage((pre) => pre - 1);
-          }
-
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
-      setLoading(false);
-    }
-  }, [currentPage, reload]);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/company-profile?id=${e}`);
@@ -200,18 +226,8 @@ const AddCompany = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/company/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Company card delete successful") {
-          setCompanyData(companyData?.filter((pkg) => pkg._id !== id));
-          setReload(!reload);
-        }
+        await deleteCompany(id).unwrap();
+        refetch();
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -219,50 +235,28 @@ const AddCompany = () => {
     }
   };
 
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/company/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setCompanyData(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
+   
 
   const handleAllCompany = () => {
-    try {
-      setLoading(true);
-      fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/company?page=${currentPage}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setCompanyData(data?.allCompany);
-          setCompanyPage(data?.totalPages);
-          setNoMatching(null);
-
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error?.message || "Something went wrong!");
-      setLoading(false);
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
     }
   };
+
+
+  if (deleteError) {
+    toast.error(deleteError?.message);
+    
+  }
+
+  if (companyLoading) {
+    return (
+      <div className="flex items-center justify-center text-xl">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <section>
@@ -308,7 +302,7 @@ const AddCompany = () => {
                     className="productField"
                     onC
                     label="Vehicle User Name (T)"
-                    {...register("username")}
+                    {...register("vehicle_username")}
                   />
                 </div>
                 <div>
@@ -367,23 +361,7 @@ const AddCompany = () => {
                     {...register("driver_name")}
                   />
                 </div>
-                {/* <div>
-                  <TextField
-                    className="productField"
-                    label="Driver Contact No (N)"
-                    {...register("driver_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                  />
-                  {errors.driver_contact && (
-                    <span className="text-sm text-red-400">
-                      {errors.driver_contact.message}
-                    </span>
-                  )}
-                </div> */}
+
                 <div className="flex items-center my-1">
                   <Autocomplete
                     sx={{ marginRight: "2px", marginLeft: "5px" }}
@@ -445,11 +423,6 @@ const AddCompany = () => {
                       />
                     )}
                   />
-                  {/* <TextField
-                    className="carRegNumbers"
-                    label="Car R (T&N)"
-                    {...register("car_registration_no")}
-                  /> */}
 
                   <TextField
                     className="carRegField"
@@ -486,20 +459,6 @@ const AddCompany = () => {
                 </div>
 
                 <div>
-                  {/* <Autocomplete
-                    className="productField"
-                    id="free-solo-demo"
-                    Vehicle
-                    Brand
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Brand"
-                        {...register("vehicle_brand")}
-                      />
-                    )}
-                  /> */}
                   <Autocomplete
                     className="productField"
                     freeSolo
@@ -628,9 +587,11 @@ const AddCompany = () => {
                 </div>
               </div>
             </div>
-
+            <div className="my-2">
+              {error && <ErrorMessage messages={error.data.errorSources} />}
+            </div>
             <div className="mt-2 ml-0 md:ml-3 savebtn">
-              <button>Add Company </button>
+              <button disabled={isLoading}>Add Company </button>
             </div>
           </form>
         </div>
@@ -653,23 +614,21 @@ const AddCompany = () => {
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
               onChange={(e) => setFilterType(e.target.value)}
+              ref={textInputRef}
             />
-            <button
-              onClick={handleFilterType}
-              className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1"
-            >
+            <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
               {" "}
               <HiOutlineSearch size={22} />
             </button>
           </div>
         </div>
-        {searchLoading ? (
+        {companyLoading ? (
           <div className="flex items-center justify-center text-xl">
             <Loading />
           </div>
         ) : (
           <div>
-            {companyData?.length === 0 || noMatching ? (
+            {companyData?.data?.companies?.length === 0 ? (
               <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
@@ -684,46 +643,57 @@ const AddCompany = () => {
 
                         <th>Car Number </th>
                         <th> Mobile Number</th>
+                        <th>Vehicle Name </th>
                         <th colSpan={3}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {companyData?.map((card) => (
-                        <tr key={card._id}>
-                          <td>{card.companyId}</td>
-                          <td>{card?.company_name}</td>
+                      {companyData?.data?.companies?.map((card) => {
+                        const lastVehicle = card?.vehicles
+                          ? [...card.vehicles].sort(
+                              (a, b) =>
+                                new Date(b.createdAt) - new Date(a.createdAt)
+                            )[0]
+                          : null;
 
-                          <td>{card?.fullRegNum}</td>
-                          <td>{card?.fullCompanyNum} </td>
+                        return (
+                          <tr key={card._id}>
+                            <td>{card.companyId}</td>
+                            <td>{card?.company_name}</td>
 
-                          <td>
-                            <div
-                              onClick={() => handleIconPreview(card.companyId)}
-                              className="flex items-center justify-center cursor-pointer"
-                            >
-                              <FaUserTie size={25} className="" />
-                            </div>
-                          </td>
-
-                          <td>
-                            <div className="editIconWrap edit">
-                              <Link
-                                to={`/dashboard/update-company?id=${card._id}`}
+                            <td>{lastVehicle?.fullRegNum}</td>
+                            <td>{card?.fullCompanyNum} </td>
+                            <td>{lastVehicle?.vehicle_name}</td>
+                            <td>
+                              <div
+                                onClick={() => handleIconPreview(card?._id)}
+                                className="flex items-center justify-center cursor-pointer"
                               >
-                                <FaEdit className="editIcon" />
-                              </Link>
-                            </div>
-                          </td>
-                          <td>
-                            <div
-                              onClick={() => deletePackage(card._id)}
-                              className="editIconWrap"
-                            >
-                              <FaTrashAlt className="deleteIcon" />
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
+                                <FaUserTie size={25} className="" />
+                              </div>
+                            </td>
+
+                            <td>
+                              <div className="editIconWrap edit">
+                                <Link
+                                  to={`/dashboard/update-company?id=${card._id}`}
+                                >
+                                  <FaEdit className="editIcon" />
+                                </Link>
+                              </div>
+                            </td>
+                            <td>
+                              <button
+                               disabled={companyDeleteLoading}
+                                onClick={() => deletePackage(card._id)}
+                                className="editIconWrap"
+                              >
+                                <FaTrashAlt className="deleteIcon" />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </section>
@@ -731,11 +701,11 @@ const AddCompany = () => {
             )}
           </div>
         )}
-        {companyData?.length > 0 && (
+        {companyData?.data?.companies?.length > 0 && (
           <div className="flex justify-center mt-4">
             <Pagination
-              count={companyPage}
-              page={currentPage} // Add this line to indicate the current page
+              count={companyData?.data?.meta?.totalPages}
+              page={currentPage}
               color="primary"
               onChange={(_, page) => setCurrentPage(page)}
             />

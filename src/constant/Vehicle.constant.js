@@ -1180,7 +1180,7 @@ export const vehicleName = [
 ];
 
 export const months = [
-  { value: "Select Month", label: "Select Month" },
+  { value: "", label: "Select Month" },
   { value: "January", label: "January" },
   { value: "February", label: "February" },
   { value: "March", label: "March" },

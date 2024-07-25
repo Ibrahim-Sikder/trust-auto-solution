@@ -15,6 +15,72 @@ const ShowRoomAccount = ({
   moneyReceiptData,
   invoiceData,
 }) => {
+  const lastVehicle =
+    profileData?.data?.vehicles?.length > 0
+      ? [...profileData.data.vehicles].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+      : null;
+  const beforeLastVehicle =
+    profileData?.data?.vehicles?.length > 0
+      ? [...profileData.data.vehicles].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[1]
+      : null;
+
+  const lastJobCard =
+    profileData?.data?.jobCards?.length > 0
+      ? [...profileData.data.jobCards].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+      : null;
+
+  const beforeLastJobCard =
+    profileData?.data?.jobCards?.length > 0
+      ? [...profileData.data.jobCards].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[1]
+      : null;
+  const lastQuotation =
+    profileData?.data?.quotations?.length > 0
+      ? [...profileData.data.quotations].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+      : null;
+
+  const beforeLastQuotation =
+    profileData?.data?.quotations?.length > 0
+      ? [...profileData.data.quotations].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[1]
+      : null;
+
+  const lastInvoice =
+    profileData?.data?.invoices?.length > 0
+      ? [...profileData.data.invoices].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+      : null;
+
+  const beforeLastInvoice =
+    profileData?.data?.invoices?.length > 0
+      ? [...profileData.data.invoices].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[1]
+      : null;
+  const lastMoneyReceipt =
+    profileData?.data?.moneyReceipts?.length > 0
+      ? [...profileData.data.moneyReceipts].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+      : null;
+
+  const beforeLastMoneyReceipt =
+    profileData?.data?.moneyReceipts?.length > 0
+      ? [...profileData.data.moneyReceipts].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )[1]
+      : null;
 
   return (
     <div className="customerProfileWrap">
@@ -25,56 +91,99 @@ const ShowRoomAccount = ({
             <div className="space-y-2">
               <div>
                 Show Room Name :{" "}
-                <b className="capitalize ">{profileData?.company_name} </b>
+                <b className="capitalize ">
+                  {profileData?.data?.company_name}{" "}
+                </b>
               </div>
               <div>
-                Vehicle Name : <b>{profileData?.vehicle_name} </b>
+                Vehicle Name : <b>{lastVehicle?.vehicle_name} </b>
               </div>
               <div>
-                Registration No : <b>{profileData?.car_registration_no}</b>
+                Registration No : <b>{lastVehicle?.fullRegNum}</b>
               </div>
             </div>
 
             <div className="space-y-2">
               <div>
-              Date : <b> {formatDate(profileData?.createdAt)}</b>
+                Date : <b> {formatDate(profileData?.data?.createdAt)}</b>
               </div>
               <div>
-                Company Address : <b>{profileData?.company_address}</b>
+                Company Address : <b>{profileData?.data?.company_address}</b>
               </div>
               <div>
-                Reference Name : <b> {profileData?.reference_name}</b>
+                Reference Name : <b> {profileData?.data?.reference_name}</b>
               </div>
             </div>
           </div>
         </Card>
         <Card>
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-semibold">Recent Vehicles </h3>
-            <FaRegEdit size={30} />
+            <h3 className="text-xl font-semibold">Recent Vehicle </h3>
           </div>
-          <div className="flex items-center my-3">
-            <div className="cardIcon bg-[#42A1DA]">
-              <FaCarSide size={50} className="text-white" />
-            </div>
-            <div className="ml-3">
-              <b>Ferrari</b>
-              <p>Bangladesh </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center my-3">
+              <div className="cardIcon ">
+                <p className="text-[10px]">
+                  {lastVehicle
+                    ? `${new Date(lastVehicle?.createdAt).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                      )}`
+                    : "No Invoice"}
+                </p>
+              </div>
+              <div className="ml-3">
+                {lastVehicle && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Vehicle name </b>:{" "}
+                    <span className="ml-3">{lastVehicle?.vehicle_name}</span>
+                  </div>
+                )}
+                {lastVehicle && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Car Reg no </b>:{" "}
+                    <span className="ml-3">{lastVehicle?.fullRegNum}</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="flex items-center">
-            <div className="cardIcon bg-[#0A9396]">
-              <FaCarSide size={50} className="text-white" />
-            </div>
-            <div className="ml-3">
-              <b>Ferrari</b>
-              <p>Bangladesh </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center my-3">
+              <div className="cardIcon bg-[#48CAE4]">
+                <p className="text-[10px]">
+                  {beforeLastVehicle
+                    ? `${new Date(beforeLastVehicle?.createdAt).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                      )}`
+                    : "No Vehicle"}
+                </p>
+              </div>
+              <div className="ml-3">
+                {beforeLastVehicle && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Vehicle name </b>:{" "}
+                    <span className="ml-3">
+                      {beforeLastVehicle?.vehicle_name}
+                    </span>
+                  </div>
+                )}
+                {beforeLastVehicle && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Car Reg no </b>:{" "}
+                    <span className="ml-3">
+                      {beforeLastVehicle?.fullRegNum}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </Card>
       </div>
       <div className="justify-between block mt-5 md:flex">
-      <Card>
+        <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Job Card </h3>
             <Link to="/dashboard/addjob">
@@ -86,38 +195,34 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <p className="text-[10px]">
-                  {jobCardData[0]
-                    ? `${new Date(
-                        jobCardData[0]?.createdAt
-                      ).toLocaleString("en-US", { month: "short" })}`
+                  {lastJobCard
+                    ? `${new Date(lastJobCard?.createdAt).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                      )}`
                     : "No Job Card"}
                 </p>
 
-                {jobCardData && jobCardData?.length > 0 && (
-                  <div key={jobCardData[0]?.Id}>
-                    <b>{jobCardData[0]?.date?.slice(0, 2)}</b>
-                  </div>
-                )}
+                <div>
+                  <b>{lastJobCard?.date?.slice(0, 2)}</b>
+                </div>
               </div>
-              <div className="ml-3 ">
-                {jobCardData && invoiceData?.length > 0 && (
-                  <div key={jobCardData[0]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Vehicle Name </b>
-                    :<small className="ml-3">
-                       {jobCardData[0]?.vehicle_name}
-                    </small>
+              {lastJobCard && (
+                <div className="ml-3 ">
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Vehicle Name </b>:
+                    <small className="ml-3">{lastVehicle?.vehicle_name}</small>
                   </div>
-                )}
-                {jobCardData && jobCardData.length > 0 && (
-                  <div key={jobCardData[0]?.Id} className="flex items-center">
-                    <b className="recentJobs">Job No  </b>
-                    : <small className="ml-3">  {jobCardData[0]?.job_no}</small>
+
+                  <div className="flex items-center">
+                    <b className="recentJobs">Job No </b>:
+                    <small className="ml-3"> {lastJobCard?.job_no}</small>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
             <b className="cursor-pointer">
-              <Link to={`/dashboard/preview?id=${jobCardData[0]?._id}`}>
+              <Link to={`/dashboard/preview?id=${lastJobCard?._id}`}>
                 {" "}
                 <HiOutlineEye size={35} />
               </Link>
@@ -127,40 +232,37 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <p className="text-[10px]">
-                  {jobCardData[1]
-                    ? `${new Date(
-                        jobCardData[0]?.createdAt
-                      ).toLocaleString("en-US", { month: "short" })}`
+                  {beforeLastJobCard
+                    ? `${new Date(beforeLastJobCard?.createdAt).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                      )}`
                     : "No Job Card"}
                 </p>
-                {jobCardData && jobCardData?.length > 0 && (
-                  <div key={jobCardData[1]?.Id}>
-                    <b>{jobCardData[1]?.date?.slice(0, 2)}</b>
-                  </div>
-                )}
+
+                <div>
+                  <b>{beforeLastJobCard?.date?.slice(0, 2)}</b>
+                </div>
               </div>
               <div className="ml-3">
-                {jobCardData && jobCardData?.length > 0 && (
-                  <div key={jobCardData[1]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Vehicle Name </b>
-                    :<small className="ml-3">
-                      {jobCardData[1]?.vehicle_name}
+                {beforeLastJobCard && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Vehicle Name </b> :
+                    <small className="ml-3">
+                      {beforeLastVehicle?.vehicle_name}
                     </small>
                   </div>
                 )}
-                {jobCardData && jobCardData?.length > 0 && (
-                  <div
-                    key={jobCardData[1]?.job_no}
-                    className="flex items-center"
-                  >
-                    <b className="recentJobs"> Job No </b>
-                     : <small className="ml-3 ">{jobCardData[1]?.job_no}</small>
+                {beforeLastJobCard && (
+                  <div className="flex items-center">
+                    <b className="recentJobs"> Job No </b>:{" "}
+                    <small className="ml-3 ">{beforeLastJobCard?.job_no}</small>
                   </div>
                 )}
               </div>
             </div>
             <b className="cursor-pointer">
-              <Link to={`/dashboard/preview?id=${jobCardData[1]?._id}`}>
+              <Link to={`/dashboard/preview?id=${beforeLastJobCard?._id}`}>
                 {" "}
                 <HiOutlineEye size={35} />
               </Link>
@@ -177,43 +279,46 @@ const ShowRoomAccount = ({
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center my-3">
-              <div className="cardIcon ">
-                <p>
-                  {quotationData[0]
-                    ? `${new Date(
-                        quotationData[0]?.createdAt
-                      ).toLocaleString("en-US", { month: "short" })}`
+              <div className="cardIcon">
+                <p className="text-[10px]">
+                  {lastQuotation
+                    ? `${new Date(lastQuotation?.createdAt).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                      )}`
                     : "No Quotation"}
                 </p>
 
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0]?.Id}>
-                    <b>{quotationData[0]?.date?.slice(0, 2)}</b>
+                {lastQuotation && (
+                  <div>
+                    <b>{lastQuotation?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0]?.Id} className="flex items-center ">
-                    <b  className="recentJobs">Quotation Number </b>
-                    : <small className="ml-3">{quotationData[0]?.job_no}</small>
+                {lastQuotation && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Quotation Number </b>:{" "}
+                    <small className="ml-3">{lastQuotation?.job_no}</small>
                   </div>
                 )}
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0]?.Id} className="flex items-center">
-                    <b className="recentJobs">Vehicle Name</b>
-                    : <small className="ml-3">{quotationData[0]?.vehicle_name}</small>
+                {lastQuotation && (
+                  <div className="flex items-center">
+                    <b className="recentJobs">Vehicle Name</b>:{" "}
+                    <small className="ml-3">
+                      {lastQuotation?.vehicle_name}
+                    </small>
                   </div>
                 )}
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[0]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Total Amount</b>
-                    : <small className="ml-3">৳{quotationData[0]?.net_total}</small>
+                {lastQuotation && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>:{" "}
+                    <small className="ml-3">৳{lastQuotation?.net_total}</small>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/quotation-view?id=${quotationData[0]?._id}`}>
+            <Link to={`/dashboard/quotation-view?id=${lastQuotation?._id}`}>
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>
@@ -223,41 +328,49 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <p className="text-[10px]">
-                  {quotationData[1]
+                  {beforeLastQuotation
                     ? `${new Date(
-                        quotationData[1]?.createdAt
+                        beforeLastQuotation?.createdAt
                       ).toLocaleString("en-US", { month: "short" })}`
                     : "No Quotation"}
                 </p>
 
-                {quotationData && quotationData?.length > 0 && (
-                  <div key={quotationData[1]?.Id}>
-                    <b>{quotationData[1]?.date?.slice(0, 2)}</b>
+                {beforeLastQuotation && (
+                  <div>
+                    <b>{beforeLastQuotation?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1]?.Id} className="flex items-center">
-                    <b className="recentJobs">Quotation Number </b>
-                    : <small className="ml-3">{quotationData[1]?.job_no}</small>
+                {beforeLastQuotation && (
+                  <div className="flex items-center">
+                    <b className="recentJobs">Quotation Number </b>:{" "}
+                    <small className="ml-3">
+                      {beforeLastQuotation?.job_no}
+                    </small>
                   </div>
                 )}
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1]?.Id} className="flex items-center">
-                    <b className="recentJobs">Vehicle Name </b>
-                    : <small className="ml-3">{quotationData[1]?.vehicle_name}</small>
+                {beforeLastQuotation && (
+                  <div className="flex items-center">
+                    <b className="recentJobs">Vehicle Name </b>:{" "}
+                    <small className="ml-3">
+                      {beforeLastQuotation?.vehicle_name}
+                    </small>
                   </div>
                 )}
-                {quotationData && quotationData.length > 0 && (
-                  <div key={quotationData[1]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Total Amount</b>
-                    : <small className="ml-3">৳{quotationData[1]?.net_total}</small>
+                {beforeLastQuotation && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>:{" "}
+                    <small className="ml-3">
+                      ৳{beforeLastQuotation?.net_total}
+                    </small>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/quotation-view?id=${quotationData[1]?._id}`}>
+            <Link
+              to={`/dashboard/quotation-view?id=${beforeLastQuotation?._id}`}
+            >
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>
@@ -266,7 +379,7 @@ const ShowRoomAccount = ({
         </Card>
       </div>
       <div className="justify-between block mt-5 md:flex">
-      <Card>
+        <Card>
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold">Recent Invoice </h3>
             <Link to="/dashboard/invoice">
@@ -278,42 +391,42 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <p className="text-[10px]">
-                  {invoiceData[0]
-                    ? `${new Date(
-                        invoiceData[0]?.createdAt
-                      ).toLocaleString("en-US", { month: "short" })}`
+                  {lastInvoice
+                    ? `${new Date(lastInvoice?.createdAt).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                      )}`
                     : "No Invoice"}
                 </p>
 
-                <p></p>
-                {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[0]?.Id}>
-                    <b>{invoiceData[0]?.date?.slice(0, 2)}</b>
+                {lastInvoice && (
+                  <div>
+                    <b>{lastInvoice?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[0]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Invoice No  </b>
-                    : <span className="ml-3">{invoiceData[0]?.job_no}</span>
+                {lastInvoice && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Invoice No </b>:{" "}
+                    <span className="ml-3">{lastInvoice?.job_no}</span>
                   </div>
                 )}
-                {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[0]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Vehicle Name  </b>
-                    : <span className="ml-3">{invoiceData[0]?.vehicle_name}</span>
+                {lastInvoice && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Vehicle Name </b>:{" "}
+                    <span className="ml-3">{lastInvoice?.vehicle_name}</span>
                   </div>
                 )}
-                {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[0]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Total Amount</b>
-                    : <span className="ml-3">৳{invoiceData[0]?.net_total}</span>
+                {lastInvoice && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>:{" "}
+                    <span className="ml-3">৳{lastInvoice?.net_total}</span>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${invoiceData[0]?._id}`}>
+            <Link to={`/dashboard/detail?id=${lastInvoice?._id}`}>
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>
@@ -323,41 +436,46 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon bg-[#48CAE4]">
                 <p className="text-[10px]">
-                  {invoiceData[1]
-                    ? `${new Date(
-                        invoiceData[1]?.createdAt
-                      ).toLocaleString("en-US", { month: "short" })}`
+                  {beforeLastInvoice
+                    ? `${new Date(beforeLastInvoice?.createdAt).toLocaleString(
+                        "en-US",
+                        { month: "short" }
+                      )}`
                     : "No Invoice"}
                 </p>
 
-                {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[1]?.Id}>
-                    <b>{invoiceData[1]?.date?.slice(0, 2)}</b>
+                {beforeLastInvoice && (
+                  <div>
+                    <b>{beforeLastInvoice?.date?.slice(0, 2)}</b>
                   </div>
                 )}
               </div>
               <div className="ml-3">
-                {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[1]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Invoice No  </b>
-                    :<span className="ml-3">{invoiceData[1]?.job_no}</span>
+                {beforeLastInvoice && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Invoice No </b>:
+                    <span className="ml-3">{beforeLastInvoice?.job_no}</span>
                   </div>
                 )}
-                {invoiceData && invoiceData?.length > 0 && (
-                  <div key={invoiceData[1]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Vehicle Name  </b>
-                    : <span className="ml-3">{invoiceData[1]?.vehicle_name}</span>
+                {beforeLastInvoice && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Vehicle Name </b>:{" "}
+                    <span className="ml-3">
+                      {beforeLastInvoice?.vehicle_name}
+                    </span>
                   </div>
                 )}
-                {invoiceData && invoiceData.length > 0 && (
-                  <div key={invoiceData[1]?.Id} className="flex items-center ">
-                    <b className="recentJobs">Total Amount</b>
-                    : <span className="ml-3">৳{invoiceData[1]?.net_total}</span>
+                {beforeLastInvoice && (
+                  <div className="flex items-center ">
+                    <b className="recentJobs">Total Amount</b>:{" "}
+                    <span className="ml-3">
+                      ৳{beforeLastInvoice?.net_total}
+                    </span>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${invoiceData[1]?._id}`}>
+            <Link to={`/dashboard/detail?id=${beforeLastInvoice?._id}`}>
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>
@@ -376,49 +494,58 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <b className="block"></b>
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[0]?.Id}>
-                    <p className="text-[10px]">
-                      {moneyReceiptData[0]
-                        ? `${new Date(
-                            moneyReceiptData[0]?.createdAt
-                          ).toLocaleString("en-US", { month: "short" })}`
-                        : "No Money Receipt"}
-                    </p>
-
-                    <b>{moneyReceiptData[0]?.createdAt?.slice(0, 2)}</b>
-                  </div>
-                )}
+                <div>
+                  <p className="text-[10px]">
+                    {lastMoneyReceipt
+                      ? `${new Date(lastMoneyReceipt?.createdAt).toLocaleString(
+                          "en-US",
+                          { month: "short" }
+                        )}`
+                      : "No Money Receipt"}
+                  </p>
+                  {lastMoneyReceipt && (
+                    <b>{lastMoneyReceipt?.createdAt?.slice(0, 2)}</b>
+                  )}
+                </div>
               </div>
               <div className="ml-3">
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[0]?.Id}>
+                {lastMoneyReceipt && (
+                  <div>
                     <div className="flex items-center">
-                      <b className="recentJobs">Against bill no</b>
-                      :<span className="ml-3"> {moneyReceiptData[0]?.against_bill_no}</span>
+                      <b className="recentJobs">Against bill no</b>:
+                      <span className="ml-3">
+                        {" "}
+                        {lastMoneyReceipt?.against_bill_no}
+                      </span>
                     </div>
                   </div>
                 )}
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[0]?.Id}>
+                {lastMoneyReceipt && (
+                  <div>
                     <div className="flex items-center">
-                      <b className="recentJobs">Remaining </b>
-                     :  <small className="ml-3"> ৳{moneyReceiptData[0]?.remaining}</small>
+                      <b className="recentJobs">Remaining </b>:{" "}
+                      <small className="ml-3">
+                        {" "}
+                        ৳{lastMoneyReceipt?.remaining}
+                      </small>
                     </div>
                   </div>
                 )}
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[0]?.Id}>
+                {lastMoneyReceipt && (
+                  <div>
                     <div className="flex items-center">
-                      <b className="recentJobs">Total Amount </b>
-                     :  <small className="ml-3"> ৳{moneyReceiptData[0]?.total_amount}</small>
+                      <b className="recentJobs">Total Amount </b>:{" "}
+                      <small className="ml-3">
+                        {" "}
+                        ৳{lastMoneyReceipt?.total_amount}
+                      </small>
                     </div>
                   </div>
                 )}
               </div>
             </div>
             <Link
-              to={`/dashboard/money-receipt-view?id=${moneyReceiptData[0]?._id}`}
+              to={`/dashboard/money-receipt-view?id=${lastMoneyReceipt?._id}`}
             >
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
@@ -429,47 +556,56 @@ const ShowRoomAccount = ({
             <div className="flex items-center my-3">
               <div className="cardIcon ">
                 <b className="block"></b>
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[1]?.Id}>
-                    <p className="text-[10px]">
-                      {moneyReceiptData[1]
-                        ? `${new Date(
-                            moneyReceiptData[1]?.createdAt
-                          ).toLocaleString("en-US", { month: "short" })}`
-                        : "No Money Receipt"}
-                    </p>
-                    <b>{moneyReceiptData[1]?.createdAt?.slice(0, 2)}</b>
-                  </div>
-                )}
+                <div>
+                  <p className="text-[10px]">
+                    {beforeLastMoneyReceipt
+                      ? `${new Date(
+                          beforeLastMoneyReceipt?.createdAt
+                        ).toLocaleString("en-US", { month: "short" })}`
+                      : "No Money Receipt"}
+                  </p>
+                  {beforeLastMoneyReceipt && (
+                    <b>{beforeLastMoneyReceipt?.createdAt?.slice(0, 2)}</b>
+                  )}
+                </div>
               </div>
               <div className="ml-3">
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[1]?.Id}>
+                {beforeLastMoneyReceipt && (
+                  <div>
                     <div className="flex items-center">
-                      <b className="recentJobs">Against bill no</b>
-                      : <span className="ml-3"> {moneyReceiptData[1]?.against_bill_no}</span>
+                      <b className="recentJobs">Against bill no</b>:{" "}
+                      <span className="ml-3">
+                        {" "}
+                        {beforeLastMoneyReceipt?.against_bill_no}
+                      </span>
                     </div>
                   </div>
                 )}
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[1]?.Id}>
+                {beforeLastMoneyReceipt && (
+                  <div>
                     <div className="flex items-center">
-                      <b className="recentJobs">Remaining</b>
-                     :  <small className="ml-3"> ৳{moneyReceiptData[1]?.remaining}</small>
+                      <b className="recentJobs">Remaining</b>:{" "}
+                      <small className="ml-3">
+                        {" "}
+                        ৳{beforeLastMoneyReceipt?.remaining}
+                      </small>
                     </div>
                   </div>
                 )}
-                {moneyReceiptData && moneyReceiptData?.length > 0 && (
-                  <div key={moneyReceiptData[1]?.Id}>
+                {beforeLastMoneyReceipt && (
+                  <div>
                     <div className="flex items-center">
-                      <b className="recentJobs" >Total Amount </b>
-                     :  <small className="ml-3"> ৳{moneyReceiptData[1]?.total_amount}</small>
+                      <b className="recentJobs">Total Amount </b>:{" "}
+                      <small className="ml-3">
+                        {" "}
+                        ৳{beforeLastMoneyReceipt?.total_amount}
+                      </small>
                     </div>
                   </div>
                 )}
               </div>
             </div>
-            <Link to={`/dashboard/detail?id=${moneyReceiptData[1]?._id}`}>
+            <Link to={`/dashboard/detail?id=${beforeLastMoneyReceipt?._id}`}>
               <b className="cursor-pointer">
                 <HiOutlineEye size={35} />
               </b>

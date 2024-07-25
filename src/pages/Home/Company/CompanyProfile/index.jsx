@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { HiLocationMarker } from "react-icons/hi";
 import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
@@ -16,9 +17,11 @@ import { toast } from "react-toastify";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import Message from "../../../../shared/Message/Message";
 import VehicleDetails from "../../Customer/CustomerProfile/VehicleDetails";
+import { useGetSingleCompanyQuery } from "../../../../redux/api/companyApi";
+import Loading from "../../../../components/Loading/Loading";
 const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
-  const [profileData, setProfileData] = useState({});
+  // const [profileData, setProfileData] = useState({});
   // console.log(profileData);
 
   const [jobCardData, setJobCardData] = useState([]);
@@ -35,17 +38,23 @@ const CompanyProfile = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/company/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setProfileData(data);
-          setLoading(false);
-        });
-    }
-  }, [id]);
+  const {
+    data: profileData,
+    isLoading,
+    error: companyError,
+  } = useGetSingleCompanyQuery(id);
+
+  // useEffect(() => {
+  //   if (id) {
+  //     setLoading(true);
+  //     fetch(`${import.meta.env.VITE_API_URL}/api/v1/company/${id}`)
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setProfileData(data);
+  //         setLoading(false);
+  //       });
+  //   }
+  // }, [id]);
 
   useEffect(() => {
     if (id) {
@@ -148,8 +157,12 @@ const CompanyProfile = () => {
     },
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (companyError) {
+    return <div>Something went wrong</div>;
   }
 
   return (
@@ -165,21 +178,21 @@ const CompanyProfile = () => {
                 <div className="flex items-center">
                   <span> Company ID : </span>{" "}
                   <span className="ml-3 font-semibold ">
-                    {profileData?.companyId}
+                    {profileData?.data?.companyId}
                   </span>
                 </div>
                 <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>{profileData?.fullCompanyNum} </span>
+                    <span>{profileData?.data?.fullCompanyNum} </span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>{profileData.company_email} </span>
+                    <span>{profileData?.data.company_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span>{profileData.company_address} </span>
+                    <span>{profileData?.data?.company_address} </span>
                   </div>
                 </div>
               </div>
@@ -215,10 +228,10 @@ const CompanyProfile = () => {
         <TabPanel value={value} index={0}>
           <CompanyAccount
             profileData={profileData}
-            jobCardData={jobCardData}
-            quotationData={quotationData}
-            invoiceData={invoiceData}
-            moneyReceiptData={moneyReceiptData}
+            // jobCardData={jobCardData}
+            // quotationData={quotationData}
+            // invoiceData={invoiceData}
+            // moneyReceiptData={moneyReceiptData}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
