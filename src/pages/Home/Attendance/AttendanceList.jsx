@@ -1,13 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { FaRegTrashAlt, FaUserEdit } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { Link } from "react-router-dom";
 import { HiOutlineEye } from "react-icons/hi";
+import {
+  useDeleteAttendanceMutation,
+  useGetAllAttendancesQuery,
+} from "../../../redux/api/attendance";
+import Loading from "../../../components/Loading/Loading";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 
@@ -17,94 +21,29 @@ for (let year = 2024; year <= 2030; year++) {
 }
 
 const AttendanceList = () => {
-  const [getAllEmployee, setGetAllEmployee] = useState([]);
-  const [error, setError] = useState("");
+  const [filterType, setFilterType] = useState("");
 
-  const [presentNumber, setPresentNumber] = useState(null);
+  const currentPage = 1;
+  const allAttendanceLimit = 31;
 
-  const [absentNumber, setAbsentNumber] = useState(null);
+  // const parsedDate = new Date();
+  // const day = parsedDate.getDate().toString().padStart(2, "0");
+  // const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+  // const year = parsedDate.getFullYear();
+  // const formattedDate = `${day}-${month}-${year}`;
 
-  const [lateNumber, setLateNumber] = useState(null);
+  const {
+    data: allAttendance,
+    isLoading: allAttendanceLoading,
+    error: allAttendanceError,
+  } = useGetAllAttendancesQuery({
+    limit: allAttendanceLimit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
 
-  const [reload, setReload] = useState(false);
-
-  const parsedDate = new Date();
-  const day = parsedDate.getDate().toString().padStart(2, "0");
-  const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
-  const year = parsedDate.getFullYear();
-  const formattedDate = `${day}-${month}-${year}`;
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-      .then((response) => {
-        setGetAllEmployee(response.data.employee);
-
-        const attendanceData = response.data.employee.map(
-          (data) => data.attendance
-        );
-        const allAttendance = attendanceData.flat();
-        const filteredAttendance = allAttendance.filter(
-          (attendance) => attendance.date === formattedDate
-        );
-
-        const presentEntries = filteredAttendance.filter(
-          (attendance) => attendance.present === true
-        ).length;
-
-        setPresentNumber(presentEntries);
-
-        //  for absent
-
-        const absentEntries = filteredAttendance.filter(
-          (attendance) => attendance.present === false
-        ).length;
-
-        setAbsentNumber(absentEntries);
-
-        // for late status
-        const lateEntries = filteredAttendance.filter(
-          (attendance) => attendance.late_status === true
-        ).length;
-
-        setLateNumber(lateEntries);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }, [formattedDate, reload]);
-
-  const handleDelete = async (e) => {
-    try {
-      const newAttendanceData = getAllEmployee.map((employee) => {
-        return {
-          _id: employee._id,
-          date: formattedDate,
-          deleted: e,
-        };
-      });
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
-        newAttendanceData
-      );
-      if (response.status === 200) {
-        toast.success("Deleted successful.");
-        setReload(!reload);
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  //  search filter
-
-  const [filteredDate, setFilteredDate] = useState(null);
-
-  const [fPresentNumber, setFPresentNumber] = useState(null);
-
-  const [fAbsentNumber, setFAbsentNumber] = useState(null);
-
-  const [fLateNumber, setFLateNumber] = useState(null);
+  const [deleteAttendance, { isLoading, error }] =
+    useDeleteAttendanceMutation();
 
   const handleDateSearch = (e) => {
     const parsedDate = new Date(e.$d);
@@ -112,74 +51,40 @@ const AttendanceList = () => {
     const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
     const year = parsedDate.getFullYear();
     const date = `${day}-${month}-${year}`;
-    setFilteredDate(date);
+    setFilterType(date);
   };
 
-  const handleFilterData = () => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-      .then((response) => {
-        const attendanceData = response.data.employee.map(
-          (data) => data.attendance
-        );
-        const allAttendance = attendanceData.flat();
-        const filteredAttendance = allAttendance.filter(
-          (attendance) => attendance.date === filteredDate
-        );
-
-        setGetAllEmployee(filteredAttendance);
-
-        const presentEntries = filteredAttendance.filter(
-          (attendance) => attendance.present === true
-        ).length;
-
-        setFPresentNumber(presentEntries);
-
-        //  for absent
-
-        const absentEntries = filteredAttendance.filter(
-          (attendance) => attendance.present === false
-        ).length;
-
-        setFAbsentNumber(absentEntries);
-
-        // for late status
-        const lateEntries = filteredAttendance.filter(
-          (attendance) => attendance.late_status === true
-        ).length;
-
-        setFLateNumber(lateEntries);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  };
-
-  const handleDeleteFilter = async (e) => {
+  const handleDeleteFilter = async (date) => {
     try {
-      const newAttendanceData = getAllEmployee.map((employee) => {
-        return {
-          _id: employee._id,
-          date: filteredDate ? filteredDate : formattedDate,
-          deleted: e,
-        };
-      });
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
-        newAttendanceData
-      );
-      if (response.status === 200) {
-        toast.success("Deleted successful.");
-        setReload(!reload);
+      const values = {
+        date,
+      };
+
+      const response = await deleteAttendance(values).unwrap();
+      if (response.success) {
+        toast.success(response.message);
       }
     } catch (error) {
-      setError(error.message);
+      toast.error(error.message);
     }
   };
 
+  const handleAllAttendance = () => {
+    setFilterType("");
+  };
+
+  if (allAttendanceLoading) {
+    return <Loading />;
+  }
+
+  if (allAttendanceError) {
+    toast.error("Something went wrong!");
+  }
+
+  console.log(error);
+
   return (
     <div className="mt-10 table-container">
-      {error && <div className="py-3 text-red-400">{error}</div>}
       <h3 className="mt-5 mb-8 text-2xl font-semibold">Attendance Sheet</h3>
 
       <div className="flex items-center my-5 ">
@@ -192,14 +97,14 @@ const AttendanceList = () => {
         </div>
         <div className="relative rounded-sm w-max mt-2 ml-2">
           <button
-            onClick={handleFilterData}
+            onClick={handleAllAttendance}
             className="employeeBtn employeeInput"
           >
-            Search
+            All
           </button>
         </div>
       </div>
-      {getAllEmployee.length > 0 ? (
+      {allAttendance?.data?.records?.length > 0 ? (
         <table className="attendanceTable">
           <thead>
             <tr className="bg-[#42A1DA] text-white ">
@@ -210,28 +115,30 @@ const AttendanceList = () => {
               <th colSpan={3}>Action </th>
             </tr>
           </thead>
-          {filteredDate ? (
-            <tbody>
+          {allAttendance?.data?.records?.map((attendance) => (
+            <tbody key={attendance._id}>
               <tr className="even-row">
-                <td> {filteredDate}</td>
+                <td> {attendance.date}</td>
                 <td>
                   <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
-                    {fPresentNumber}
+                    {attendance?.presentEntries}
                   </div>
                 </td>
                 <td>
                   <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
-                    {fAbsentNumber}
+                    {attendance?.absentEntries}
                   </div>
                 </td>
                 <td>
                   {" "}
                   <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
-                    {fLateNumber}
+                    {attendance?.lateEntries}
                   </div>
                 </td>
                 <td>
-                  <Link to="/dashboard/update-attendance">
+                  <Link
+                    to={`/dashboard/update-attendance?date=${attendance?.date}`}
+                  >
                     <FaUserEdit
                       className="text-[#60BF6B] cursor-pointer mx-auto"
                       size={30}
@@ -240,7 +147,7 @@ const AttendanceList = () => {
                 </td>
 
                 <td>
-                  <Link to={`/dashboard/view-attendance?date=${filteredDate}`}>
+                  <Link to={`/dashboard/view-attendance?date=${""}`}>
                     {" "}
                     <HiOutlineEye
                       className="text-[#42A1DA] cursor-pointer mx-auto"
@@ -253,60 +160,12 @@ const AttendanceList = () => {
                   <FaRegTrashAlt
                     className="text-[#F62F52] cursor-pointer mx-auto"
                     size={30}
-                    onClick={() => handleDeleteFilter("delete")}
+                    onClick={() => handleDeleteFilter(attendance?.date)}
                   />
                 </td>
               </tr>
             </tbody>
-          ) : (
-            <tbody>
-              <tr className="even-row">
-                <td> {formattedDate}</td>
-                <td>
-                  <div className="rounded-full w-8 h-8 mx-auto bg-[#60BF6B] text-white flex items-center justify-center">
-                    {presentNumber}
-                  </div>
-                </td>
-                <td>
-                  <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
-                    {absentNumber}
-                  </div>
-                </td>
-                <td>
-                  {" "}
-                  <div className="rounded-full w-8 h-8 mx-auto bg-red-600 text-white flex items-center justify-center">
-                    {lateNumber}
-                  </div>
-                </td>
-                <td>
-                  <Link to="/dashboard/update-attendance">
-                    <FaUserEdit
-                      className="text-[#60BF6B] cursor-pointer mx-auto"
-                      size={30}
-                    />
-                  </Link>
-                </td>
-
-                <td>
-                  <Link to={`/dashboard/view-attendance?date=${formattedDate}`}>
-                    {" "}
-                    <HiOutlineEye
-                      className="text-[#42A1DA] cursor-pointer mx-auto"
-                      size={30}
-                    />{" "}
-                  </Link>
-                </td>
-                <td>
-                  {" "}
-                  <FaRegTrashAlt
-                    className="text-[#F62F52] cursor-pointer mx-auto"
-                    size={30}
-                    onClick={() => handleDelete("delete")}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          )}
+          ))}
         </table>
       ) : (
         <div>No data found.</div>

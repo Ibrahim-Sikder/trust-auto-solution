@@ -14,48 +14,80 @@ import "./Employee.css";
 import EmployeeSalaryListTable from "./EmployeeSalaryListTable";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useGetAllEmployeesQuery } from "../../../redux/api/employee";
+import {
+  useCreateSalaryMutation,
+  useGetAllSalaryQuery,
+} from "../../../redux/api/salary";
+import { ErrorMessage } from "../../../components/error-message";
+import Loading from "../../../components/Loading/Loading";
 const initialSelectedOption = months[0];
 
 const AddAttendance = () => {
-  const [getAllEmployee, setGetAllEmployee] = useState([]);
-  const [getAllEmployeeSalary, setGetAllEmployeeSalary] = useState([]);
+  // const [getAllEmployee, setGetAllEmployee] = useState([]);
+
   const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
 
   const handleChange = (value) => {
     setSelectedOption(value);
   };
 
-  const [error, setError] = useState("");
-  const [reload, setReload] = useState(false);
+  const [filterType, setFilterType] = useState(initialSelectedOption);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const limit = 10;
+
+  const { data: getAllEmployee, isLoading: employeesLoading } =
+    useGetAllEmployeesQuery({
+      limit,
+      page: currentPage,
+    });
+  const {
+    data: getAllSalary,
+    isLoading: salaryLoading,
+    error: salaryError,
+    refetch
+  } = useGetAllSalaryQuery({
+    searchTerm: filterType.value,
+  });
+
+  const [createSalary, { isLoading: createLoading, error: createError }] =
+    useCreateSalaryMutation();
 
   const [salaryMonth, setSalaryMonth] = useState(
-    new Array(getAllEmployee?.length).fill(initialSelectedOption)
+    new Array(getAllEmployee?.data?.employees?.length).fill(
+      initialSelectedOption
+    )
   );
   const [bonus, setBonus] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
   const [overtimeAmount, setOvertimeAmount] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
   const [salaryAmount, setSalaryAmount] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
   const [previousDue, setPreviousDue] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
   const [salaryCut, setSalaryCut] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
   const [totalPayment, setTotalPayment] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
   const [advance, setAdvance] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
-  const [pay, setPay] = useState(new Array(getAllEmployee?.length).fill(null));
-  const [due, setDue] = useState(new Array(getAllEmployee?.length).fill(null));
+  const [pay, setPay] = useState(
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
+  );
+  const [due, setDue] = useState(
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
+  );
   const [paid, setPaid] = useState(
-    new Array(getAllEmployee?.length).fill(null)
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
 
   const currentDate = new Date();
@@ -63,25 +95,25 @@ const AddAttendance = () => {
 
   // Output: The name of the current month (e.g., "April" if current month is April)
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-      .then((response) => {
-        setGetAllEmployee(response.data.employee);
-        const allEmployee = response.data.employee.map(
-          (data) => data.salary_details
-        );
-        const showData = allEmployee.flat();
-        const filteredSalary = showData.filter(
-          (salary) => salary.month_of_salary === currentMonth
-        );
+  // useEffect(() => {
+  //   axios
+  //     .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
+  //     .then((response) => {
+  //       setGetAllEmployee(response.data.employee);
+  //       const allEmployee = response.data.employee.map(
+  //         (data) => data.salary_details
+  //       );
+  //       const showData = allEmployee.flat();
+  //       const filteredSalary = showData.filter(
+  //         (salary) => salary.month_of_salary === currentMonth
+  //       );
 
-        setGetAllEmployeeSalary(filteredSalary);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }, [currentMonth]);
+  //       setGetAllEmployeeSalary(filteredSalary);
+  //     })
+  //     .catch((error) => {
+  //       setError(error.message);
+  //     });
+  // }, [currentMonth]);
 
   const handleBonus = (index, value) => {
     const newBonus = [...bonus];
@@ -135,40 +167,45 @@ const AddAttendance = () => {
   };
 
   const handleSubMitSalary = async () => {
-    const newSalaryData = getAllEmployee.map((employee, index) => {
-      return {
-        salary: "salary",
-        _id: employee._id,
-        full_name: employee.full_name,
-        employeeId: employee.employeeId,
-        month_of_salary: selectedOption.value,
-        bonus: bonus[index],
-        overtime_amount: overtimeAmount[index],
-        salary_amount: salaryAmount[index],
-        previous_due: previousDue[index],
-        cut_salary: salaryCut[index],
-        total_payment: totalPayment[index],
-        advance: advance[index],
-        pay: pay[index],
-        due: due[index],
-        paid: paid[index],
-      };
-    });
+    const newSalaryData = getAllEmployee?.data?.employees?.map(
+      (employee, index) => {
+        return {
+          employee: employee._id,
+          full_name: employee.full_name,
+          employeeId: employee.employeeId,
+          month_of_salary: selectedOption.value,
+          bonus: bonus[index],
+          overtime_amount: overtimeAmount[index],
+          salary_amount: salaryAmount[index],
+          previous_due: previousDue[index],
+          cut_salary: salaryCut[index],
+          total_payment: totalPayment[index],
+          advance: advance[index],
+          pay: pay[index],
+          due: due[index],
+          paid: paid[index],
+        };
+      }
+    );
 
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
-        newSalaryData
-      );
-
-      if (response.status === 200) {
-        toast.success("Successful");
-        setReload(!reload);
+      const response = await createSalary(newSalaryData).unwrap();
+      if (response.success) {
+        toast.success(response.message);
+        refetch()
       }
     } catch (error) {
-      setError(error.message);
+      toast.error(error.message);
     }
   };
+
+  if (salaryLoading || employeesLoading) {
+    return <Loading />;
+  }
+
+  if (salaryError) {
+    toast.error(salaryError?.data?.message);
+  }
 
   return (
     <div className="pt-8 pb-20">
@@ -202,8 +239,8 @@ const AddAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(getAllEmployee) &&
-              getAllEmployee?.map((employee, index) => {
+            {Array.isArray(getAllEmployee?.data?.employees) &&
+              getAllEmployee?.data?.employees?.map((employee, index) => {
                 const userOvertime = {};
                 employee.attendance.forEach((attendanceRecord) => {
                   if (
@@ -242,7 +279,12 @@ const AddAttendance = () => {
                       />
                     </td>
                     <td>
-                      <b>{userOvertime[employee._id]}h</b>
+                      <b>
+                        {userOvertime[employee._id]
+                          ? userOvertime[employee._id]
+                          : 0}{" "}
+                        h
+                      </b>
                     </td>
                     <td>
                       <input
@@ -329,8 +371,14 @@ const AddAttendance = () => {
               })}
           </tbody>
         </table>
+        <div className="my-2">
+          {createError && (
+            <ErrorMessage messages={createError.data.errorSources} />
+          )}
+        </div>
         <div className="flex justify-end mt-3">
           <button
+            disabled={createLoading}
             className="bg-[#42A1DA] text-white px-3 py-2 rounded-sm"
             type="submit"
             onClick={handleSubMitSalary}
@@ -340,9 +388,9 @@ const AddAttendance = () => {
         </div>
       </div>
       <EmployeeSalaryListTable
-        getAllEmployee={getAllEmployeeSalary}
-        setGetAllEmployeeSalary={setGetAllEmployeeSalary}
-        setError={setError}
+        filterType={filterType}
+        setFilterType={setFilterType}
+        getAllSalary={getAllSalary}
       />
     </div>
   );

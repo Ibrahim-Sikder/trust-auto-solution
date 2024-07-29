@@ -9,6 +9,13 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import AttendanceOutTimePicker from "./AttendanceForOutTime";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useCreateAttendanceMutation,
+  useGetSingleAttendanceQuery,
+} from "../../../redux/api/attendance";
+import Loading from "../../../components/Loading/Loading";
+import { ErrorMessage } from "../../../components/error-message";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 for (let year = 2024; year <= 2030; year++) {
@@ -16,6 +23,11 @@ for (let year = 2024; year <= 2030; year++) {
 }
 
 const UpdateAttendance = () => {
+  const location = useLocation();
+  const date = new URLSearchParams(location.search).get("date");
+
+  const navigate = useNavigate();
+
   const [employeeAttendance, setEmployeeAttendance] = useState([]);
   const [error, setError] = useState("");
   const [presentState, setPresentState] = useState(
@@ -36,6 +48,16 @@ const UpdateAttendance = () => {
   const [lateStatus, setLateStatus] = useState(
     new Array(employeeAttendance.length).fill(false)
   );
+
+  const {
+    data: singleAttendance,
+    isLoading: singleAttendanceLoading,
+    error: singleAttendanceError,
+    refetch,
+  } = useGetSingleAttendanceQuery(date);
+
+  const [updateAttendance, { isLoading: updateLoading, error: updateError }] =
+    useCreateAttendanceMutation();
 
   useEffect(() => {
     axios
@@ -123,7 +145,6 @@ const UpdateAttendance = () => {
     });
   };
   const handleAttendanceOvertime = (index, value) => {
-   
     const newOvertime = [...overtime];
     newOvertime[index] = value;
     setOvertime(newOvertime);
@@ -136,46 +157,59 @@ const UpdateAttendance = () => {
   };
 
   const handleSubMitAttendance = async () => {
-    const newAttendanceData = employeeAttendance.map((employee, index) => {
-      return {
-        _id: employee._id,
-        full_name: employee.full_name,
-        employeeId: employee.employeeId,
-        status: employee.status,
-        designation: employee.designation,
-        date: employee.date,
-        present:
-          presentState[index] !== undefined
-            ? presentState[index]
-            : employee.present,
-        absent:
-          absentState[index] !== undefined
-            ? absentState[index]
-            : employee.absent,
-        in_time: inTime[index] !== undefined ? inTime[index] : employee.in_time,
-        out_time:
-          outTime[index] !== undefined ? outTime[index] : employee.out_time,
-        overtime:
-          overtime[index] !== undefined ? overtime[index] : employee.overtime,
-        late_status:
-          lateStatus[index] !== undefined
-            ? lateStatus[index]
-            : employee.late_status,
-      };
-    });
+    const newAttendanceData = singleAttendance?.data?.map(
+      (attendance, index) => {
+        return {
+          employee: attendance.employee,
+          full_name: attendance.full_name,
+          employeeId: attendance.employeeId,
+          status: attendance.status,
+          designation: attendance.designation,
+          date: attendance.date,
+          office_time: "10.00",
+          present:
+            presentState[index] !== undefined
+              ? presentState[index]
+              : attendance.present,
+          absent:
+            absentState[index] !== undefined
+              ? absentState[index]
+              : attendance.absent,
+          in_time:
+            inTime[index] !== undefined ? inTime[index] : attendance.in_time,
+          out_time:
+            outTime[index] !== undefined ? outTime[index] : attendance.out_time,
+          overtime:
+            overtime[index] !== undefined
+              ? overtime[index]
+              : attendance.overtime,
+          late_status:
+            lateStatus[index] !== undefined
+              ? lateStatus[index]
+              : attendance.late_status,
+        };
+      }
+    );
 
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee/all`,
-        newAttendanceData
-      );
-      if (response.status === 200) {
-        toast.success("Update successful");
+      const response = await updateAttendance(newAttendanceData).unwrap();
+      if (response.success) {
+        toast.success("Attendance update successful.");
+        navigate("/dashboard/attendance-list");
+        refetch();
       }
     } catch (error) {
-      setError(error.message);
+      toast.error(error.message);
     }
   };
+
+  if (singleAttendanceLoading) {
+    return <Loading />;
+  }
+
+  if (singleAttendanceError) {
+    toast.error(singleAttendanceError?.data?.message);
+  }
 
   return (
     <div className="pt-8 pb-20">
@@ -206,16 +240,16 @@ const UpdateAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            {employeeAttendance.map((employee, index) => (
+            {singleAttendance?.data?.map((attendance, index) => (
               <tr
                 className={index % 2 === 0 ? "even-row" : "odd-row"}
-                key={employee._id}
+                key={attendance?._id}
               >
                 <td>{index + 1}</td>
-                <td>{employee.full_name}</td>
-                <td>{employee.employeeId}</td>
-                <td>{employee.status}</td>
-                <td>{employee.date}</td>
+                <td>{attendance?.full_name}</td>
+                <td>{attendance?.employeeId}</td>
+                <td>{attendance?.designation}</td>
+                <td>{attendance?.date}</td>
                 <td>
                   <input
                     type="checkbox"
@@ -224,7 +258,7 @@ const UpdateAttendance = () => {
                     checked={
                       presentState[index] !== undefined
                         ? presentState[index]
-                        : employee.present
+                        : attendance?.present
                     }
                   />
                 </td>
@@ -236,7 +270,7 @@ const UpdateAttendance = () => {
                     checked={
                       absentState[index] !== undefined
                         ? absentState[index]
-                        : employee.absent
+                        : attendance.absent
                     }
                   />
                 </td>
@@ -245,13 +279,14 @@ const UpdateAttendance = () => {
                   <AttendanceTimePicker
                     handleAttendanceInTime={handleAttendanceInTime}
                     index={index}
-                    defaultValue={employee.in_time}
+                    defaultValue={attendance?.in_time}
                   />
                 </td>
                 <td>
                   <AttendanceOutTimePicker
                     handleAttendanceOutTime={handleAttendanceOutTime}
                     index={index}
+                    defaultValue={attendance?.out_time}
                   />
                 </td>
                 <td>
@@ -261,7 +296,7 @@ const UpdateAttendance = () => {
                     onChange={(e) =>
                       handleAttendanceOvertime(index, e.target.value)
                     }
-                    defaultValue={employee.overtime}
+                    defaultValue={attendance?.overtime}
                   />
                 </td>
                 <td>
@@ -281,295 +316,19 @@ const UpdateAttendance = () => {
               </tr>
             ))}
           </tbody>
-          {/* <tbody>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="even-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr className="odd-row">
-              <td>01</td>
-              <td>Rakib</td>
-              <td>04785</td>
-              <td>Staff</td>
-              <td>10-05-2024</td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>
-                <input type="checkbox" className="border" />
-              </td>
-              <td>10.00</td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <AttendanceTimePicker />
-              </td>
-              <td>
-                <input type="number" className="border overTimeInput" />
-              </td>
-              <td>
-                <div className="flex items-center justify-center cursor-pointer ">
-                  <HiOutlineX
-                    size={20}
-                    className="text-[#F62D51] attendanceIcon"
-                  />
-                  <HiCheck
-                    className="text-[#4AB657] attendanceIcon "
-                    size={20}
-                  />
-                </div>
-              </td>
-            </tr>
-          </tbody> */}
         </table>
+        <div className="my-2">
+          {updateError && (
+            <ErrorMessage messages={updateError?.data?.errorSources} />
+          )}
+        </div>
         <div className="flex justify-end mt-3">
           {" "}
           <button
             className="bg-[#42A1DA] text-white px-3 py-2 rounded-sm"
             type="submit"
             onClick={handleSubMitAttendance}
+            disabled={updateLoading}
           >
             Update Attendance
           </button>

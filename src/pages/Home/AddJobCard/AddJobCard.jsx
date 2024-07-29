@@ -1,5 +1,5 @@
-/* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
+
 import "./AddJobCard.css";
 import car from "../../../../public/assets/car2.jpeg";
 import logo from "../../../../public/assets/logo.png";
@@ -7,19 +7,19 @@ import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
 import {
   Autocomplete,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
+  Pagination,
   Select,
   TextField,
 } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { FaTrashAlt, FaEdit, FaEye, FaGlobe } from "react-icons/fa";
+import InputMask from "react-input-mask";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+
 import { toast } from "react-toastify";
 import Loading from "../../../components/Loading/Loading";
 import {
@@ -27,37 +27,222 @@ import {
   cmDmOptions,
   countries,
   fuelType,
-  totalYear,
   vehicleModels,
   vehicleName,
   vehicleTypes,
 } from "../../../constant";
-import { HiOutlineChevronDown, HiOutlinePlus } from "react-icons/hi";
-import { formatDate } from "../../../utils/formateDate";
-import { Email, WhatsApp } from "@mui/icons-material";
-import { FaLocationDot } from "react-icons/fa6";
+import {
+  HiOutlineChevronDown,
+  HiOutlinePlus,
+  HiOutlineSearch,
+} from "react-icons/hi";
+
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
+import { useGetAllCustomersQuery } from "../../../redux/api/customerApi";
+import { useGetAllCompaniesQuery } from "../../../redux/api/companyApi";
+import { useGetAllShowRoomsQuery } from "../../../redux/api/showRoomApi";
+import {
+  useCreateJobCardMutation,
+  useDeleteJobCardMutation,
+  useGetAllJobCardsQuery,
+} from "../../../redux/api/jobCard";
+import { ErrorMessage } from "../../../components/error-message";
+import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 
 const AddJobCard = () => {
-  const [previousPostData, setPreviousPostData] = useState({});
-  const [jobNo, setJobNo] = useState(previousPostData.job_no);
-  const [allJobCard, setAllJobCard] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [noMatching, setNoMatching] = useState(null);
   const [idType, setIdType] = useState(null);
   const [showId, setShowId] = useState([]);
-  const [customerId, setCustomerId] = useState(null);
-  const [newId, setNewId] = useState("customerId");
-  // const [customerDetails, setCustomerDetails] = useState([]);
-  const [showCustomerData, setShowCustomerData] = useState({});
-  console.log(showCustomerData);
-  const inputRef = useRef(null); // Create a ref for the input element
-  const [inputValue, setInputValue] = useState(""); // Controlled input value state
+  const [userId, setUserId] = useState(null);
+  const [newId, setNewId] = useState("customer");
+
+  // const [showCustomerData, setShowCustomerData] = useState({});
+
+  const [inputValue, setInputValue] = useState("");
 
   // country code
   const [countryCode, setCountryCode] = useState(countries[0]);
+  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
+
+  const [note, setNote] = useState(null);
+  const [vehicleBody, setVehicleBody] = useState(null);
+  const [clickControl, setClickControl] = useState(null);
+
+  const [value, setValue] = useState("");
+  const [value2, setValue2] = useState("");
+  const [value3, setValue3] = useState("");
+
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  const [filteredOptions, setFilteredOptions] = useState([]);
+  const [yearSelectInput, setYearSelectInput] = useState("");
+  const [technicianDate, setTechnicianDate] = useState("");
+  const [formattedDate, setFormattedDate] = useState("");
+  const [filterType, setFilterType] = useState("");
+
+  const [getDataWithChassisNo, setGetDataWithChassisNo] = useState("");
+  const [getDataWithId, setGetDataWithId] = useState({});
+
+  const formRef = useRef();
+  const textInputRef = useRef(null);
+  const navigate = useNavigate();
+  const limit = 10;
+  const jobCardLimit = 5000;
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue: setVModelValue,
+    formState: { errors },
+  } = useForm();
+
+  const [
+    createJobCard,
+    { isLoading: createJobCardLoading, error: jobCardCreateError },
+  ] = useCreateJobCardMutation();
+
+  const [deleteJobCard, { isLoading: deleteLoading }] =
+    useDeleteJobCardMutation();
+
+  const { data: customerData, isLoading: customerLoading } =
+    useGetAllCustomersQuery({
+      limit: jobCardLimit,
+      page: currentPage,
+    });
+  const { data: companyData, isLoading: companyLoading } =
+    useGetAllCompaniesQuery({ limit: jobCardLimit, page: currentPage });
+  const { data: showroomData, isLoading: showroomLoading } =
+    useGetAllShowRoomsQuery({ limit: jobCardLimit, page: currentPage });
+
+  const { data: allJobCards, isLoading: jobCardLoading } =
+    useGetAllJobCardsQuery({
+      limit,
+      page: currentPage,
+      searchTerm: filterType,
+    });
+
+  const lastJobCard = allJobCards?.data?.jobCards
+    ? [...allJobCards.data.jobCards].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      )[0]
+    : null;
+
+  const jobNumber = (Number(lastJobCard?.job_no) + 1)
+    .toString()
+    .padStart(4, "0");
+
+  useEffect(() => {
+    if (getDataWithId && newId === "customer") {
+      reset({
+        company_name: getDataWithId?.company_name,
+        vehicle_username: getDataWithId?.vehicle_username,
+        company_address: getDataWithId?.company_address,
+        customer_name: getDataWithId?.customer_name,
+        customer_country_code: getDataWithId?.customer_country_code,
+        customer_contact: phoneNumber || getDataWithId?.customer_contact,
+        customer_email: getDataWithId?.customer_email,
+        customer_address: getDataWithId?.customer_address,
+        driver_name: getDataWithId?.driver_name,
+        driver_country_code: getDataWithId?.driver_country_code,
+        driver_contact: driverPhoneNumber || getDataWithId?.driver_contact,
+        reference_name: getDataWithId?.reference_name,
+
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+        vehicle_model: getDataWithChassisNo?.vehicle_model,
+        vehicle_category: getDataWithChassisNo?.vehicle_category,
+        color_code: getDataWithChassisNo?.color_code,
+        mileage: getDataWithChassisNo?.mileage,
+        fuel_type: getDataWithChassisNo?.fuel_type,
+      });
+    }
+    if (getDataWithId && newId === "company") {
+      reset({
+        company_name: getDataWithId?.company_name,
+        vehicle_username: getDataWithId?.vehicle_username,
+        company_address: getDataWithId?.company_address,
+        company_contact: getDataWithId?.company_contact,
+        company_country_code: getDataWithId?.company_country_code,
+        company_email: getDataWithId?.company_email,
+        customer_address: getDataWithId?.customer_address,
+
+        driver_name: getDataWithId?.driver_name,
+        driver_country_code: getDataWithId?.driver_country_code,
+        driver_contact: driverPhoneNumber || getDataWithId?.driver_contact,
+        reference_name: getDataWithId?.reference_name,
+
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+        vehicle_model: getDataWithChassisNo?.vehicle_model,
+        vehicle_category: getDataWithChassisNo?.vehicle_category,
+        color_code: getDataWithChassisNo?.color_code,
+        mileage: getDataWithChassisNo?.mileage,
+        fuel_type: getDataWithChassisNo?.fuel_type,
+      });
+    }
+    if (getDataWithId && newId === "showRoom") {
+      reset({
+        showRoom_name: getDataWithId?.showRoom_name,
+        vehicle_username: getDataWithId?.vehicle_username,
+        showRoom_address: getDataWithId?.showRoom_address,
+        company_name: getDataWithId?.company_name,
+        company_contact: phoneNumber || getDataWithId?.company_contact,
+        company_country_code: getDataWithId?.company_country_code,
+        company_email: getDataWithId?.company_email,
+        company_address: getDataWithId?.company_address,
+        driver_name: getDataWithId?.driver_name,
+        driver_country_code: getDataWithId?.driver_country_code,
+        driver_contact: driverPhoneNumber || getDataWithId?.driver_contact,
+        reference_name: getDataWithId?.reference_name,
+
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+        vehicle_model: getDataWithChassisNo?.vehicle_model,
+        vehicle_category: getDataWithChassisNo?.vehicle_category,
+        color_code: getDataWithChassisNo?.color_code,
+        mileage: getDataWithChassisNo?.mileage,
+        fuel_type: getDataWithChassisNo?.fuel_type,
+      });
+    }
+  }, [
+    customerData,
+    reset,
+    phoneNumber,
+    driverPhoneNumber,
+    getDataWithChassisNo?.carReg_no,
+    getDataWithChassisNo?.car_registration_no,
+    getDataWithChassisNo?.engine_no,
+    getDataWithChassisNo?.vehicle_brand,
+    getDataWithChassisNo?.vehicle_name,
+    getDataWithChassisNo?.vehicle_model,
+    getDataWithChassisNo?.vehicle_category,
+    getDataWithChassisNo?.color_code,
+    getDataWithChassisNo?.mileage,
+    getDataWithChassisNo?.fuel_type,
+    getDataWithId,
+    newId,
+    userId,
+  ]);
+
+  useEffect(() => {
+    if (!getDataWithId) {
+      formRef.current.reset();
+    }
+  }, [getDataWithId]);
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
@@ -84,150 +269,122 @@ const AddJobCard = () => {
     }
   };
 
-  useEffect(() => {
-    if (showCustomerData?.carReg_no && inputRef.current) {
-      inputRef.current.focus();
-      setInputValue(showCustomerData.carReg_no); // Set the input value to the loaded data
-    }
-  }, [showCustomerData]);
-
-  const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
-  const [getFuelType, setGetFuelType] = useState("");
-
-  const [note, setNote] = useState(null);
-  const [vehicleBody, setVehicleBody] = useState(null);
-  const [clickControl, setClickControl] = useState(null);
-
-  const [error, setError] = useState(null);
-
-  const [customerConError, setCustomerConError] = useState("");
-  const [driverConError, setDriverConError] = useState("");
-  const [registrationError, setRegistrationError] = useState("");
-
-  const [value, setValue] = useState("");
-  const [value2, setValue2] = useState("");
-  const [value3, setValue3] = useState("");
-  const [reload, setReload] = useState(false);
-  // const [VModelValue, setVModelValue] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue: setVModelValue,
-    formState: { errors },
-  } = useForm();
-
-  const [technicianDate, setTechnicianDate] = useState("");
-  const [formattedDate, setFormattedDate] = useState("");
-  const [filterType, setFilterType] = useState("");
-
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const formRef = useRef();
-  const navigate = useNavigate();
+  // useEffect(() => {
+  //   if (showCustomerData?.carReg_no && inputRef.current) {
+  //     inputRef.current.focus();
+  //     setInputValue(showCustomerData.carReg_no); // Set the input value to the loaded data
+  //   }
+  // }, [showCustomerData]);
 
   const onSubmit = async (data) => {
-    try {
-      if (!customerId) {
-        return toast.error("Please add your Id.");
+    if (!newId) {
+      return toast.error("Please add your Id.");
+    }
+
+    const customer = {
+      company_name: data.company_name,
+      vehicle_username: data.vehicle_username,
+      company_address: data.company_address,
+      customer_name: data.customer_name,
+      customer_contact: data.customer_contact,
+      customer_country_code: countryCode.code,
+      customer_email: data.customer_email,
+      customer_address: data.customer_address,
+      driver_name: data.driver_name,
+      driver_contact: data.driver_contact,
+      driver_country_code: driverCountryCode.code,
+      reference_name: data.reference_name,
+    };
+
+    const company = {
+      company_name: data.company_name,
+      vehicle_username: data.vehicle_username,
+      company_address: data.company_address,
+      company_contact: data.company_contact,
+      company_country_code: countryCode.code,
+      company_email: data.company_email,
+      customer_address: data.customer_address,
+      driver_name: data.driver_name,
+      driver_contact: data.driver_contact,
+      driver_country_code: driverCountryCode.code,
+      reference_name: data.reference_name,
+    };
+
+    const showroom = {
+      showRoom_name: data.showRoom_name,
+      vehicle_username: data.vehicle_username,
+      showRoom_address: data.showRoom_address,
+      company_name: data.company_name,
+      company_contact: data.company_contact,
+      company_country_code: countryCode.code,
+      company_email: data.company_email,
+      company_address: data.company_address,
+      driver_name: data.driver_name,
+      driver_contact: data.driver_contact,
+      driver_country_code: driverCountryCode.code,
+      reference_name: data.reference_name,
+    };
+
+    data.vehicle_model = Number(data.vehicle_model);
+    data.mileage = Number(data.mileage);
+
+    // Extract vehicle information
+    const vehicle = {
+      carReg_no: data.carReg_no,
+      car_registration_no: data.car_registration_no,
+      chassis_no: data.chassis_no,
+      engine_no: data.engine_no,
+      vehicle_brand: data.vehicle_brand,
+      vehicle_name: data.vehicle_name,
+      vehicle_model: data.vehicle_model,
+      vehicle_category: data.vehicle_category,
+      color_code: data.color_code,
+      mileage: data.mileage,
+      fuel_type: data.fuel_type,
+    };
+
+    const jobCard = {
+      Id: userId,
+      job_no: lastJobCard?.job_no,
+      user_type: newId,
+      date: formattedDate,
+      vehicle_interior_parts: value,
+      reported_defect: value2,
+      reported_action: value3,
+      note: note,
+      vehicle_body_report: vehicleBody,
+      technician_name: data.technician_name,
+      technician_signature: data.technician_signature,
+      technician_date: technicianDate,
+      vehicle_owner: data.vehicle_owner,
+    };
+
+    const newCard = {
+      customer,
+      company,
+      showroom,
+      vehicle,
+      jobCard,
+    };
+
+    const res = await createJobCard(newCard).unwrap();
+
+    if (res.success) {
+      toast.success(res.message);
+      if (clickControl === "preview") {
+        navigate(`/dashboard/preview?id=${res?.data?._id}`);
       }
-      const values = {
-        Id: customerId,
-        job_no: jobNo,
-        date: formattedDate,
-        company_name: data.company_name || showCustomerData.company_name,
-        username: data.username || showCustomerData.username,
-        company_address:
-          data.company_address || showCustomerData.company_address,
-        customer_name: data.customer_name || showCustomerData.customer_name,
-        customer_contact:
-          data.customer_contact || showCustomerData.customer_contact,
-        customer_email: data.customer_email || showCustomerData.customer_email,
-        customer_address:
-          data.customer_address || showCustomerData.customer_address,
-        driver_name: data.driver_name || showCustomerData.driver_name,
-        driver_contact: data.driver_contact || showCustomerData.driver_contact,
-        reference_name: data.reference_name || showCustomerData.reference_name,
-        carReg_no: data.carReg_no || showCustomerData.carReg_no,
-        car_registration_no:
-          data.car_registration_no || showCustomerData.car_registration_no,
-        chassis_no: data.chassis_no || showCustomerData.chassis_no,
-        engine_no: data.engine_no || showCustomerData.engine_no,
-        vehicle_brand: data.vehicle_brand || showCustomerData.vehicle_brand,
-        vehicle_name: data.vehicle_name || showCustomerData.vehicle_name,
-        vehicle_model: data.vehicle_model || showCustomerData.vehicle_model,
-        vehicle_category:
-          data.vehicle_category || showCustomerData.vehicle_category,
-        color_code: data.color_code || showCustomerData.color_code,
-        mileage: data.mileage || showCustomerData.mileage,
-        fuel_type: data.fuel_type || showCustomerData.fuel_type,
-        vehicle_interior_parts: value,
-        reported_defect: value2,
-        reported_action: value3,
-        note: note,
-        vehicle_body_report: vehicleBody,
-        technician_name: data.technician_name,
-        technician_signature: data.technician_signature,
-        technician_date: technicianDate,
-        vehicle_owner: data.vehicle_owner,
-      };
-
-      console.log(values);
-
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/jobCard`,
-        values
-      );
-
-      if (response.data.message === "Successfully add to card post") {
-        setLoading(false);
-        const newJobNo = jobNo + 1;
-        setJobNo(newJobNo);
+      if (clickControl === "quotation") {
+        navigate(`/dashboard/qutation?order_no=${res?.data?.job_no}`);
+      }
+      if (clickControl === "invoice") {
+        navigate(`/dashboard/invoice?order_no=${res?.data?.job_no}`);
+      }
+      if (clickControl === null) {
         navigate("/dashboard/jobcard-list");
-        setReload(!reload);
-        if (clickControl === "preview") {
-          fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/recent`)
-            .then((res) => res.json())
-            .then((data) => {
-              if (data) {
-                navigate(`/dashboard/preview?id=${data._id}`);
-              }
-            });
-        }
-        if (clickControl === "quotation") {
-          navigate(`/dashboard/qutation?serial_no=${jobNo}`);
-        }
-        if (clickControl === "invoice") {
-          navigate(`/dashboard/invoice?serial_no=${jobNo}`);
-        }
-        toast.success("Add to job card successful.");
-        formRef.current.reset();
-        setError(null);
       }
-    } catch (error) {
-      setLoading(false);
-      toast.error("Something went wrong.");
     }
   };
-
-  // const handleBrandChange = (_, newInputValue) => {
-  //   setBrand(newInputValue);
-  // };
-  const handleNameChange = (_, newInputValue) => {
-    setBrand(newInputValue);
-  };
-  const handleCategoryChange = (_, newInputValue) => {
-    setCategory(newInputValue);
-  };
-  const handleFuelChange = (_, newInputValue) => {
-    setGetFuelType(newInputValue);
-  };
-
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
 
   const handleBrandChange = (event, newValue) => {
     setSelectedBrand(newValue);
@@ -237,14 +394,10 @@ const AddJobCard = () => {
     setFilteredVehicles(filtered);
   };
 
-  // year select only number 4 digit
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [yearSelectInput, setYearSelectInput] = useState("");
-
   // Handle input changes
   const handleYearSelectInput = (event) => {
     const value = event.target.value;
-    console.log(value);
+
     // Check if the input is a number and does not exceed 4 digits
     if (/^\d{0,4}$/.test(value)) {
       setYearSelectInput(value);
@@ -263,74 +416,29 @@ const AddJobCard = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiEndpoints = [
-          `${import.meta.env.VITE_API_URL}/api/v1/customer/${customerId}`,
-          `${import.meta.env.VITE_API_URL}/api/v1/company/${customerId}`,
-          `${import.meta.env.VITE_API_URL}/api/v1/showRoom/${customerId}`,
-        ];
-
-        let data = null;
-
-        for (const apiUrl of apiEndpoints) {
-          const response = await fetch(apiUrl);
-          if (response.ok) {
-            data = await response.json();
-            // Check if data exists and break the loop if found
-            if (data) break;
-          }
-        }
-
-        if (!data) {
-          throw new Error("Failed to fetch data");
-        }
-
-        setShowCustomerData(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    fetchData();
-  }, [customerId]);
-
   // get id
+  const getIdWithIdType = (userType) => {
+    setIdType(userType);
+    setNewId(userType);
 
-  const getAndSetIds = (url, idExtractor) => {
-    setLoading(true);
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        const ids = data.map(idExtractor);
-        setShowId(ids);
-        setLoading(false);
-      });
-  };
+    console.log({ userType });
 
-  const getIdWithIdType = (id) => {
-    setIdType(id);
-    console.log(id);
-
-    switch (id) {
-      case "customerId":
-        console.log(customerId);
-        getAndSetIds(
-          `${import.meta.env.VITE_API_URL}/api/v1/customer`,
-          (item) => item.customerId
+    switch (userType) {
+      case "customer":
+        setShowId(
+          customerData?.data?.customers?.map((option) => option.customerId)
         );
+
         break;
-      case "companyId":
-        getAndSetIds(
-          `${import.meta.env.VITE_API_URL}/api/v1/company`,
-          (item) => item.companyId
+      case "company":
+        setShowId(
+          companyData?.data?.companies?.map((option) => option.companyId)
         );
+
         break;
-      case "showRoomId":
-        getAndSetIds(
-          `${import.meta.env.VITE_API_URL}/api/v1/showRoom`,
-          (item) => item.showRoomId
+      case "showRoom":
+        setShowId(
+          showroomData?.data?.showrooms?.map((option) => option.showRoomId)
         );
         break;
       default:
@@ -342,32 +450,6 @@ const AddJobCard = () => {
     navigate(`/dashboard/preview?id=${e}`);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPreviousPostData(data);
-        setLoading(false);
-      });
-  }, [jobNo, reload]);
-
-  useEffect(() => {
-    if (previousPostData.job_no && !jobNo) {
-      setJobNo(previousPostData.job_no + 1);
-    }
-  }, [previousPostData, jobNo, reload]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLoading(false);
-        setAllJobCard(data);
-      });
-  }, [reload]);
-
   const handleDateChange = (event) => {
     const rawDate = event.target.value;
     const parsedDate = new Date(rawDate);
@@ -377,6 +459,7 @@ const AddJobCard = () => {
     const formattedDate = `${day}-${month}-${year}`;
     setFormattedDate(formattedDate);
   };
+
   const handleTechnicianDateChange = (event) => {
     const rawDate = event.target.value;
     const parsedDate = new Date(rawDate);
@@ -396,16 +479,6 @@ const AddJobCard = () => {
     setFormattedDate(currentDate);
   }, []);
 
-  // pagination
-
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("job")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-
   const deletePackage = async (id) => {
     const willDelete = await swal({
       title: "Are you sure?",
@@ -416,17 +489,8 @@ const AddJobCard = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/jobCard/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
+        await deleteJobCard(id).unwrap();
 
-        if (data.message == "Job card delete successful") {
-          setAllJobCard(allJobCard?.filter((pkg) => pkg._id !== id));
-        }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -434,198 +498,57 @@ const AddJobCard = () => {
     }
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("job", currentPage.toString());
-  }, [currentPage]);
+  const handleIdChange = (_, newValue) => {
+    setUserId(newValue);
 
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("job")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("job", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(allJobCard?.length / limit); i++) {
-    pages.push(i);
-  }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
+    if (newId === "customer") {
+      const filtered = customerData?.data?.customers?.find(
+        (customer) => customer.customerId === newValue
       );
+
+      setGetDataWithId(filtered);
+    } else if (newId === "company") {
+      const filtered = companyData?.data?.companies?.find(
+        (company) => company.companyId === newValue
+      );
+
+      setGetDataWithId(filtered);
+    } else if (newId === "showRoom") {
+      const filtered = showroomData?.data?.showrooms?.find(
+        (showroom) => showroom.showRoomId === newValue
+      );
+
+      setGetDataWithId(filtered);
     } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(allJobCard)) {
-    currentItems = allJobCard.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  const renderData = (allJobCard) => {
-    return (
-      <table className="table overflow-scroll ">
-        <thead className="tableWrap">
-          <tr>
-            <th>SL No</th>
-            <th>Customer Name</th>
-            <th>Order Number </th>
-            <th>Car Number </th>
-            <th>Mobile Number</th>
-            <th>Date</th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {allJobCard?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{index + 1}</td>
-              <td>{card.customer_name}</td>
-              <td>{card.job_no}</td>
-              <td>{`${card.carReg_no} ${card.car_registration_no}`}</td>
-              <td> {card.customer_contact} </td>
-              <td>{card.date}</td>
-              <td>
-                <div
-                  onClick={() => handleIconPreview(card._id)}
-                  className="editIconWrap edit2"
-                >
-                  {/* <Link to="/dashboard/preview"> */}
-                  <FaEye className="editIcon " />
-                  {/* </Link> */}
-                </div>
-              </td>
-
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-jobcard?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
-  };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+      setGetDataWithId({});
     }
   };
 
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`,
-        data
+  const handleChassisChange = (_, newValue) => {
+    if (getDataWithId?.vehicles) {
+      const filtered = getDataWithId?.vehicles?.find(
+        (vehicle) => vehicle.chassis_no === newValue
       );
-
-      if (response.data.message === "Filter successful") {
-        setAllJobCard(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
+      setGetDataWithChassisNo(filtered);
     }
-  };
-
-  const handleAllAddToJobCard = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/all`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAllJobCard(data);
-        setNoMatching(null);
-      });
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
+
+  const handleAllJobCard = () => {
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
+  };
+
+  if (customerLoading || companyLoading || showroomLoading || jobCardLoading) {
+    return (
+      <div className="flex items-center justify-center text-xl">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="addJobCardWraps">
@@ -652,16 +575,16 @@ const AddJobCard = () => {
                 <b>
                   Job No: <span className="requiredStart">*</span>
                 </b>
-                <span>{jobNo}</span>
+                <span> {jobNumber || 1}</span>
               </div>
               <div>
                 <span>
-                  {idType === "companyId" && <b>Company Id :</b>}
-                  {idType === "customerId" && <b>Customer Id :</b>}
-                  {idType === "showRoomId" && <b>Show room Id :</b>}
+                  {idType === "company" && <b>Company Id :</b>}
+                  {idType === "customer" && <b>Customer Id :</b>}
+                  {idType === "showRoom" && <b>Show room Id :</b>}
                   {idType === null && <b>Select Id :</b>}
 
-                  {customerId ? customerId : "....."}
+                  {userId ? userId : "....."}
                 </span>
               </div>
               <div className="flex items-center mt-2">
@@ -674,12 +597,12 @@ const AddJobCard = () => {
                     id="demo-select-small"
                     className="py-1"
                     label="Select Customer"
-                    onChange={(e) => setNewId(e.target.value)}
-                    // onChange={(e) => getIdWithIdType(e.target.value)}
+                    // onChange={(e) => setNewId(e.target.value)}
+                    onChange={(e) => getIdWithIdType(e.target.value)}
                   >
-                    <MenuItem value="companyId">Company ID </MenuItem>
-                    <MenuItem value="customerId">Customer ID</MenuItem>
-                    <MenuItem value="showRoomId">Show Room ID </MenuItem>
+                    <MenuItem value="company">Company ID </MenuItem>
+                    <MenuItem value="customer">Customer ID</MenuItem>
+                    <MenuItem value="showRoom">Show Room ID </MenuItem>
                   </Select>
                 </FormControl>
 
@@ -687,12 +610,12 @@ const AddJobCard = () => {
                   className="w-40 "
                   id="free-solo-demo"
                   options={showId.map((option) => option)}
-                  onChange={(e, value) => setCustomerId(value)}
+                  onChange={handleIdChange}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Select Id"
-                      onChange={(e) => setCustomerId(e.target.value)}
+                      // onChange={(e) => handleIdChange(e.target.value)}
                       className="w-40"
                     />
                   )}
@@ -716,7 +639,8 @@ const AddJobCard = () => {
                     placeholder="Date"
                     max={currentDate}
                     defaultValue={
-                      formattedDate ? formatDate(formattedDate) : currentDate
+                      currentDate
+                      // formattedDate ? formatDate(formattedDate) : currentDate
                     }
                   />
                 </div>
@@ -754,34 +678,19 @@ const AddJobCard = () => {
 
           <div className="jobCardFieldWraps">
             <div className="jobCardFieldRightSide">
-             
-
               {newId &&
-                (newId === "customerId" ? (
+                (newId === "customer" ? (
                   <div>
-                  <h3 className="mb-5 text-xl font-bold ">Customer Information </h3>
+                    <h3 className="mb-5 text-xl font-bold ">
+                      Customer Information{" "}
+                    </h3>
                     <div>
                       <TextField
                         className="addJobInputField"
                         label="Customer Name (T)"
                         {...register("customer_name")}
-                        value={showCustomerData?.customer_name}
-                        focused={showCustomerData?.customer_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            customer_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.customer_name,
-                        }}
+                        focused={getDataWithId?.customer_name || ""}
                       />
-                      {/* {errors.customer_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                     <div className="mt-3">
                       <TextField
@@ -789,63 +698,23 @@ const AddJobCard = () => {
                         label="Customer Email Address (T)"
                         {...register("customer_email")}
                         type="email"
-                        value={showCustomerData?.customer_email}
-                        focused={showCustomerData?.customer_email}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            customer_email: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.customer_email,
-                        }}
+                        focused={getDataWithId?.customer_email || ""}
                       />
-                      {/* {errors.customer_email && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
                         label="Customer Address (T) "
                         {...register("customer_address")}
-                        value={showCustomerData?.customer_address}
-                        focused={showCustomerData?.customer_address}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            customer_address: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.customer_address,
-                        }}
+                        focused={getDataWithId?.customer_address || ""}
                       />
-                      {/* {errors.customer_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
                         {...register("company_name")}
                         label="Company Name (T)"
-                        focused={showCustomerData?.company_name}
-                        value={showCustomerData?.company_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            company_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.company_name,
-                        }}
+                        focused={getDataWithId?.company_name || ""}
                       />
                     </div>
 
@@ -854,46 +723,16 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Company Address (T)"
                         {...register("company_address")}
-                        value={showCustomerData?.company_address}
-                        focused={showCustomerData?.company_address}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            company_address: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.company_address,
-                        }}
+                        focused={getDataWithId?.company_address || ""}
                       />
-                      {/* {errors.company_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
                         label="Vehicle User Name (T)"
-                        {...register("username")}
-                        value={showCustomerData?.username}
-                        focused={showCustomerData?.username}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            username: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.username,
-                        }}
+                        {...register("vehicle_username")}
+                        focused={getDataWithId?.vehicle_username || ""}
                       />
-                      {/* {errors.username && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                     <div className="mt-3">
                       <div className="flex items-center">
@@ -903,16 +742,19 @@ const AddJobCard = () => {
                           freeSolo
                           options={countries}
                           getOptionLabel={(option) => option.label}
-                          value={countryCode}
+                          value={
+                            countryCode || getDataWithId?.customer_country_code
+                          }
                           onChange={(event, newValue) => {
                             setCountryCode(newValue);
-                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                            setPhoneNumber("");
                           }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
                               label="Select Country Code"
                               variant="outlined"
+                              {...register("customer_country_code")}
                             />
                           )}
                         />
@@ -926,47 +768,12 @@ const AddJobCard = () => {
                           value={
                             phoneNumber
                               ? phoneNumber
-                              : showCustomerData?.customer_contact
+                              : getDataWithId?.customer_contact
                           }
                           onChange={handlePhoneNumberChange}
                           placeholder="Customer Contact No (N)"
-                          InputLabelProps={{
-                            shrink: !!showCustomerData.customer_contact,
-                          }}
+                          focused={getDataWithId?.customer_contact || ""}
                         />
-                        {/* <TextField
-                    className="addJobInputField"
-                    label="Customer Contact No (N)"
-                    {...register("customer_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid 11-digit number.",
-                      },
-                    })}
-                    value={showCustomerData?.customer_contact}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
-                        // Check if length is less than or equal to 10
-                        setCustomerConError("");
-                        setShowCustomerData({
-                          ...showCustomerData,
-                          customer_contact: inputValue,
-                        });
-                      } else {
-                        setCustomerConError("Maximum 11 digits allowed.");
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: !!showCustomerData.customer_contact,
-                    }}
-                    error={!!errors.customer_contact || !!customerConError}
-                    // helperText={
-                    //   errors.customer_contact
-                    //     ? errors.customer_contact.message
-                    //     : customerConError  
-                    // }
-                  /> */}
                       </div>
                     </div>
 
@@ -975,23 +782,8 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Driver Name (T)"
                         {...register("driver_name")}
-                        value={showCustomerData?.driver_name}
-                        focused={showCustomerData?.driver_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            driver_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.driver_name,
-                        }}
+                        focused={getDataWithId?.driver_name || ""}
                       />
-                      {/* {errors.driver_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                     <div className="mt-3">
                       <div className="flex items-center">
@@ -1001,15 +793,19 @@ const AddJobCard = () => {
                           freeSolo
                           options={countries}
                           getOptionLabel={(option) => option.label}
-                          value={countryCode}
+                          value={
+                            driverCountryCode ||
+                            getDataWithId?.driver_country_code
+                          }
                           onChange={(event, newValue) => {
-                            setCountryCode(newValue);
-                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                            setDriverCountryCode(newValue);
+                            setPhoneNumber("");
                           }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
                               label="Select Country Code"
+                              {...register("driver_country_code")}
                               variant="outlined"
                             />
                           )}
@@ -1024,46 +820,12 @@ const AddJobCard = () => {
                           value={
                             driverPhoneNumber
                               ? driverPhoneNumber
-                              : showCustomerData?.driver_contact
+                              : getDataWithId?.driver_contact
                           }
                           onChange={handleDriverPhoneNumberChange}
                           placeholder="Driver Contact Number "
-                          InputLabelProps={{
-                            shrink: !!showCustomerData.driver_contact,
-                          }}
+                          focused={getDataWithId?.driver_contact || ""}
                         />
-                        {/* <TextField
-                    className="addJobInputField"
-                    label="Driver Contact No (N)"
-                    {...register("driver_contact", {
-                      pattern: {
-                        value: /^\d{11}$/,
-                        message: "Please enter a valid 11-digit number.",
-                      },
-                    })}
-                    value={showCustomerData?.driver_contact}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
-                        setDriverConError("");
-                        setShowCustomerData({
-                          ...showCustomerData,
-                          driver_contact: inputValue,
-                        });
-                      } else {
-                        setDriverConError("Maximum 11 digits allowed.");
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: !!showCustomerData.driver_contact,
-                    }}
-                    error={!!errors.driver_contact || !!driverConError}
-                    // helperText={
-                    //   errors.driver_contact
-                    //     ? errors.driver_contact.message
-                    //     : driverConError  
-                    // }
-                  /> */}
                       </div>
                     </div>
                     <div className="mt-3">
@@ -1071,91 +833,38 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Reference Name (T) "
                         {...register("reference_name")}
-                        value={showCustomerData?.reference_name}
-                        focused={showCustomerData?.reference_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            reference_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.reference_name,
-                        }}
+                        focused={getDataWithId?.reference_name || ""}
                       />
-                      {/* {errors.reference_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                   </div>
-                ) : newId === "companyId" ? (
+                ) : newId === "company" ? (
                   <div>
-                  <h3 className="mb-5 text-xl font-bold ">Company Information </h3>
+                    <h3 className="mb-5 text-xl font-bold ">
+                      Company Information{" "}
+                    </h3>
                     <div>
                       <TextField
                         className="addJobInputField"
                         {...register("company_name")}
                         label="Company Name (T)"
-                        focused={showCustomerData?.company_name}
-                        value={showCustomerData?.company_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            company_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.company_name,
-                        }}
+                        focused={getDataWithId?.company_name || ""}
                       />
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
                         label="Vehicle User Name (T)"
-                        {...register("username")}
-                        value={showCustomerData?.username}
-                        focused={showCustomerData?.username}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            username: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.username,
-                        }}
+                        {...register("vehicle_username")}
+                        focused={getDataWithId?.vehicle_username || ""}
                       />
-                      {/* {errors.username && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
                         label="Company Address (T)"
                         {...register("company_address")}
-                        value={showCustomerData?.company_address}
-                        focused={showCustomerData?.company_address}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            company_address: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.company_address,
-                        }}
+                        focused={getDataWithId?.company_address || ""}
                       />
-                      {/* {errors.company_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
 
                     <div className="mt-3">
@@ -1166,7 +875,9 @@ const AddJobCard = () => {
                           freeSolo
                           options={countries}
                           getOptionLabel={(option) => option.label}
-                          value={countryCode}
+                          value={
+                            countryCode || getDataWithId?.company_country_code
+                          }
                           onChange={(event, newValue) => {
                             setCountryCode(newValue);
                             setPhoneNumber("");
@@ -1174,6 +885,7 @@ const AddJobCard = () => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              {...register("company_country_code")}
                               label="Select Country Code"
                               variant="outlined"
                             />
@@ -1189,23 +901,21 @@ const AddJobCard = () => {
                           value={
                             phoneNumber
                               ? phoneNumber
-                              : showCustomerData?.company_contact
+                              : getDataWithId?.company_contact
                           }
                           onChange={handlePhoneNumberChange}
-                          placeholder="Company Contact No (N) (New field )"
-                          InputLabelProps={{
-                            shrink: !!showCustomerData.company_contact,
-                          }}
+                          placeholder="Company Contact No"
+                          focused={getDataWithId?.company_contact || ""}
                         />
-                       
                       </div>
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
-                        label="Company Email Address (N) (New field)"
+                        label="Company Email Address"
                         {...register("company_email")}
                         type="email"
+                        focused={getDataWithId?.company_email || ""}
                       />
                     </div>
                     <div className="mt-3">
@@ -1213,17 +923,7 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Driver Name (T)"
                         {...register("driver_name")}
-                        value={showCustomerData?.driver_name}
-                        focused={showCustomerData?.driver_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            driver_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.driver_name,
-                        }}
+                        focused={getDataWithId?.driver_name || ""}
                       />
                     </div>
                     <div className="mt-3">
@@ -1234,14 +934,18 @@ const AddJobCard = () => {
                           freeSolo
                           options={countries}
                           getOptionLabel={(option) => option.label}
-                          value={countryCode}
+                          value={
+                            driverCountryCode ||
+                            getDataWithId?.driver_country_code
+                          }
                           onChange={(event, newValue) => {
-                            setCountryCode(newValue);
-                            setPhoneNumber(""); 
+                            setDriverCountryCode(newValue);
+                            setPhoneNumber("");
                           }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              {...register("driver_country_code")}
                               label="Select Country Code"
                               variant="outlined"
                             />
@@ -1257,15 +961,12 @@ const AddJobCard = () => {
                           value={
                             driverPhoneNumber
                               ? driverPhoneNumber
-                              : showCustomerData?.driver_contact
+                              : getDataWithId?.driver_contact
                           }
                           onChange={handleDriverPhoneNumberChange}
                           placeholder="Driver Contact Number "
-                          InputLabelProps={{
-                            shrink: !!showCustomerData.driver_contact,
-                          }}
+                          focused={getDataWithId?.driver_contact || ""}
                         />
-                        
                       </div>
                     </div>
                     <div className="mt-3">
@@ -1273,65 +974,39 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Reference Name (T) "
                         {...register("reference_name")}
-                        value={showCustomerData?.reference_name}
-                        focused={showCustomerData?.reference_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            reference_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.reference_name,
-                        }}
+                        focused={getDataWithId?.reference_name || ""}
                       />
-                      {/* {errors.reference_name && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
                   </div>
-                ) : newId === "showRoomId" ? (
+                ) : newId === "showRoom" ? (
                   <div>
-                  <h3 className="mb-5 text-xl font-bold ">Show Room Information </h3>
+                    <h3 className="mb-5 text-xl font-bold ">
+                      Show Room Information{" "}
+                    </h3>
                     <div>
                       <TextField
                         className="addJobInputField"
                         on
-                        label="Show Room Name (T) (new field) "
+                        label="Show Room Name (T)"
                         {...register("showRoom_name")}
+                        focused={getDataWithId?.showRoom_name || ""}
                       />
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
                         label="Vehicle User Name (T)  "
-                        {...register("username")}
-                        value={showCustomerData?.username}
-                        focused={showCustomerData?.username}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            username: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.username,
-                        }}
+                        {...register("vehicle_username")}
+                        focused={getDataWithId?.vehicle_username || ""}
                       />
-                      {/* {errors.username && (
-          <span className="text-sm text-red-400">
-            This field is required.
-          </span>
-        )} */}
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
                         on
-                        label="Show Room Address (T) (new field) "
+                        label="Show Room Address (T)  "
                         {...register("showRoom_address")}
+                        focused={getDataWithId?.showRoom_address || ""}
                       />
                     </div>
                     <div className="mt-3">
@@ -1339,17 +1014,7 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         {...register("company_name")}
                         label="Company Name (T)"
-                        focused={showCustomerData?.company_name}
-                        value={showCustomerData?.company_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            company_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.company_name,
-                        }}
+                        focused={getDataWithId?.company_name || ""}
                       />
                     </div>
 
@@ -1358,23 +1023,8 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Company Address (T)"
                         {...register("company_address")}
-                        value={showCustomerData?.company_address}
-                        focused={showCustomerData?.company_address}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            company_address: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.company_address,
-                        }}
+                        focused={getDataWithId?.company_address || ""}
                       />
-                      {/* {errors.company_address && (
-          <span className="text-sm text-red-400">
-            This field is required.
-          </span>
-        )} */}
                     </div>
 
                     <div className="mt-3">
@@ -1384,7 +1034,9 @@ const AddJobCard = () => {
                           freeSolo
                           options={countries}
                           getOptionLabel={(option) => option.label}
-                          value={countryCode}
+                          value={
+                            countryCode || getDataWithId?.company_country_code
+                          }
                           onChange={(event, newValue) => {
                             setCountryCode(newValue);
                             setPhoneNumber(""); // Reset the phone number when changing country codes
@@ -1392,6 +1044,7 @@ const AddJobCard = () => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              {...register("company_country_code")}
                               label="Select Country Code"
                               variant="outlined"
                             />
@@ -1404,42 +1057,21 @@ const AddJobCard = () => {
                           variant="outlined"
                           fullWidth
                           type="tel"
-                          value={phoneNumber}
+                          value={phoneNumber || getDataWithId?.company_contact}
                           onChange={handlePhoneNumberChange}
                           placeholder="Enter phone number"
+                          focused={getDataWithId?.company_contact || ""}
                         />
                       </div>
                     </div>
                     <div className="mt-3">
                       <TextField
                         className="addJobInputField"
-                        label="Company Email Address (N) (new field) "
+                        label="Company Email Address"
                         {...register("company_email")}
                         type="email"
+                        focused={getDataWithId?.company_email || ""}
                       />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Company Address (T)"
-                        {...register("company_address")}
-                        value={showCustomerData?.company_address}
-                        focused={showCustomerData?.company_address}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            company_address: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.company_address,
-                        }}
-                      />
-                      {/* {errors.company_address && (
-              <span className="text-sm text-red-400">
-                This field is required.
-              </span>
-            )} */}
                     </div>
 
                     <div className="mt-3">
@@ -1447,23 +1079,8 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Driver Name (T)"
                         {...register("driver_name")}
-                        value={showCustomerData?.driver_name}
-                        focused={showCustomerData?.driver_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            driver_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.driver_name,
-                        }}
+                        focused={getDataWithId?.driver_name || ""}
                       />
-                      {/* {errors.driver_name && (
-          <span className="text-sm text-red-400">
-            This field is required.
-          </span>
-        )} */}
                     </div>
                     <div className="mt-3">
                       <div className="flex items-center">
@@ -1473,14 +1090,18 @@ const AddJobCard = () => {
                           freeSolo
                           options={countries}
                           getOptionLabel={(option) => option.label}
-                          value={countryCode}
+                          value={
+                            driverCountryCode ||
+                            getDataWithId?.driver_country_code
+                          }
                           onChange={(event, newValue) => {
-                            setCountryCode(newValue);
+                            setDriverCountryCode(newValue);
                             setPhoneNumber(""); // Reset the phone number when changing country codes
                           }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              {...register("driver_country_code")}
                               label="Select Country Code"
                               variant="outlined"
                             />
@@ -1496,46 +1117,12 @@ const AddJobCard = () => {
                           value={
                             driverPhoneNumber
                               ? driverPhoneNumber
-                              : showCustomerData?.driver_contact
+                              : getDataWithId?.driver_contact
                           }
                           onChange={handleDriverPhoneNumberChange}
                           placeholder="Driver Contact Number "
-                          InputLabelProps={{
-                            shrink: !!showCustomerData.driver_contact,
-                          }}
+                          focused={getDataWithId?.driver_contact || ""}
                         />
-                        {/* <TextField
-                className="addJobInputField"
-                label="Driver Contact No (N)"
-                {...register("driver_contact", {
-                  pattern: {
-                    value: /^\d{11}$/,
-                    message: "Please enter a valid 11-digit number.",
-                  },
-                })}
-                value={showCustomerData?.driver_contact}
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  if (inputValue.length <= 11) {
-                    setDriverConError("");
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      driver_contact: inputValue,
-                    });
-                  } else {
-                    setDriverConError("Maximum 11 digits allowed.");
-                  }
-                }}
-                InputLabelProps={{
-                  shrink: !!showCustomerData.driver_contact,
-                }}
-                error={!!errors.driver_contact || !!driverConError}
-                // helperText={
-                //   errors.driver_contact
-                //     ? errors.driver_contact.message
-                //     : driverConError  
-                // }
-              /> */}
                       </div>
                     </div>
                     <div className="mt-3">
@@ -1543,23 +1130,8 @@ const AddJobCard = () => {
                         className="addJobInputField"
                         label="Reference Name (T) "
                         {...register("reference_name")}
-                        value={showCustomerData?.reference_name}
-                        focused={showCustomerData?.reference_name}
-                        onChange={(e) =>
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            reference_name: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!showCustomerData.reference_name,
-                        }}
+                        focused={getDataWithId?.reference_name || ""}
                       />
-                      {/* {errors.reference_name && (
-          <span className="text-sm text-red-400">
-            This field is required.
-          </span>
-        )} */}
                     </div>
                   </div>
                 ) : null)}
@@ -1567,6 +1139,46 @@ const AddJobCard = () => {
             <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
               <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
 
+              <div className="mb-3">
+                {getDataWithId?.vehicles ? (
+                  <Autocomplete
+                    disableClearable
+                    freeSolo
+                    className="addJobInputField mb-3"
+                    onChange={handleChassisChange}
+                    options={
+                      getDataWithId?.vehicles
+                        ? getDataWithId?.vehicles?.map(
+                            (option) => option?.chassis_no
+                          )
+                        : ""
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Chassis no"
+                        {...register("chassis_no")}
+                        inputProps={{
+                          ...params.inputProps,
+                          maxLength:
+                            getDataWithChassisNo?.chassis_no?.length || 30,
+                        }}
+                        required
+                      />
+                    )}
+                  />
+                ) : (
+                  <div>
+                    <TextField
+                      className="addJobInputField"
+                      {...register("chassis_no")}
+                      label="Chassis no"
+                      focused={getDataWithChassisNo?.chassis_no || ""}
+                      required
+                    />
+                  </div>
+                )}
+              </div>
 
               <div className="flex  md:gap-0 gap-4 items-center">
                 <Autocomplete
@@ -1576,113 +1188,41 @@ const AddJobCard = () => {
                   id="free-solo-demo"
                   inputValue={inputValue}
                   onInputChange={(event, newValue) => setInputValue(newValue)}
-                  options={cmDmOptions.map((option) => option.label)}
+                  options={cmDmOptions.map((option) => option?.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Reg No"
                       {...register("carReg_no")}
-                      value={showCustomerData?.carReg_no}
-                      focused={showCustomerData?.carReg_no}
+                      focused={getDataWithChassisNo?.carReg_no || ""}
                     />
                   )}
                 />
 
-                <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers and hyphens are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  value={showCustomerData?.car_registration_no}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length === 7) {
-                      setRegistrationError("");
-                    } else if (value.length < 7) {
-                      setRegistrationError(
-                        "Car registration number must be 7 characters"
-                      );
-                    }
-                    const formattedValue = value
-                      .replace(/\D/g, "")
-                      .slice(0, 6)
-                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      car_registration_no: formattedValue,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.car_registration_no,
-                  }}
-                  error={!!errors.car_registration_no || !!registrationError}
-                  // helperText={
-                  //   (errors.car_registration_no
-                  //     ? errors.car_registration_no.message
-                  //     : "") || registrationError
-                  // }
-                />
+                <InputMask
+                  mask="**-****"
+                  maskChar={null}
+                  {...register("car_registration_no")}
+                >
+                  {(inputProps) => (
+                    <TextField
+                      {...inputProps}
+                      {...register("car_registration_no")}
+                      className="carRegField"
+                      label="Car R (N)"
+                      focused={getDataWithChassisNo?.car_registration_no || ""}
+                    />
+                  )}
+                </InputMask>
               </div>
 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  {...register("chassis_no")}
-                  label="Chassis No (T&N)"
-                  value={showCustomerData?.chassis_no}
-                  focused={showCustomerData?.chassis_no}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      chassis_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.chassis_no,
-                  }}
-                />
-                {/* {errors.chassis_no && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
-              </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   {...register("engine_no")}
                   label="ENGINE NO & CC (T&N) "
-                  value={showCustomerData?.engine_no}
-                  focused={showCustomerData?.engine_no}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      engine_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.engine_no,
-                  }}
+                  focused={getDataWithChassisNo?.engine_no || ""}
                 />
-                {/* {errors.engine_no && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
 
               <div className="mt-3">
@@ -1698,7 +1238,7 @@ const AddJobCard = () => {
                       {...params}
                       label="Vehicle Brand"
                       {...register("vehicle_brand")}
-                      focused={Boolean(showCustomerData?.vehicle_brand)}
+                      focused={Boolean(getDataWithChassisNo?.vehicle_brand)}
                     />
                   )}
                   onChange={handleBrandChange}
@@ -1713,86 +1253,29 @@ const AddJobCard = () => {
                   freeSolo
                   Vehicle
                   Name
-                  onInputChange={(event, newValue) => {
-                    handleNameChange(newValue); // Assuming you want the new value as input
-                  }}
                   options={filteredVehicles.map((option) => option.value)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label="Vehicle Name "
                       {...register("vehicle_name")}
-                      value={showCustomerData?.vehicle_name}
-                      focused={showCustomerData?.vehicle_name}
+                      focused={getDataWithChassisNo?.vehicle_name || ""}
                     />
                   )}
                   getOptionLabel={(option) => option || ""}
-                  // disabled={!selectedBrand}
                 />
               </div>
 
               <div className="mt-3 relative">
-                {/* <Autocomplete
-                  className="addJobInputField"
-                  Vehicle
-                  Types
-                  options={filteredOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label=" Vehicle Model "
-                      {...register("vehicle_model")}
-                      value={showCustomerData?.vehicle_model}
-                      focused={showCustomerData?.vehicle_model}
-                      onChange={(e) => {
-                        const input = e.target.value;
-                        // Only allow numbers and limit to 4 digits
-                        if (/^\d{0,4}$/.test(input)) {
-                          setShowCustomerData({
-                            ...showCustomerData,
-                            vehicle_model: input,
-                          });
-                        }
-                      }}
-                    />
-                  )}
-                />  */}
-                {/* <TextField
-                value={showCustomerData?.vehicle_model ? `${showCustomerData.vehicle_model}` : yearSelectInput }
-                  onInput={handleYearSelectInput}
-                  className="addJobInputField"
-                  {...register("vehicle_model")}
-                  label="Vehicle Model "
-                  
-                  focused={
-                    showCustomerData?.vehicle_model !== "" &&
-                    showCustomerData?.vehicle_model
-                  }
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      vehicle_model: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.vehicle_model,
-                  }}
-                /> */}
-
                 <input
-                  focused={showCustomerData?.vehicle_model}
                   value={yearSelectInput}
                   onInput={handleYearSelectInput}
                   {...register("vehicle_model")}
                   type="text"
                   className="border border-[#11111163] mb-5 w-[98%] h-12 p-3 rounded-md"
                   placeholder="Vehicle Model"
-                  onChange={(e) => {
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      vehicle_model: e.target.value,
-                    });
-                  }}
+                  defaultValue={getDataWithChassisNo?.vehicle_model}
+                  // focused={getDataWithChassisNo?.vehicle_model}
                 />
                 {yearSelectInput && (
                   <ul className="options-list">
@@ -1812,25 +1295,16 @@ const AddJobCard = () => {
                   Vehicle
                   Types
                   freeSolo
-                  onInputChange={(event, newValue) => {
-                    handleCategoryChange(newValue); // Assuming you want the new value as input
-                  }}
                   options={vehicleTypes.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label=" Vehicle Categories "
                       {...register("vehicle_category")}
-                      value={showCustomerData?.vehicle_category}
-                      focused={showCustomerData?.vehicle_category}
+                      focused={getDataWithChassisNo?.vehicle_category || ""}
                     />
                   )}
                 />
-                {/* {errors.vehicle_category && !category && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
 
               <div className="mt-3">
@@ -1838,26 +1312,8 @@ const AddJobCard = () => {
                   className="addJobInputField"
                   {...register("color_code")}
                   label="Color & Code (T&N) "
-                  value={showCustomerData?.color_code}
-                  focused={
-                    showCustomerData?.color_code !== "" &&
-                    showCustomerData?.color_code
-                  }
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      color_code: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.color_code,
-                  }}
+                  focused={getDataWithChassisNo?.color_code || ""}
                 />
-                {/* {errors.color_code && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
               <div className="mt-3">
                 <TextField
@@ -1870,17 +1326,7 @@ const AddJobCard = () => {
                       message: "Please enter a valid number.",
                     },
                   })}
-                  value={showCustomerData?.mileage}
-                  focused={showCustomerData?.mileage}
-                  onChange={(e) =>
-                    setShowCustomerData({
-                      ...showCustomerData,
-                      mileage: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!showCustomerData.mileage,
-                  }}
+                  focused={getDataWithChassisNo?.mileage || ""}
                 />
                 {errors.mileage && (
                   <span className="text-sm text-red-400">
@@ -1891,31 +1337,20 @@ const AddJobCard = () => {
               <div className="mt-3">
                 <Autocomplete
                   className="addJobInputField"
-                  value={showCustomerData?.fuel_type}
-                  focused={showCustomerData?.fuel_type}
                   id="free-solo-demo"
                   Fuel
                   Type
                   freeSolo
-                  onInputChange={(event, newValue) => {
-                    handleFuelChange(newValue); // Assuming you want the new value as input
-                  }}
                   options={fuelType.map((option) => option.label)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label=" Fuel Type"
                       {...register("fuel_type")}
-                      value={showCustomerData?.fuel_type}
-                      focused={showCustomerData?.fuel_type}
+                      focused={getDataWithChassisNo?.fuel_type || ""}
                     />
                   )}
                 />
-                {/* {errors.fuel_type && !getFuelType && (
-                  <span className="text-sm text-red-400">
-                    This field is required.
-                  </span>
-                )} */}
               </div>
             </div>
           </div>
@@ -2005,7 +1440,6 @@ const AddJobCard = () => {
                 <b className="block mb-1 "> Note </b>
                 <textarea
                   onChange={(e) => setNote(e.target.value)}
-                  required
                   autoComplete="off"
                 ></textarea>
               </div>
@@ -2013,7 +1447,6 @@ const AddJobCard = () => {
                 <b className="block mb-1 "> Vehicle Body Report Comments</b>
                 <textarea
                   onChange={(e) => setVehicleBody(e.target.value)}
-                  required
                   autoComplete="off"
                   className="p-5"
                 ></textarea>
@@ -2024,7 +1457,7 @@ const AddJobCard = () => {
             <div>
               <TextField
                 className="ownerInput"
-                {...register("technician_name", { required: true })}
+                {...register("technician_name")}
                 label="Technician Name (T) "
               />
               <br />
@@ -2046,7 +1479,6 @@ const AddJobCard = () => {
             <div>
               <input
                 onChange={handleTechnicianDateChange}
-                required
                 autoComplete="off"
                 type="date"
                 placeholder="Date"
@@ -2075,40 +1507,155 @@ const AddJobCard = () => {
           <div className="mt-5 buttonGroup">
             <div>
               <button
-                disabled={loading}
+                disabled={createJobCardLoading}
                 onClick={() => setClickControl("preview")}
               >
                 Preview
               </button>
 
               <button
-                disabled={loading}
+                disabled={createJobCardLoading}
                 onClick={() => setClickControl("quotation")}
               >
                 Quotation
               </button>
 
               <button
-                disabled={loading}
+                disabled={createJobCardLoading}
                 onClick={() => setClickControl("invoice")}
               >
                 Invoice
               </button>
             </div>
             <div className="submitQutationBtn">
-              <button
-                disabled={loading}
-                // onClick={handleAddToCard
-                type="submit"
-              >
+              <button disabled={createJobCardLoading} type="submit">
                 Add To Job Card{" "}
               </button>
             </div>
           </div>
-          {/* <div className="pt-6 text-center text-red-400">{error}</div> */}
+          <div className="my-2">
+            {jobCardCreateError && (
+              <ErrorMessage messages={jobCardCreateError?.data?.errorSources} />
+            )}
+          </div>
         </div>
       </form>
-      <div className="mt-20 overflow-x-auto">
+      <div className="w-full mt-5 mb-24">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl">
+            {" "}
+            Job card List:{" "}
+          </h3>
+          <div className="flex flex-wrap items-center">
+            <button
+              onClick={handleAllJobCard}
+              className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
+            >
+              All
+            </button>
+            <input
+              onChange={(e) => setFilterType(e.target.value)}
+              type="text"
+              placeholder="Search"
+              className="border py-2 px-3 rounded-md border-[#ddd]"
+              ref={textInputRef}
+            />
+            <button
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
+              disabled={filterType === ""}
+            >
+              {" "}
+              <HiOutlineSearch size={25} />
+            </button>
+          </div>
+        </div>
+        {jobCardLoading ? (
+          <div className="flex items-center justify-center text-xl">
+            <Loading />
+          </div>
+        ) : (
+          <div>
+            {allJobCards?.data?.jobCards?.length === 0 ? (
+              <div className="flex items-center justify-center h-full text-xl text-center">
+                No matching card found.
+              </div>
+            ) : (
+              <section>
+                <table className="table">
+                  <thead className="tableWrap">
+                    <tr>
+                      <th>SL No</th>
+                      <th> User Id</th>
+                      <th>Order Number </th>
+                      <th>User type</th>
+                      <th>Mobile Number</th>
+                      <th>Date</th>
+                      <th colSpan={3}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allJobCards?.data?.jobCards?.map((card, index) => {
+                      //  console.log(card)
+
+                      return (
+                        <tr key={card?._id}>
+                          <td>{index + 1}</td>
+                          <td>{card?.Id}</td>
+                          <td>{card?.job_no}</td>
+                          {/* <td>{lastVehicle?.fullRegNum}</td> */}
+                          <td>{card?.user_type}</td>
+
+                          <td>{card?.customer[0]?.fullCustomerNum}</td>
+                          <td>{card?.date}</td>
+
+                          <td>
+                            <div
+                              onClick={() => handleIconPreview(card._id)}
+                              className="flex items-center justify-center cursor-pointer"
+                            >
+                              <FaEye className="h-[22px] w-[22px]" />
+                            </div>
+                          </td>
+
+                          <td>
+                            <div className="editIconWrap edit">
+                              <Link
+                                to={`/dashboard/update-jobcard?id=${card._id}`}
+                              >
+                                <FaEdit className="editIcon" />
+                              </Link>
+                            </div>
+                          </td>
+                          <td>
+                            <button
+                              disabled={deleteLoading}
+                              onClick={() => deletePackage(card?._id)}
+                              className="editIconWrap"
+                            >
+                              <FaTrashAlt className="deleteIcon" />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </section>
+            )}
+          </div>
+        )}
+        {allJobCards?.data?.jobCards?.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={allJobCards?.data?.meta?.totalPages}
+              page={currentPage}
+              color="primary"
+              onChange={(_, page) => setCurrentPage(page)}
+            />
+          </div>
+        )}
+      </div>
+      {/* <div className="mt-20 overflow-x-auto">
         <div className="flex flex-wrap items-center justify-between mb-5">
           <h3 className="mb-3 text-sm font-bold lg:text-3xl">Job Card List:</h3>
           <div className="flex items-center searcList space-x-2">
@@ -2197,7 +1744,7 @@ const AddJobCard = () => {
             </>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

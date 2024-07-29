@@ -1,55 +1,51 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import Loading from "../../../components/Loading/Loading";
 import { HiOutlineSearch } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
+import { Pagination } from "@mui/material";
+import { useDeleteCustomerMutation, useGetAllCustomersQuery } from "../../../redux/api/customerApi";
+import { toast } from "react-toastify";
+
 const CustomerList = () => {
+  const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
-  const [customerData, setCustomerData] = useState([]);
-  console.log(customerData);
 
-  const [noMatching, setNoMatching] = useState(null);
-
-  // const [brand, setBrand] = useState("");
-  // const [category, setCategory] = useState("");
-  // const [getFuelType, setGetFuelType] = useState("");
-  const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
+ 
+  const [currentPage, setCurrentPage] = useState(1);
+ 
 
   const navigate = useNavigate();
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomerData(data);
 
-        setLoading(false);
-      });
-  }, [reload]);
+  const limit = 10;
+
+  const {
+    data: customerData,
+    isLoading: customerLoading,
+    error: customerError,
+    refetch
+  } = useGetAllCustomersQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
+
+  const [
+    deleteCustomer,
+    { isLoading: customerDeleteLoading, error: deleteError },
+  ] = useDeleteCustomerMutation();
+  
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/customer-profile?id=${e}`);
   };
-  // pagination
-
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("job")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -61,17 +57,9 @@ const CustomerList = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/customer/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
+        await deleteCustomer(id).unwrap();
+        refetch();
 
-        if (data.message == "Customer card delete successful") {
-          setCustomerData(customerData?.filter((pkg) => pkg._id !== id));
-        }
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -79,193 +67,17 @@ const CustomerList = () => {
     }
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("job", currentPage.toString());
-  }, [currentPage]);
-
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("job")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("job", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(customerData?.length / limit); i++) {
-    pages.push(i);
+  if (deleteError) {
+    toast.error(error?.message);
   }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(customerData)) {
-    currentItems = customerData.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  const renderData = (customerData) => {
-    return (
-      <table className="table">
-        <thead className="tableWrap">
-          <tr>
-            <th>Customer ID </th>
-            <th>Customer Name</th>
-            <th>Mobile Number</th>
-            <th>Vehicle Name </th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {customerData?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{card.customerId}</td>
-              <td>{card.customer_name}</td>
-              <td>{card.customer_contact}</td>
-              <td> {card.vehicle_name} </td>
-              <td>
-                <div
-                  onClick={() => handleIconPreview(card.customerId)}
-                  className="flex items-center justify-center cursor-pointer"
-                >
-                  {/* <Link to="/dashboard/employee-profile"> */}
-                  <FaUserTie size={25} className="" />
-                  {/* </Link> */}
-                </div>
-              </td>
-
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-customer?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
-  };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("job", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/customer/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setCustomerData(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
 
   const handleAllCustomer = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomerData(data);
-        setNoMatching(null);
-      });
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
   };
-
+  
   return (
     <div className="w-full mt-5 mb-24">
       <div className="flex justify-between pb-3 border-b-2">
@@ -302,10 +114,11 @@ const CustomerList = () => {
             type="text"
             placeholder="Search"
             className="border py-2 px-3 rounded-md border-[#ddd]"
+            ref={textInputRef}
           />
           <button
-            onClick={handleFilterType}
             className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
+            disabled={filterType === ""}
           >
             {" "}
             <HiOutlineSearch size={25} />
@@ -314,67 +127,97 @@ const CustomerList = () => {
       </div>
 
       <div className="overflow-x-auto ">
-        {searchLoading ? (
+        {customerLoading ? (
           <div className="flex items-center justify-center text-xl">
             <Loading />
           </div>
         ) : (
           <div>
-            {customerData?.length === 0 ||
-            currentItems.length === 0 ||
-            noMatching ? (
+            {customerData?.data?.customers?.length === 0 ? (
               <div className="flex items-center justify-center h-full text-xl text-center">
                 No matching card found.
               </div>
             ) : (
               <>
                 <section>
-                  {renderData(currentItems)}
-                  <ul
-                    className={
-                      minPageNumberLimit < 5
-                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
-                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
-                    }
-                  >
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentPage === pages[0] ? true : false}
-                      className={
-                        currentPage === pages[0]
-                          ? "text-gray-600"
-                          : "text-gray-300"
-                      }
-                    >
-                      Previous
-                    </button>
-                    <span
-                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
-                    >
-                      {pageDecrementBtn}
-                    </span>
-                    {renderPagesNumber}
-                    {pageIncrementBtn}
-                    <button
-                      onClick={handleNext}
-                      disabled={
-                        currentPage === pages[pages?.length - 1] ? true : false
-                      }
-                      className={
-                        currentPage === pages[pages?.length - 1]
-                          ? "text-gray-700"
-                          : "text-gray-300 pl-1"
-                      }
-                    >
-                      Next
-                    </button>
-                  </ul>
+                  <table className="table">
+                    <thead className="tableWrap">
+                      <tr>
+                        <th>Customer ID </th>
+                        <th>Customer Name</th>
+                        <th>Car Number </th>
+                        <th>Mobile Number</th>
+                        <th>Vehicle Name </th>
+                        <th colSpan={3}>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {customerData?.data?.customers?.map((card) => {
+                        const lastVehicle = card?.vehicles
+                          ? [...card.vehicles].sort(
+                              (a, b) =>
+                                new Date(b.createdAt) - new Date(a.createdAt)
+                            )[0]
+                          : null;
+                        return (
+                          <tr key={card?._id}>
+                            <td>{card?.customerId}</td>
+                            <td>{card?.customer_name}</td>
+                            <td>{lastVehicle?.fullRegNum}</td>
+                            <td>{card?.fullCustomerNum}</td>
+
+                            <td>{lastVehicle?.vehicle_name}</td>
+
+                            <td>
+                              <div
+                                onClick={() =>
+                                  handleIconPreview(card?._id)
+                                }
+                                className="flex items-center justify-center cursor-pointer"
+                              >
+                                <FaUserTie size={25} className="" />
+                              </div>
+                            </td>
+
+                            <td>
+                              <div className="editIconWrap edit">
+                                <Link
+                                  to={`/dashboard/update-customer?id=${card?._id}`}
+                                >
+                                  <FaEdit className="editIcon" />
+                                </Link>
+                              </div>
+                            </td>
+                            <td>
+                              <div
+                                onClick={() => deletePackage(card?._id)}
+                                className="editIconWrap"
+                              >
+                                <FaTrashAlt className="deleteIcon" />
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </section>
               </>
             )}
           </div>
         )}
       </div>
+
+      {customerData?.data?.customers?.length > 0 && (
+        <div className="flex justify-center mt-4">
+          <Pagination
+            count={customerData?.data?.meta?.totalPages}
+            page={currentPage}
+            color="primary"
+            onChange={(_, page) => setCurrentPage(page)}
+          />
+        </div>
+      )}
     </div>
   );
 };

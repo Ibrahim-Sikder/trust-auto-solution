@@ -6,8 +6,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
-export default function AttendanceOutTimePicker({
-  handleAttendanceOutTime,
+export default function AttendanceInTimePicker({
+  handleAttendanceInTime,
   index,
 }) {
   // Initialize state for the time value
@@ -16,7 +16,7 @@ export default function AttendanceOutTimePicker({
   // Handler for when the time changes
   const handleTimeChange = (time) => {
     setSelectedTime(time);
-    handleAttendanceOutTime(index, time);
+    handleAttendanceInTime(index, time);
   };
 
   return (

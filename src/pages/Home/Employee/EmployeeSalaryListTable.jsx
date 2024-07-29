@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+
 import { months } from "../../../constant/Vehicle.constant";
 import Select from "react-select";
-import axios from "axios";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 // Start from 2024 and go up to 2030
@@ -11,82 +10,41 @@ for (let year = 2024; year <= 2030; year++) {
   years.push({ value: String(year), label: String(year) });
 }
 
-const initialSelectedOption = months[0];
-const initialSelectedOption2 = years[0];
-
 const EmployeeSalaryListTable = ({
-  getAllEmployee,
-  setGetAllEmployeeSalary,
-  setError,
+  getAllSalary,
+  filterType,
+  setFilterType,
 }) => {
   const currentDate = new Date();
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
 
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
-
-  // const [selectedOption2, setSelectedOption2] = useState(
-  //   initialSelectedOption2
-  // );
-
-  
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
+  const handleChange = (filterType) => {
+    setFilterType(filterType);
   };
-  // const handleChange2 = (selectedOption2) => {
-  //   setSelectedOption2(selectedOption2);
-  // };
 
-  const handleFilterData = () => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-      .then((response) => {
-        const salaryData = response.data.employee.map(
-          (data) => data.salary_details
-        );
-        const allSalary = salaryData.flat();
-        const filteredSalary = allSalary.filter(
-          (salary) => salary.month_of_salary === selectedOption.value
-        );
-
-        setGetAllEmployeeSalary(filteredSalary);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+  const handleRemoveSearch = () => {
+    setFilterType("");
   };
 
   return (
     <div className="mt-10 table-container">
       <h3 className="mt-5 mb-8 md:text-2xl font-semibold">
         Employee Salary Sheet :{" "}
-        {selectedOption.value ? selectedOption.value : currentMonth}{" "}
-        {currentYear}
+        {filterType.value ? filterType.value : currentMonth} {currentYear}
       </h3>
 
       <div className="flex flex-wrap gap-5 mt-5 mb-8">
-        
         <div>
-          <Select
-            value={selectedOption}
-            onChange={handleChange}
-            options={months}
-          />
+          <Select value={filterType} onChange={handleChange} options={months} />
         </div>
-        {/* <div>
-          <Select
-            value={selectedOption2}
-            onChange={handleChange2}
-            options={years}
-          />
-        </div> */}
+
         <div className="relative rounded-sm w-max">
           <button
-            onClick={handleFilterData}
+            onClick={handleRemoveSearch}
             className="employeeBtn employeeInput"
           >
-            Search
+            Remove Search
           </button>
         </div>
       </div>
@@ -110,8 +68,11 @@ const EmployeeSalaryListTable = ({
           </tr>
         </thead>
         <tbody>
-          {getAllEmployee?.map((employee, index) => (
-            <tr className={index %2 == 0 ? 'even-row' : 'odd-row'} key={employee?._id}>
+          {getAllSalary?.data[0]?.salaries?.map((employee, index) => (
+            <tr
+              className={index % 2 == 0 ? "even-row" : "odd-row"}
+              key={employee?._id}
+            >
               <td>{employee.full_name}</td>
               <td> {employee.employeeId}</td>
               <td>{employee.month_of_salary}</td>

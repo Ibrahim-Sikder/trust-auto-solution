@@ -7,28 +7,20 @@ import { PrintContext } from "../../../context/PrintProvider";
 import CommonButton from "../../../../components/CommonButton/CommonButton";
 import car from "../../../../../public/assets/car3.jpeg";
 import { useLocation } from "react-router-dom";
-import { formatDate } from "../../../../utils/formateDate";
+import { useGetSingleJobCardQuery } from "../../../../redux/api/jobCard";
+import Loading from "../../../../components/Loading/Loading";
 const PreviewJobCard = () => {
   const { componentRef, targetRef } = useContext(PrintContext);
-  const [previewData, setPreviewData] = useState({});
-  console.log(previewData);
+  const [vehicleInterior, setVehicleInterior] = useState("");
+  const [reportedDefect, setReportedDefect] = useState("");
+  const [reportedAction, setReportedAction] = useState("");
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setPreviewData(data);
-        });
-    }
-  }, [id]);
+  const { data, isLoading } = useGetSingleJobCardQuery(id);
 
-  const [vehicleInterior, setVehicleInterior] = useState("");
-  const [reportedDefect, setReportedDefect] = useState("");
-  const [reportedAction, setReportedAction] = useState("");
+  const previewData = data?.data;
 
   const extractTextFromHTML = (htmlString) => {
     const doc = new DOMParser().parseFromString(htmlString, "text/html");
@@ -36,19 +28,31 @@ const PreviewJobCard = () => {
   };
 
   useEffect(() => {
-    if (previewData && previewData.vehicle_interior_parts) {
-      const extractedText = extractTextFromHTML(previewData.reported_defect);
+    if (previewData && previewData?.vehicle_interior_parts) {
+      const extractedText = extractTextFromHTML(
+        previewData?.vehicle_interior_parts
+      );
       setVehicleInterior(extractedText);
     }
-    if (previewData && previewData.reported_defect) {
-      const extractedText = extractTextFromHTML(previewData.reported_defect);
+    if (previewData && previewData?.reported_defect) {
+      const extractedText = extractTextFromHTML(previewData?.reported_defect);
       setReportedDefect(extractedText);
     }
-    if (previewData && previewData.vehicle_interior_parts) {
-      const extractedText = extractTextFromHTML(previewData.reported_defect);
+    if (previewData && previewData?.reported_action) {
+      const extractedText = extractTextFromHTML(previewData?.reported_action);
       setReportedAction(extractedText);
     }
   }, [previewData]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  const lastVehicle = previewData?.customer?.vehicles
+    ? [...previewData.customer.vehicles].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      )[0]
+    : null;
 
   return (
     <main className="jobCardViewWrap">
@@ -65,10 +69,10 @@ const PreviewJobCard = () => {
               <div className=" flex text-[12px] justify-between items-center my-2">
                 <div>
                   <b>
-                    Job No: <span>{previewData.job_no}</span>
+                    Job No: <span>{previewData?.job_no}</span>
                   </b>
                   <div>
-                    <b> ID:</b> {previewData.Id}
+                    <b> ID:</b> {previewData?.Id}
                   </div>
                 </div>
                 <div>
@@ -78,7 +82,7 @@ const PreviewJobCard = () => {
                 </div>
                 <div>
                   <b>
-                    Date: <span>{previewData.date}</span>
+                    Date: <span>{previewData?.date}</span>
                   </b>
                 </div>
               </div>
@@ -93,26 +97,24 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="VIN No"
-                          defaultValue={previewData.chassis_no}
+                          defaultValue={lastVehicle?.chassis_no}
                           disabled
                         />
                       </div>
                       <div>
                         <label className="block">Car Registration No</label>
-                        {/* <input
+                        <input
                           type="text"
-                          // defaultValue={`${previewData.car_registration_no}`}
-                          defaultValue={`${previewData.car_registration_no} ${previewData.car_reg_no}`}
+                          defaultValue={lastVehicle?.fullRegNum}
                           disabled
-                        /> */}
-                        <p>{` ${previewData.carReg_no} ${previewData.car_registration_no} `}</p>
+                        />
                       </div>
                       <div>
                         <label className="block">Vehicle Model </label>
                         <input
                           type="text"
                           placeholder="Vehicle Model"
-                          defaultValue={previewData.vehicle_model}
+                          defaultValue={lastVehicle?.vehicle_model}
                           disabled
                         />
                       </div>
@@ -123,17 +125,17 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Engine No"
-                          defaultValue={previewData.engine_no}
+                          defaultValue={lastVehicle?.engine_no}
                           disabled
                         />
                       </div>
 
                       <div>
-                        <label className="block">Company Name </label>
+                        <label className="block">Vehicle Name </label>
                         <input
                           type="text"
                           placeholder="Company Name "
-                          defaultValue={previewData.company_name}
+                          defaultValue={lastVehicle?.vehicle_name}
                           disabled
                         />
                       </div>
@@ -142,7 +144,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Vehicle Brand "
-                          defaultValue={previewData.vehicle_brand}
+                          defaultValue={lastVehicle?.vehicle_brand}
                           disabled
                         />
                       </div>
@@ -154,7 +156,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Mileage"
-                          defaultValue={previewData.mileage}
+                          defaultValue={lastVehicle?.mileage}
                           disabled
                         />
                       </div>
@@ -163,7 +165,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Color"
-                          defaultValue={previewData.color_code}
+                          defaultValue={lastVehicle?.color_code}
                           disabled
                         />
                       </div>
@@ -172,7 +174,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Vehicle Category "
-                          defaultValue={previewData.vehicle_category}
+                          defaultValue={lastVehicle?.vehicle_category}
                           disabled
                         />
                       </div>
@@ -180,7 +182,10 @@ const PreviewJobCard = () => {
                   </div>
                 </div>
                 <div className=" inputGroup">
-                  <h6 className=" mb-2 font-bold ">Customer Information </h6>
+                  <h6 className=" mb-2 font-bold ">
+                    {" "}
+                    {previewData?.user_type} Information{" "}
+                  </h6>
                   <div className="flex">
                     <div>
                       <div>
@@ -188,7 +193,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Customer Name"
-                          defaultValue={previewData.customer_name}
+                          defaultValue={previewData?.customer_name}
                           disabled
                         />
                       </div>
@@ -197,7 +202,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Contact No"
-                          defaultValue={previewData.driver_contact}
+                          defaultValue={previewData?.driver_contact}
                           disabled
                         />
                       </div>
@@ -206,7 +211,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Car Driver Name"
-                          defaultValue={previewData.driver_name}
+                          defaultValue={previewData?.driver_name}
                           disabled
                         />
                       </div>
@@ -217,7 +222,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Phone"
-                          defaultValue={previewData.customer_contact}
+                          defaultValue={previewData?.customer_contact}
                           disabled
                         />
                       </div>
@@ -226,7 +231,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Reference Number"
-                          defaultValue={previewData.reference_name}
+                          defaultValue={previewData?.reference_name}
                           disabled
                         />
                       </div>
@@ -235,7 +240,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Customer Address "
-                          defaultValue={previewData.customer_email}
+                          defaultValue={previewData?.customer_email}
                           disabled
                         />
                       </div>
@@ -268,7 +273,7 @@ const PreviewJobCard = () => {
                       Vehicle Body Report Comments
                     </label>
                     <textarea
-                      defaultValue={previewData.vehicle_body_report}
+                      defaultValue={previewData?.vehicle_body_report}
                       readOnly
                     ></textarea>
                   </div>
@@ -281,7 +286,7 @@ const PreviewJobCard = () => {
                     <label>Note</label>
                     <textarea
                       className="note"
-                      defaultValue={previewData.note}
+                      defaultValue={previewData?.note}
                       readOnly
                     ></textarea>
                   </div>
@@ -293,7 +298,7 @@ const PreviewJobCard = () => {
               <div>
                 <label className="block ">Technician Name</label>
                 <input
-                  defaultValue={previewData.technician_name}
+                  defaultValue={previewData?.technician_name}
                   disabled
                   type="text"
                   // placeholder="Technician Name"
@@ -311,7 +316,7 @@ const PreviewJobCard = () => {
               <div>
                 <label className="block">Date </label>
                 <input
-                  defaultValue={previewData.technician_date}
+                  defaultValue={previewData?.technician_date}
                   readOnly
                   type="text"
                   placeholder="Date"

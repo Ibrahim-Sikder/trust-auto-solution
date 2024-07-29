@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { HiLocationMarker } from "react-icons/hi";
 import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
@@ -13,115 +14,44 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import Message from "../../../../shared/Message/Message";
+import { useGetSingleCustomerQuery } from "../../../../redux/api/customerApi";
+import Loading from "../../../../components/Loading/Loading";
 
 const CustomerProfile = () => {
-  const [loading, setLoading] = useState(false);
-  const [profileData, setProfileData] = useState({});
-  const [jobCardData, setJobCardData] = useState([]);
-  const [quotationData, setQuotationData] = useState([]);
-  const [invoiceData, setInvoiceData] = useState([]);
-  const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-  const [error, setError] = useState("");
+ 
+  
   const [value, setValue] = useState(0);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/customer/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setProfileData(data);
-          setLoading(false);
-        });
-    }
-  }, [id]);
+  const {
+    data: profileData,
+    isLoading,
+    error: customerError,
+  } = useGetSingleCustomerQuery(id);
 
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setJobCardData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          setError(error.message);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setQuotationData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          setError(error.message);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setInvoiceData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          setError(error.message);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setMoneyReceiptData(data.card);
-          }
-        })
-        .catch((error) => {
-          setError(error.message);
-        });
-    }
-  }, [id]);
+   
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+ 
+
+  if (isLoading) {
+    return <Loading />;
   }
-  if (error) {
+
+  if (customerError) {
     return <div>Something went wrong</div>;
   }
+  // console.log({data})
 
   const tabStyles = {
     width: 115,
     height: "35px",
-    margin: .5,
+    margin: 0.5,
     backgroundColor: "#42A1DA",
     color: "white",
     borderRadius: 10,
@@ -144,7 +74,6 @@ const CustomerProfile = () => {
     },
   };
 
-
   return (
     <div>
       <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center">
@@ -158,22 +87,22 @@ const CustomerProfile = () => {
                 <div className="flex items-center">
                   <span>Customer ID :</span>{" "}
                   <span className="ml-3 font-semibold">
-                    {profileData?.customerId}
+                    {profileData?.data?.customerId}
                   </span>
                 </div>
 
                 <div className="mt-3 space-y-2">
                   <div className="flex items-center">
                     <HiMiniPhone size="20" className="mr-2" />
-                    <span>{profileData?.customer_contact}</span>
+                    <span>{profileData?.data?.fullCustomerNum} </span>
                   </div>
                   <div className="flex items-center">
                     <HiEnvelope size="20" className="mr-2" />
-                    <span>{profileData?.customer_email} </span>
+                    <span>{profileData?.data?.customer_email} </span>
                   </div>
                   <div className="flex items-center">
                     <HiLocationMarker size="20" className="mr-2" />
-                    <span>{profileData?.customer_address} </span>
+                    <span>{profileData?.data?.customer_address} </span>
                   </div>
                 </div>
               </div>
@@ -206,47 +135,41 @@ const CustomerProfile = () => {
         </Box>
 
         <TabPanel value={value} index={0}>
-          <CustomerAccount
-            profileData={profileData}
-            jobCardData={jobCardData}
-            quotationData={quotationData}
-            invoiceData={invoiceData}
-            moneyReceiptData={moneyReceiptData}
-          />
+          <CustomerAccount profileData={profileData} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <VehicleDetails />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <CustomerJobCardList
-            jobCardData={jobCardData}
-            setJobCardData={setJobCardData}
+            // jobCardData={jobCardData}
+            // setJobCardData={setJobCardData}
             id={id}
           />
         </TabPanel>
         <TabPanel value={value} index={3}>
           <CustomerQoutationList
-            quotationData={quotationData}
-            setQuotationData={setQuotationData}
+            // quotationData={quotationData}
+            // setQuotationData={setQuotationData}
             id={id}
           />
         </TabPanel>
         <TabPanel value={value} index={4}>
           <CustomerInvoiceList
-            invoiceData={invoiceData}
-            setInvoiceData={setInvoiceData}
+            // invoiceData={invoiceData}
+            // setInvoiceData={setInvoiceData}
             id={id}
           />
         </TabPanel>
         <TabPanel value={value} index={5}>
           <CustomerMoneyList
-            moneyReceiptData={moneyReceiptData}
-            setMoneyReceiptData={setMoneyReceiptData}
+            // moneyReceiptData={moneyReceiptData}
+            // setMoneyReceiptData={setMoneyReceiptData}
             id={id}
           />
         </TabPanel>
         <TabPanel value={value} index={6}>
-          <Message/>
+          <Message />
         </TabPanel>
 
         <div>

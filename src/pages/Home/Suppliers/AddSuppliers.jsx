@@ -10,10 +10,16 @@ import {
   FaUserTie,
   FaCloudUploadAlt,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { Autocomplete, FormControl, InputLabel, Select } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  Pagination,
+  Select,
+} from "@mui/material";
 import { HiOutlineSearch } from "react-icons/hi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -22,16 +28,32 @@ import { countries } from "../../../constant";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { FaUserGear } from "react-icons/fa6";
 import { NotificationAdd } from "@mui/icons-material";
+import {
+  useCreateSupplierMutation,
+  useDeleteSupplierMutation,
+  useGetAllSuppliersQuery,
+} from "../../../redux/api/supplier";
+import { ErrorMessage } from "../../../components/error-message";
+import uploadFile from "../../../helper/uploadFile";
+import Loading from "../../../components/Loading/Loading";
+import { Button } from "react-scroll";
 const AddSuppliers = () => {
   const [url, setUrl] = useState("");
-  const [imageLoading, setImageLoading] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [getAllSuppliers, setGetAllSuppliers] = useState([]);
   const [filterType, setFilterType] = useState("");
   const [noMatching, setNoMatching] = useState(null);
   const [reload, setReload] = useState(false);
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const limit = 10;
+
+  const textInputRef = useRef(null);
   const {
     register,
     handleSubmit,
@@ -39,82 +61,80 @@ const AddSuppliers = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/supplier`)
-      .then((response) => {
-        // Handle the response data here
-        setGetAllSuppliers(response.data.allSupplier); // For example, you can log the response data to the console
-      })
-      .catch((error) => {
-        // Handle any errors that occur during the request
-        setError(error.message);
-      });
-  }, [reload]);
+  const [createSupplier, { isLoading: createLoading, error: createError }] =
+    useCreateSupplierMutation();
 
-  const handleImageUpload = async (e) => {
-    try {
-      const file = e.target.files[0]; // Get the selected file
-      const formData = new FormData();
-      formData.append("image", file); // Use "image" as the key for single image upload
-      setImageLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  const [deleteSupplier, { isLoading: supplierLoading }] =
+    useDeleteSupplierMutation();
 
-      const data = await response.json();
-      if (data.message === "Image uploaded successful") {
-        setUrl(data.image_url);
-        setImageLoading(false);
-      }
-    } catch (error) {
-      setImageLoading(false);
+  const { data: suppliers, isLoading: suppliersLoading } =
+    useGetAllSuppliersQuery({
+      limit,
+      page: currentPage,
+      searchTerm: filterType,
+    });
+
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files?.[0];
+
+    if (file) {
+      // setValue(name, file);
+
+      const uploadPhoto = await uploadFile(file);
+      console.log(uploadPhoto);
+      setUrl(uploadPhoto?.secure_url);
+      setLoading(false);
     }
   };
+
+  // const handleImageUpload = async (e) => {
+  //   try {
+  //     const file = e.target.files[0]; // Get the selected file
+  //     const formData = new FormData();
+  //     formData.append("image", file); // Use "image" as the key for single image upload
+  //     setImageLoading(true);
+  //     const response = await fetch(
+  //       `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       }
+  //     );
+
+  //     const data = await response.json();
+  //     if (data.message === "Image uploaded successful") {
+  //       setUrl(data.image_url);
+  //       setImageLoading(false);
+  //     }
+  //   } catch (error) {
+  //     setImageLoading(false);
+  //   }
+  // };
 
   const onSubmit = async (data) => {
     setError("");
-    try {
-      const values = {
-        full_name: data.full_name,
-        phone_number: data.phone_number,
-        email: data.email,
-        vendor: data.vendor,
-        shop_name: data.shop_name,
-        country: data.country,
-        city: data.city,
-        address: data.address,
-        image: url,
-      };
 
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/supplier`,
-        values
-      );
+    const values = {
+      full_name: data.full_name,
+      phone_number: phoneNumber,
+      country_code: countryCode.code,
+      email: data.email,
+      vendor: data.vendor,
+      shop_name: data.shop_name,
+      country: data.country,
+      city: data.city,
+      state: data.state,
+      image: url,
+    };
 
-      if (response.data.message === "Successfully supplier post") {
-        toast.success("Successfully supplier added.");
-        setLoading(false);
-        setReload(!reload);
-        reset();
-        setError("");
-      }
-    } catch (error) {
-      if (error.response) {
-        setLoading(false);
-        setError(error.response.data.message);
-      }
+    const response = await createSupplier(values).unwrap();
+
+    if (response.success) {
+      toast.success(response.message);
+      navigate("/dashboard/supplier-list");
     }
   };
-
-  // country code set
-  const [countryCode, setCountryCode] = useState(countries[0]);
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
@@ -128,15 +148,6 @@ const AddSuppliers = () => {
       setPhoneNumber(newPhoneNumber);
     }
   };
-  // pagination
-
-  const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(
-    Number(sessionStorage.getItem("supplier")) || 1
-  );
-  const [pageNumberLimit, setPageNumberLimit] = useState(5);
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -148,18 +159,7 @@ const AddSuppliers = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/supplier/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Supplier card delete successful") {
-          setGetAllSuppliers(getAllSuppliers?.filter((pkg) => pkg._id !== id));
-          setReload(!reload);
-        }
+        await deleteSupplier(id).unwrap();
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -167,193 +167,17 @@ const AddSuppliers = () => {
     }
   };
 
-  useEffect(() => {
-    sessionStorage.setItem("supplier", currentPage.toString());
-  }, [currentPage]);
-
-  useEffect(() => {
-    const storedPage = Number(sessionStorage.getItem("supplier")) || 1;
-    setCurrentPage(storedPage);
-    setMaxPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit) * pageNumberLimit
-    );
-    setMinPageNumberLimit(
-      Math.ceil(storedPage / pageNumberLimit - 1) * pageNumberLimit
-    );
-  }, [pageNumberLimit]);
-
-  // ...
-
-  const handleClick = (e) => {
-    const pageNumber = Number(e.target.id);
-    setCurrentPage(pageNumber);
-    sessionStorage.setItem("supplier", pageNumber.toString());
-  };
-  const pages = [];
-  for (let i = 1; i <= Math.ceil(getAllSuppliers?.length / limit); i++) {
-    pages.push(i);
-  }
-
-  const renderPagesNumber = pages?.map((number) => {
-    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={handleClick}
-          className={
-            currentPage === number
-              ? "bg-green-500 text-white px-3 rounded-md cursor-pointer"
-              : "cursor-pointer text-black border border-green-500 px-3 rounded-md"
-          }
-        >
-          {number}
-        </li>
-      );
-    } else {
-      return null;
-    }
-  });
-
-  const lastIndex = currentPage * limit;
-  const startIndex = lastIndex - limit;
-
-  let currentItems;
-  if (Array.isArray(getAllSuppliers)) {
-    currentItems = getAllSuppliers?.slice(startIndex, lastIndex);
-  } else {
-    currentItems = [];
-  }
-
-  const renderData = (getAllSuppliers) => {
-    return (
-      <table className="table">
-        <thead className="tableWrap">
-          <tr>
-            <th>SL</th>
-            <th>Supplier Name </th>
-            <th>Phone Number </th>
-            <th>Email</th>
-            <th colSpan={3}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {getAllSuppliers?.map((card, index) => (
-            <tr key={card._id}>
-              <td>{index + 1}</td>
-              <td>{card?.full_name}</td>
-              <td>{card?.phone_number}</td>
-              <td>{card?.email}</td>
-
-              <td>
-                <div className="editIconWrap edit">
-                  <Link to={`/dashboard/update-Supplier?id=${card._id}`}>
-                    <FaEdit className="editIcon" />
-                  </Link>
-                </div>
-              </td>
-              <td>
-                <div
-                  onClick={() => deletePackage(card._id)}
-                  className="editIconWrap"
-                >
-                  <FaTrashAlt className="deleteIcon" />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  };
-
-  const handlePrevious = () => {
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("supplier", newPage.toString());
-
-    if (newPage % pageNumberLimit === 0) {
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-    }
-  };
-  const handleNext = () => {
-    const newPage = currentPage + 1;
-    setCurrentPage(newPage);
-    sessionStorage.setItem("supplier", newPage.toString());
-
-    if (newPage > maxPageNumberLimit) {
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
-    }
-  };
-
-  let pageIncrementBtn = null;
-  if (pages?.length > maxPageNumberLimit) {
-    pageIncrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: maxPageNumberLimit + 1 } })}
-        className="pl-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  let pageDecrementBtn = null;
-  if (currentPage > pageNumberLimit) {
-    pageDecrementBtn = (
-      <li
-        onClick={() => handleClick({ target: { id: minPageNumberLimit } })}
-        className="pr-1 text-black cursor-pointer"
-      >
-        &hellip;
-      </li>
-    );
-  }
-
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/supplier/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setGetAllSuppliers(response.data.result);
-        setNoMatching(null);
-        setLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-    }
-  };
-
   const handleAllSuppliers = () => {
-    try {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/supplier`)
-        .then((res) => res.json())
-        .then((data) => {
-          setGetAllSuppliers(data.allSupplier);
-          setNoMatching(null);
-        });
-    } catch (error) {
-      toast.error("Something went wrong");
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
     }
   };
 
   return (
     <section>
       <div className=" addProductWraps">
-      <div className="flex justify-between pb-3 border-b-2 px-2">
+        <div className="flex justify-between pb-3 border-b-2 px-2">
           <HeaderButton />
           <div className="flex items-end justify-end">
             <NotificationAdd size={30} className="mr-2" />
@@ -388,16 +212,10 @@ const AddSuppliers = () => {
                   id="Full Name "
                   {...register("full_name")}
                 />
-                {/* <TextField
-                  className="productField"
-                  fullWidth
-                  label="Phone Number "
-                  id="Phone Number "
-                  {...register("phone_number")}
-                /> */}
+
                 <div className="flex items-center my-1">
                   <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: '5px' }}
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
@@ -423,10 +241,8 @@ const AddSuppliers = () => {
                     type="tel"
                     value={phoneNumber}
                     onChange={handlePhoneNumberChange}
-                   
                   />
                 </div>
-
 
                 <TextField
                   className="productField"
@@ -447,13 +263,20 @@ const AddSuppliers = () => {
                       label="Car Registration No  "
                       {...register("vendor")}
                     >
-                      <option value="Acura">New Parts </option>
-                      <option value="Acura">Recondition Parts</option>
-                      <option value="Acura">New & Recondition Parts</option>
-                      <option value="Acura">Body Items</option>
-                      <option value="Acura">Engine & Suspension Items</option>
-                      <option value="Acura">Electric Items</option>
-                      <option value="Acura">Others</option>
+                      <option value="">Select </option>
+                      <option value="New Parts">New Parts </option>
+                      <option value="Recondition Parts">
+                        Recondition Parts
+                      </option>
+                      <option value="New & Recondition Parts">
+                        New & Recondition Parts
+                      </option>
+                      <option value="Body Items">Body Items</option>
+                      <option value="Engine & Suspension Items">
+                        Engine & Suspension Items
+                      </option>
+                      <option value="Electric Items">Electric Items</option>
+                      <option value="Others">Others</option>
                     </Select>
                   </FormControl>
                 </div>
@@ -484,8 +307,8 @@ const AddSuppliers = () => {
                 <TextField
                   className="productField"
                   fullWidth
-                  label="Address "
-                  {...register("address")}
+                  label="State "
+                  {...register("state")}
                 />
                 <div className="productField">
                   <input
@@ -501,7 +324,7 @@ const AddSuppliers = () => {
                     <span>
                       <FaCloudUploadAlt size={30} className="mr-2" />
                     </span>
-                    {imageLoading ? (
+                    {loading ? (
                       <span>Uploading...</span>
                     ) : (
                       <>
@@ -516,9 +339,13 @@ const AddSuppliers = () => {
                 </div>
               </div>
             </div>
-            <div className="text-start text-red-400 py-2">{error}</div>
-            <div className="mt-2 savebtn">
-              <button disabled={loading || imageLoading}>Add Supplier </button>
+            <div className="my-2">
+              {createError && (
+                <ErrorMessage messages={createError.data.errorSources} />
+              )}
+            </div>
+            <div className="mt-2 savebtn flex justify-end">
+              <button disabled={createLoading}>Add Supplier </button>
             </div>
           </form>
         </div>
@@ -529,74 +356,87 @@ const AddSuppliers = () => {
             Suppliers List:
           </h3>
           <div className="flex items-center searcList">
+            <button
+              onClick={handleAllSuppliers}
+              className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
+            >
+              All
+            </button>
             <div className="searchGroup">
               <input
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
                 type="text"
+                ref={textInputRef}
               />
             </div>
-            <button onClick={handleFilterType} className="SearchBtn ">
-              Search{" "}
-            </button>
+            <button className="SearchBtn ">Search </button>
           </div>
         </div>
-        {loading ? (
+        {suppliersLoading ? (
           <div className="flex items-center justify-center text-xl">
-            Loading...
+            <Loading />
           </div>
         ) : (
           <div>
-            {getAllSuppliers?.length === 0 || currentItems.length === 0 ? (
+            {suppliers?.data?.suppliers?.length === 0 ? (
               <div className="flex items-center justify-center h-full text-xl text-center">
-                No matching suppliers found.
+                No matching card found.
               </div>
             ) : (
-              <>
-                <section>
-                  {renderData(currentItems)}
-                  <ul
-                    className={
-                      minPageNumberLimit < 5
-                        ? "flex justify-center gap-2 md:gap-4 pb-5 mt-6"
-                        : "flex justify-center gap-[5px] md:gap-2 pb-5 mt-6"
-                    }
-                  >
-                    <button
-                      onClick={handlePrevious}
-                      disabled={currentPage === pages[0] ? true : false}
-                      className={
-                        currentPage === pages[0]
-                          ? "text-gray-600"
-                          : "text-gray-300"
-                      }
-                    >
-                      Previous
-                    </button>
-                    <span
-                      className={minPageNumberLimit < 5 ? "hidden" : "inline"}
-                    >
-                      {pageDecrementBtn}
-                    </span>
-                    {renderPagesNumber}
-                    {pageIncrementBtn}
-                    <button
-                      onClick={handleNext}
-                      disabled={
-                        currentPage === pages[pages?.length - 1] ? true : false
-                      }
-                      className={
-                        currentPage === pages[pages?.length - 1]
-                          ? "text-gray-700"
-                          : "text-gray-300 pl-1"
-                      }
-                    >
-                      Next
-                    </button>
-                  </ul>
-                </section>
-              </>
+              <section>
+                <table className="table">
+                  <thead className="tableWrap">
+                    <tr>
+                      <th>SL</th>
+                      <th>Supplier Name </th>
+                      <th>Phone Number </th>
+                      <th>Email</th>
+                      <th colSpan={3}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {suppliers?.data?.suppliers?.map((card, index) => (
+                      <tr key={card._id}>
+                        <td>{index + 1}</td>
+                        <td>{card?.full_name}</td>
+                        <td>{card?.full_Phone_number}</td>
+                        <td>{card?.email}</td>
+
+                        <td>
+                          <div className="editIconWrap edit">
+                            <Link
+                              to={`/dashboard/update-Supplier?id=${card._id}`}
+                            >
+                              <FaEdit className="editIcon" />
+                            </Link>
+                          </div>
+                        </td>
+                        <td>
+                          <button
+                            disabled={supplierLoading}
+                            onClick={() => deletePackage(card._id)}
+                            className="editIconWrap"
+                          >
+                            <FaTrashAlt className="deleteIcon" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
             )}
+          </div>
+        )}
+        {suppliers?.data?.suppliers?.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={suppliers?.data?.meta?.totalPages}
+              page={currentPage}
+              color="primary"
+              onChange={(_, page) => setCurrentPage(page)}
+            />
           </div>
         )}
       </div>

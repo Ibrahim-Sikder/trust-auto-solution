@@ -2,45 +2,41 @@
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable react/jsx-no-undef */
 
-import { Autocomplete, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaUsers, FaCloudUploadAlt } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { countries } from "../../../constant";
+import {
+  useGetSingleEmployeeQuery,
+  useUpdateEmployeeMutation,
+} from "../../../redux/api/employee";
+import ImageUploader from "../../../helper/uploadImage";
+import { ErrorMessage } from "../../../components/error-message";
+import Loading from "../../../components/Loading/Loading";
 
 const UpdateEmployee = () => {
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [getSingleEmployee, setGetSingleEmployee] = useState({});
 
-  const [reload, setReload] = useState(false);
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [guardianCountryCode, setGuardianCountryCode] = useState(countries[0]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [guardianPhoneNumber, setGuardianPhoneNumber] = useState("");
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   const navigate = useNavigate();
 
-  // set country code
-  const [countryCode, setCountryCode] = useState(countries[0]);
-  const [phoneNumber, setPhoneNumber] = useState("");
-
-  const handlePhoneNumberChange = (e) => {
-    const newPhoneNumber = e.target.value;
-    if (
-      /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
-      (newPhoneNumber === "" ||
-        !newPhoneNumber.startsWith("0") ||
-        newPhoneNumber.length > 1)
-    ) {
-      setPhoneNumber(newPhoneNumber);
-    }
-  };
   const {
     register,
     handleSubmit,
@@ -48,16 +44,49 @@ const UpdateEmployee = () => {
     formState: { errors },
   } = useForm();
 
+  const {
+    data: singleEmployee,
+    isLoading: employeeLoading,
+    error: employeeError,
+  } = useGetSingleEmployeeQuery(id);
+
+  const [updateEmployee, { isLoading: updateLoading, error: updateError }] =
+    useUpdateEmployeeMutation();
+
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee/one/${id}`)
-      .then((response) => {
-        setGetSingleEmployee(response.data.employee);
-      })
-      .catch((error) => {
-        setError(error.message);
+    if (singleEmployee?.data) {
+      reset({
+        employeeId: singleEmployee.data.employeeId,
+        full_name: singleEmployee?.data?.full_name,
+        date_of_birth: singleEmployee?.data?.date_of_birth,
+        nid_number: singleEmployee?.data?.nid_number,
+        blood_group: singleEmployee?.data?.blood_group,
+        country_code: singleEmployee?.data?.country_code,
+        phone_number: singleEmployee?.data?.phone_number,
+        email: singleEmployee?.data?.email,
+        gender: singleEmployee?.data?.gender,
+        join_date: singleEmployee?.data?.join_date,
+        designation: singleEmployee?.data?.designation,
+        status: singleEmployee?.data?.status,
+        password: singleEmployee?.data?.password,
+        confirm_password: singleEmployee?.data?.confirm_password,
+        father_name: singleEmployee?.data?.father_name,
+        mother_name: singleEmployee?.data?.mother_name,
+
+        guardian_name: singleEmployee?.data?.guardian_name,
+        guardian_country_code: singleEmployee?.data?.guardian_country_code,
+        guardian_contact: singleEmployee?.data?.guardian_contact,
+        relationship: singleEmployee?.data?.relationship,
+
+        nationality: singleEmployee?.data?.nationality,
+        religion: singleEmployee?.data?.religion,
+
+        country: singleEmployee?.data?.country,
+        city: singleEmployee?.data?.city,
+        local_address: singleEmployee?.data?.local_address,
       });
-  }, [reload, id]);
+    }
+  }, [reset, singleEmployee?.data]);
 
   function isImage(url) {
     return /\.(jpg|jpeg|png)$/i.test(url);
@@ -93,55 +122,54 @@ const UpdateEmployee = () => {
   };
 
   const onSubmit = async (data) => {
-    setError("");
-    try {
-      const values = {
-        employeeId: getSingleEmployee.employeeId,
-        full_name: data.full_name || getSingleEmployee.full_name,
-        date_of_birth: data.date_of_birth || getSingleEmployee.date_of_birth,
-        nid_number: data.nid_number || getSingleEmployee.nid_number,
-        blood_group: data.blood_group || getSingleEmployee.blood_group,
-        phone_number: data.phone_number || getSingleEmployee.phone_number,
-        email: data.email || getSingleEmployee.email,
-        gender: data.gender || getSingleEmployee.gender,
-        join_date: data.join_date || getSingleEmployee.join_date,
-        designation: data.designation || getSingleEmployee.designation,
-        status: data.status || getSingleEmployee.status,
-        password: data.password || getSingleEmployee.password,
-        confirm_password:
-          data.confirm_password || getSingleEmployee.confirm_password,
-        father_name: data.father_name || getSingleEmployee.father_name,
-        mother_name: data.mother_name || getSingleEmployee.mother_name,
-        nationality: data.nationality || getSingleEmployee.nationality,
-        religion: data.religion || getSingleEmployee.religion,
+    data.country_code = countryCode.code;
+    data.guardian_country_code = guardianCountryCode.code;
+    data.image = url;
+    data.nid_number = Number(data.nid_number);
 
-        country: data.country || getSingleEmployee.country,
-        city: data.city || getSingleEmployee.city,
-        address: data.address || getSingleEmployee.address,
-        image: url ? url : getSingleEmployee.image,
-      };
+    const values = {
+      id,
+      data,
+    };
 
-      setLoading(true);
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/employee/one/${id}`,
-        values
-      );
-
-      if (response.data.message === "Successfully update card.") {
-        toast.success("Successfully update card.");
-        setLoading(false);
-        setReload(!reload);
-        navigate("/dashboard/employee-list");
-        reset();
-        setError("");
-      }
-    } catch (error) {
-      if (error.response) {
-        setLoading(false);
-        setError(error.response.data.message);
-      }
+    const res = await updateEmployee(values).unwrap();
+    if (res.success) {
+      toast.success(res.message);
+      navigate("/dashboard/employee-list");
     }
   };
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
+  const handleGuardianPhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
+
+  if (employeeLoading) {
+    return <Loading />;
+  }
+  if (employeeError) {
+    toast.error(employeeError.data.message);
+  }
 
   return (
     <section>
@@ -175,95 +203,40 @@ const UpdateEmployee = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex">
+            <div className="addEmployeeFieldWraps space-y-3">
               <div>
                 <h3 className="text-xl font-bold">Personal Info </h3>
                 <TextField
                   className="productField"
-                  fullWidth
+                  label="Full Name "
+                  id="Full Name "
                   {...register("full_name")}
-                  label="Full Name"
-                  defaultValue={getSingleEmployee.full_name}
-                  value={getSingleEmployee.full_name}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      full_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.full_name,
-                  }}
+                  focused={singleEmployee?.data?.full_name || ""}
                 />
 
                 <TextField
                   className="productField"
-                  fullWidth
                   label="Date of Birth"
                   {...register("date_of_birth")}
-                  defaultValue={getSingleEmployee.date_of_birth}
-                  value={getSingleEmployee.date_of_birth}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      date_of_birth: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.date_of_birth,
-                  }}
+                  focused={singleEmployee?.data?.date_of_birth || ""}
                 />
                 <TextField
                   className="productField"
-                  fullWidth
                   label="NID Number"
                   {...register("nid_number")}
-                  defaultValue={getSingleEmployee.nid_number}
-                  value={getSingleEmployee.nid_number}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      nid_number: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.nid_number,
-                  }}
+                  focused={singleEmployee?.data?.nid_number || ""}
                 />
                 <TextField
                   className="productField"
-                  fullWidth
                   label="Blood Group "
                   {...register("blood_group")}
-                  defaultValue={getSingleEmployee.blood_group}
-                  value={getSingleEmployee.blood_group}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      blood_group: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.blood_group,
-                  }}
+                  focused={singleEmployee?.data?.blood_group || ""}
                 />
                 {/* <TextField
                   className="productField"
-                  fullWidth
                   label="Phone Number "
                   id="Phone Number "
                   {...register("phone_number")}
-                  defaultValue={getSingleEmployee.phone_number}
-                  value={getSingleEmployee.phone_number}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      phone_number: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.phone_number,
-                  }}
                 /> */}
                 <div className="flex items-center my-1">
                   <Autocomplete
@@ -271,8 +244,12 @@ const UpdateEmployee = () => {
                     className="jobCardSelect2"
                     freeSolo
                     options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
+                    getOptionLabel={(option) => option.code}
+                    value={
+                      countryCode
+                        ? countryCode
+                        : singleEmployee?.data?.country_code
+                    }
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
                       setPhoneNumber(""); // Reset the phone number when changing country codes
@@ -280,39 +257,35 @@ const UpdateEmployee = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("country_code")}
                         label="Select Country Code"
                         variant="outlined"
+                        focused={singleEmployee?.data?.country_code || ""}
                       />
                     )}
                   />
                   <TextField
+                    {...register("phone_number")}
                     className="productField2"
                     label="Phone No"
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
+                    value={
+                      phoneNumber
+                        ? phoneNumber
+                        : singleEmployee?.data?.phone_number
+                    }
                     onChange={handlePhoneNumberChange}
+                    focused={singleEmployee?.data?.phone_number || ""}
                   />
                 </div>
-
                 <TextField
                   className="productField"
-                  fullWidth
                   label="Email Address "
                   id="Email Address "
                   {...register("email")}
-                  defaultValue={getSingleEmployee.email}
-                  value={getSingleEmployee.email}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      email: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.email,
-                  }}
+                  focused={singleEmployee?.data?.email || ""}
                 />
                 <FormControl className="productField">
                   <InputLabel htmlFor="grouped-native-select">
@@ -324,17 +297,6 @@ const UpdateEmployee = () => {
                     id="grouped-native-select"
                     label="Gender"
                     {...register("gender")}
-                    defaultValue={getSingleEmployee.gender}
-                    value={getSingleEmployee.gender}
-                    onChange={(e) =>
-                      setGetSingleEmployee({
-                        ...getSingleEmployee,
-                        gender: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!getSingleEmployee.gender,
-                    }}
                   >
                     <option>Select</option>
                     <option value="Male">Male</option>
@@ -348,17 +310,7 @@ const UpdateEmployee = () => {
                   label="Join Date  "
                   id="Join Date  "
                   {...register("join_date")}
-                  defaultValue={getSingleEmployee.join_date}
-                  value={getSingleEmployee.join_date}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      join_date: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.join_date,
-                  }}
+                  focused={singleEmployee?.data?.join_date || ""}
                 />
 
                 <TextField
@@ -367,44 +319,23 @@ const UpdateEmployee = () => {
                   label="Designation  "
                   id="Designation  "
                   {...register("designation")}
-                  defaultValue={getSingleEmployee.designation}
-                  value={getSingleEmployee.designation}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      designation: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.designation,
-                  }}
+                  focused={singleEmployee?.data?.designation || ""}
                 />
 
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
+                <FormControl className="productField">
+                  <InputLabel htmlFor="grouped-native-select">
                     Select Status
                   </InputLabel>
                   <Select
                     className="productField"
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Select Status"
+                    native
+                    id="grouped-native-select"
+                    label="Select Status "
                     {...register("status")}
-                    defaultValue={getSingleEmployee.status}
-                    value={getSingleEmployee.status}
-                    onChange={(e) =>
-                      setGetSingleEmployee({
-                        ...getSingleEmployee,
-                        status: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!getSingleEmployee.status,
-                    }}
                   >
-                    <MenuItem>Select</MenuItem>
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
+                    <option>Select</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
                   </Select>
                 </FormControl>
 
@@ -414,17 +345,8 @@ const UpdateEmployee = () => {
                   label="Password"
                   id="Password"
                   {...register("password")}
-                  defaultValue={getSingleEmployee.password}
-                  value={getSingleEmployee.password}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      password: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.password,
-                  }}
+                  type="password"
+                  focused={singleEmployee?.data?.password || ""}
                 />
                 <TextField
                   className="productField"
@@ -432,17 +354,8 @@ const UpdateEmployee = () => {
                   label="Confirm Password "
                   id="Confirm Password  "
                   {...register("confirm_password")}
-                  defaultValue={getSingleEmployee.confirm_password}
-                  value={getSingleEmployee.confirm_password}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      confirm_password: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.confirm_password,
-                  }}
+                  type="password"
+                  focused={singleEmployee?.data?.confirm_password || ""}
                 />
               </div>
 
@@ -453,51 +366,80 @@ const UpdateEmployee = () => {
                   fullWidth
                   label="Father Name "
                   {...register("father_name")}
-                  defaultValue={getSingleEmployee.father_name}
-                  value={getSingleEmployee.father_name}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      father_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.father_name,
-                  }}
+                  focused={singleEmployee?.data?.father_name || ""}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Mother Name "
                   {...register("mother_name")}
-                  defaultValue={getSingleEmployee.mother_name}
-                  value={getSingleEmployee.mother_name}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      mother_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.mother_name,
-                  }}
+                  focused={singleEmployee?.data?.mother_name || ""}
+                />
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="Guardian Name"
+                  {...register("guardian_name")}
+                  focused={singleEmployee?.data?.guardian_name || ""}
+                />
+                <div className="flex items-center my-1">
+                  <Autocomplete
+                    sx={{ marginRight: "2px", marginLeft: "5px" }}
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.code}
+                    value={
+                      guardianCountryCode
+                        ? guardianCountryCode
+                        : singleEmployee?.data?.guardian_country_code
+                    }
+                    onChange={(event, newValue) => {
+                      setGuardianCountryCode(newValue);
+                      setGuardianPhoneNumber("");
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...register("guardian_country_code")}
+                        label="Select Country Code"
+                        variant="outlined"
+                        focused={
+                          singleEmployee?.data?.guardian_country_code || ""
+                        }
+                      />
+                    )}
+                  />
+                  <TextField
+                    {...register("guardian_contact")}
+                    className="productField2"
+                    label="Guardian Phone No"
+                    variant="outlined"
+                    fullWidth
+                    type="tel"
+                    value={
+                      guardianPhoneNumber
+                        ? guardianPhoneNumber
+                        : singleEmployee?.data?.guardian_contact
+                    }
+                    onChange={handleGuardianPhoneNumberChange}
+                    focused={singleEmployee?.data?.guardian_contact || ""}
+                  />
+                </div>
+
+                <TextField
+                  className="productField"
+                  fullWidth
+                  label="Relationship"
+                  {...register("relationship")}
+                  focused={singleEmployee?.data?.relationship || ""}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Nationality"
                   {...register("nationality")}
-                  defaultValue={getSingleEmployee.nationality}
-                  value={getSingleEmployee.nationality}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      nationality: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.nationality,
-                  }}
+                  focused={singleEmployee?.data?.nationality || ""}
                 />
 
                 <TextField
@@ -505,17 +447,7 @@ const UpdateEmployee = () => {
                   fullWidth
                   label="Religion"
                   {...register("religion")}
-                  defaultValue={getSingleEmployee.religion}
-                  value={getSingleEmployee.religion}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      religion: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.religion,
-                  }}
+                  focused={singleEmployee?.data?.religion || ""}
                 />
 
                 <TextField
@@ -523,95 +455,64 @@ const UpdateEmployee = () => {
                   fullWidth
                   label="Country "
                   {...register("country")}
-                  defaultValue={getSingleEmployee.country}
-                  value={getSingleEmployee.country}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      country: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.country,
-                  }}
+                  focused={singleEmployee?.data?.country || ""}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Town/City "
                   {...register("city")}
-                  defaultValue={getSingleEmployee.city}
-                  value={getSingleEmployee.city}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      city: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.city,
-                  }}
+                  focused={singleEmployee?.data?.city || ""}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Local Address "
-                  {...register("address")}
-                  defaultValue={getSingleEmployee.address}
-                  value={getSingleEmployee.address}
-                  onChange={(e) =>
-                    setGetSingleEmployee({
-                      ...getSingleEmployee,
-                      address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleEmployee.address,
-                  }}
+                  {...register("local_address")}
+                  focused={singleEmployee?.data?.local_address || ""}
                 />
-                {!imageLoading && (
-                  <div className="productField">
-                    <input
-                      onChange={handleImageUpload}
-                      type="file"
-                      id="files"
-                      className="hidden"
-                    />
-                    <label
-                      htmlFor="files"
-                      className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                    >
-                      <span>
-                        <FaCloudUploadAlt size={30} className="mr-2" />
-                      </span>
-                      {url || getSingleEmployee.image ? (
-                        <div>
-                          {url && isImage(url) && (
-                            <span className=" overflow-hidden">
-                              {getFileName(url)}
-                            </span>
-                          )}
-
-                          {getSingleEmployee.image &&
-                            isImage(getSingleEmployee.image) && (
-                              <span className=" overflow-hidden">
-                                {getFileName(getSingleEmployee.image)}
-                              </span>
-                            )}
-                        </div>
-                      ) : (
-                        <span>Upload Image</span>
-                      )}
-                    </label>
-                  </div>
-                )}
+                <div className="productField">
+                  <input
+                    onChange={handleImageUpload}
+                    type="file"
+                    id="files"
+                    className="hidden"
+                  />
+                  <label
+                    for="files"
+                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                  >
+                    <span>
+                      <FaCloudUploadAlt size={30} className="mr-2" />
+                    </span>
+                    {imageLoading ? (
+                      <span>Uploading...</span>
+                    ) : (
+                      <>
+                        {url ? (
+                          <span>Uploaded</span>
+                        ) : (
+                          <span> Upload Image</span>
+                        )}
+                      </>
+                    )}
+                  </label>
+                  <ImageUploader />
+                </div>
               </div>
             </div>
-            <div className="text-sm text-red-400 py-2">{error}</div>
-            <div className="savebtn mt-2 ">
-              <button disabled={loading || imageLoading}>
-                Update Employee{" "}
-              </button>
+
+            <div className="my-2">
+              {updateError && (
+                <ErrorMessage messages={updateError.data.errorSources} />
+              )}
+            </div>
+            <div className="flex justify-end">
+              <div className="bg-[#42a1da] text-white px-4 py-[10px] rounded-md">
+                <button disabled={updateLoading} type="submit">
+                  Update Employee
+                </button>
+              </div>
             </div>
           </form>
         </div>

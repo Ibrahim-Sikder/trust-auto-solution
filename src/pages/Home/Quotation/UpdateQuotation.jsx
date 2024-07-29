@@ -9,13 +9,17 @@ import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
-const UpdateQuotation = () => {
-  const [specificInvoice, setSpecificInvoice] = useState({});
+import { useRemoveQuotationMutation, useUpdateQuotationMutation } from "../../../redux/api/quotation";
+import { ErrorMessage } from "../../../components/error-message";
 
+const UpdateQuotation = () => {
+  const [specificQuotation, setSpecificQuotation] = useState({});
+  const [partsTotal, setPartsTotal] = useState(0);
+  const [serviceTotal, setServiceTotal] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
 
-  const [discount, setDiscount] = useState(0);
-  const [vat, setVAT] = useState(0);
+  const [discount, setDiscount] = useState("");
+  const [vat, setVAT] = useState("");
 
   const [error, setError] = useState("");
   const [registrationError, setRegistrationError] = useState("");
@@ -23,12 +27,12 @@ const UpdateQuotation = () => {
   const [removeButton, setRemoveButton] = useState("");
   const [reload, setReload] = useState(false);
   const [addButton, setAddButton] = useState(false);
+  const [serviceAddButton, setServiceAddButton] = useState(false);
+  const partsDiscountRef = useRef(null);
+  const netTotalAmountRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-  // const [inputList, setinputList] = useState([
-  //   { flyingFrom: "", flyingTo: "", date: "" },
-  // ]);
 
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
@@ -51,7 +55,7 @@ const UpdateQuotation = () => {
     { description: "", quantity: "", rate: "", total: "" },
   ]);
   const [serviceItems, setServiceItems] = useState([
-    { servicesDescription: "", quantity: "", rate: "", total: "" },
+    { description: "", quantity: "", rate: "", total: "" },
   ]);
 
   const {
@@ -60,6 +64,11 @@ const UpdateQuotation = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const [updateQuotation, { isLoading: updateLoading, error: updateError }] =
+    useUpdateQuotationMutation();
+  const [removeQuotation, { isLoading: removeLoading, error: removeError }] =
+    useRemoveQuotationMutation();
 
   const handleRemove = (index) => {
     if (!index) {
@@ -71,10 +80,6 @@ const UpdateQuotation = () => {
       list.splice(index, 1);
       setItems(list);
     }
-  };
-
-  const handleAddClick = () => {
-    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
   };
 
   const handleServiceDescriptionRemove = (index) => {
@@ -89,48 +94,60 @@ const UpdateQuotation = () => {
     }
   };
 
-  const handleServiceDescriptionAdd = () => {
-    setServiceItems([
-      ...serviceItems,
-      { servicesDescription: "", quantity: "", rate: "", total: "" },
-    ]);
-  };
-
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/one/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotations/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setSpecificInvoice(data);
-
-        setDiscount(data.discount);
-        setVAT(data.vat);
+        setSpecificQuotation(data.data);
       });
   }, [id, reload]);
 
   useEffect(() => {
-    const totalSum = specificInvoice.input_data?.reduce(
+    const totalSum = specificQuotation.input_data?.reduce(
       (sum, item) => sum + Number(item.total),
       0
     );
 
     const totalSum2 = items.reduce((sum, item) => sum + Number(item.total), 0);
 
+    const serviceTotalSum = specificQuotation?.service_input_data?.reduce(
+      (sum, item) => sum + Number(item.total),
+      0
+    );
+
+    const serviceTotalSum2 = serviceItems.reduce(
+      (sum, item) => sum + Number(item.total),
+      0
+    );
+
     const newTotalSum = isNaN(totalSum) ? 0 : totalSum;
     const newTotalSum2 = isNaN(totalSum2) ? 0 : totalSum2;
+    const newServiceTotalSum = isNaN(serviceTotalSum) ? 0 : serviceTotalSum;
+    const newServiceTotalSum2 = isNaN(serviceTotalSum2) ? 0 : serviceTotalSum2;
 
-    let newGrandTotal = newTotalSum + newTotalSum2;
-    newGrandTotal = parseFloat(newGrandTotal.toFixed(2));
+    const newGrandTotal = newTotalSum + newTotalSum2;
+    const newServiceGrandTotal = newServiceTotalSum + newServiceTotalSum2;
 
-    setGrandTotal(newGrandTotal);
-  }, [items, specificInvoice.input_data]);
+    const totalGrand = parseFloat(newGrandTotal + newServiceGrandTotal).toFixed(
+      2
+    );
+    setPartsTotal(newGrandTotal);
+    setServiceTotal(newServiceGrandTotal);
+    setGrandTotal(totalGrand);
+  }, [
+    items,
+    serviceItems,
+    specificQuotation.input_data,
+    specificQuotation?.service_input_data,
+  ]);
 
   const handleDescriptionChange = (index, value) => {
-    const newItems = [...specificInvoice.input_data];
+    const newItems = [...specificQuotation.input_data];
     newItems[index] = {
       ...newItems[index],
       description: value,
     };
-    setSpecificInvoice((prevState) => ({
+    setSpecificQuotation((prevState) => ({
       ...prevState,
       input_data: newItems,
     }));
@@ -142,17 +159,34 @@ const UpdateQuotation = () => {
 
     setItems(newItems);
   };
+  const handleServiceDescriptionChange = (index, value) => {
+    const newItems = [...specificQuotation.service_input_data];
+    newItems[index] = {
+      ...newItems[index],
+      description: value,
+    };
+    setSpecificQuotation((prevState) => ({
+      ...prevState,
+      service_input_data: newItems,
+    }));
+  };
+  const handleServiceDescriptionChange2 = (index, value) => {
+    const newItems = [...serviceItems];
+
+    newItems[index].description = value;
+
+    setServiceItems(newItems);
+  };
 
   const handleQuantityChange = (index, value) => {
     if (!isNaN(value)) {
-      const newItems = [...specificInvoice.input_data];
-      const roundedQuantity = Math.round(Number(value));
-      newItems[index] = {
-        ...newItems[index],
-        quantity: roundedQuantity,
-        total: (Number(value) * newItems[index].rate).toFixed(2),
-      };
-      setSpecificInvoice((prevState) => ({
+      const newItems = [...specificQuotation.input_data];
+      const roundedValue = Math.round(value);
+      newItems[index].quantity = Number(roundedValue);
+
+      newItems[index].total = Number(roundedValue) * newItems[index].rate;
+      newItems[index].total = Number(newItems[index].total.toFixed(2));
+      setSpecificQuotation((prevState) => ({
         ...prevState,
         input_data: newItems,
       }));
@@ -164,19 +198,43 @@ const UpdateQuotation = () => {
     const roundedValue = Math.round(value);
     newItems[index].quantity = Number(roundedValue);
 
-    newItems[index].total = Number(value) * newItems[index].rate;
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
+    newItems[index].total = Number(roundedValue) * newItems[index].rate;
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
     setItems(newItems);
+  };
+  const handleServiceQuantityChange = (index, value) => {
+    if (!isNaN(value)) {
+      const newItems = [...specificQuotation.service_input_data];
+      const roundedValue = Math.round(value);
+      newItems[index].quantity = Number(roundedValue);
+
+      newItems[index].total = Number(roundedValue) * newItems[index].rate;
+      newItems[index].total = Number(newItems[index].total.toFixed(2));
+      setSpecificQuotation((prevState) => ({
+        ...prevState,
+        service_input_data: newItems,
+      }));
+    }
+  };
+
+  const handleServiceQuantityChange2 = (index, value) => {
+    const newItems = [...serviceItems];
+    const roundedValue = Math.round(value);
+    newItems[index].quantity = Number(roundedValue);
+
+    newItems[index].total = Number(roundedValue) * newItems[index].rate;
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setServiceItems(newItems);
   };
 
   const handleRateChange = (index, value) => {
-    const newItems = [...specificInvoice.input_data];
-    newItems[index] = {
-      ...newItems[index],
-      rate: Number(value).toFixed(2),
-      total: (newItems[index].quantity * Number(value)).toFixed(2),
-    };
-    setSpecificInvoice((prevState) => ({
+    const newItems = [...specificQuotation.input_data];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setSpecificQuotation((prevState) => ({
       ...prevState,
       input_data: newItems,
     }));
@@ -184,14 +242,38 @@ const UpdateQuotation = () => {
 
   const handleRateChange2 = (index, value) => {
     const newItems = [...items];
-    newItems[index].rate = parseFloat(value).toFixed(2);
-    newItems[index].total = newItems[index].quantity * newItems[index].rate;
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
     setItems(newItems);
+  };
+  const handleServiceRateChange = (index, value) => {
+    const newItems = [...specificQuotation.service_input_data];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setSpecificQuotation((prevState) => ({
+      ...prevState,
+      service_input_data: newItems,
+    }));
+  };
+
+  const handleServiceRateChange2 = (index, value) => {
+    const newItems = [...serviceItems];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setServiceItems(newItems);
   };
 
   const handleDiscountChange = (value) => {
-    const parsedValue = value === "" ? 0 : parseFloat(value);
+    const parsedValue = Number(value);
 
     if (!isNaN(parsedValue)) {
       setDiscount(parsedValue);
@@ -199,7 +281,7 @@ const UpdateQuotation = () => {
   };
 
   const handleVATChange = (value) => {
-    const parsedValue = value === "" ? 0 : parseFloat(value);
+    const parsedValue = Number(value);
 
     if (!isNaN(parsedValue)) {
       setVAT(parsedValue);
@@ -207,42 +289,134 @@ const UpdateQuotation = () => {
   };
 
   const calculateFinalTotal = () => {
-    const discountAsPercentage = discount;
+    let finalTotal;
+    let differenceExistAndNewGrandTotal;
+    let vatAsPercentage;
+    let discountAsPercentage;
 
     let totalAfterDiscount;
-    if (grandTotal) {
-      totalAfterDiscount = grandTotal - discountAsPercentage;
+
+    if (grandTotal > specificQuotation.total_amount) {
+      differenceExistAndNewGrandTotal =
+        grandTotal - specificQuotation.total_amount;
+    } else if (grandTotal < specificQuotation.total_amount) {
+      differenceExistAndNewGrandTotal =
+        grandTotal - specificQuotation.total_amount;
     } else {
-      totalAfterDiscount = specificInvoice.total_amount - discountAsPercentage;
+      differenceExistAndNewGrandTotal = 0;
     }
 
-    const vatAsPercentage = vat / 100;
-    let finalTotal = totalAfterDiscount + totalAfterDiscount * vatAsPercentage;
-    finalTotal = parseFloat(finalTotal.toFixed(2));
+    if (discount > 0) {
+      discountAsPercentage = discount;
+    }
+    if (discount === 0) {
+      discountAsPercentage = 0;
+    }
+    if (discount === "") {
+      discountAsPercentage = specificQuotation.discount;
+    }
+
+    const differenceWithoutDiscount =
+      specificQuotation.total_amount + differenceExistAndNewGrandTotal;
+
+    if (discountAsPercentage === 0) {
+      totalAfterDiscount = differenceWithoutDiscount;
+    } else if (discountAsPercentage === "") {
+      totalAfterDiscount =
+        differenceWithoutDiscount - specificQuotation.discount;
+    } else {
+      totalAfterDiscount = differenceWithoutDiscount - discountAsPercentage;
+    }
+
+    if (vat === 0) {
+      vatAsPercentage = 0;
+    }
+    if (vat > 0) {
+      vatAsPercentage = vat;
+    }
+
+    if (vat === "") {
+      vatAsPercentage = specificQuotation.vat;
+    }
+
+    const totalAfterTax =
+      totalAfterDiscount + totalAfterDiscount * (vatAsPercentage / 100);
+
+    finalTotal = parseFloat(totalAfterTax).toFixed(2);
+
     return finalTotal;
   };
 
-  const handleRemoveButton = (i) => {
-    if (!specificInvoice.Id) {
-      return toast.error("Unauthorized");
+  const handleAddClick = () => {
+    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificQuotation?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
     }
-    axios
-      .put(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, {
-        index: i,
-      })
-      .then((response) => {
-        if (response.data.message === "Deleted successful") {
-          setReload(!reload);
-        }
-      })
-      .catch((error) => {
-        toast.error("Something went wrong");
-      });
+  };
+
+  const handleServiceDescriptionAdd = () => {
+    setServiceItems([
+      ...serviceItems,
+      { description: "", quantity: "", rate: "", total: "" },
+    ]);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificQuotation?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handlePartsAddButton = () => {
+    setAddButton(!addButton);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificQuotation?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handleServiceAddButton = () => {
+    setServiceAddButton(!serviceAddButton);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificQuotation?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handleRemoveButton = async (i, name) => {
+    const values = {
+      id: id,
+      data: { index: i, quotation_name: name },
+    };
+
+    const res = await removeQuotation(values).unwrap();
+    if (res.success) {
+      setReload(!reload);
+      toast.success(res.message);
+    }
   };
 
   const input_data = [
-    ...(specificInvoice?.input_data || []),
+    ...(specificQuotation?.input_data || []),
     ...items
+      .filter((item) => item.total !== undefined && item.total !== "")
+      .map((item) => ({
+        description: item.description,
+        quantity: item.quantity,
+        rate: item.rate,
+        total: item.total,
+      })),
+  ];
+  const service_input_data = [
+    ...(specificQuotation?.service_input_data || []),
+    ...serviceItems
       .filter((item) => item.total !== undefined && item.total !== "")
       .map((item) => ({
         description: item.description,
@@ -253,60 +427,44 @@ const UpdateQuotation = () => {
   ];
 
   const onSubmit = async (data) => {
-    if (!specificInvoice.Id) {
-      return toast.error("Unauthorized");
-    }
     setRemoveButton("");
     try {
       const values = {
-        username: specificInvoice.username || data.username,
-        Id: data.customerId || specificInvoice.Id,
-        job_no: data.job_no || specificInvoice.job_no,
-        date: specificInvoice.date,
-
-        company_name: data.company_name || specificInvoice.company_name,
-        customer_name: data.customer_name || specificInvoice.customer_name,
-        customer_contact:
-          data.customer_contact || specificInvoice.customer_contact,
-        customer_address:
-          data.customer_address || specificInvoice.customer_address,
-
-        car_registration_no:
-          data.car_registration_no || specificInvoice.car_registration_no,
-        chassis_no: data.chassis_no || specificInvoice.chassis_no,
-        engine_no: data.engine_no || specificInvoice.engine_no,
-        vehicle_name: data.vehicle_name || specificInvoice.vehicle_name,
-        mileage: data.mileage || specificInvoice.mileage,
-
-        total_amount: grandTotal || setSpecificInvoice.total_amount,
-        discount: discount || specificInvoice?.discount,
-        vat: vat || specificInvoice?.vat,
-        net_total: calculateFinalTotal(),
+        parts_total: partsTotal || specificQuotation.parts_total,
+        service_total: serviceTotal || specificQuotation.serviceTotal,
+        total_amount: grandTotal || specificQuotation?.total_amount,
+        discount: discount || specificQuotation?.discount,
+        vat: vat === 0 || vat > 0 ? vat : specificQuotation?.vat,
+        net_total: calculateFinalTotal() || specificQuotation.net_total,
 
         input_data: input_data,
+        service_input_data: service_input_data,
+      };
+
+      const newValue = {
+        id: id,
+        data: values,
       };
 
       if (removeButton === "") {
-        const response = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/v1/quotation/one/${id}`,
-          values
-        );
-
-        if (response.data.message === "Successfully update card.") {
-          setError("");
+        const res = await updateQuotation(newValue).unwrap();
+        if (res.success) {
+          toast.success(res.message);
+          setReload(!reload);
           navigate("/dashboard/quotaiton-list");
         }
       }
 
-      if (removeButton === "remove") {
-        handleRemoveButton();
-      }
+      
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message);
       }
     }
   };
+
+  // console.log(updateError);
+  // console.log(calculateFinalTotal());
 
   const handleOnSubmit = () => {
     handleSubmit(onSubmit)();
@@ -346,15 +504,15 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Serial No"
                   {...register("job_no")}
-                  value={specificInvoice?.job_no}
+                  value={specificQuotation?.job_no}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       job_no: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.job_no,
+                    shrink: !!specificQuotation.job_no,
                   }}
                 />
               </div>
@@ -365,15 +523,15 @@ const UpdateQuotation = () => {
                   className="addJobInputField"
                   label="Customer Id"
                   {...register("customerId")}
-                  value={specificInvoice?.Id}
+                  value={specificQuotation?.Id}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       Id: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.Id,
+                    shrink: !!specificQuotation.Id,
                   }}
                 />
               </div>
@@ -382,16 +540,16 @@ const UpdateQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Company Name "
-                  value={specificInvoice?.company_name}
+                  value={specificQuotation?.company_name}
                   {...register("company_name")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       company_name: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.company_name,
+                    shrink: !!specificQuotation.company_name,
                   }}
                 />
               </div>
@@ -399,16 +557,16 @@ const UpdateQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Customer"
-                  value={specificInvoice?.customer_name}
+                  value={specificQuotation?.customer_name}
                   {...register("customer_name")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       customer_name: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.customer_name,
+                    shrink: !!specificQuotation.customer_name,
                   }}
                 />
               </div>
@@ -416,16 +574,16 @@ const UpdateQuotation = () => {
                 {/* <TextField
                   className="addJobInputField"
                   label="Phone"
-                  value={specificInvoice?.customer_contact}
+                  value={specificQuotation?.customer_contact}
                   {...register("customer_contact")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       customer_contact: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.customer_contact,
+                    shrink: !!specificQuotation.customer_contact,
                   }}
                 /> */}
                 <div className="flex sm:flex-row flex-col gap-1 items-center">
@@ -450,19 +608,19 @@ const UpdateQuotation = () => {
                   <TextField
                     className="carRegField"
                     label="Phone"
-                    value={specificInvoice?.customer_contact}
+                    value={specificQuotation?.customer_contact}
                     {...register("customer_contact")}
                     onChange={(e) => {
                       const inputValue = e.target.value;
                       if (inputValue.length <= 11) {
-                        setSpecificInvoice({
-                          ...specificInvoice,
+                        setSpecificQuotation({
+                          ...specificQuotation,
                           customer_contact: inputValue,
                         });
                       }
                     }}
                     InputLabelProps={{
-                      shrink: !!specificInvoice.customer_contact,
+                      shrink: !!specificQuotation.customer_contact,
                     }}
                   />
                 </div>
@@ -471,16 +629,16 @@ const UpdateQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Address"
-                  value={specificInvoice?.customer_address}
+                  value={specificQuotation?.customer_address}
                   {...register("customer_address")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       customer_address: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.customer_address,
+                    shrink: !!specificQuotation.customer_address,
                   }}
                 />
               </div>
@@ -524,7 +682,7 @@ const UpdateQuotation = () => {
                         "Car registration number must be exactly 6 digits",
                     },
                   })}
-                  value={specificInvoice?.car_registration_no}
+                  value={specificQuotation?.car_registration_no}
                   onChange={(e) => {
                     const value = e.target.value;
                     if (value.length === 7) {
@@ -538,13 +696,13 @@ const UpdateQuotation = () => {
                       .replace(/\D/g, "")
                       .slice(0, 6)
                       .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       car_registration_no: formattedValue,
                     });
                   }}
                   InputLabelProps={{
-                    shrink: !!specificInvoice?.car_registration_no,
+                    shrink: !!specificQuotation?.car_registration_no,
                   }}
                   error={!!errors.car_registration_no || !!registrationError}
                 />
@@ -554,16 +712,16 @@ const UpdateQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Chassis No"
-                  value={specificInvoice?.chassis_no}
+                  value={specificQuotation?.chassis_no}
                   {...register("chassis_no")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       chassis_no: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.chassis_no,
+                    shrink: !!specificQuotation.chassis_no,
                   }}
                 />
               </div>
@@ -571,16 +729,16 @@ const UpdateQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Engine & CC"
-                  value={specificInvoice?.engine_no}
+                  value={specificQuotation?.engine_no}
                   {...register("engine_no")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       engine_no: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.engine_no,
+                    shrink: !!specificQuotation.engine_no,
                   }}
                 />
               </div>
@@ -588,16 +746,16 @@ const UpdateQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Vehicle Name"
-                  value={specificInvoice?.vehicle_name}
+                  value={specificQuotation?.vehicle_name}
                   {...register("vehicle_name")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       vehicle_name: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.vehicle_name,
+                    shrink: !!specificQuotation.vehicle_name,
                   }}
                 />
               </div>
@@ -605,16 +763,16 @@ const UpdateQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Mileage"
-                  value={specificInvoice?.mileage}
+                  value={specificQuotation?.mileage}
                   {...register("mileage")}
                   onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
+                    setSpecificQuotation({
+                      ...specificQuotation,
                       mileage: e.target.value,
                     })
                   }
                   InputLabelProps={{
-                    shrink: !!specificInvoice.mileage,
+                    shrink: !!specificQuotation.mileage,
                   }}
                 />
               </div>
@@ -629,16 +787,17 @@ const UpdateQuotation = () => {
             <label>Amount </label>
           </div>
           <div>
-            {specificInvoice?.input_data?.length > 0 && (
+            {specificQuotation?.input_data?.length > 0 && (
               <>
-                {specificInvoice?.input_data?.map((item, i) => {
+                {specificQuotation?.input_data?.map((item, i) => {
                   return (
                     <div key={i}>
                       <div className="qutationForm">
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                              onClick={() => handleRemoveButton(i)}
+                            disabled={removeLoading}
+                              onClick={() => handleRemoveButton(i, "parts")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
                               Remove
@@ -662,10 +821,7 @@ const UpdateQuotation = () => {
                             type="text"
                             placeholder="Description"
                             onChange={(e) =>
-                              handleDescriptionChange(
-                                i,
-                                e.target.value || item.description
-                              )
+                              handleDescriptionChange(i, e.target.value)
                             }
                             defaultValue={item.description}
                             required
@@ -716,7 +872,7 @@ const UpdateQuotation = () => {
           <div>
             {!addButton && (
               <button
-                onClick={() => setAddButton(!addButton)}
+                onClick={handlePartsAddButton}
                 className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
               >
                 Add new
@@ -724,7 +880,7 @@ const UpdateQuotation = () => {
             )}
             {addButton && (
               <button
-                onClick={() => setAddButton(!addButton)}
+                onClick={handlePartsAddButton}
                 className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
               >
                 Cancel
@@ -830,16 +986,17 @@ const UpdateQuotation = () => {
             <label>Amount </label>
           </div>
           <div>
-            {specificInvoice?.input_data?.length > 0 && (
+            {specificQuotation?.service_input_data?.length > 0 && (
               <>
-                {specificInvoice?.input_data?.map((item, i) => {
+                {specificQuotation?.service_input_data?.map((item, i) => {
                   return (
                     <div key={i}>
                       <div className="qutationForm">
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                              onClick={() => handleRemoveButton(i)}
+                            disabled={removeLoading}
+                              onClick={() => handleRemoveButton(i, "service")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
                               Remove
@@ -863,10 +1020,7 @@ const UpdateQuotation = () => {
                             type="text"
                             placeholder="Description"
                             onChange={(e) =>
-                              handleDescriptionChange(
-                                i,
-                                e.target.value || item.description
-                              )
+                              handleServiceDescriptionChange(i, e.target.value)
                             }
                             defaultValue={item.description}
                             required
@@ -879,7 +1033,7 @@ const UpdateQuotation = () => {
                             type="number"
                             placeholder="Qty"
                             onChange={(e) =>
-                              handleQuantityChange(i, e.target.value)
+                              handleServiceQuantityChange(i, e.target.value)
                             }
                             required
                             defaultValue={item.quantity}
@@ -892,7 +1046,7 @@ const UpdateQuotation = () => {
                             type="number"
                             placeholder="Rate"
                             onChange={(e) =>
-                              handleRateChange(i, e.target.value)
+                              handleServiceRateChange(i, e.target.value)
                             }
                             required
                             defaultValue={item.rate}
@@ -916,23 +1070,23 @@ const UpdateQuotation = () => {
           </div>
         </form>
         <div>
-          {!addButton && (
+          {!serviceAddButton && (
             <button
-              onClick={() => setAddButton(!addButton)}
+              onClick={handleServiceAddButton}
               className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
             >
               Add new
             </button>
           )}
-          {addButton && (
+          {serviceAddButton && (
             <button
-              onClick={() => setAddButton(!addButton)}
+              onClick={handleServiceAddButton}
               className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
             >
               Cancel
             </button>
           )}
-          {addButton && (
+          {serviceAddButton && (
             <>
               {serviceItems.map((item, i) => {
                 return (
@@ -965,7 +1119,7 @@ const UpdateQuotation = () => {
                           type="text"
                           placeholder="Description"
                           onChange={(e) =>
-                            handleDescriptionChange2(i, e.target.value)
+                            handleServiceDescriptionChange2(i, e.target.value)
                           }
                           required
                         />
@@ -977,7 +1131,7 @@ const UpdateQuotation = () => {
                           type="number"
                           placeholder="Qty"
                           onChange={(e) =>
-                            handleQuantityChange2(i, e.target.value)
+                            handleServiceQuantityChange2(i, e.target.value)
                           }
                           required
                         />
@@ -988,7 +1142,9 @@ const UpdateQuotation = () => {
                           autoComplete="off"
                           type="number"
                           placeholder="Rate"
-                          onChange={(e) => handleRateChange2(i, e.target.value)}
+                          onChange={(e) =>
+                            handleServiceRateChange2(i, e.target.value)
+                          }
                           required
                         />
                       </div>
@@ -1026,7 +1182,7 @@ const UpdateQuotation = () => {
           <div className="flex items-center">
             <b> Total Amount: </b>
             <span>
-              {grandTotal ? grandTotal : specificInvoice.total_amount}
+              {grandTotal ? grandTotal : specificQuotation.total_amount}
             </span>
           </div>
           <div>
@@ -1037,7 +1193,8 @@ const UpdateQuotation = () => {
               autoComplete="off"
               type="text"
               placeholder="Discount"
-              defaultValue={specificInvoice.discount}
+              defaultValue={specificQuotation.discount}
+              ref={partsDiscountRef}
             />
           </div>
           <div>
@@ -1048,21 +1205,19 @@ const UpdateQuotation = () => {
               autoComplete="off"
               type="text"
               placeholder="Vat"
-              defaultValue={specificInvoice.vat}
+              defaultValue={specificQuotation?.vat}
             />
           </div>
           <div>
             <div className="ml-3">
               <strong>
                 Final Total:{" "}
-                <span>
+                <span ref={netTotalAmountRef}>
                   {calculateFinalTotal()
                     ? calculateFinalTotal()
-                    : specificInvoice.net_total}
+                    : specificQuotation?.net_total}
                 </span>
               </strong>
-              {/* <b>Net Total: </b> */}
-              {/* <input autoComplete="off" type="text" placeholder="Net" /> */}
             </div>
           </div>
         </div>
@@ -1072,9 +1227,15 @@ const UpdateQuotation = () => {
               sx={{ background: "#42A1DA" }}
               onClick={handleOnSubmit}
               className="addJobBtn"
+              disabled={updateLoading}
             >
               Update Quotation
             </Button>
+          </div>
+          <div className="my-2">
+            {updateError && (
+              <ErrorMessage messages={updateError?.data?.errorSources} />
+            )}
           </div>
         </div>
 

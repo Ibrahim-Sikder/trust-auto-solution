@@ -7,13 +7,13 @@ const VehicleDetailsModal = ({ handleVehicleDetailsClose, getId }) => {
   const [showDataOnModal, setShowDataOnModal] = useState({});
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/v1/vehicle/${getId}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/vehicle/one/${getId}`)
       .then((res) => res.json())
       .then((data) => setShowDataOnModal(data));
   }, [getId]);
 
  
-
+ 
   return (
     <div className="fixed top-0 left-0 w-screen h-screen z-50 bg-black/60 ">
       <div className="relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[420px] sm:max-w-[600px] lg:max-w-[500px] p-4 max-h-[90vh] overflow-auto">
@@ -31,43 +31,43 @@ const VehicleDetailsModal = ({ handleVehicleDetailsClose, getId }) => {
               <div className="mt-5">
                 <div className="flex items-center justify-between w-full ">
                   <b>Car Registration No </b>
-                  <span>TAS-456889</span>
+                  <span>{showDataOnModal?.car_registration_no}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Chassis No </b>
-                  <span>456889</span>
+                  <span> {showDataOnModal?.chassis_no}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Engine No & CC </b>
-                  <span>456889</span>
+                  <span>{showDataOnModal?.engine_no}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Vehicle Brand </b>
-                  <span>Volvo </span>
+                  <span>{showDataOnModal?.vehicle_brand} </span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Vehicle Name </b>
-                  <span>Toyota</span>
+                  <span>{showDataOnModal?.vehicle_name}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Vehicle Model </b>
-                  <span>TAS-456889</span>
+                  <span>{showDataOnModal?.vehicle_model}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Vehicle Category </b>
-                  <span>Sedans</span>
+                  <span>{showDataOnModal?.vehicle_category}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Color & Code </b>
-                  <span>TAS-456889</span>
+                  <span>{showDataOnModal?.color_code}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Mileage</b>
-                  <span>TAS-456889</span>
+                  <span>{showDataOnModal?.mileage}</span>
                 </div>
                 <div className="flex items-center justify-between w-[300px] mt-2">
                   <b>Fuel Type </b>
-                  <span>TAS-456889</span>
+                  <span>{showDataOnModal?.fuel_type}</span>
                 </div>
               </div>
             </div>
