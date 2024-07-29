@@ -2,14 +2,17 @@
 import axios from "axios";
 import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
-import { useRemoveQuotationMutation, useUpdateQuotationMutation } from "../../../redux/api/quotation";
+import {
+  useRemoveQuotationMutation,
+  useUpdateQuotationMutation,
+} from "../../../redux/api/quotation";
 import { ErrorMessage } from "../../../components/error-message";
 
 const UpdateQuotation = () => {
@@ -454,8 +457,6 @@ const UpdateQuotation = () => {
           navigate("/dashboard/quotaiton-list");
         }
       }
-
-      
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message);
@@ -796,7 +797,7 @@ const UpdateQuotation = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "parts")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
@@ -995,7 +996,7 @@ const UpdateQuotation = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "service")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
@@ -1221,7 +1222,18 @@ const UpdateQuotation = () => {
             </div>
           </div>
         </div>
-        <div>
+
+        <div className="mt-8 buttonGroup buttonMargin">
+          <div className="flex md:flex-row flex-col justify-end">
+            <Button>Preview</Button>
+
+            <Button>Download </Button>
+            <Button>Print </Button>
+            <Button LinkComponent={Link} to='/dashboard/invoice'>Invoice </Button>
+          </div>
+        </div>
+
+        <div className="mt-10">
           <div className="flex  justify-center align-items-center">
             <Button
               sx={{ background: "#42A1DA" }}

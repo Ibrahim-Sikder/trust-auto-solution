@@ -185,15 +185,11 @@ const MoneyReceiptView = () => {
     if (data?.data) {
       reset({
         vehicle_no: data?.data?.vehicle[0]?.fullRegNum,
-         
       });
     }
-  }, [data?.data, data?.data?.vehicle, reset])
+  }, [data?.data, data?.data?.vehicle, reset]);
 
-
-
-
-  console.log(data)
+  console.log(data);
 
   const formatDate = (dateString) => {
     const parsedDate = new Date(dateString);
@@ -268,6 +264,7 @@ const MoneyReceiptView = () => {
 
   const [paymentMethod, setPaymentMethod] = useState("");
   const [billNo, setBillNo] = useState(" Final Payment / against bill no");
+  // const [advance, setAdvance] = useState(" Final Payment / against bill no");
 
   const handleChange = (event) => {
     setPaymentMethod(event.target.value);
@@ -276,9 +273,10 @@ const MoneyReceiptView = () => {
     setBillNo(event.target.value);
   };
 
-  // if(isLoading){
-  //   return <Loading/>
-  // }
+  const buttonStyle = {
+    color: "white",
+    borderRadius: "20px",
+  };
 
   return (
     <>
@@ -350,7 +348,6 @@ const MoneyReceiptView = () => {
           </div>
           <div className="mt-5 lg:flex-row  flex flex-col gap-4 ">
             <div className="flex f ">
-               
               <FormControl
                 sx={{
                   minWidth: 170,
@@ -374,7 +371,7 @@ const MoneyReceiptView = () => {
                     {" "}
                     Final Payment / against bill no
                   </MenuItem>
-                  <MenuItem value="Advance / against bill no ">
+                  <MenuItem value="Advance / against bill no">
                     {" "}
                     Advance / against bill no{" "}
                   </MenuItem>
@@ -507,48 +504,66 @@ const MoneyReceiptView = () => {
             </div>
           </div>
           <div className="mt-5 amount2 lg:flex-row sm:flex flex-col gap-4">
-            <div className="flex lg:flex-row  flex-col">
-              <label className="totalAmountText2">Total Amount Tk:</label>
-              <div>
-                <input
-                  {...register("total_amount", { required: true })}
-                  className="moneyViewInputField totalAmountInput"
-                  type="number"
-                  onChange={(e) => setTotalAmount(e.target.value)}
-                />
-                {errors.total_amount && totalAmount === null && (
-                  <span className="text-sm text-red-400">
-                    This field is required
-                  </span>
-                )}
+            <div className="flex items-center">
+              <div className="flex lg:flex-row  flex-col">
+                <label className="totalAmountText2">Total Amount Tk:</label>
+                <div>
+                  <input
+                    {...register("total_amount", { required: true })}
+                    className="moneyViewInputField totalAmountInput"
+                    type="number"
+                    onChange={(e) => setTotalAmount(e.target.value)}
+                  />
+                  {errors.total_amount && totalAmount === null && (
+                    <span className="text-sm text-red-400">
+                      This field is required
+                    </span>
+                  )}
+                </div>
               </div>
+              {billNo == "Advance / against bill no" ? null : (
+                <div className="flex lg:flex-row  flex-col ">
+                  <label>Payable Amount :</label>
+                  <input
+                    {...register("remaining")}
+                    className="moneyViewInputField totalAmountInput"
+                    type="text"
+                    value={getRemaining()}
+                    readOnly
+                  />
+                </div>
+              )}
             </div>
-            <div className="flex lg:flex-row  flex-col">
-              <label>Advance:</label>
-              <div>
-                <input
-                  {...register("advance", { required: true })}
-                  className="moneyViewInputField totalAmountInput"
-                  type="number"
-                  onChange={(e) => setAdvance(e.target.value)}
-                />
-                {errors.advance && advance === null && (
-                  <span className="text-sm text-red-400">
-                    This field is required
-                  </span>
-                )}
+            {billNo == "Advance / against bill no" ? (
+              <div className="flex lg:flex-row  flex-col">
+                <label>Advance:</label>
+                <div>
+                  <input
+                    {...register("advance", { required: true })}
+                    className="moneyViewInputField totalAmountInput"
+                    type="number"
+                    onChange={(e) => setAdvance(e.target.value)}
+                  />
+                  {errors.advance && advance === null && (
+                    <span className="text-sm text-red-400">
+                      This field is required
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="flex lg:flex-row  flex-col ">
-              <label>Remaining:</label>
-              <input
-                {...register("remaining")}
-                className="moneyViewInputField totalAmountInput"
-                type="text"
-                value={getRemaining()}
-                readOnly
-              />
-            </div>
+            ) : null}
+            {billNo == "Advance / against bill no" ? (
+              <div className="flex lg:flex-row  flex-col ">
+                <label>Remaining:</label>
+                <input
+                  {...register("remaining")}
+                  className="moneyViewInputField totalAmountInput"
+                  type="text"
+                  value={getRemaining()}
+                  readOnly
+                />
+              </div>
+            ) : null}
           </div>
           <div className="mt-5 wordTaka">
             <label>in word (taka) </label>
@@ -561,6 +576,11 @@ const MoneyReceiptView = () => {
         </form>
         <div>
           <small className="signature">Authorized Signature</small>
+        </div>
+        <div className="flex gap-2">
+          <Button sx={buttonStyle}>Preview</Button>
+          <Button sx={buttonStyle}>Print </Button>
+          <Button sx={buttonStyle}>Download </Button>
         </div>
       </div>
 

@@ -4,7 +4,7 @@ import "./AddJobCard.css";
 import car from "../../../../public/assets/car2.jpeg";
 import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Button, TextField } from "@mui/material";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import InputMask from "react-input-mask";
@@ -1326,13 +1326,27 @@ const UpdateJobCard = () => {
             </div>
           </div>
 
+          <div className="mt-3">
+            <b>This is not an invoice, all estimates are valid for 30 days </b>
+          </div>
+
+          <div className="mt-5 buttonGroup">
+            <div>
+              <Button>Preview</Button>
+
+              <Button>Quotation</Button>
+
+              <Button>Invoice</Button>
+            </div>
+          </div>
+
           <div className="mt-12">
             <button
               disabled={updateJobCardLoading}
               type="submit"
               className="addJobBtn"
             >
-              Update Job Card{" "}
+              Update Job Card
             </button>
           </div>
           <div className="my-2">

@@ -137,27 +137,29 @@ const EmployeeList = () => {
               <section>
                 <div className="grid grid-cols-1 xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2  gap-5">
                   {employees?.data?.employees.map((employee) => (
-                    <div className="employeeCard" key={employee._id}>
-                      <div>
-                        <img
-                          className="employeeCardImg"
-                          src={employee?.image}
-                          alt=""
-                        />
-                        <h3 className="text-xl font-semibold">
-                          {employee?.full_name}{" "}
-                        </h3>
-                        <p>{employee?.designation}</p>
+                    <div key={employee._id}>
+                      <Link
+                        to={`/dashboard/employee-profile?id=${employee._id}`}
+                      >
+                        <div className="employeeCard">
+                          <div>
+                            <img
+                              className="employeeCardImg"
+                              src={employee?.image}
+                              alt=""
+                            />
+                            <h3 className="text-xl font-semibold">
+                              {employee?.full_name}{" "}
+                            </h3>
+                            <p>{employee?.designation}</p>
 
-                        <Link
-                          to={`/dashboard/employee-profile?id=${employee._id}`}
-                        >
-                          <div className="flex items-center justify-center">
-                            <span>See More </span>
-                            <HiOutlineArrowNarrowRight className="ml-1 " />
+                            <div className="flex items-center justify-center">
+                              <span>See More </span>
+                              <HiOutlineArrowNarrowRight className="ml-1 " />
+                            </div>
                           </div>
-                        </Link>
-                      </div>
+                        </div>
+                      </Link>
                     </div>
                   ))}
                 </div>

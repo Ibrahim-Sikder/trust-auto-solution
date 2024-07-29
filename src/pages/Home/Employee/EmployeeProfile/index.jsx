@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import { Tabs, Tab, Box, Typography } from '@mui/material';
+import { useState } from "react";
+import { Tabs, Tab, Box, Typography } from "@mui/material";
 import EmployeeAccount from "./EmployeeAccount";
 import Attendance from "./Attendance";
 import SingleEmployeeLeaveList from "./SingleEmployeeLeaveList";
@@ -28,9 +28,7 @@ const TabPanel = (props) => {
       )}
     </div>
   );
-}
-
-
+};
 
 const CustomerProfile = () => {
   const [value, setValue] = useState(0);
@@ -41,7 +39,7 @@ const CustomerProfile = () => {
   const tabStyles = {
     width: 120,
     height: "35px",
-    margin: .5,
+    margin: 0.5,
     backgroundColor: "#42A1DA",
     color: "white",
     borderRadius: 10,
@@ -54,7 +52,7 @@ const CustomerProfile = () => {
       color: "#fff",
     },
   };
-  
+
   const tabsStyles = {
     "& .MuiTabs-indicator": {
       display: "none",
@@ -63,7 +61,6 @@ const CustomerProfile = () => {
       borderBottom: "none",
     },
   };
-  
 
   return (
     <div className="profileCardsWraps">
@@ -72,7 +69,7 @@ const CustomerProfile = () => {
           <h3 className="text-2xl font-semibold">Profile</h3>
           <span>Dashboard / Profile </span>
         </div>
-        
+
         <div className="flex flex-wrap items-center justify-between w-full mt-10 text-black profileCards ">
           <div className="items-center flex-wrap px-5 bg-[#fff] flex justify-center md:justify-between w-full rounded-sm border py-5">
             <div className="w-full lg:w-[50%]">
@@ -135,7 +132,12 @@ const CustomerProfile = () => {
       </div>
 
       <div className="text-black mt-14">
-        <Tabs  sx={tabsStyles} value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs
+          sx={tabsStyles}
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
           <Tab sx={tabStyles} label="Account" />
           <Tab sx={tabStyles} label="Attendance" />
           <Tab sx={tabStyles} label="Leave" />

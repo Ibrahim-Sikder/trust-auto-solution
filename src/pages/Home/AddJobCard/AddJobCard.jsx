@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
 import {
   Autocomplete,
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -1527,10 +1528,10 @@ const AddJobCard = () => {
                 Invoice
               </button>
             </div>
-            <div className="submitQutationBtn">
-              <button disabled={createJobCardLoading} type="submit">
-                Add To Job Card{" "}
-              </button>
+            <div>
+              <Button disabled={createJobCardLoading} type="submit">
+                Add To Job Card
+              </Button>
             </div>
           </div>
           <div className="my-2">

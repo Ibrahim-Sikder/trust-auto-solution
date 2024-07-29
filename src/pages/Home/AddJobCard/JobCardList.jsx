@@ -67,6 +67,9 @@ const JobCardList = () => {
       textInputRef.current.value = "";
     }
   };
+
+
+  console.log(allJobCards)
   return (
     <div>
       <div className="mt-5 overflow-x-auto">

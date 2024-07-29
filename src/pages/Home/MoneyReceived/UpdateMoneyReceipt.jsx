@@ -258,6 +258,11 @@ const UpdateMoneyReceipt = () => {
     setBillNo(event.target.value);
   };
 
+  const buttonStyle = {
+    color: "white",
+    borderRadius: "20px",
+  };
+
   return (
     <div className="moneyReceptWrap ">
       <div className="flex items-center justify-between flex-col lg:flex-row gap-3 ">
@@ -320,33 +325,37 @@ const UpdateMoneyReceipt = () => {
           />
         </div>
         <div className="mt-5 flex md:flex-row flex-col ">
-          
-         <div>
-         <FormControl
-            sx={{ minWidth: 200, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
-            size="small"
-          >
-            <InputLabel id="demo-select-small-label">
-              Against bill no
-            </InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={billNo}
-              label="Payment Method "
-              onChange={handleChange2}
+          <div>
+            <FormControl
+              sx={{
+                minWidth: 200,
+                minHeight: "30px",
+                marginRight: 0.5,
+                backgroundColor: "#D9D9D9",
+              }}
+              size="small"
             >
-              <MenuItem value=" Final Payment / against bill no">
-                {" "}
-                Final Payment / against bill no
-              </MenuItem>
-              <MenuItem value="Advance / against bill no ">
-                {" "}
-                Advance / against bill no{" "}
-              </MenuItem>
-            </Select>
-          </FormControl>
-         </div>
+              <InputLabel id="demo-select-small-label">
+                Against bill no
+              </InputLabel>
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={billNo}
+                label="Payment Method "
+                onChange={handleChange2}
+              >
+                <MenuItem value=" Final Payment / against bill no">
+                  {" "}
+                  Final Payment / against bill no
+                </MenuItem>
+                <MenuItem value="Advance / against bill no ">
+                  {" "}
+                  Advance / against bill no{" "}
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </div>
           <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
             <label className="vehicleText2">Vehicle No: </label>
             <input
@@ -378,7 +387,12 @@ const UpdateMoneyReceipt = () => {
             </div>
           </div> */}
           <FormControl
-            sx={{ minWidth: 170, minHeight: "30px", marginRight: 0.5, backgroundColor: '#D9D9D9' }}
+            sx={{
+              minWidth: 170,
+              minHeight: "30px",
+              marginRight: 0.5,
+              backgroundColor: "#D9D9D9",
+            }}
             size="small"
           >
             <InputLabel id="demo-select-small-label">
@@ -478,6 +492,10 @@ const UpdateMoneyReceipt = () => {
       </form>
       <div className="">
         <small className="signature">Authorized Signature</small>
+      </div>
+      <div className="flex gap-2">
+        <Button sx={buttonStyle}>Preview</Button>
+        <Button sx={buttonStyle}>Download </Button>
       </div>
     </div>
   );
