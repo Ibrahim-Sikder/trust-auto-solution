@@ -61,12 +61,16 @@ const UpdateCompany = () => {
     // Check if the input is a number and does not exceed 4 digits
     if (/^\d{0,4}$/.test(value)) {
       setYearSelectInput(value);
-      const filtered = vehicleModels.filter((option) =>
+      const filtered = vehicleModels?.filter((option) =>
         option.label.toLowerCase().startsWith(value.toLowerCase())
       );
       setFilteredOptions(filtered);
+    } else {
+      event.target.value = value.slice(0, 4);
     }
   };
+
+
   const handleOptionClick = (option) => {
     setYearSelectInput(option.label);
     setFilteredOptions([]); // This assumes option.label is the value you want to set in the input
@@ -447,7 +451,7 @@ const UpdateCompany = () => {
                   />
 
                   <InputMask
-                    mask="**-****"
+                    mask="99-9999"
                     maskChar={null}
                     {...register("car_registration_no")}
                   >
@@ -513,7 +517,7 @@ const UpdateCompany = () => {
                 </div>
                 <div className="relative ">
                   <input
-                    // value={singleCard.vehicle_model}
+                     
                     onInput={handleYearSelectInput}
                     {...register("vehicle_model")}
                     type="text"

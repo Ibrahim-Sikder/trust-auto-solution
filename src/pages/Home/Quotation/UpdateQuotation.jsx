@@ -9,8 +9,12 @@ import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
-import { useRemoveQuotationMutation, useUpdateQuotationMutation } from "../../../redux/api/quotation";
+import {
+  useRemoveQuotationMutation,
+  useUpdateQuotationMutation,
+} from "../../../redux/api/quotation";
 import { ErrorMessage } from "../../../components/error-message";
+import { formatDate } from "../../../utils/formateDate";
 
 const UpdateQuotation = () => {
   const [specificQuotation, setSpecificQuotation] = useState({});
@@ -37,6 +41,9 @@ const UpdateQuotation = () => {
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
 
   const handlePhoneNumberChange = (e) => {
     const newPhoneNumber = e.target.value;
@@ -69,6 +76,12 @@ const UpdateQuotation = () => {
     useUpdateQuotationMutation();
   const [removeQuotation, { isLoading: removeLoading, error: removeError }] =
     useRemoveQuotationMutation();
+
+    useEffect(() => {
+      if (specificQuotation?.date) {
+        setSelectedDate(specificQuotation.date);
+      }
+    }, [specificQuotation]);
 
   const handleRemove = (index) => {
     if (!index) {
@@ -140,6 +153,9 @@ const UpdateQuotation = () => {
     specificQuotation.input_data,
     specificQuotation?.service_input_data,
   ]);
+  const handleDateChange = (newDate) => {
+    setSelectedDate(formatDate(newDate));
+  };
 
   const handleDescriptionChange = (index, value) => {
     const newItems = [...specificQuotation.input_data];
@@ -429,7 +445,18 @@ const UpdateQuotation = () => {
   const onSubmit = async (data) => {
     setRemoveButton("");
     try {
-      const values = {
+      const customer = {};
+      const company = {};
+
+      const showRoom = {};
+      const vehicle = {};
+
+      const quotation = {
+        user_type: specificQuotation?.user_type,
+        Id: specificQuotation?.Id,
+        job_no: specificQuotation?.job_no,
+        date: selectedDate || specificQuotation?.date,
+
         parts_total: partsTotal || specificQuotation.parts_total,
         service_total: serviceTotal || specificQuotation.serviceTotal,
         total_amount: grandTotal || specificQuotation?.total_amount,
@@ -439,6 +466,14 @@ const UpdateQuotation = () => {
 
         input_data: input_data,
         service_input_data: service_input_data,
+      };
+
+      const values = {
+        customer,
+        company,
+        showRoom,
+        vehicle,
+        quotation,
       };
 
       const newValue = {
@@ -454,8 +489,6 @@ const UpdateQuotation = () => {
           navigate("/dashboard/quotaiton-list");
         }
       }
-
-      
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message);
@@ -463,12 +496,18 @@ const UpdateQuotation = () => {
     }
   };
 
-  // console.log(updateError);
-  // console.log(calculateFinalTotal());
+  const handleChassisChange = (_, newValue) => {
+    const filtered = specificQuotation?.vehicle?.find(
+      (vehicle) => vehicle.chassis_no === newValue
+    );
+    setGetDataWithChassisNo(filtered);
+  };
 
   const handleOnSubmit = () => {
     handleSubmit(onSubmit)();
   };
+
+  
 
   return (
     <div className="px-5 py-10">
@@ -492,7 +531,10 @@ const UpdateQuotation = () => {
             <div className="vehicleCard">Update Quotation </div>
 
             <div>
-              <TADatePickers />
+              <TADatePickers
+                handleDateChange={handleDateChange}
+                selectedDate={selectedDate}
+              />
             </div>
           </div>
           <div className="mb-10 jobCardFieldWraps">
@@ -646,7 +688,34 @@ const UpdateQuotation = () => {
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-
+              <div className="mt-3">
+                <Autocomplete
+                  disabled={
+                    specificQuotation?.vehicle?.length === 0 ||
+                    !specificQuotation?.vehicle
+                  }
+                  disableClearable
+                  freeSolo
+                  className="addJobInputField"
+                  onChange={handleChassisChange}
+                  options={specificQuotation?.vehicle?.map(
+                    (option) => option.chassis_no
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      className="addJobInputField"
+                      label="Chassis No"
+                       
+                      {...register("chassis_no")}
+                      inputProps={{
+                        ...params.inputProps,
+                        maxLength: specificQuotation?.chassis_no?.length || 30,
+                      }}
+                    />
+                  )}
+                />
+              </div>
               <div className="flex mt-3  md:gap-0 gap-4 items-center">
                 <Autocomplete
                   sx={{ marginRight: "5px" }}
@@ -796,7 +865,7 @@ const UpdateQuotation = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "parts")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
@@ -995,7 +1064,7 @@ const UpdateQuotation = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "service")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >

@@ -4,6 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
+import InputMask from "react-input-mask";
 import Loading from "../../../components/Loading/Loading";
 import {
   Autocomplete,
@@ -27,15 +28,24 @@ import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
 import { ErrorMessage } from "../../../components/error-message";
 
 const AddQuotation = () => {
+  const parsedDate = new Date();
+  const day = parsedDate.getDate().toString().padStart(2, "0");
+  const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = parsedDate.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
+
   const location = useLocation();
   const job_no = new URLSearchParams(location.search).get("order_no");
+
+  const [orderNumber, setOrderNumber] = useState(job_no);
+
   const navigate = useNavigate();
 
   const [filterType, setFilterType] = useState("");
 
   const [preview, setPreview] = useState("");
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(formattedDate);
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -46,6 +56,7 @@ const AddQuotation = () => {
   const [vat, setVAT] = useState(0);
   const [partsTotal, setPartsTotal] = useState(0);
   const [serviceTotal, setServiceTotal] = useState(0);
+  const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
@@ -64,6 +75,7 @@ const AddQuotation = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -73,8 +85,8 @@ const AddQuotation = () => {
   const [deleteQuotation, { isLoading: deleteLoading, error: deleteError }] =
     useDeleteQuotationMutation();
 
-  // const { data: jobCardData, isLoading } =
-  //   useGetSingleJobCardWithJobNoQuery(job_no);
+  const { data: jobCardData, isLoading } =
+    useGetSingleJobCardWithJobNoQuery(orderNumber);
 
   const { data: allQuotations, isLoading: quotationLoading } =
     useGetAllQuotationsQuery({
@@ -82,6 +94,41 @@ const AddQuotation = () => {
       page: currentPage,
       searchTerm: filterType,
     });
+
+
+
+
+
+    useEffect(() => {
+      if (jobCardData?.data) {
+        reset({
+          Id: jobCardData?.data?.Id,
+          company_name: jobCardData?.data?.company_name,
+          vehicle_username: jobCardData?.data?.vehicle_username,
+          company_address: jobCardData?.data?.company_address,
+          customer_name: jobCardData?.data?.customer_name,
+          customer_country_code: jobCardData?.data?.customer_country_code,
+          customer_contact: phoneNumber || jobCardData?.data?.customer_contact,
+          customer_email: jobCardData?.data?.customer_email,
+          customer_address: jobCardData?.data?.customer_address,
+          reference_name: jobCardData?.data?.reference_name,
+  
+          carReg_no: getDataWithChassisNo?.carReg_no,
+          car_registration_no: getDataWithChassisNo?.car_registration_no,
+          engine_no: getDataWithChassisNo?.engine_no,
+          vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+          vehicle_name: getDataWithChassisNo?.vehicle_name,
+          vehicle_model: getDataWithChassisNo?.vehicle_model,
+          vehicle_category: getDataWithChassisNo?.vehicle_category,
+          color_code: getDataWithChassisNo?.color_code,
+          mileage: getDataWithChassisNo?.mileage,
+          fuel_type: getDataWithChassisNo?.fuel_type,
+        });
+      }
+    }, [getDataWithChassisNo?.carReg_no, getDataWithChassisNo?.car_registration_no, getDataWithChassisNo?.color_code, getDataWithChassisNo?.engine_no, getDataWithChassisNo?.fuel_type, getDataWithChassisNo?.mileage, getDataWithChassisNo?.vehicle_brand, getDataWithChassisNo?.vehicle_category, getDataWithChassisNo?.vehicle_model, getDataWithChassisNo?.vehicle_name, jobCardData?.data, phoneNumber, reset]);
+
+
+
 
   const handleRemove = (index) => {
     if (!index) {
@@ -242,7 +289,17 @@ const AddQuotation = () => {
   };
 
   const onSubmit = async (data) => {
-    const values = {
+    const customer = {};
+    const company = {};
+
+    const showRoom = {};
+    const vehicle = {};
+
+    const quotation = {
+      user_type: jobCardData?.data?.user_type,
+      Id: jobCardData?.data?.Id,
+      job_no: orderNumber,
+      date: selectedDate,
       parts_total: partsTotal,
       service_total: serviceTotal,
       total_amount: grandTotal,
@@ -251,6 +308,14 @@ const AddQuotation = () => {
       net_total: calculateFinalTotal(),
       input_data: items,
       service_input_data: serviceItems,
+    };
+
+    const values = {
+      customer,
+      company,
+      showRoom,
+      vehicle,
+      quotation,
     };
 
     const res = await createQuotation(values).unwrap();
@@ -332,9 +397,18 @@ const AddQuotation = () => {
     }
   };
 
+  const handleChassisChange = (_, newValue) => {
+    const filtered = jobCardData?.data?.vehicle?.find(
+      (vehicle) => vehicle.chassis_no === newValue
+    );
+    setGetDataWithChassisNo(filtered);
+  };
+
   if (quotationLoading) {
     return <Loading />;
   }
+
+  
 
   return (
     <div className="px-5 py-10">
@@ -360,7 +434,6 @@ const AddQuotation = () => {
 
             <div>
               <TADatePickers
-                // date={jobCardData?.date}
                 handleDateChange={handleDateChange}
                 selectedDate={selectedDate}
               />
@@ -373,7 +446,7 @@ const AddQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Job Card No"
-                  // onChange={(e) => setJob_no(e.target.value)}
+                  onChange={(e) => setOrderNumber(e.target.value)}
                   // value={jobCardData?.data?.job_no}
                   // focused={jobCardData?.data?.job_no}
                 />
@@ -382,10 +455,9 @@ const AddQuotation = () => {
                 <TextField
                   className="addJobInputField"
                   label="Customer Id"
-                  // onChange={handleInputChange}
-                  // value={jobCardData?.data?.Id}
-                  // focused={jobCardData?.data?.Id}
-                  // required
+                  {...register("Id")}
+                  focused={jobCardData?.data?.Id}
+                  readOnly
                 />
               </div>
 
@@ -445,6 +517,7 @@ const AddQuotation = () => {
                       />
                     )}
                   />
+
                   <TextField
                     {...register("customer_contact")}
                     className="carRegField"
@@ -484,7 +557,34 @@ const AddQuotation = () => {
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-
+              <div className="mt-3">
+                <Autocomplete
+                  disabled={
+                    jobCardData?.data?.vehicle?.length === 0 ||
+                    !jobCardData?.data?.vehicle
+                  }
+                  disableClearable
+                  freeSolo
+                  className="addJobInputField"
+                  onChange={handleChassisChange}
+                  options={jobCardData?.data?.vehicle?.map(
+                    (option) => option.chassis_no
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      className="addJobInputField"
+                      label="Chassis No"
+                       
+                      {...register("chassis_no")}
+                      inputProps={{
+                        ...params.inputProps,
+                        maxLength: jobCardData?.data?.chassis_no?.length || 30,
+                      }}
+                    />
+                  )}
+                />
+              </div>
               <div className="flex mt-3  md:gap-0 gap-4 items-center">
                 <Autocomplete
                   sx={{ marginRight: "5px" }}
@@ -495,41 +595,31 @@ const AddQuotation = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Vehicle Reg No ( New field ) "
+                      label="Vehicle Reg No"
                       {...register("carReg_no")}
                     />
                   )}
                 />
 
-                <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers and hyphens are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  // value={jobCardData?.car_registration_no}
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.car_registration_no,
-                  // }}
-                  // error={!!errors.car_registration_no}
-                />
+                <InputMask
+                  mask="99-9999"
+                  maskChar={null}
+                  {...register("car_registration_no")}
+                >
+                  {(inputProps) => (
+                    <TextField
+                      {...inputProps}
+                      {...register("car_registration_no")}
+                      className="carRegField"
+                      label="Car R (N)"
+                      focused={jobCardData?.car_registration_no || ""}
+                    />
+                  )}
+                </InputMask>
               </div>
 
-              <div className="mt-3">
-                <TextField
+              {/* <div className="mt-3">
+                {/* <TextField
                   className="addJobInputField"
                   label="Chassis No"
                   // value={jobCardData?.chassis_no}
@@ -544,8 +634,8 @@ const AddQuotation = () => {
                   // InputLabelProps={{
                   //   shrink: !!jobCardData?.chassis_no,
                   // }}
-                />
-              </div>
+                /> */}
+              {/* </div> */}
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -659,7 +749,6 @@ const AddQuotation = () => {
                     <input
                       className="thirdInputField"
                       autoComplete="off"
-                     
                       placeholder="Rate"
                       onChange={(e) => handleRateChange(i, e.target.value)}
                       required
@@ -752,7 +841,6 @@ const AddQuotation = () => {
                       <input
                         className="thirdInputField"
                         autoComplete="off"
-                        
                         placeholder="Rate"
                         onChange={(e) =>
                           handleServiceRateChange(i, e.target.value)
@@ -836,7 +924,7 @@ const AddQuotation = () => {
         </form>
         <div>
           {createQuotationError && (
-            <ErrorMessage messages={createQuotationError.data.errorSources} />
+            <ErrorMessage messages={createQuotationError?.data?.errorSources} />
           )}
         </div>
       </div>

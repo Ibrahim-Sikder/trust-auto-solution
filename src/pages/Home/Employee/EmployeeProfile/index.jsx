@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import { Tabs, Tab, Box, Typography } from '@mui/material';
+import { useState } from "react";
+import { Tabs, Tab, Box, Typography } from "@mui/material";
 import EmployeeAccount from "./EmployeeAccount";
 import Attendance from "./Attendance";
 import SingleEmployeeLeaveList from "./SingleEmployeeLeaveList";
@@ -9,6 +9,10 @@ import "../Employee.css";
 import EmployeeSalary from "./EmployeeSalary";
 import EmployeeOvertime from "./EmployeeOvertime";
 import EmployeeHoliday from "./EmployeeHoliday";
+import { useLocation } from "react-router-dom";
+import { useGetSingleEmployeeQuery } from "../../../../redux/api/employee";
+import Loading from "../../../../components/Loading/Loading";
+import { toast } from "react-toastify";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -28,12 +32,14 @@ const TabPanel = (props) => {
       )}
     </div>
   );
-}
-
-
+};
 
 const CustomerProfile = () => {
   const [value, setValue] = useState(0);
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
+
+  const { data, isLoading, error } = useGetSingleEmployeeQuery(id);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -41,7 +47,7 @@ const CustomerProfile = () => {
   const tabStyles = {
     width: 120,
     height: "35px",
-    margin: .5,
+    margin: 0.5,
     backgroundColor: "#42A1DA",
     color: "white",
     borderRadius: 10,
@@ -54,7 +60,7 @@ const CustomerProfile = () => {
       color: "#fff",
     },
   };
-  
+
   const tabsStyles = {
     "& .MuiTabs-indicator": {
       display: "none",
@@ -63,7 +69,41 @@ const CustomerProfile = () => {
       borderBottom: "none",
     },
   };
-  
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    toast.error(error?.status);
+  }
+
+  console.log(data?.data);
+  const getMonthName = (monthNumber) => {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
+    return date.toLocaleString("default", { month: "long" });
+  };
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1;
+  const currentYear = currentDate.getFullYear();
+
+  const formattedCurrentMonth =
+    currentMonth < 10 ? `0${currentMonth}` : currentMonth;
+  const monthName = getMonthName(currentMonth);
+
+  const totalOvertime = data?.data?.attendance
+    .filter((record) => {
+      const [, month, year] = record.date.split("-");
+      return (
+        month === String(formattedCurrentMonth) && year === String(currentYear)
+      );
+    })
+    .reduce((total, record) => total + record.overtime, 0);
+  const totalSalary = data?.data?.salary
+    .filter((record) => record.month_of_salary === monthName)
+    .reduce((total, record) => total + record.paid, 0);
+
 
   return (
     <div className="profileCardsWraps">
@@ -72,7 +112,7 @@ const CustomerProfile = () => {
           <h3 className="text-2xl font-semibold">Profile</h3>
           <span>Dashboard / Profile </span>
         </div>
-        
+
         <div className="flex flex-wrap items-center justify-between w-full mt-10 text-black profileCards ">
           <div className="items-center flex-wrap px-5 bg-[#fff] flex justify-center md:justify-between w-full rounded-sm border py-5">
             <div className="w-full lg:w-[50%]">
@@ -83,17 +123,17 @@ const CustomerProfile = () => {
                   alt="profile"
                 />
                 <div>
-                  <h3 className="text-2xl">Ariful Islam</h3>
-                  <span>Staff</span>
+                  <h3 className="text-2xl">{data?.data?.full_name}</h3>
+                  <span>{data?.data?.designation}</span>
 
                   <div className="space-y- mt-">
                     <div className="flex items-center">
                       <b className="block mr-3 text-sm">Employee ID</b>
-                      <span>: 45996-0789777</span>
+                      <span>: {data?.data?.employeeId}</span>
                     </div>
                     <div className="flex items-center">
                       <b className="block mr-3 text-sm">Date of Join</b>
-                      <span>: 1st Jan 2024 </span>
+                      <span>: {data?.data?.join_date}</span>
                     </div>
                     <button className="px-3 py-1 mt-3 text-white bg-[#42A1DA] rounded-sm">
                       Send Message{" "}
@@ -111,7 +151,7 @@ const CustomerProfile = () => {
                       <h4 className="text-xl font-semibold">Overtime</h4>
                       <p>
                         <b>
-                          March <b>: 5h 30m</b>
+                          {monthName} <b>: {totalOvertime} h</b>
                         </b>
                       </p>
                     </div>
@@ -121,9 +161,10 @@ const CustomerProfile = () => {
                   <div className="flex items-center">
                     <div className="">
                       <h4 className="text-xl font-semibold">Total Salary</h4>
-                      <span className="block my-2">৳20000</span>
+                      <span className="block my-2">৳{totalSalary}</span>
                       <p className="">
-                        March Paid : <b className="text-[#F62D51]">৳20000</b>
+                        {monthName} Paid :{" "}
+                        <b className="text-[#F62D51]">৳{totalSalary}</b>
                       </p>
                     </div>
                   </div>
@@ -135,7 +176,12 @@ const CustomerProfile = () => {
       </div>
 
       <div className="text-black mt-14">
-        <Tabs  sx={tabsStyles} value={value} onChange={handleChange} aria-label="basic tabs example">
+        <Tabs
+          sx={tabsStyles}
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+        >
           <Tab sx={tabStyles} label="Account" />
           <Tab sx={tabStyles} label="Attendance" />
           <Tab sx={tabStyles} label="Leave" />
@@ -146,7 +192,7 @@ const CustomerProfile = () => {
         </Tabs>
 
         <TabPanel value={value} index={0}>
-          <EmployeeAccount />
+          <EmployeeAccount accountInfo={data?.data} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Attendance />

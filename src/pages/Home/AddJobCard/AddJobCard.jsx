@@ -132,9 +132,12 @@ const AddJobCard = () => {
       )[0]
     : null;
 
-  const jobNumber = (Number(lastJobCard?.job_no) + 1)
-    .toString()
-    .padStart(4, "0");
+  const jobNumber =
+    (Number(lastJobCard?.job_no) && !isNaN(Number(lastJobCard.job_no))
+      ? Number(lastJobCard.job_no)
+      : 0) + 1;
+
+  const paddedJobNumber = jobNumber.toString().padStart(4, "0");
 
   useEffect(() => {
     if (getDataWithId && newId === "customer") {
@@ -268,13 +271,6 @@ const AddJobCard = () => {
       setDriverPhoneNumber(newPhoneNumber);
     }
   };
-
-  // useEffect(() => {
-  //   if (showCustomerData?.carReg_no && inputRef.current) {
-  //     inputRef.current.focus();
-  //     setInputValue(showCustomerData.carReg_no); // Set the input value to the loaded data
-  //   }
-  // }, [showCustomerData]);
 
   const onSubmit = async (data) => {
     if (!newId) {
@@ -575,7 +571,7 @@ const AddJobCard = () => {
                 <b>
                   Job No: <span className="requiredStart">*</span>
                 </b>
-                <span> {jobNumber || 1}</span>
+                <span> {paddedJobNumber}</span>
               </div>
               <div>
                 <span>
@@ -1605,7 +1601,15 @@ const AddJobCard = () => {
                           {/* <td>{lastVehicle?.fullRegNum}</td> */}
                           <td>{card?.user_type}</td>
 
-                          <td>{card?.customer[0]?.fullCustomerNum}</td>
+                          {card?.customer?.length !== 0 && (
+                            <td>{card?.customer[0]?.fullCustomerNum}</td>
+                          )}
+                          {card?.company?.length !== 0 && (
+                            <td>{card?.company[0]?.fullCompanyNum}</td>
+                          )}
+                          {card?.showRoom.length !== 0 && (
+                            <td>{card?.showRoom[0]?.fullCompanyNum}</td>
+                          )}
                           <td>{card?.date}</td>
 
                           <td>

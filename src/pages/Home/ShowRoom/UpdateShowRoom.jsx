@@ -200,10 +200,12 @@ const UpdateShowRoom = () => {
     // Check if the input is a number and does not exceed 4 digits
     if (/^\d{0,4}$/.test(value)) {
       setYearSelectInput(value);
-      const filtered = vehicleModels.filter((option) =>
+      const filtered = vehicleModels?.filter((option) =>
         option.label.toLowerCase().startsWith(value.toLowerCase())
       );
       setFilteredOptions(filtered);
+    } else {
+      event.target.value = value.slice(0, 4);
     }
   };
   const handleOptionClick = (option) => {
@@ -457,7 +459,7 @@ const UpdateShowRoom = () => {
                   />
 
                   <InputMask
-                    mask="**-****"
+                    mask="99-9999"
                     maskChar={null}
                     {...register("car_registration_no")}
                   >

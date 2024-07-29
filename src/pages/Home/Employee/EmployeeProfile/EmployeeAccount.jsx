@@ -1,6 +1,44 @@
+/* eslint-disable react/prop-types */
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-const EmployeeAccount = () => {
+const EmployeeAccount = ({ accountInfo }) => {
+  const myAttendance = accountInfo?.attendance;
+
+  const absentEntries = myAttendance?.filter(
+    (attendance) => attendance.absent
+  ).length;
+
+  const absentPercentage = Number(
+    (absentEntries / myAttendance.length) * 100
+  ).toFixed(2);
+
+  const isIntegerAbsentPercentage = absentPercentage.endsWith(".00");
+
+  const finalAbsentPercentage = isIntegerAbsentPercentage
+    ? parseInt(absentPercentage)
+    : absentPercentage;
+
+  const absentPercentageNumber = isNaN(finalAbsentPercentage)
+    ? 0
+    : finalAbsentPercentage;
+  const lateEntries = myAttendance?.filter(
+    (attendance) => attendance.late_status
+  ).length;
+
+  const latePercentage = Number(
+    (lateEntries / myAttendance.length) * 100
+  ).toFixed(2);
+
+  const isIntegerLatePercentage = latePercentage.endsWith(".00");
+
+  const finalLatePercentage = isIntegerLatePercentage
+    ? parseInt(latePercentage)
+    : latePercentage;
+
+  const latePercentageNumber = isNaN(finalLatePercentage)
+    ? 0
+    : finalLatePercentage;
+
   return (
     <div className="customerProfileWrap">
       <div>
@@ -66,8 +104,8 @@ const EmployeeAccount = () => {
               <div className="flex items-center">
                 <div style={{ width: 80, height: 80 }}>
                   <CircularProgressbar
-                    value={10}
-                    text={`${10}%`}
+                    value={absentPercentageNumber}
+                    text={`${absentPercentageNumber}%`}
                     styles={{
                       // Customize the root element (outer circle)
                       path: {
@@ -86,7 +124,7 @@ const EmployeeAccount = () => {
                 </div>
                 <h4 className="ml-2 text-sm font-semibold">Absent </h4>
               </div>
-              <b>20</b>
+              <b>{absentEntries}</b>
             </div>
           </div>
           <div className=" employeeCard">
@@ -122,8 +160,8 @@ const EmployeeAccount = () => {
               <div className="flex items-center">
                 <div style={{ width: 80, height: 80 }}>
                   <CircularProgressbar
-                    value={5}
-                    text={`${5}%`}
+                    value={latePercentageNumber}
+                    text={`${latePercentageNumber}%`}
                     styles={{
                       // Customize the root element (outer circle)
                       path: {
@@ -142,7 +180,7 @@ const EmployeeAccount = () => {
                 </div>
                 <h4 className="ml-2 text-sm font-semibold">Late </h4>
               </div>
-              <b>20</b>
+              <b>{lateEntries}</b>
             </div>
           </div>
         </div>
@@ -150,64 +188,60 @@ const EmployeeAccount = () => {
           <div className="employeeProfileCard">
             <h3 className="text-xl font-semibold">Personal Information </h3>
             <div className="flex items-center justify-between mt-5">
-                <div className="space-y-3">
-                  <b className="block">Name</b>
-                  <b className="block">Email </b>
-                  <b className="block">Phone </b>
-                  <b className="block">Birth Date </b>
-                  <b className="block">NID </b>
-                </div>
-                <div className="space-y-3">
-                  <span className="block"> : Ariful Islam </span>
-                  <span className="block">: ali@gmail.com </span>
-                  <span className="block">: 0484848445 </span>
-                  <span className="block">: 10-05-2024 </span>
-                  <span className="block">: 478987645678 </span>
-                </div>
+              <div className="space-y-3">
+                <b className="block">Name</b>
+                <b className="block">Email </b>
+                <b className="block">Phone </b>
+                <b className="block">Birth Date </b>
+                <b className="block">NID </b>
               </div>
-          
-          
+              <div className="space-y-3">
+                <span className="block"> : {accountInfo?.full_name} </span>
+                <span className="block">: {accountInfo?.email} </span>
+                <span className="block">
+                  : {accountInfo?.full_phone_number}{" "}
+                </span>
+                <span className="block">: {accountInfo?.date_of_birth} </span>
+
+                <span className="block">: {accountInfo?.nid} </span>
+              </div>
+            </div>
           </div>
           <div className="employeeProfileCard">
-          <h3 className="text-xl font-semibold">Emergency Contact</h3>
-          
-          <div className="flex items-center justify-between mt-5">
-          <div className="space-y-3">
-            <b className="block">Name</b>
-            <b className="block">Relationship </b>
-            <b className="block">Phone </b>
-            <b className="block">Occupation </b>
-           
+            <h3 className="text-xl font-semibold">Emergency Contact</h3>
+
+            <div className="flex items-center justify-between mt-5">
+              <div className="space-y-3">
+                <b className="block">Name</b>
+                <b className="block">Relationship </b>
+                <b className="block">Phone </b>
+                {/* <b className="block">Occupation </b> */}
+              </div>
+              <div className="space-y-3">
+                <span className="block"> : {accountInfo?.guardian_name} </span>
+                <span className="block">: {accountInfo?.relationship} </span>
+                <span className="block">
+                  : {accountInfo?.guardian_full_contact}{" "}
+                </span>
+                {/* <span className="block">: {accountInfo?.guardian_name}  </span> */}
+              </div>
+            </div>
           </div>
-          <div className="space-y-3">
-            <span className="block"> : Akbor Ali  </span>
-            <span className="block">: Father </span>
-            <span className="block">: 0484848445 </span>
-            <span className="block">: Farmar </span>
-                
-          </div>
-        </div>
-        
-         
-        </div>
           <div className="employeeProfileCard">
             <h3 className="text-xl font-semibold">Address Information </h3>
-            
+
             <div className="flex items-center justify-between mt-5">
-            <div className="space-y-3">
-              <b className="block">Country</b>
-              <b className="block">Town / City </b>
-              <b className="block">Address </b>
+              <div className="space-y-3">
+                <b className="block">Country</b>
+                <b className="block">Town / City </b>
+                <b className="block">Address </b>
+              </div>
+              <div className="space-y-3">
+                <span className="block"> : {accountInfo?.country} </span>
+                <span className="block">: {accountInfo?.city} </span>
+                <span className="block">: {accountInfo?.local_address} </span>
+              </div>
             </div>
-            <div className="space-y-3">
-              <span className="block"> : Bangladesh </span>
-              <span className="block">: Dhaka </span>
-              <span className="block">:  Kuril Bishawroad, Dhaka-1212 </span>
-         
-            </div>
-          </div>
-          
-           
           </div>
         </div>
       </div>

@@ -203,9 +203,9 @@ const AddAttendance = () => {
     return <Loading />;
   }
 
-  if (salaryError) {
-    toast.error(salaryError?.data?.message);
-  }
+  // if (salaryError) {
+  //   toast.error(salaryError?.data?.message);
+  // }
 
   return (
     <div className="pt-8 pb-20">
@@ -373,7 +373,7 @@ const AddAttendance = () => {
         </table>
         <div className="my-2">
           {createError && (
-            <ErrorMessage messages={createError.data.errorSources} />
+            <ErrorMessage messages={createError?.data?.errorSources} />
           )}
         </div>
         <div className="flex justify-end mt-3">
