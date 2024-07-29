@@ -526,11 +526,6 @@ const AddAttendance = () => {
                   <td>
                     <div className="flex items-center justify-center cursor-pointer ">
                       <HiCheck
-                        size={20}
-                        className="text-[#F62D51] attendanceIcon"
-                        onClick={() => handleLate(index, true)}
-                      />
-                      <HiCheck
                         className="text-[#4AB657] attendanceIcon "
                         size={20}
                         onClick={() => handleLate(index, false)}
@@ -582,17 +577,17 @@ const AddAttendance = () => {
                           value={presentPercentage}
                           text={`${presentPercentage}%`}
                           styles={{
-                            // Customize the root element (outer circle)
+                           
                             path: {
-                              stroke: `#60BE6B`, // Set the color of the progress bar
+                              stroke: `#60BE6B`, 
                             },
-                            // Customize the text
+                  
                             text: {
-                              fill: "#3e98c7", // Set the color of the text
+                              fill: "#3e98c7", 
                             },
-                            // Customize the trail (background)
+                      
                             trail: {
-                              stroke: "#f4f4f4", // Set the color of the background
+                              stroke: "#f4f4f4", 
                             },
                           }}
                         />
@@ -613,17 +608,17 @@ const AddAttendance = () => {
                           value={absentPercentage}
                           text={`${absentPercentage}%`}
                           styles={{
-                            // Customize the root element (outer circle)
+                         
                             path: {
-                              stroke: `#F62D51`, // Set the color of the progress bar
+                              stroke: `#F62D51`, 
                             },
-                            // Customize the text
+                            
                             text: {
-                              fill: "#3e98c7", // Set the color of the text
+                              fill: "#3e98c7",
                             },
-                            // Customize the trail (background)
+                      
                             trail: {
-                              stroke: "#f4f4f4", // Set the color of the background
+                              stroke: "#f4f4f4",
                             },
                           }}
                         />
@@ -644,17 +639,16 @@ const AddAttendance = () => {
                           value={latePercentage}
                           text={`${latePercentage}%`}
                           styles={{
-                            // Customize the root element (outer circle)
+                           
                             path: {
-                              stroke: `#FF851A`, // Set the color of the progress bar
+                              stroke: `#FF851A`, 
                             },
-                            // Customize the text
+                        
                             text: {
-                              fill: "#3e98c7", // Set the color of the text
+                              fill: "#3e98c7",
                             },
-                            // Customize the trail (background)
                             trail: {
-                              stroke: "#f4f4f4", // Set the color of the background
+                              stroke: "#f4f4f4", 
                             },
                           }}
                         />

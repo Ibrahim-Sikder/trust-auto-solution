@@ -51,17 +51,17 @@ const EmployeeAccount = ({ accountInfo }) => {
                     value={66}
                     text={`${66}%`}
                     styles={{
-                      // Customize the root element (outer circle)
+                     
                       path: {
-                        stroke: `#60BE6B`, // Set the color of the progress bar
+                        stroke: `#60BE6B`, 
                       },
-                      // Customize the text
+                   
                       text: {
-                        fill: "#3e98c7", // Set the color of the text
+                        fill: "#3e98c7", 
                       },
-                      // Customize the trail (background)
+                    
                       trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
+                        stroke: "#f4f4f4",
                       },
                     }}
                   />
@@ -79,17 +79,17 @@ const EmployeeAccount = ({ accountInfo }) => {
                     value={96}
                     text={`${96}%`}
                     styles={{
-                      // Customize the root element (outer circle)
+                 
                       path: {
-                        stroke: `#60BE6B`, // Set the color of the progress bar
+                        stroke: `#60BE6B`, 
                       },
-                      // Customize the text
+              
                       text: {
-                        fill: "#3e98c7", // Set the color of the text
+                        fill: "#3e98c7",
                       },
-                      // Customize the trail (background)
+                 
                       trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
+                        stroke: "#f4f4f4",
                       },
                     }}
                   />
@@ -107,17 +107,17 @@ const EmployeeAccount = ({ accountInfo }) => {
                     value={absentPercentageNumber}
                     text={`${absentPercentageNumber}%`}
                     styles={{
-                      // Customize the root element (outer circle)
+                 
                       path: {
-                        stroke: `#F62D51`, // Set the color of the progress bar
+                        stroke: `#F62D51`,
                       },
-                      // Customize the text
+                    
                       text: {
-                        fill: "#3e98c7", // Set the color of the text
+                        fill: "#3e98c7", 
                       },
-                      // Customize the trail (background)
+                  
                       trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
+                        stroke: "#f4f4f4", 
                       },
                     }}
                   />
@@ -135,17 +135,17 @@ const EmployeeAccount = ({ accountInfo }) => {
                     value={20}
                     text={`${20}%`}
                     styles={{
-                      // Customize the root element (outer circle)
+ 
                       path: {
-                        stroke: `#FF851A`, // Set the color of the progress bar
+                        stroke: `#FF851A`,
                       },
-                      // Customize the text
+                   
                       text: {
-                        fill: "#3e98c7", // Set the color of the text
+                        fill: "#3e98c7", 
                       },
-                      // Customize the trail (background)
+                 
                       trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
+                        stroke: "#f4f4f4", 
                       },
                     }}
                   />
@@ -163,17 +163,17 @@ const EmployeeAccount = ({ accountInfo }) => {
                     value={latePercentageNumber}
                     text={`${latePercentageNumber}%`}
                     styles={{
-                      // Customize the root element (outer circle)
+                      
                       path: {
-                        stroke: `#FF851A`, // Set the color of the progress bar
+                        stroke: `#FF851A`, 
                       },
-                      // Customize the text
+              
                       text: {
-                        fill: "#3e98c7", // Set the color of the text
+                        fill: "#3e98c7", 
                       },
-                      // Customize the trail (background)
+                 
                       trail: {
-                        stroke: "#f4f4f4", // Set the color of the background
+                        stroke: "#f4f4f4",
                       },
                     }}
                   />

@@ -75,12 +75,7 @@ const Attendance = () => {
       </div>
       <div className="employeeCardWraps">
         <div className="grid grid-cols-5 gap-5 my-8">
-          <div className="relative rounded-sm w-max">
-            <input className="peer employeeInput w-[300px h-[60px]]" type="text" placeholder="" />
-            <label className="employeeLavel" htmlFor="">
-              Employee ID
-            </label>
-          </div>
+         
           <div>
             <Select
               value={selectedOption}

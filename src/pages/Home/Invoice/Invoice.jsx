@@ -224,7 +224,7 @@ const Invoice = () => {
     newItems[index].total = newItems[index].quantity * newItems[index].rate;
 
     // Round total to two decimal places
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2)) 
+    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
 
     setItems(newItems);
   };
@@ -238,7 +238,7 @@ const Invoice = () => {
     newItems[index].total = newItems[index].quantity * newItems[index].rate;
 
     // Round total to two decimal places
-    newItems[index].total = parseFloat(newItems[index].total.toFixed(2)) 
+    newItems[index].total = parseFloat(newItems[index].total.toFixed(2));
 
     setServiceItems(newItems);
   };
@@ -265,7 +265,6 @@ const Invoice = () => {
       setAdvance(parsedValue);
     }
   };
- 
 
   const calculateFinalTotal = () => {
     const discountAsPercentage = discount;
@@ -393,7 +392,7 @@ const Invoice = () => {
 
     if (willDelete) {
       try {
-         await deleteInvoice(id).unwrap()
+        await deleteInvoice(id).unwrap();
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
@@ -748,7 +747,6 @@ const Invoice = () => {
                     <input
                       className="thirdInputField"
                       autoComplete="off"
-                       
                       placeholder="Rate"
                       onChange={(e) => handleRateChange(i, e.target.value)}
                       required
@@ -842,9 +840,10 @@ const Invoice = () => {
                       <input
                         className="thirdInputField"
                         autoComplete="off"
-                        
                         placeholder="Rate"
-                        onChange={(e) => handleServiceRateChange(i, e.target.value)}
+                        onChange={(e) =>
+                          handleServiceRateChange(i, e.target.value)
+                        }
                         required
                       />
                     </div>
@@ -931,12 +930,14 @@ const Invoice = () => {
               <Button type="submit" onClick={() => setPreview("preview")}>
                 Preview
               </Button>
-              {/* </Link> */}
+
+              <Button>Print </Button>
               <Button>Download </Button>
+              <Button>Money Receipt </Button>
             </div>
             <div className="submitQutationBtn">
               <button type="submit" className="">
-                Add To Invoice{" "}
+                Add To Invoice
               </button>
             </div>
           </div>
@@ -1018,7 +1019,7 @@ const Invoice = () => {
                           <td>
                             <div className="editIconWrap edit">
                               <Link
-                               to={`/dashboard/update-invoice?id=${card._id}`}
+                                to={`/dashboard/update-invoice?id=${card._id}`}
                               >
                                 <FaEdit className="editIcon" />
                               </Link>

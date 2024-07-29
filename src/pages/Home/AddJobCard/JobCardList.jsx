@@ -68,6 +68,7 @@ const JobCardList = () => {
     }
   };
 
+ 
   return (
     <div>
       <div className="mt-5 overflow-x-auto">

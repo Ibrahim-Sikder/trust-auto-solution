@@ -17,6 +17,7 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
 .invoiceHeader {
   display: flex;
   justify-content: space-between;
@@ -81,11 +82,12 @@
   margin-top: 10px;
 }
 
-.buttonGroup button {
+.buttonGroup button,
+.buttonGroup a {
   background: #42a1da;
   color: #fff;
   margin-right: 5px;
-  width: 100px;
+  padding: 5px 10px;
   height: 40px;
   border-radius: 20px;
   transition: all 0.3s ease-in-out;
@@ -113,6 +115,7 @@
 .qoutationTitle {
   font-size: 36px !important;
 }
+
 .text-left {
   font-size: 12px;
 }
@@ -182,8 +185,8 @@
   margin-top: 30px;
 }
 
-.specificWidth{
-  width:130px !important
+.specificWidth {
+  width: 130px !important
 }
 
 @media only screen and (min-width: 1440px) {
@@ -192,7 +195,7 @@
     position: absolute;
   }
 
-  
+
 }
 
 
@@ -245,7 +248,7 @@
 
   .labelWrap label:nth-child(1) {
     left: 20px !important;
-    
+
   }
 }
 
@@ -254,7 +257,7 @@
     flex-wrap: wrap;
     gap: 5px;
   }
- 
+
   .trustAuto {
     font-size: 30px;
     margin-left: 0px;
@@ -272,7 +275,7 @@
     display: none;
   }
 
- 
+
   .invoiceHeader {
     flex-direction: column;
   }
@@ -294,83 +297,102 @@
   .invoicForm input {
     width: 300px;
   }
+
   .removeBtn {
     position: relative;
     top: 262px;
   }
+
   .addQuotationBtns {
     position: relative;
     top: 144px;
   }
+
   .vehicleCard {
     margin-right: 0px;
   }
 }
 
 @media only screen and (max-width: 375px) {
+
   .firstInputField,
   .qutationForm input {
     width: 100%;
     margin-left: 27px;
   }
+
   .hideAmountText {
     display: none;
   }
+
   .buttonMargin {
     margin-top: 70px;
   }
+
   .removeBtn {
     position: relative;
     top: 519px;
   }
+
   .addQuotationBtns {
     position: relative;
     top: 207px;
     right: -84px;
   }
+
   .discountFieldWrap {
     margin-right: 17px;
   }
+
   .discountFieldWrap input,
   .discountFieldWrap span {
     width: 118px;
   }
+
   .qutationForm {
     margin-top: -78px;
   }
 }
 
 @media only screen and (max-width: 300px) {
+
   .firstInputField,
   .qutationForm input {
     margin-left: 0px;
   }
+
   .buttonGroup {
     display: block;
   }
+
   .removeBtn {
     right: -64px;
-}
-.addQuotationBtns {
-  right: -148px;
-}
-.buttonMargin {
-  position: relative;
-  right: -44px;
-}
-.SearchBtn {
-  width: 81px;
-  height: 37px;
-}
+  }
+
+  .addQuotationBtns {
+    right: -148px;
+  }
+
+  .buttonMargin {
+    position: relative;
+    right: -44px;
+  }
+
+  .SearchBtn {
+    width: 81px;
+    height: 37px;
+  }
 
 }
-@media only screen and (max-width:250px){
+
+@media only screen and (max-width:250px) {
   .addQuotationBtns {
     right: -101px;
-}
-.removeBtn {
-  right: -19px;
-}
+  }
+
+  .removeBtn {
+    right: -19px;
+  }
 
 }
 
@@ -396,6 +418,7 @@
     font-size: 10px;
   }
 }
+
 .invoicTable td,
 .invoicTable th,
 .invoicTable tr,
@@ -417,6 +440,7 @@
   display: block;
   font-size: 10px;
 }
+
 .netTotalAmounts b,
 .netTotalAmounts small {
   font-size: 12px;
@@ -427,18 +451,23 @@
   height: 80px;
   background: black;
 }
+
 .invoiceTable2 th:first-child {
   width: 50px !important;
 }
+
 .invoiceTable2 th:nth-child(3) {
   width: 60px !important;
 }
+
 .invoiceTable2 th:nth-child(4) {
   width: 55px !important;
 }
+
 .invoiceTable2 th:nth-child(5) {
   width: 70px !important;
 }
+
 .invoiceTable2 th:nth-child(2) {
   width: 100%;
 }

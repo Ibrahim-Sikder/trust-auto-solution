@@ -2,7 +2,7 @@
 import axios from "axios";
 import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -1290,7 +1290,18 @@ const UpdateQuotation = () => {
             </div>
           </div>
         </div>
-        <div>
+
+        <div className="mt-8 buttonGroup buttonMargin">
+          <div className="flex md:flex-row flex-col justify-end">
+            <Button>Preview</Button>
+
+            <Button>Download </Button>
+            <Button>Print </Button>
+            <Button LinkComponent={Link} to='/dashboard/invoice'>Invoice </Button>
+          </div>
+        </div>
+
+        <div className="mt-10">
           <div className="flex  justify-center align-items-center">
             <Button
               sx={{ background: "#42A1DA" }}

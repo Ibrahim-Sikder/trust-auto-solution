@@ -10,7 +10,11 @@ import {
   Autocomplete,
   Box,
   Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Pagination,
+  Select,
   TextField,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -56,7 +60,11 @@ const AddQuotation = () => {
   const [vat, setVAT] = useState(0);
   const [partsTotal, setPartsTotal] = useState(0);
   const [serviceTotal, setServiceTotal] = useState(0);
+ 
   const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
+ 
+  const [customerType, setCustomerType] = useState("customerId");
+ 
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
@@ -408,7 +416,16 @@ const AddQuotation = () => {
     return <Loading />;
   }
 
-  
+ 
+  // const handleCustomerIdChange = (e) => {
+  //   setCustomerType(e.targer?.value);
+  // };
+  console.log(customerType);
+  const handleCustomerIdChange = (e) => {
+    setCustomerType(e.target?.value);
+  };
+  console.log(customerType);
+ 
 
   return (
     <div className="px-5 py-10">
@@ -441,7 +458,15 @@ const AddQuotation = () => {
           </div>
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
+              {customerType === "companyId" ? (
+                <h3 className="text-xl lg:text-3xl font-bold">Company Info</h3>
+              ) : customerType === "customerId" ? (
+                <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
+              ) : customerType === "showroomId" ? (
+                <h3 className="text-xl lg:text-3xl font-bold">Showroom Info</h3>
+              ) : (
+                <p>Hello</p>
+              )}
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -451,16 +476,40 @@ const AddQuotation = () => {
                   // focused={jobCardData?.data?.job_no}
                 />
               </div>
+
+              <div className="mt-3">
+                <FormControl className="addJobInputField" size="small">
+                  <InputLabel id="demo-select-small-label">
+                    Select Customer Type
+                  </InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    className="py-1"
+                    label="Select Customer Type"
+                    onChange={handleCustomerIdChange}
+                  >
+                    <MenuItem value="companyId">Company ID </MenuItem>
+                    <MenuItem value="customerId">Customer ID</MenuItem>
+                    <MenuItem value="showroomId">Show Room ID </MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
+
                   label="Customer Id"
                   {...register("Id")}
                   focused={jobCardData?.data?.Id}
                   readOnly
+                  value={customerType}
+                  // onChange={handleInputChange}
+                  // value={jobCardData?.data?.Id}
+                  // focused={jobCardData?.data?.Id}
+                  // required
                 />
               </div>
-
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
@@ -916,6 +965,7 @@ const AddQuotation = () => {
 
               <Button>Download </Button>
               <Button>Print </Button>
+              <Button>Invoice </Button>
             </div>
             <div className="submitQutationBtn">
               <button type="submit">Add Quotation </button>

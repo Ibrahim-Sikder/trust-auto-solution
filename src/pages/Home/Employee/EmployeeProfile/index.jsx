@@ -69,6 +69,7 @@ const CustomerProfile = () => {
       borderBottom: "none",
     },
   };
+ 
 
   if (isLoading) {
     return <Loading />;
@@ -104,6 +105,7 @@ const CustomerProfile = () => {
     .filter((record) => record.month_of_salary === monthName)
     .reduce((total, record) => total + record.paid, 0);
 
+ 
 
   return (
     <div className="profileCardsWraps">
