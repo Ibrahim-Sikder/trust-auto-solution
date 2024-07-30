@@ -46,7 +46,7 @@ const AddCustomer = () => {
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [yearSelectInput, setYearSelectInput] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState([]);
+ 
 
   const limit = 10;
 

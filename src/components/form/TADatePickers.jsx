@@ -6,11 +6,7 @@ import "./datePicker.css";
 const TADatePickers = ({ date, handleDateChange, selectedDate }) => {
   const datePickerRef = useRef(null);
 
-  const parsedDate = new Date();
-  const day = parsedDate.getDate().toString().padStart(2, "0");
-  const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
-  const year = parsedDate.getFullYear();
-  const formattedDate = `${day}-${month}-${year}`;
+  
 
   useEffect(() => {
     flatpickr(datePickerRef.current, {
@@ -28,7 +24,7 @@ const TADatePickers = ({ date, handleDateChange, selectedDate }) => {
           className="border-2 border-gray-500 w-40 h-10 text-center rounded px-2 py-4"
           ref={datePickerRef}
           type="text"
-          value={selectedDate || date || formattedDate}
+          value={selectedDate || date }
           placeholder="Select Date "
         />
       </div>

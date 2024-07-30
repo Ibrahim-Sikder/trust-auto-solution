@@ -79,8 +79,6 @@ const AddEmployee = () => {
     searchTerm: filterType,
   });
 
-   
-
   const handleChange = (event) => {
     setActive(event.target.value);
   };
@@ -523,7 +521,7 @@ const AddEmployee = () => {
                   </thead>
                   <tbody>
                     {employees?.data?.employees?.map((card, index) => (
-                      <tr key={card._id}>
+                      <tr key={card?._id}>
                         <td>{index + 1}</td>
                         <td>{card?.employeeId}</td>
                         <td>{card?.full_name}</td>
@@ -531,7 +529,9 @@ const AddEmployee = () => {
                         <td>{card?.email}</td>
                         <td>
                           <div className="flex items-center justify-center ">
-                            <Link to="/dashboard/employee-profile">
+                            <Link
+                              to={`/dashboard/employee-profile?id=${card?._id}`}
+                            >
                               <FaUserTie size={25} className="" />
                             </Link>
                           </div>

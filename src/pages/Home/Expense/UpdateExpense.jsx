@@ -13,6 +13,12 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  useGetSingleExpenseQuery,
+  useUpdateExpenseMutation,
+} from "../../../redux/api/expense";
+import { ErrorMessage } from "../../../components/error-message";
+import Loading from "../../../components/Loading/Loading";
 
 const UpdateExpense = () => {
   const [payment, setPayment] = useState("");
@@ -22,13 +28,6 @@ const UpdateExpense = () => {
   };
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [getSingleExpense, setGetSingleExpense] = useState({});
- 
-  const [filterType, setFilterType] = useState("");
-  const [noMatching, setNoMatching] = useState(null);
-  const [reload, setReload] = useState(false);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -41,16 +40,57 @@ const UpdateExpense = () => {
     formState: { errors },
   } = useForm();
 
+  const {
+    data: getSingleExpense,
+    isLoading: singleExpenseLoading,
+    error: singleExpenseError,
+    refetch,
+  } = useGetSingleExpenseQuery(id);
+
+  const [updateExpense, { isLoading: updateLoading, error: updateError }] =
+    useUpdateExpenseMutation();
+
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/expense/one/${id}`)
-      .then((response) => {
-        setGetSingleExpense(response.data.expense);
-      })
-      .catch((error) => {
-        setError(error.message);
+    if (getSingleExpense?.data) {
+      reset({
+        category: getSingleExpense?.data?.category,
+        sub_category: getSingleExpense?.data?.sub_category,
+        expense_for: getSingleExpense?.data?.expense_for,
+        tax_application: getSingleExpense?.data?.tax_application,
+        individual_markup_first:
+          getSingleExpense?.data?.individual_markup_first,
+        expense_note_first: getSingleExpense?.data?.expense_note_first,
+        individual_markup_second:
+          getSingleExpense?.data?.individual_markup_second,
+        expense_note_second: getSingleExpense?.data?.expense_note_second,
+        amount: getSingleExpense?.data?.amount,
+        paid_on: getSingleExpense?.data?.paid_on,
+        payment_individual_markup:
+          getSingleExpense?.data?.payment_individual_markup,
+        payment_method: getSingleExpense?.data?.payment_method,
+        payment_account: getSingleExpense?.data?.payment_account,
+        check_no: getSingleExpense?.data?.check_no,
+        check_expense_note: getSingleExpense?.data?.check_expense_note,
+        bank_account_no: getSingleExpense?.data?.bank_account_no,
+
+        bank_expense_note: getSingleExpense?.data?.bank_expense_note,
+        cash_expense_note: getSingleExpense?.data?.cash_expense_note,
+        card_number: getSingleExpense?.data?.card_number,
+        card_holder_name: getSingleExpense?.data?.card_holder_name,
+        card_transaction_no: getSingleExpense?.data?.card_transaction_no,
+        card_type: getSingleExpense?.data?.card_type,
+        month_first: getSingleExpense?.data?.month_first,
+        year: getSingleExpense?.data?.year,
+        month_second: getSingleExpense?.data?.month_second,
+        security_code: getSingleExpense?.data?.security_code,
+        card_expense_note: getSingleExpense?.data?.card_expense_note,
+        other_transaction_no: getSingleExpense?.data?.other_transaction_no,
+        other_expense_note: getSingleExpense?.data?.other_expense_note,
+
+        image: getSingleExpense?.data?.image,
       });
-  }, [id, reload]);
+    }
+  }, [getSingleExpense?.data, reset]);
 
   const handleImageUpload = async (e) => {
     try {
@@ -58,10 +98,13 @@ const UpdateExpense = () => {
       const formData = new FormData();
       formData.append("image", file);
       setImageLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/uploads`, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       if (data.message === "Image uploaded successful") {
@@ -74,88 +117,34 @@ const UpdateExpense = () => {
   };
 
   const onSubmit = async (data) => {
-    setError("");
+    data.image = url;
+    data.amount = Number(data.amount);
+
+    const values = {
+      id,
+      data,
+    };
 
     try {
-      const values = {
-        category: data.category || getSingleExpense.category,
-        sub_category: data.sub_category || getSingleExpense.sub_category,
-        expense_for: data.expense_for || getSingleExpense.expense_for,
-        tax_application:
-          data.tax_application || getSingleExpense.tax_application,
-        individual_markup_first:
-          data.individual_markup_first ||
-          getSingleExpense.individual_markup_first,
-        expense_note_first:
-          data.expense_note_first || getSingleExpense.expense_note_first,
-        individual_markup_second:
-          data.individual_markup_second ||
-          getSingleExpense.individual_markup_second,
-        expense_note_second:
-          data.expense_note_second || getSingleExpense.expense_note_second,
-        amount: data.amount || getSingleExpense.amount,
-        paid_on: data.paid_on || getSingleExpense.paid_on,
-        payment_individual_markup:
-          data.payment_individual_markup ||
-          getSingleExpense.payment_individual_markup,
-        payment_account_first:
-          payment || getSingleExpense.payment_account_first,
-        payment_account_second:
-          data.payment_account_second ||
-          getSingleExpense.payment_account_second,
-        check_no: data.check_no || getSingleExpense.check_no,
-        check_expense_note:
-          data.check_expense_note || getSingleExpense.check_expense_note,
-        bank_account_no:
-          data.bank_account_no || getSingleExpense.bank_account_no,
-
-        bank_expense_note:
-          data.bank_expense_note || getSingleExpense.bank_expense_note,
-        cash_expense_note:
-          data.cash_expense_note || getSingleExpense.cash_expense_note,
-        card_number: data.card_number || getSingleExpense.card_number,
-        card_holder_name:
-          data.card_holder_name || getSingleExpense.card_holder_name,
-        card_transaction_no:
-          data.card_transaction_no || getSingleExpense.card_transaction_no,
-        card_type: data.card_type || getSingleExpense.card_type,
-        month_first: data.month_first || getSingleExpense.month_first,
-        year: data.year || getSingleExpense.year,
-        month_second: data.month_second || getSingleExpense.month_second,
-        security_code: data.security_code || getSingleExpense.security_code,
-        card_expense_note:
-          data.card_expense_note || getSingleExpense.card_expense_note,
-        other_transaction_no:
-          data.other_transaction_no || getSingleExpense.other_transaction_no,
-        other_expense_note:
-          data.other_expense_note || getSingleExpense.other_expense_note,
-
-        image: url ? url : getSingleExpense.image,
-      };
-
-      setLoading(true);
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/expense/one/${id}`,
-        values
-      );
-
-      if (response.data.message === "Successfully update card.") {
-        toast.success("Successfully update card.");
-        setLoading(false);
-        setReload(!reload);
+      const response = await updateExpense(values).unwrap();
+      if (response.success) {
+        toast.success(response.message);
         navigate("/dashboard/expense");
-        reset();
-        setError("");
+        refetch();
       }
     } catch (error) {
-      if (error.response) {
-        setLoading(false);
-        setError(error.response.data.message);
-      }
+      toast.error(error.message);
     }
   };
 
- 
+  if (singleExpenseLoading) {
+    return <Loading />;
+  }
+
+  if (singleExpenseError) {
+    toast.error(singleExpenseError?.status);
+  }
+   
   return (
     <section>
       <div className="addProductWraps">
@@ -184,21 +173,12 @@ const UpdateExpense = () => {
                     id="grouped-native-select"
                     label="Select Category "
                     {...register("category")}
-                    value={getSingleExpense?.expense_for}
-                    onChange={(e) =>
-                      setGetSingleExpense({
-                        ...getSingleExpense,
-                        expense_for: e.target.value,
-                      })
-                    }
-                    InputLabelProps={{
-                      shrink: !!getSingleExpense.expense_for,
-                    }}
+                    focused={getSingleExpense?.data?.category}
                   >
                     <option aria-label="None" value="" />
-                    <option value="First Category "> Daily </option>
-                    <option value="First Category "> Monthly </option>
-                    <option value="First Category "> Yearly </option>
+                    <option value="Daily"> Daily </option>
+                    <option value="Monthly"> Monthly </option>
+                    <option value="Yearly"> Yearly </option>
                   </Select>
                 </FormControl>
                 <FormControl className="productField">
@@ -212,12 +192,13 @@ const UpdateExpense = () => {
                     id="grouped-native-select"
                     label="Select Category "
                     {...register("sub_category")}
+                    focused={getSingleExpense?.data?.sub_category}
                   >
                     <option aria-label="None" value="" />
-                    <option value="First Category "> Rent </option>
-                    <option value="First Category "> Salary </option>
-                    <option value="First Category ">Electricity </option>
-                    <option value="First Category ">Other </option>
+                    <option value="Rent"> Rent </option>
+                    <option value="Salary"> Salary </option>
+                    <option value="Electricity">Electricity </option>
+                    <option value="Other">Other </option>
                   </Select>
                 </FormControl>
               </div>
@@ -229,16 +210,7 @@ const UpdateExpense = () => {
                   label="Expense For"
                   id="Tax"
                   {...register("expense_for")}
-                  value={getSingleExpense?.expense_for}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      expense_for: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.expense_for,
-                  }}
+                  focused={getSingleExpense?.data?.expense_for}
                 />
                 <TextField
                   className="productField"
@@ -246,16 +218,7 @@ const UpdateExpense = () => {
                   label="Tax Applicable"
                   id="Tax"
                   {...register("tax_application")}
-                  value={getSingleExpense?.tax_application}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      tax_application: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.tax_application,
-                  }}
+                  focused={getSingleExpense?.data?.tax_application}
                 />
               </div>
 
@@ -265,32 +228,14 @@ const UpdateExpense = () => {
                   fullWidth
                   label=" Individual Markup  "
                   {...register("individual_markup_first")}
-                  value={getSingleExpense?.individual_markup_first}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      individual_markup_first: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.individual_markup_first,
-                  }}
+                  focused={getSingleExpense?.data?.individual_markup_first}
                 />
                 <TextField
                   className="productField"
                   fullWidth
                   label="Expanse Note "
                   {...register("expense_note_first")}
-                  value={getSingleExpense?.expense_note_first}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      expense_note_first: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.expense_note_first,
-                  }}
+                  focused={getSingleExpense?.data?.expense_note_first}
                 />
               </div>
               <div className="productFieldWrap">
@@ -300,16 +245,7 @@ const UpdateExpense = () => {
                   label="Individual Markup"
                   id="Total Amount"
                   {...register("individual_markup_second")}
-                  value={getSingleExpense?.individual_markup_second}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      individual_markup_second: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.individual_markup_second,
-                  }}
+                  focused={getSingleExpense?.data?.individual_markup_second}
                 />
                 <div className="productField">
                   <input
@@ -350,6 +286,7 @@ const UpdateExpense = () => {
                   cols="30"
                   rows="10"
                   {...register("expense_note_second")}
+                  focused={getSingleExpense?.data?.expense_note_second}
                 />
               </div>
             </div>
@@ -363,16 +300,7 @@ const UpdateExpense = () => {
                   label="Amount"
                   id="Tax"
                   {...register("amount")}
-                  value={getSingleExpense?.amount}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      amount: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.amount,
-                  }}
+                  focused={getSingleExpense?.data?.amount}
                 />
                 <TextField
                   className="productField"
@@ -380,16 +308,7 @@ const UpdateExpense = () => {
                   label="Paid On "
                   id="Tax"
                   {...register("paid_on")}
-                  value={getSingleExpense?.paid_on}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      paid_on: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.paid_on,
-                  }}
+                  focused={getSingleExpense?.data?.paid_on}
                 />
               </div>
 
@@ -399,16 +318,7 @@ const UpdateExpense = () => {
                   fullWidth
                   label=" Individual Markup  "
                   {...register("payment_individual_markup")}
-                  value={getSingleExpense?.payment_individual_markup}
-                  onChange={(e) =>
-                    setGetSingleExpense({
-                      ...getSingleExpense,
-                      payment_individual_markup: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!getSingleExpense.payment_individual_markup,
-                  }}
+                  focused={getSingleExpense?.data?.payment_individual_markup}
                 />
                 <FormControl className="productField">
                   <InputLabel htmlFor="grouped-native-select">
@@ -419,7 +329,8 @@ const UpdateExpense = () => {
                     native
                     id="grouped-native-select"
                     label="Payment Account "
-                    // {...register("payment_account_first")}
+                    {...register("payment_method")}
+                    focused={getSingleExpense?.data?.payment_method}
                   >
                     <option aria-label="None" value="" />
                     <option value="Cash"> Cash </option>
@@ -439,314 +350,181 @@ const UpdateExpense = () => {
                     native
                     id="grouped-native-select"
                     label="Payment Account "
-                    {...register("payment_account_second")}
+                    {...register("payment_account")}
+                    focused={getSingleExpense?.data?.payment_account}
                   >
                     <option aria-label="None" value="" />
-                    <option value="First Category "> None </option>
-                    <option value="First Category ">Bank Transfer </option>
+                    <option value="None"> None </option>
+                    <option value="Bank Transfer">Bank Transfer </option>
                   </Select>
                 </FormControl>
               </div>
-              <div className="mt-10">
-                {payment &&
-                  (payment === "Check" ? (
-                    <div>
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label=" Check No  "
-                        {...register("check_no")}
-                        value={getSingleExpense?.check_no}
-                        onChange={(e) =>
-                          setGetSingleExpense({
-                            ...getSingleExpense,
-                            check_no: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!getSingleExpense.check_no,
-                        }}
-                      />
-                      <textarea
-                        placeholder="Expense Note "
-                        className="productDetail"
-                        name=""
-                        {...register("check_expense_note")}
-                        value={getSingleExpense?.check_expense_note}
-                        onChange={(e) =>
-                          setGetSingleExpense({
-                            ...getSingleExpense,
-                            check_expense_note: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!getSingleExpense.check_expense_note,
-                        }}
-                      />
-                    </div>
-                  ) : payment === "Bank Transfer" ? (
-                    <div className="mt-4 ">
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label=" Bank Account No "
-                        {...register("bank_account_no")}
-                        value={getSingleExpense?.bank_account_no}
-                        onChange={(e) =>
-                          setGetSingleExpense({
-                            ...getSingleExpense,
-                            bank_account_no: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!getSingleExpense.bank_account_no,
-                        }}
-                      />
-                      <textarea
-                        placeholder="Expense Note "
-                        className="productDetail"
-                        name=""
-                        {...register("bank_expense_note")}
-                        value={getSingleExpense?.bank_expense_note}
-                        onChange={(e) =>
-                          setGetSingleExpense({
-                            ...getSingleExpense,
-                            bank_expense_note: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!getSingleExpense.bank_expense_note,
-                        }}
-                      />
-                    </div>
-                  ) : payment === "Cash" ? (
-                    <div className="mt-4 ">
-                      <textarea
-                        placeholder="Expense Note "
-                        className="productDetail"
-                        name=""
-                        {...register("cash_expense_note")}
-                        value={getSingleExpense?.cash_expense_note}
-                        onChange={(e) =>
-                          setGetSingleExpense({
-                            ...getSingleExpense,
-                            cash_expense_note: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!getSingleExpense.cash_expense_note,
-                        }}
-                      />
-                    </div>
-                  ) : payment === "Card" ? (
-                    <div>
-                      <div className="productFieldWrap">
+              {payment === "" && (
+                <div className="mt-10">
+                  {getSingleExpense?.data?.payment_method &&
+                    (getSingleExpense?.data?.payment_method === "Check" ? (
+                      <div>
                         <TextField
                           className="productField"
                           fullWidth
-                          label="Card Number"
-                          id="Tax"
-                          {...register("card_number")}
-                          value={getSingleExpense?.card_number}
-                        onChange={(e) =>
-                          setGetSingleExpense({
-                            ...getSingleExpense,
-                            card_number: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!getSingleExpense.card_number,
-                        }}
+                          label=" Check No  "
+                          {...register("check_no")}
+                          focused={getSingleExpense?.data?.check_no}
                         />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Card holder name"
-                          id="Tax"
-                          {...register("card_holder_name")}
-                          value={getSingleExpense?.card_holder_name}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              card_holder_name: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.card_holder_name,
-                          }}
-                        />
-                      </div>
-
-                      <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Card Transaction No."
-                          id="Tax"
-                          {...register("card_transaction_no")}
-                          value={getSingleExpense?.card_transaction_no}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              card_transaction_no: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.card_transaction_no,
-                          }}
-                        />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Card Type "
-                          id="Tax"
-                          {...register("card_type")}
-                          value={getSingleExpense?.card_type}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              card_type: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.card_type,
-                          }}
-                        />
-                      </div>
-
-                      <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Month "
-                          id="Tax"
-                          {...register("month_first")}
-                          value={getSingleExpense?.month_first}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              month_first: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.month_first,
-                          }}
-                        />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Year"
-                          id="Tax"
-                          {...register("year")}
-                          value={getSingleExpense?.year}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              year: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.year,
-                          }}
-                        />
-                      </div>
-
-                      <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Month "
-                          id="Tax"
-                          {...register("month_second")}
-                          value={getSingleExpense?.month_second}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              month_second: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.month_second,
-                          }}
-                        />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Security Code "
-                          id="Tax"
-                          {...register("security_code")}
-                          value={getSingleExpense?.security_code}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              security_code: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.security_code,
-                          }}
-                        />
-                      </div>
-
-                      <div className="mt-4 productDetailWrap">
                         <textarea
                           placeholder="Expense Note "
                           className="productDetail"
                           name=""
-                          {...register("card_expense_note")}
-                          value={getSingleExpense?.card_expense_note}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              card_expense_note: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.card_expense_note,
-                          }}
+                          {...register("check_expense_note")}
+                          focused={getSingleExpense?.data?.check_expense_note}
                         />
                       </div>
-                    </div>
-                  ) : payment === "Other" ? (
-                    <div>
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label="Transition No "
-                        {...register("other_transaction_no")}
-                        value={getSingleExpense?.other_transaction_no}
-                          onChange={(e) =>
-                            setGetSingleExpense({
-                              ...getSingleExpense,
-                              other_transaction_no: e.target.value,
-                            })
-                          }
-                          InputLabelProps={{
-                            shrink: !!getSingleExpense.other_transaction_no,
-                          }}
-                      />
-                      <textarea
-                        placeholder="Expense Note "
-                        className="productDetail"
-                        name=""
-                        {...register("other_expense_note")}
-                        value={getSingleExpense?.other_expense_note}
-                        onChange={(e) =>
-                          setGetSingleExpense({
-                            ...getSingleExpense,
-                            other_expense_note: e.target.value,
-                          })
-                        }
-                        InputLabelProps={{
-                          shrink: !!getSingleExpense.other_expense_note,
-                        }}
-                      />
-                    </div>
-                  ) : null)}
-              </div>
+                    ) : getSingleExpense?.data?.payment_method ===
+                      "Bank Transfer" ? (
+                      <div className="mt-4 ">
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label=" Bank Account No "
+                          {...register("bank_account_no")}
+                          focused={getSingleExpense?.data?.bank_account_no}
+                        />
+                        <textarea
+                          placeholder="Expense Note "
+                          className="productDetail"
+                          name=""
+                          {...register("bank_expense_note")}
+                          focused={getSingleExpense?.data?.bank_expense_note}
+                        />
+                      </div>
+                    ) : getSingleExpense?.data?.payment_method === "Cash" ? (
+                      <div className="mt-4 ">
+                        <textarea
+                          placeholder="Expense Note "
+                          className="productDetail"
+                          name=""
+                          {...register("cash_expense_note")}
+                          focused={getSingleExpense?.data?.cash_expense_note}
+                        />
+                      </div>
+                    ) : getSingleExpense?.data?.payment_method === "Card" ? (
+                      <div>
+                        <div className="productFieldWrap">
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Card Number"
+                            id="Tax"
+                            {...register("card_number")}
+                            focused={getSingleExpense?.data?.card_number}
+                          />
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Card holder name"
+                            id="Tax"
+                            {...register("card_holder_name")}
+                            focused={getSingleExpense?.data?.card_holder_name}
+                          />
+                        </div>
+
+                        <div className="productFieldWrap">
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Card Transaction No."
+                            id="Tax"
+                            {...register("card_transaction_no")}
+                            focused={
+                              getSingleExpense?.data?.card_transaction_no
+                            }
+                          />
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Card Type "
+                            id="Tax"
+                            {...register("card_type")}
+                            focused={getSingleExpense?.data?.card_type}
+                          />
+                        </div>
+
+                        <div className="productFieldWrap">
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Month "
+                            id="Tax"
+                            {...register("month_first")}
+                            focused={getSingleExpense?.data?.month_first}
+                          />
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Year"
+                            id="Tax"
+                            {...register("year")}
+                            focused={getSingleExpense?.data?.year}
+                          />
+                        </div>
+
+                        <div className="productFieldWrap">
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Month "
+                            id="Tax"
+                            {...register("month_second")}
+                            focused={getSingleExpense?.data?.month_second}
+                          />
+                          <TextField
+                            className="productField"
+                            fullWidth
+                            label="Security Code "
+                            id="Tax"
+                            {...register("security_code")}
+                            focused={getSingleExpense?.data?.security_code}
+                          />
+                        </div>
+
+                        <div className="mt-4 productDetailWrap">
+                          <textarea
+                            placeholder="Expense Note "
+                            className="productDetail"
+                            name=""
+                            {...register("card_expense_note")}
+                            focused={getSingleExpense?.data?.card_expense_note}
+                          />
+                        </div>
+                      </div>
+                    ) : getSingleExpense?.data?.payment_method === "Other" ? (
+                      <div>
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Transition No "
+                          {...register("other_transaction_no")}
+                          focused={getSingleExpense?.data?.other_transaction_no}
+                        />
+                        <textarea
+                          placeholder="Expense Note "
+                          className="productDetail"
+                          name=""
+                          {...register("other_expense_note")}
+                          focused={getSingleExpense?.data?.other_expense_note}
+                        />
+                      </div>
+                    ) : null)}
+                </div>
+              )}
+            </div>
+            <div className="my-2">
+              {updateError && (
+                <ErrorMessage messages={updateError.data.errorSources} />
+              )}
             </div>
             <div className="mt-2 savebtn">
-              <button>Add Expense </button>
+              <button disabled={updateLoading}>Update Expense </button>
             </div>
           </form>
         </div>

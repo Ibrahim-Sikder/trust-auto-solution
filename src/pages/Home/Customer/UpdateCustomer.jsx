@@ -28,9 +28,6 @@ import Loading from "../../../components/Loading/Loading";
 import { ErrorMessage } from "../../../components/error-message";
 
 const UpdateCustomer = () => {
-  const [errorMessage, setErrorMessage] = useState([]);
-
-  // year select only number 4 digit
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [yearSelectInput, setYearSelectInput] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
@@ -54,10 +51,12 @@ const UpdateCustomer = () => {
     // Check if the input is a number and does not exceed 4 digits
     if (/^\d{0,4}$/.test(value)) {
       setYearSelectInput(value);
-      const filtered = vehicleModels.filter((option) =>
+      const filtered = vehicleModels?.filter((option) =>
         option.label.toLowerCase().startsWith(value.toLowerCase())
       );
       setFilteredOptions(filtered);
+    } else {
+      event.target.value = value.slice(0, 4);
     }
   };
   const handleOptionClick = (option) => {
@@ -70,17 +69,11 @@ const UpdateCustomer = () => {
     isLoading,
     refetch,
   } = useGetSingleCustomerQuery(id);
-  
+
   const [updateCustomer, { isLoading: updateLoading, error }] =
     useUpdateCustomerMutation();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
@@ -214,8 +207,7 @@ const UpdateCustomer = () => {
     }
   };
 
-   
-  if (isLoading ) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center text-xl">
         <Loading />
@@ -457,7 +449,7 @@ const UpdateCustomer = () => {
                   />
 
                   <InputMask
-                    mask="**-****"
+                    mask="99-9999"
                     maskChar={null}
                     {...register("car_registration_no")}
                   >
@@ -526,8 +518,9 @@ const UpdateCustomer = () => {
                     type="text"
                     className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
                     placeholder="Vehicle Model"
-                    defaultValue={getDataWithChassisNo?.vehicle_model}
+                    
                   />
+                   
 
                   {yearSelectInput && (
                     <ul className="options-list">
@@ -568,7 +561,7 @@ const UpdateCustomer = () => {
                 </div>
                 <div>
                   <TextField
-                   type="number"
+                    type="number"
                     className="productField"
                     label="Mileage (N)"
                     {...register("mileage", {

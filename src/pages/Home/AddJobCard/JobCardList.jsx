@@ -68,8 +68,7 @@ const JobCardList = () => {
     }
   };
 
-
-  console.log(allJobCards)
+ 
   return (
     <div>
       <div className="mt-5 overflow-x-auto">
@@ -166,8 +165,18 @@ const JobCardList = () => {
                             <td>{card?.Id}</td>
 
                             <td>{card?.user_type}</td>
+                            {card?.customer?.length !== 0 && (
+                              <td>{card?.customer[0]?.fullCustomerNum}</td>
+                            )}
+                            {card?.company?.length !== 0 && (
+                              <td>{card?.company[0]?.fullCompanyNum}</td>
+                            )}
+                            {card?.showRoom.length !== 0 && (
+                              <td>{card?.showRoom[0]?.fullCompanyNum}</td>
+                            )}
 
-                            <td>{card?.customer[0]?.fullCustomerNum}</td>
+                            {/* <td>{card?.company[0]?.fullCompanyNum}</td>
+                            <td>{card?.showRoom[0]?.fullCompanyNum}</td> */}
                             <td>{card?.date}</td>
                             <td>
                               <div
