@@ -1,3 +1,4 @@
+
 import {
   Table,
   TableBody,
@@ -6,11 +7,11 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography
+  Typography,
+  Box,
 } from '@mui/material';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 
 const generateIndicator = () => {
   const random = Math.random();
@@ -28,31 +29,33 @@ const MonthlyTable = () => {
 
   return (
     <Paper>
-      <TableContainer component={Paper}>
-        <Typography variant="h5" align="center" marginTop="20px" marginBottom="20px">
-          My Attendance Sheet
-        </Typography>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Day</TableCell>
-              {months.map((month) => (
-                <TableCell key={month} align="center">{month}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {days.map((day) => (
-              <TableRow key={day}>
-                <TableCell align="center">{day}</TableCell>
+      <Box sx={{ overflowX: 'auto' }}>
+        <TableContainer component={Paper}>
+          <Typography variant="h5" align="center" marginTop="20px" marginBottom="20px">
+            My Attendance Sheet
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Day</TableCell>
                 {months.map((month) => (
-                  <TableCell key={month} align="center">{generateIndicator()}</TableCell>
+                  <TableCell key={month} align="center">{month}</TableCell>
                 ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {days.map((day) => (
+                <TableRow key={day}>
+                  <TableCell align="center">{day}</TableCell>
+                  {months.map((month) => (
+                    <TableCell key={month} align="center">{generateIndicator()}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Paper>
   );
 };
