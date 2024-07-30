@@ -1333,6 +1333,8 @@ const UpdateJobCard = () => {
           <div className="mt-5 buttonGroup">
             <div>
               <Button>Preview</Button>
+              <Button>Print</Button>
+              <Button>Download</Button>
 
               <Button>Quotation</Button>
 

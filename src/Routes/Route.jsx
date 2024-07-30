@@ -71,6 +71,7 @@ import Notification from "../pages/Notification/Notification";
 import EmployeeHoliday from "../pages/Holiday/Holiday";
 import ShiftList from "../pages/Home/Employee/ShiftAndSchedule/ShiftList";
 import PrivateRoute from "./PrivateRoute";
+import UpdateBillPay from "../pages/BillPay/UpdateBillPay";
 
 export const router = createBrowserRouter([
   {
@@ -358,6 +359,10 @@ export const router = createBrowserRouter([
       {
         path: "bill-pay",
         element: <BillPay />,
+      },
+      {
+        path: "billpay-update",
+        element: <UpdateBillPay />,
       },
       {
         path: "support",

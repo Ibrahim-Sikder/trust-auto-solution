@@ -319,12 +319,6 @@ const AddExpense = () => {
                         label=" Check No  "
                         {...register("check_no")}
                       />
-                      <textarea
-                        placeholder="Expense Note "
-                        className="productDetail"
-                        name=""
-                        {...register("check_expense_note")}
-                      />
                     </div>
                   ) : payment === "Bank Transfer" ? (
                     <div className="mt-4 ">
@@ -333,12 +327,6 @@ const AddExpense = () => {
                         fullWidth
                         label=" Bank Account No "
                         {...register("bank_account_no")}
-                      />
-                      <textarea
-                        placeholder="Expense Note "
-                        className="productDetail"
-                        name=""
-                        {...register("bank_expense_note")}
                       />
                     </div>
                   ) : payment === "Cash" ? (
@@ -419,32 +407,57 @@ const AddExpense = () => {
                           {...register("security_code")}
                         />
                       </div>
-
-                      <div className="mt-4 productDetailWrap">
-                        <textarea
-                          placeholder="Expense Note "
-                          className="productDetail"
-                          name=""
-                          {...register("card_expense_note")}
-                        />
-                      </div>
                     </div>
                   ) : payment === "Other" ? (
                     <div>
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label="Transition No "
-                        {...register("other_transaction_no")}
-                      />
-                      <textarea
-                        placeholder="Expense Note "
-                        className="productDetail"
-                        name=""
-                        {...register("other_expense_note")}
-                      />
+                      <div>
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Transition No "
+                          {...register("other_transaction_no")}
+                        />
+                      </div>
+                      <div className="mt-4">
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Transition ID "
+                          {...register("other_transaction_no")}
+                        />
+                      </div>
+                    </div>
+                  ) : (payment === "Bkash") |
+                    (payment === "Nagad") |
+                    (payment === "Rocket") ? (
+                    <div>
+                      <div>
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Transition No "
+                          {...register("other_transaction_no")}
+                        />
+                      </div>
+                      <div>
+                        <TextField
+                          className="productField"
+                          fullWidth
+                          label="Transition ID "
+                          {...register("other_transaction_no")}
+                        />
+                      </div>
                     </div>
                   ) : null)}
+
+                <div className="mt-4">
+                  <textarea
+                    placeholder="Expense Note "
+                    className="productDetail"
+                    name=""
+                    {...register("other_expense_note")}
+                  />
+                </div>
               </div>
             </div>
             <div className="my-2">

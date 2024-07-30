@@ -20,9 +20,13 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import BillPayList from "./BillPayList";
 
-const BillPay = () => {
+const UpdateBillPay = () => {
   const { register, watch } = useForm();
   const payment = watch("payment_method");
+  //   const [payment, setPayment] = useState("");
+  //   const handlePaymentChange = (e) => {
+  //     setPayment(e.target.value);
+  //   };
 
   const onSubmit = async (data) => {};
 
@@ -396,17 +400,17 @@ const BillPay = () => {
                     </>
                   )}
                 </Grid>
+                
               </Box>
-              <div className="flex justify-end mt-3">
-                <Button sx={{ color: "white", width: "200px" }}>Submit</Button>
-              </div>
+             <div className="flex justify-end mt-3">
+             <Button sx={{color:'white', width:'200px'}}>Update</Button>
+             </div>
             </Box>
           </Paper>
         </div>
-        <BillPayList />
       </section>
     </Box>
   );
 };
 
-export default BillPay;
+export default UpdateBillPay;

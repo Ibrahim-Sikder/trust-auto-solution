@@ -15,8 +15,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React from "react";
 import { Link } from "react-router-dom";
-import studentimg from "../../../public/assets/chat7.jpg";
-
 
 const rows = [
   {
@@ -48,14 +46,14 @@ const rows = [
   },
 ];
 
-const BillPayList = () => {
+const PurchaseList = () => {
   const handleSubmit = (data) => {
     console.log(data);
   };
   return (
     <Box bgcolor="white" padding={3}>
       <Typography variant="h5" fontWeight="bold" marginBottom="15px">
-        Bill History
+        Purchase List
       </Typography>
 
       <TableContainer component={Paper}>
@@ -88,12 +86,10 @@ const BillPayList = () => {
                 <TableCell align="center">{row.againstBill}</TableCell>
                 <TableCell align="center">
                   <div className="flex justify-center">
-                    <Link href={`/dashboard/student/profile/${row.id}`}>
-                      <IconButton title="See Profile">
+                  <IconButton title="See Profile">
                         <VisibilityIcon className="text-green-600" />
                       </IconButton>
-                    </Link>
-                    <Link to={`/dashboard/billpay-update`}>
+                    <Link to={`/dashboard/update-purchase`}>
                       <IconButton title="Edit">
                         <EditIcon />
                       </IconButton>
@@ -112,4 +108,4 @@ const BillPayList = () => {
   );
 };
 
-export default BillPayList;
+export default PurchaseList;

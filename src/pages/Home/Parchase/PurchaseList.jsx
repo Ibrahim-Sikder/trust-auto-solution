@@ -109,7 +109,7 @@ const PurchaseList = () => {
               <td>BDT1005</td>
               <td>
                 <div className="editIconWrap edit">
-                  <Link to="/dashboard/update-purchase">
+                  <Link to="/dashboard/">
                     <FaEdit className="editIcon" />
                   </Link>
                 </div>

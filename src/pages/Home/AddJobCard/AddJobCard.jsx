@@ -1509,6 +1509,16 @@ const AddJobCard = () => {
               >
                 Preview
               </button>
+              <button
+               
+              >
+                Print
+              </button>
+              <button
+               
+              >
+                Download
+              </button>
 
               <button
                 disabled={createJobCardLoading}

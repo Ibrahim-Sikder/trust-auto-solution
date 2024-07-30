@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import EmployeeAccount from "./EmployeeAccount";
-import Attendance from "./Attendance";
 import SingleEmployeeLeaveList from "./SingleEmployeeLeaveList";
 import avatar from "../../../../../public/assets/avatar.jpg";
 import "../Employee.css";
@@ -13,6 +12,7 @@ import { useLocation } from "react-router-dom";
 import { useGetSingleEmployeeQuery } from "../../../../redux/api/employee";
 import Loading from "../../../../components/Loading/Loading";
 import { toast } from "react-toastify";
+import EmployeeAttendance from "./EmployeeAttendance";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -69,7 +69,6 @@ const CustomerProfile = () => {
       borderBottom: "none",
     },
   };
- 
 
   if (isLoading) {
     return <Loading />;
@@ -104,8 +103,6 @@ const CustomerProfile = () => {
   const totalSalary = data?.data?.salary
     .filter((record) => record.month_of_salary === monthName)
     .reduce((total, record) => total + record.paid, 0);
-
- 
 
   return (
     <div className="profileCardsWraps">
@@ -197,7 +194,7 @@ const CustomerProfile = () => {
           <EmployeeAccount accountInfo={data?.data} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Attendance />
+          <EmployeeAttendance />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <SingleEmployeeLeaveList />

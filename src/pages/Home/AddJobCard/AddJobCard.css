@@ -271,9 +271,7 @@
 .addCustomerRelative:hover .addCustomerDropDown {
   transform: scaleY(1);
 }
-.jobCardSelect2 {
-  width: 210px !important;
-}
+
 
 @media only screen and (min-width: 1441px) {
   .vehicleInputs {
