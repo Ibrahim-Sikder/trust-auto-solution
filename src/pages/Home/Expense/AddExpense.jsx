@@ -28,7 +28,7 @@ import {
 } from "../../../redux/api/expense";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
-import { Pagination } from "@mui/material";
+import { MenuItem, Pagination } from "@mui/material";
 import { HiOutlineSearch } from "react-icons/hi";
 
 const AddExpense = () => {
@@ -136,8 +136,6 @@ const AddExpense = () => {
     toast.error(deleteError?.data?.message);
   }
 
- 
-
   return (
     <section>
       <div className="addProductWraps">
@@ -157,20 +155,17 @@ const AddExpense = () => {
               <div className="productFieldWrap">
                 <FormControl className="productField">
                   <InputLabel htmlFor="grouped-native-select">
-                    Expense Category{" "}
+                    Expense Category
                   </InputLabel>
                   <Select
-                    className="productField"
-                    native
-                    defaultValue=""
+                    labelId="payment-method-label"
                     id="grouped-native-select"
                     label="Expense Category"
                     {...register("category")}
                   >
-                    <option aria-label="None" value="" />
-                    <option value="Daily"> Daily </option>
-                    <option value="Monthly"> Monthly </option>
-                    <option value="Yearly"> Yearly </option>
+                    <MenuItem value="Bkash">Daily</MenuItem>
+                    <MenuItem value="Bkash">Monthly</MenuItem>
+                    <MenuItem value="Bkash">Yearly</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl className="productField">
@@ -178,17 +173,17 @@ const AddExpense = () => {
                     Sub Category
                   </InputLabel>
                   <Select
-                    native
-                    defaultValue=""
+                    onChange={handlePaymentChange}
+                    labelId="payment-method-label"
                     id="grouped-native-select"
                     label="Sub Category"
                     {...register("sub_category")}
                   >
-                    <option aria-label="None" value="" />
-                    <option value="Rent"> Rent </option>
-                    <option value="Salary"> Salary </option>
-                    <option value="Electricity">Electricity </option>
-                    <option value="Other">Other </option>
+                    <MenuItem value="Bkash">Rent</MenuItem>
+                    <MenuItem value="Nagad">Salary</MenuItem>
+                    <MenuItem value="Nagad">Electricity</MenuItem>
+                    <MenuItem value="Nagad">Other</MenuItem>
+                    <MenuItem value="Nagad">Salary</MenuItem>
                   </Select>
                 </FormControl>
               </div>
@@ -211,27 +206,6 @@ const AddExpense = () => {
               </div>
 
               <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label=" Individual Markup  "
-                  {...register("individual_markup_first")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Expanse Note "
-                  {...register("expense_note_first")}
-                />
-              </div>
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Individual Markup"
-                  id="Total Amount"
-                  {...register("individual_markup_second")}
-                />
                 <div className="productField">
                   <input
                     onChange={handleImageUpload}
@@ -301,23 +275,23 @@ const AddExpense = () => {
                   label=" Individual Markup  "
                   {...register("payment_individual_markup")}
                 />
-                <FormControl className="productField">
+                <FormControl fullWidth className="productField">
                   <InputLabel htmlFor="grouped-native-select">
                     Payment Method
                   </InputLabel>
                   <Select
                     onChange={handlePaymentChange}
-                    native
-                    id="grouped-native-select"
-                    label="Payment Account "
                     // {...register("payment_account_first")}
+                    labelId="payment-method-label"
+                    label="Payment Method"
                   >
-                    <option aria-label="None" value="" />
-                    <option value="Cash"> Cash </option>
-                    <option value="Check"> Check </option>
-                    <option value="Card"> Card </option>
-                    <option value="Bank Transfer">Bank Transfer </option>
-                    <option value="Other">Other </option>
+                    <MenuItem value="Bkash">Bkash</MenuItem>
+                    <MenuItem value="Nagad">Nagad</MenuItem>
+                    <MenuItem value="Rocket">Rocket</MenuItem>
+                    <MenuItem value="Check">Check</MenuItem>
+                    <MenuItem value="Card">Card</MenuItem>
+                    <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
                   </Select>
                 </FormControl>
               </div>
@@ -327,14 +301,11 @@ const AddExpense = () => {
                     Payment Account
                   </InputLabel>
                   <Select
-                    native
                     id="grouped-native-select"
                     label="Payment Account "
                     {...register("payment_account")}
                   >
-                    <option aria-label="None" value="" />
-                    <option value="None"> None </option>
-                    <option value="Bank Transfer">Bank Transfer </option>
+                    <MenuItem value="Bkash">Bank Transfer</MenuItem>
                   </Select>
                 </FormControl>
               </div>

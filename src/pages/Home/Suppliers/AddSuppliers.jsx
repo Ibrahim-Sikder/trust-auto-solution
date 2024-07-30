@@ -15,6 +15,7 @@ import {
   Autocomplete,
   FormControl,
   InputLabel,
+  MenuItem,
   Pagination,
   Select,
 } from "@mui/material";
@@ -176,7 +177,7 @@ const AddSuppliers = () => {
 
   return (
     <section>
-      <div className=" addProductWraps">
+      <div className=" addProductWraps min-h-screen ">
         <div className="flex justify-between pb-3 border-b-2 px-2">
           <HeaderButton />
           <div className="flex items-end justify-end">
@@ -223,7 +224,7 @@ const AddSuppliers = () => {
                     value={countryCode}
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                      setPhoneNumber(""); 
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -258,25 +259,23 @@ const AddSuppliers = () => {
                     </InputLabel>
                     <Select
                       className="addJobInputField"
-                      native
                       id="grouped-native-select"
                       label="Car Registration No  "
                       {...register("vendor")}
                     >
-                      <option value="">Select </option>
-                      <option value="New Parts">New Parts </option>
-                      <option value="Recondition Parts">
+                      <MenuItem value="New Parts">New Parts</MenuItem>
+                      <MenuItem value="Recondition Parts">
                         Recondition Parts
-                      </option>
-                      <option value="New & Recondition Parts">
+                      </MenuItem>
+                      <MenuItem value="New & Recondition Parts">
                         New & Recondition Parts
-                      </option>
-                      <option value="Body Items">Body Items</option>
-                      <option value="Engine & Suspension Items">
+                      </MenuItem>
+                      <MenuItem value="Body Items">Body Items</MenuItem>
+                      <MenuItem value="Engine & Suspension Items">
                         Engine & Suspension Items
-                      </option>
-                      <option value="Electric Items">Electric Items</option>
-                      <option value="Others">Others</option>
+                      </MenuItem>
+                      <MenuItem value="Electric Items">Electric Items</MenuItem>
+                      <MenuItem value="Others">Others</MenuItem>
                     </Select>
                   </FormControl>
                 </div>
