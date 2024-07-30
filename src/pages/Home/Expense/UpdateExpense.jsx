@@ -6,91 +6,67 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { FaFileInvoice, FaCloudUploadAlt } from "react-icons/fa";
-
-import { useEffect, useState } from "react";
+import {
+  FaFileInvoice,
+  FaEye,
+  FaTrashAlt,
+  FaCloudUploadAlt,
+  FaUser,
+  FaEdit,
+} from "react-icons/fa";
+import { TiEdit } from "react-icons/ti";
+import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import {
-  useGetSingleExpenseQuery,
-  useUpdateExpenseMutation,
+  useCreateExpenseMutation,
+  useDeleteExpenseMutation,
+  useGetAllExpensesQuery,
 } from "../../../redux/api/expense";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
+import {
+  Box,
+  Button,
+  Grid,
+  MenuItem,
+  Pagination,
+  Typography,
+} from "@mui/material";
+import { HiOutlineSearch } from "react-icons/hi";
 
-const UpdateExpense = () => {
-  const [payment, setPayment] = useState("");
+const AddExpense = () => {
+  const textInputRef = useRef(null);
+  const [filterType, setFilterType] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const { register, watch, handleSubmit } = useForm();
 
-  const handlePaymentChange = (e) => {
-    setPayment(e.target.value);
-  };
+  const payment = watch("payment_method");
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
-  const location = useLocation();
-  const id = new URLSearchParams(location.search).get("id");
-  const navigate = useNavigate();
+
+  const limit = 10;
+
+
+  const [createExpense, { isLoading: createLoading, error: createError }] =
+    useCreateExpenseMutation();
+
+  const [deleteExpense, { isLoading: deleteLoading, error: deleteError }] =
+    useDeleteExpenseMutation();
 
   const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
-  const {
-    data: getSingleExpense,
-    isLoading: singleExpenseLoading,
-    error: singleExpenseError,
-    refetch,
-  } = useGetSingleExpenseQuery(id);
-
-  const [updateExpense, { isLoading: updateLoading, error: updateError }] =
-    useUpdateExpenseMutation();
-
-  useEffect(() => {
-    if (getSingleExpense?.data) {
-      reset({
-        category: getSingleExpense?.data?.category,
-        sub_category: getSingleExpense?.data?.sub_category,
-        expense_for: getSingleExpense?.data?.expense_for,
-        tax_application: getSingleExpense?.data?.tax_application,
-        individual_markup_first:
-          getSingleExpense?.data?.individual_markup_first,
-        expense_note_first: getSingleExpense?.data?.expense_note_first,
-        individual_markup_second:
-          getSingleExpense?.data?.individual_markup_second,
-        expense_note_second: getSingleExpense?.data?.expense_note_second,
-        amount: getSingleExpense?.data?.amount,
-        paid_on: getSingleExpense?.data?.paid_on,
-        payment_individual_markup:
-          getSingleExpense?.data?.payment_individual_markup,
-        payment_method: getSingleExpense?.data?.payment_method,
-        payment_account: getSingleExpense?.data?.payment_account,
-        check_no: getSingleExpense?.data?.check_no,
-        check_expense_note: getSingleExpense?.data?.check_expense_note,
-        bank_account_no: getSingleExpense?.data?.bank_account_no,
-
-        bank_expense_note: getSingleExpense?.data?.bank_expense_note,
-        cash_expense_note: getSingleExpense?.data?.cash_expense_note,
-        card_number: getSingleExpense?.data?.card_number,
-        card_holder_name: getSingleExpense?.data?.card_holder_name,
-        card_transaction_no: getSingleExpense?.data?.card_transaction_no,
-        card_type: getSingleExpense?.data?.card_type,
-        month_first: getSingleExpense?.data?.month_first,
-        year: getSingleExpense?.data?.year,
-        month_second: getSingleExpense?.data?.month_second,
-        security_code: getSingleExpense?.data?.security_code,
-        card_expense_note: getSingleExpense?.data?.card_expense_note,
-        other_transaction_no: getSingleExpense?.data?.other_transaction_no,
-        other_expense_note: getSingleExpense?.data?.other_expense_note,
-
-        image: getSingleExpense?.data?.image,
-      });
-    }
-  }, [getSingleExpense?.data, reset]);
+    data: allExpenses,
+    isLoading: expenseLoading,
+    error: expenseError,
+  } = useGetAllExpensesQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
 
   const handleImageUpload = async (e) => {
     try {
@@ -117,43 +93,63 @@ const UpdateExpense = () => {
   };
 
   const onSubmit = async (data) => {
+    data.payment_method = payment;
     data.image = url;
     data.amount = Number(data.amount);
 
-    const values = {
-      id,
-      data,
-    };
-
     try {
-      const response = await updateExpense(values).unwrap();
+      const response = await createExpense(data).unwrap();
       if (response.success) {
         toast.success(response.message);
-        navigate("/dashboard/expense");
-        refetch();
       }
+
+      console.log(response);
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  if (singleExpenseLoading) {
-    return <Loading />;
+  const deletePackage = async (id) => {
+    const willDelete = await swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this card?",
+      icon: "warning",
+      dangerMode: true,
+    });
+
+    if (willDelete) {
+      try {
+        await deleteExpense(id).unwrap;
+        swal("Deleted!", "Card delete successful.", "success");
+      } catch (error) {
+        swal("Error", "An error occurred while deleting the card.", "error");
+      }
+    }
+  };
+
+  const handleAllExpense = () => {
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
+  };
+
+  if (expenseError) {
+    toast.error(expenseError?.data?.message);
+  }
+  if (deleteError) {
+    toast.error(deleteError?.data?.message);
   }
 
-  if (singleExpenseError) {
-    toast.error(singleExpenseError?.status);
-  }
-   
   return (
     <section>
       <div className="addProductWraps">
         <div className="productHeadWrap">
-          <div className="flex items-center justify-center ">
+          <div className="flex items-center md:justify-center ">
             <FaFileInvoice className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="text-2xl font-bold">Add Expense </h3>
-              <span>Dashboard / Expense </span>
+              <h3 className="md:text-2xl font-bold">Add Expense </h3>
+              <span className="text-sm">Dashboard / Expense </span>
             </div>
           </div>
         </div>
@@ -162,375 +158,471 @@ const UpdateExpense = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <div className="productFieldWrap">
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Expense Category{" "}
-                  </InputLabel>
-                  <Select
-                    className="productField"
-                    native
-                    defaultValue=""
-                    id="grouped-native-select"
-                    label="Select Category "
-                    {...register("category")}
-                    focused={getSingleExpense?.data?.category}
-                  >
-                    <option aria-label="None" value="" />
-                    <option value="Daily"> Daily </option>
-                    <option value="Monthly"> Monthly </option>
-                    <option value="Yearly"> Yearly </option>
-                  </Select>
-                </FormControl>
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    {" "}
-                    Sub Category{" "}
-                  </InputLabel>
-                  <Select
-                    native
-                    defaultValue=""
-                    id="grouped-native-select"
-                    label="Select Category "
-                    {...register("sub_category")}
-                    focused={getSingleExpense?.data?.sub_category}
-                  >
-                    <option aria-label="None" value="" />
-                    <option value="Rent"> Rent </option>
-                    <option value="Salary"> Salary </option>
-                    <option value="Electricity">Electricity </option>
-                    <option value="Other">Other </option>
-                  </Select>
-                </FormControl>
-              </div>
+                <Box>
+                  <Grid container spacing={2}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Expense Category
+                        </InputLabel>
+                        <Select
+                          labelId="payment-method-label"
+                          id="grouped-native-select"
+                          label="Expense Category"
+                          {...register("category")}
+                        >
+                          <MenuItem value="Bkash">Daily</MenuItem>
+                          <MenuItem value="Bkash">Monthly</MenuItem>
+                          <MenuItem value="Bkash">Yearly</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth >
+                        <InputLabel htmlFor="grouped-native-select">
+                          Sub Category
+                        </InputLabel>
+                        <Select
+                          
+                          labelId="payment-method-label"
+                          id="grouped-native-select"
+                          label="Sub Category"
+                          {...register("sub_category")}
+                        >
+                          <MenuItem value="Bkash">Rent</MenuItem>
+                          <MenuItem value="Nagad">Salary</MenuItem>
+                          <MenuItem value="Nagad">Electricity</MenuItem>
+                          <MenuItem value="Nagad">Other</MenuItem>
+                          <MenuItem value="Nagad">Salary</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                       
+                        fullWidth
+                        label="Expense For"
+                        id="Tax"
+                        {...register("expense_for")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                      
+                        fullWidth
+                        label="Tax Applicable"
+                        id="Tax"
+                        {...register("tax_application")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <div className="productField">
+                        <input
+                          onChange={handleImageUpload}
+                          type="file"
+                          id="files"
+                          className="hidden"
+                        />
 
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Expense For"
-                  id="Tax"
-                  {...register("expense_for")}
-                  focused={getSingleExpense?.data?.expense_for}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Tax Applicable"
-                  id="Tax"
-                  {...register("tax_application")}
-                  focused={getSingleExpense?.data?.tax_application}
-                />
+                        <label
+                          for="files"
+                          className="text-sm flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                        >
+                          <span>
+                            <FaCloudUploadAlt size={30} className="mr-2" />
+                          </span>
+                          {imageLoading ? (
+                            <span>Uploading...</span>
+                          ) : (
+                            <>
+                              {url ? (
+                                <span>Uploaded</span>
+                              ) : (
+                                <span> Attach Document</span>
+                              )}
+                            </>
+                          )}
+                        </label>
+                      </div>
+                    </Grid>
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                      <textarea
+                        placeholder="Expense Note "
+                        className="productDetail"
+                  
+                        id=""
+                        cols="30"
+                        rows="10"
+                        {...register("expense_note_second")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                       
+                        fullWidth
+                        label="Amount"
+                        id="Tax"
+                        {...register("amount")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                      
+                        fullWidth
+                        label="Paid On "
+                        id="Tax"
+                        {...register("paid_on")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        className="productField"
+                        fullWidth
+                        label=" Individual Markup  "
+                        {...register("payment_individual_markup")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth className="productField">
+                        <InputLabel htmlFor="grouped-native-select">
+                          Payment Method
+                        </InputLabel>
+                        <Select
+                        
+                          // {...register("payment_account_first")}
+                          labelId="payment-method-label"
+                          label="Payment Method"
+                        >
+                          <MenuItem value="Bkash">Bkash</MenuItem>
+                          <MenuItem value="Nagad">Nagad</MenuItem>
+                          <MenuItem value="Rocket">Rocket</MenuItem>
+                          <MenuItem value="Check">Check</MenuItem>
+                          <MenuItem value="Card">Card</MenuItem>
+                          <MenuItem value="Bank Transfer">
+                            Bank Transfer
+                          </MenuItem>
+                          <MenuItem value="Other">Other</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        className="productField"
+                        fullWidth
+                        label=" Individual Markup  "
+                        {...register("payment_individual_markup")}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
               </div>
+            </div>
 
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label=" Individual Markup  "
-                  {...register("individual_markup_first")}
-                  focused={getSingleExpense?.data?.individual_markup_first}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Expanse Note "
-                  {...register("expense_note_first")}
-                  focused={getSingleExpense?.data?.expense_note_first}
-                />
-              </div>
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Individual Markup"
-                  id="Total Amount"
-                  {...register("individual_markup_second")}
-                  focused={getSingleExpense?.data?.individual_markup_second}
-                />
-                <div className="productField">
-                  <input
-                    onChange={handleImageUpload}
-                    type="file"
-                    id="files"
-                    className="hidden"
+            <Box marginTop="20px">
+              <Typography variant="h5" fontWeight="bold" marginBottom="20px">
+                Payment Method
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField fullWidth label="Amount" {...register("amount")} />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Paid On"
+                    {...register("paid_on")}
                   />
-
-                  <label
-                    for="files"
-                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                  >
-                    <span>
-                      <FaCloudUploadAlt size={30} className="mr-2" />
-                    </span>
-                    {imageLoading ? (
-                      <span>Uploading...</span>
-                    ) : (
-                      <>
-                        {url ? (
-                          <span>Uploaded</span>
-                        ) : (
-                          <span> Attach Document</span>
-                        )}
-                      </>
-                    )}
-                  </label>
-                </div>
-              </div>
-
-              <div className="mt-4 productDetailWrap">
-                <textarea
-                  placeholder="Expense Note "
-                  className="productDetail"
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="10"
-                  {...register("expense_note_second")}
-                  focused={getSingleExpense?.data?.expense_note_second}
-                />
-              </div>
-            </div>
-
-            <h3 className="mt-10 text-xl font-semibold"> Payment Method </h3>
-            <div>
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Amount"
-                  id="Tax"
-                  {...register("amount")}
-                  focused={getSingleExpense?.data?.amount}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Paid On "
-                  id="Tax"
-                  {...register("paid_on")}
-                  focused={getSingleExpense?.data?.paid_on}
-                />
-              </div>
-
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label=" Individual Markup  "
-                  {...register("payment_individual_markup")}
-                  focused={getSingleExpense?.data?.payment_individual_markup}
-                />
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Payment Method
-                  </InputLabel>
-                  <Select
-                    onChange={handlePaymentChange}
-                    native
-                    id="grouped-native-select"
-                    label="Payment Account "
-                    {...register("payment_method")}
-                    focused={getSingleExpense?.data?.payment_method}
-                  >
-                    <option aria-label="None" value="" />
-                    <option value="Cash"> Cash </option>
-                    <option value="Check"> Check </option>
-                    <option value="Card"> Card </option>
-                    <option value="Bank Transfer">Bank Transfer </option>
-                    <option value="Other">Other </option>
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="productFieldWrap">
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Payment Account
-                  </InputLabel>
-                  <Select
-                    native
-                    id="grouped-native-select"
-                    label="Payment Account "
-                    {...register("payment_account")}
-                    focused={getSingleExpense?.data?.payment_account}
-                  >
-                    <option aria-label="None" value="" />
-                    <option value="None"> None </option>
-                    <option value="Bank Transfer">Bank Transfer </option>
-                  </Select>
-                </FormControl>
-              </div>
-              {payment === "" && (
-                <div className="mt-10">
-                  {getSingleExpense?.data?.payment_method &&
-                    (getSingleExpense?.data?.payment_method === "Check" ? (
-                      <div>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Individual Markup"
+                    {...register("payment_individual_markup")}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="payment-method-select">
+                      Payment Method
+                    </InputLabel>
+                    <Select
+                      //   onChange={handlePaymentChange}
+                      label="Payment Method"
+                      id="payment-method-select"
+                      {...register("payment_method")}
+                    >
+                      <MenuItem value="Bkash">Bkash</MenuItem>
+                      <MenuItem value="Nagad">Nagad</MenuItem>
+                      <MenuItem value="Rocket">Rocket</MenuItem>
+                      <MenuItem value="Check">Check</MenuItem>
+                      <MenuItem value="Card">Card</MenuItem>
+                      <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <Box marginTop={4}>
+                <Grid container spacing={2}>
+                  {payment && (
+                    <>
+                      {payment === "Check" && (
+                        <>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <FormControl fullWidth>
+                              <InputLabel htmlFor="payment-account-select">
+                                Select Bank
+                              </InputLabel>
+                              <Select
+                                label="Payment Account"
+                                id="payment-account-select"
+                                {...register("payment_account")}
+                              >
+                                <MenuItem value="Bangladesh Bank">
+                                  Bangladesh Bank
+                                </MenuItem>
+                                <MenuItem value="Sonali Bank">
+                                  Sonali Bank
+                                </MenuItem>
+                                <MenuItem value="Janata Bank">
+                                  Janata Bank
+                                </MenuItem>
+                                <MenuItem value="Agrani Bank">
+                                  Agrani Bank
+                                </MenuItem>
+                                <MenuItem value="Rupali Bank">
+                                  Rupali Bank
+                                </MenuItem>
+                                <MenuItem value="Pubali Bank">
+                                  Pubali Bank
+                                </MenuItem>
+                                <MenuItem value="Uttara Bank">
+                                  Uttara Bank
+                                </MenuItem>
+                                <MenuItem value="Islami Bank Bangladesh Limited">
+                                  Islami Bank Bangladesh Limited
+                                </MenuItem>
+                                <MenuItem value="Dutch-Bangla Bank">
+                                  Dutch-Bangla Bank
+                                </MenuItem>
+                                <MenuItem value="BRAC Bank">BRAC Bank</MenuItem>
+                                <MenuItem value="Eastern Bank">
+                                  Eastern Bank
+                                </MenuItem>
+                                <MenuItem value="National Bank">
+                                  National Bank
+                                </MenuItem>
+                                <MenuItem value="Prime Bank">
+                                  Prime Bank
+                                </MenuItem>
+                                <MenuItem value="South Bangla Agriculture and Commerce Bank">
+                                  South Bangla Agriculture and Commerce Bank
+                                </MenuItem>
+                                <MenuItem value="Standard Bank">
+                                  Standard Bank
+                                </MenuItem>
+                                <MenuItem value="One Bank">One Bank</MenuItem>
+                                <MenuItem value="Bank Asia">Bank Asia</MenuItem>
+                                <MenuItem value="Trust Bank">
+                                  Trust Bank
+                                </MenuItem>
+                                <MenuItem value="Jamuna Bank">
+                                  Jamuna Bank
+                                </MenuItem>
+                                <MenuItem value="Shahjalal Islami Bank">
+                                  Shahjalal Islami Bank
+                                </MenuItem>
+                                <MenuItem value="City Bank">City Bank</MenuItem>
+                                <MenuItem value="Southeast Bank">
+                                  Southeast Bank
+                                </MenuItem>
+                                <MenuItem value="Social Islami Bank">
+                                  Social Islami Bank
+                                </MenuItem>
+                                <MenuItem value="AB Bank">AB Bank</MenuItem>
+                                <MenuItem value="IFIC Bank">IFIC Bank</MenuItem>
+                                <MenuItem value="Mercantile Bank">
+                                  Mercantile Bank
+                                </MenuItem>
+                                <MenuItem value="Mutual Trust Bank">
+                                  Mutual Trust Bank
+                                </MenuItem>
+                                <MenuItem value="EXIM Bank">EXIM Bank</MenuItem>
+                                <MenuItem value="NCC Bank">NCC Bank</MenuItem>
+                                <MenuItem value="SBAC Bank">SBAC Bank</MenuItem>
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Account Number "
+                              {...register("check_no")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Check No"
+                              {...register("check_no")}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      {payment === "Bank Transfer" && (
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Bank Account No"
+                            {...register("bank_account_no")}
+                            marginTop={2}
+                          />
+                        </Grid>
+                      )}
+                      {payment === "Cash" && (
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            multiline
+                            rows={4}
+                            placeholder="Expense Note"
+                            {...register("cash_expense_note")}
+                            marginTop={2}
+                          />
+                        </Grid>
+                      )}
+                      {payment === "Card" && (
+                        <>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Number"
+                              {...register("card_number")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Holder Name"
+                              {...register("card_holder_name")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Transaction No."
+                              {...register("card_transaction_no")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Type"
+                              {...register("card_type")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Month"
+                              {...register("month_first")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Year"
+                              {...register("year")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Month"
+                              {...register("month_second")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Security Code"
+                              {...register("security_code")}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      {payment === "Other" && (
+                        <>
+                          <Grid item llg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Transition No"
+                              {...register("other_transaction_no")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Transition ID"
+                              {...register("other_transaction_id")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      {(payment === "Bkash" ||
+                        payment === "Nagad" ||
+                        payment === "Rocket") && (
+                        <>
+                          <Grid item lg={6}>
+                            <TextField
+                              fullWidth
+                              label="Transition No"
+                              {...register("other_transaction_no")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Transition ID"
+                              {...register("other_transaction_id")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      <Grid item llg={6} md={6} sm={12} xs={12}>
                         <TextField
-                          className="productField"
                           fullWidth
-                          label=" Check No  "
-                          {...register("check_no")}
-                          focused={getSingleExpense?.data?.check_no}
-                        />
-                        <textarea
-                          placeholder="Expense Note "
-                          className="productDetail"
-                          name=""
-                          {...register("check_expense_note")}
-                          focused={getSingleExpense?.data?.check_expense_note}
-                        />
-                      </div>
-                    ) : getSingleExpense?.data?.payment_method ===
-                      "Bank Transfer" ? (
-                      <div className="mt-4 ">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label=" Bank Account No "
-                          {...register("bank_account_no")}
-                          focused={getSingleExpense?.data?.bank_account_no}
-                        />
-                        <textarea
-                          placeholder="Expense Note "
-                          className="productDetail"
-                          name=""
-                          {...register("bank_expense_note")}
-                          focused={getSingleExpense?.data?.bank_expense_note}
-                        />
-                      </div>
-                    ) : getSingleExpense?.data?.payment_method === "Cash" ? (
-                      <div className="mt-4 ">
-                        <textarea
-                          placeholder="Expense Note "
-                          className="productDetail"
-                          name=""
-                          {...register("cash_expense_note")}
-                          focused={getSingleExpense?.data?.cash_expense_note}
-                        />
-                      </div>
-                    ) : getSingleExpense?.data?.payment_method === "Card" ? (
-                      <div>
-                        <div className="productFieldWrap">
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Card Number"
-                            id="Tax"
-                            {...register("card_number")}
-                            focused={getSingleExpense?.data?.card_number}
-                          />
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Card holder name"
-                            id="Tax"
-                            {...register("card_holder_name")}
-                            focused={getSingleExpense?.data?.card_holder_name}
-                          />
-                        </div>
-
-                        <div className="productFieldWrap">
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Card Transaction No."
-                            id="Tax"
-                            {...register("card_transaction_no")}
-                            focused={
-                              getSingleExpense?.data?.card_transaction_no
-                            }
-                          />
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Card Type "
-                            id="Tax"
-                            {...register("card_type")}
-                            focused={getSingleExpense?.data?.card_type}
-                          />
-                        </div>
-
-                        <div className="productFieldWrap">
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Month "
-                            id="Tax"
-                            {...register("month_first")}
-                            focused={getSingleExpense?.data?.month_first}
-                          />
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Year"
-                            id="Tax"
-                            {...register("year")}
-                            focused={getSingleExpense?.data?.year}
-                          />
-                        </div>
-
-                        <div className="productFieldWrap">
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Month "
-                            id="Tax"
-                            {...register("month_second")}
-                            focused={getSingleExpense?.data?.month_second}
-                          />
-                          <TextField
-                            className="productField"
-                            fullWidth
-                            label="Security Code "
-                            id="Tax"
-                            {...register("security_code")}
-                            focused={getSingleExpense?.data?.security_code}
-                          />
-                        </div>
-
-                        <div className="mt-4 productDetailWrap">
-                          <textarea
-                            placeholder="Expense Note "
-                            className="productDetail"
-                            name=""
-                            {...register("card_expense_note")}
-                            focused={getSingleExpense?.data?.card_expense_note}
-                          />
-                        </div>
-                      </div>
-                    ) : getSingleExpense?.data?.payment_method === "Other" ? (
-                      <div>
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Transition No "
-                          {...register("other_transaction_no")}
-                          focused={getSingleExpense?.data?.other_transaction_no}
-                        />
-                        <textarea
-                          placeholder="Expense Note "
-                          className="productDetail"
-                          name=""
+                          multiline
+                          rows={4}
+                          placeholder="Expense Note"
                           {...register("other_expense_note")}
-                          focused={getSingleExpense?.data?.other_expense_note}
+                          marginTop={4}
                         />
-                      </div>
-                    ) : null)}
-                </div>
-              )}
-            </div>
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
+              </Box>
+              <div className="flex justify-end mt-3">
+                <Button sx={{ color: "white", width: "200px" }}>Update</Button>
+              </div>
+            </Box>
             <div className="my-2">
-              {updateError && (
-                <ErrorMessage messages={updateError.data.errorSources} />
+              {createError && (
+                <ErrorMessage messages={createError.data.errorSources} />
               )}
             </div>
-            <div className="mt-2 savebtn">
-              <button disabled={updateLoading}>Update Expense </button>
-            </div>
+           
           </form>
         </div>
       </div>
+    
     </section>
   );
 };
 
-export default UpdateExpense;
+export default AddExpense;

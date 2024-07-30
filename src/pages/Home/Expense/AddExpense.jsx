@@ -28,24 +28,29 @@ import {
 } from "../../../redux/api/expense";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
-import { MenuItem, Pagination } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  MenuItem,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import { HiOutlineSearch } from "react-icons/hi";
 
 const AddExpense = () => {
   const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [payment, setPayment] = useState("");
 
+  const { register, watch, handleSubmit } = useForm();
+
+  const payment = watch("payment_method");
   const [url, setUrl] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
-  const handlePaymentChange = (e) => {
-    setPayment(e.target.value);
-  };
-  const limit = 10;
 
-  const { register, handleSubmit } = useForm();
+  const limit = 10;
 
   const [createExpense, { isLoading: createLoading, error: createError }] =
     useCreateExpenseMutation();
@@ -153,313 +158,454 @@ const AddExpense = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <div className="productFieldWrap">
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Expense Category
-                  </InputLabel>
-                  <Select
-                    labelId="payment-method-label"
-                    id="grouped-native-select"
-                    label="Expense Category"
-                    {...register("category")}
-                  >
-                    <MenuItem value="Bkash">Daily</MenuItem>
-                    <MenuItem value="Bkash">Monthly</MenuItem>
-                    <MenuItem value="Bkash">Yearly</MenuItem>
-                  </Select>
-                </FormControl>
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Sub Category
-                  </InputLabel>
-                  <Select
-                    onChange={handlePaymentChange}
-                    labelId="payment-method-label"
-                    id="grouped-native-select"
-                    label="Sub Category"
-                    {...register("sub_category")}
-                  >
-                    <MenuItem value="Bkash">Rent</MenuItem>
-                    <MenuItem value="Nagad">Salary</MenuItem>
-                    <MenuItem value="Nagad">Electricity</MenuItem>
-                    <MenuItem value="Nagad">Other</MenuItem>
-                    <MenuItem value="Nagad">Salary</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Expense For"
-                  id="Tax"
-                  {...register("expense_for")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Tax Applicable"
-                  id="Tax"
-                  {...register("tax_application")}
-                />
-              </div>
-
-              <div className="productFieldWrap">
-                <div className="productField">
-                  <input
-                    onChange={handleImageUpload}
-                    type="file"
-                    id="files"
-                    className="hidden"
-                  />
-
-                  <label
-                    for="files"
-                    className="text-sm flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                  >
-                    <span>
-                      <FaCloudUploadAlt size={30} className="mr-2" />
-                    </span>
-                    {imageLoading ? (
-                      <span>Uploading...</span>
-                    ) : (
-                      <>
-                        {url ? (
-                          <span>Uploaded</span>
-                        ) : (
-                          <span> Attach Document</span>
-                        )}
-                      </>
-                    )}
-                  </label>
-                </div>
-              </div>
-
-              <div className="mt-4 productDetailWrap">
-                <textarea
-                  placeholder="Expense Note "
-                  className="productDetail"
-                  name=""
-                  id=""
-                  cols="30"
-                  rows="10"
-                  {...register("expense_note_second")}
-                />
-              </div>
-            </div>
-
-            <h3 className="mt-10 text-xl font-semibold"> Payment Method </h3>
-            <div>
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Amount"
-                  id="Tax"
-                  {...register("amount")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Paid On "
-                  id="Tax"
-                  {...register("paid_on")}
-                />
-              </div>
-
-              <div className="productFieldWrap">
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label=" Individual Markup  "
-                  {...register("payment_individual_markup")}
-                />
-                <FormControl fullWidth className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Payment Method
-                  </InputLabel>
-                  <Select
-                    onChange={handlePaymentChange}
-                    // {...register("payment_account_first")}
-                    labelId="payment-method-label"
-                    label="Payment Method"
-                  >
-                    <MenuItem value="Bkash">Bkash</MenuItem>
-                    <MenuItem value="Nagad">Nagad</MenuItem>
-                    <MenuItem value="Rocket">Rocket</MenuItem>
-                    <MenuItem value="Check">Check</MenuItem>
-                    <MenuItem value="Card">Card</MenuItem>
-                    <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="productFieldWrap">
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Payment Account
-                  </InputLabel>
-                  <Select
-                    id="grouped-native-select"
-                    label="Payment Account "
-                    {...register("payment_account")}
-                  >
-                    <MenuItem value="Bkash">Bank Transfer</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="mt-10">
-                {payment &&
-                  (payment === "Check" ? (
-                    <div>
+                <Box>
+                  <Grid container spacing={2}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Expense Category
+                        </InputLabel>
+                        <Select
+                          labelId="payment-method-label"
+                          id="grouped-native-select"
+                          label="Expense Category"
+                          {...register("category")}
+                        >
+                          <MenuItem value="Bkash">Daily</MenuItem>
+                          <MenuItem value="Bkash">Monthly</MenuItem>
+                          <MenuItem value="Bkash">Yearly</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Sub Category
+                        </InputLabel>
+                        <Select
+                         
+                          labelId="payment-method-label"
+                          id="grouped-native-select"
+                          label="Sub Category"
+                          {...register("sub_category")}
+                        >
+                          <MenuItem value="Bkash">Rent</MenuItem>
+                          <MenuItem value="Nagad">Salary</MenuItem>
+                          <MenuItem value="Nagad">Electricity</MenuItem>
+                          <MenuItem value="Nagad">Other</MenuItem>
+                          <MenuItem value="Nagad">Salary</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                        className="productField"
                         fullWidth
-                        label=" Check No  "
-                        {...register("check_no")}
+                        label="Expense For"
+                        id="Tax"
+                        {...register("expense_for")}
                       />
-                    </div>
-                  ) : payment === "Bank Transfer" ? (
-                    <div className="mt-4 ">
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                        className="productField"
                         fullWidth
-                        label=" Bank Account No "
-                        {...register("bank_account_no")}
+                        label="Tax Applicable"
+                        id="Tax"
+                        {...register("tax_application")}
                       />
-                    </div>
-                  ) : payment === "Cash" ? (
-                    <div className="mt-4 ">
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <div className="productField">
+                        <input
+                          onChange={handleImageUpload}
+                          type="file"
+                          id="files"
+                          className="hidden"
+                        />
+
+                        <label
+                          for="files"
+                          className="text-sm flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                        >
+                          <span>
+                            <FaCloudUploadAlt size={30} className="mr-2" />
+                          </span>
+                          {imageLoading ? (
+                            <span>Uploading...</span>
+                          ) : (
+                            <>
+                              {url ? (
+                                <span>Uploaded</span>
+                              ) : (
+                                <span> Attach Document</span>
+                              )}
+                            </>
+                          )}
+                        </label>
+                      </div>
+                    </Grid>
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
                       <textarea
                         placeholder="Expense Note "
                         className="productDetail"
-                        name=""
-                        {...register("cash_expense_note")}
+                        id=""
+                        cols="30"
+                        rows="10"
+                        {...register("expense_note_second")}
                       />
-                    </div>
-                  ) : payment === "Card" ? (
-                    <div>
-                      <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Card Number"
-                          id="Tax"
-                          {...register("card_number")}
-                        />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Card holder name"
-                          id="Tax"
-                          {...register("card_holder_name")}
-                        />
-                      </div>
-
-                      <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Card Transaction No."
-                          id="Tax"
-                          {...register("card_transaction_no")}
-                        />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Card Type "
-                          id="Tax"
-                          {...register("card_type")}
-                        />
-                      </div>
-
-                      <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Month "
-                          id="Tax"
-                          {...register("month_first")}
-                        />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Year"
-                          id="Tax"
-                          {...register("year")}
-                        />
-                      </div>
-
-                      <div className="productFieldWrap">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Month "
-                          id="Tax"
-                          {...register("month_second")}
-                        />
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Security Code "
-                          id="Tax"
-                          {...register("security_code")}
-                        />
-                      </div>
-                    </div>
-                  ) : payment === "Other" ? (
-                    <div>
-                      <div>
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Transition No "
-                          {...register("other_transaction_no")}
-                        />
-                      </div>
-                      <div className="mt-4">
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Transition ID "
-                          {...register("other_transaction_no")}
-                        />
-                      </div>
-                    </div>
-                  ) : (payment === "Bkash") |
-                    (payment === "Nagad") |
-                    (payment === "Rocket") ? (
-                    <div>
-                      <div>
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Transition No "
-                          {...register("other_transaction_no")}
-                        />
-                      </div>
-                      <div>
-                        <TextField
-                          className="productField"
-                          fullWidth
-                          label="Transition ID "
-                          {...register("other_transaction_no")}
-                        />
-                      </div>
-                    </div>
-                  ) : null)}
-
-                <div className="mt-4">
-                  <textarea
-                    placeholder="Expense Note "
-                    className="productDetail"
-                    name=""
-                    {...register("other_expense_note")}
-                  />
-                </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Amount"
+                        id="Tax"
+                        {...register("amount")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Paid On "
+                        id="Tax"
+                        {...register("paid_on")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        className="productField"
+                        fullWidth
+                        label=" Individual Markup  "
+                        {...register("payment_individual_markup")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth className="productField">
+                        <InputLabel htmlFor="grouped-native-select">
+                          Payment Method
+                        </InputLabel>
+                        <Select
+                         
+                          // {...register("payment_account_first")}
+                          labelId="payment-method-label"
+                          label="Payment Method"
+                        >
+                          <MenuItem value="Bkash">Bkash</MenuItem>
+                          <MenuItem value="Nagad">Nagad</MenuItem>
+                          <MenuItem value="Rocket">Rocket</MenuItem>
+                          <MenuItem value="Check">Check</MenuItem>
+                          <MenuItem value="Card">Card</MenuItem>
+                          <MenuItem value="Bank Transfer">
+                            Bank Transfer
+                          </MenuItem>
+                          <MenuItem value="Other">Other</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        className="productField"
+                        fullWidth
+                        label=" Individual Markup  "
+                        {...register("payment_individual_markup")}
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
               </div>
             </div>
+
+            <Box marginTop="20px">
+              <Typography variant="h5" fontWeight="bold" marginBottom="20px">
+                Payment Method
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField fullWidth label="Amount" {...register("amount")} />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Paid On"
+                    {...register("paid_on")}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Individual Markup"
+                    {...register("payment_individual_markup")}
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="payment-method-select">
+                      Payment Method
+                    </InputLabel>
+                    <Select
+                      //   onChange={handlePaymentChange}
+                      label="Payment Method"
+                      id="payment-method-select"
+                      {...register("payment_method")}
+                    >
+                      <MenuItem value="Bkash">Bkash</MenuItem>
+                      <MenuItem value="Nagad">Nagad</MenuItem>
+                      <MenuItem value="Rocket">Rocket</MenuItem>
+                      <MenuItem value="Check">Check</MenuItem>
+                      <MenuItem value="Card">Card</MenuItem>
+                      <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <Box marginTop={4}>
+                <Grid container spacing={2}>
+                  {payment && (
+                    <>
+                      {payment === "Check" && (
+                        <>
+                          <Grid item lg={6}>
+                            <FormControl fullWidth>
+                              <InputLabel htmlFor="payment-account-select">
+                                Select Bank
+                              </InputLabel>
+                              <Select
+                                label="Payment Account"
+                                id="payment-account-select"
+                                {...register("payment_account")}
+                              >
+                                <MenuItem value="Bangladesh Bank">
+                                  Bangladesh Bank
+                                </MenuItem>
+                                <MenuItem value="Sonali Bank">
+                                  Sonali Bank
+                                </MenuItem>
+                                <MenuItem value="Janata Bank">
+                                  Janata Bank
+                                </MenuItem>
+                                <MenuItem value="Agrani Bank">
+                                  Agrani Bank
+                                </MenuItem>
+                                <MenuItem value="Rupali Bank">
+                                  Rupali Bank
+                                </MenuItem>
+                                <MenuItem value="Pubali Bank">
+                                  Pubali Bank
+                                </MenuItem>
+                                <MenuItem value="Uttara Bank">
+                                  Uttara Bank
+                                </MenuItem>
+                                <MenuItem value="Islami Bank Bangladesh Limited">
+                                  Islami Bank Bangladesh Limited
+                                </MenuItem>
+                                <MenuItem value="Dutch-Bangla Bank">
+                                  Dutch-Bangla Bank
+                                </MenuItem>
+                                <MenuItem value="BRAC Bank">BRAC Bank</MenuItem>
+                                <MenuItem value="Eastern Bank">
+                                  Eastern Bank
+                                </MenuItem>
+                                <MenuItem value="National Bank">
+                                  National Bank
+                                </MenuItem>
+                                <MenuItem value="Prime Bank">
+                                  Prime Bank
+                                </MenuItem>
+                                <MenuItem value="South Bangla Agriculture and Commerce Bank">
+                                  South Bangla Agriculture and Commerce Bank
+                                </MenuItem>
+                                <MenuItem value="Standard Bank">
+                                  Standard Bank
+                                </MenuItem>
+                                <MenuItem value="One Bank">One Bank</MenuItem>
+                                <MenuItem value="Bank Asia">Bank Asia</MenuItem>
+                                <MenuItem value="Trust Bank">
+                                  Trust Bank
+                                </MenuItem>
+                                <MenuItem value="Jamuna Bank">
+                                  Jamuna Bank
+                                </MenuItem>
+                                <MenuItem value="Shahjalal Islami Bank">
+                                  Shahjalal Islami Bank
+                                </MenuItem>
+                                <MenuItem value="City Bank">City Bank</MenuItem>
+                                <MenuItem value="Southeast Bank">
+                                  Southeast Bank
+                                </MenuItem>
+                                <MenuItem value="Social Islami Bank">
+                                  Social Islami Bank
+                                </MenuItem>
+                                <MenuItem value="AB Bank">AB Bank</MenuItem>
+                                <MenuItem value="IFIC Bank">IFIC Bank</MenuItem>
+                                <MenuItem value="Mercantile Bank">
+                                  Mercantile Bank
+                                </MenuItem>
+                                <MenuItem value="Mutual Trust Bank">
+                                  Mutual Trust Bank
+                                </MenuItem>
+                                <MenuItem value="EXIM Bank">EXIM Bank</MenuItem>
+                                <MenuItem value="NCC Bank">NCC Bank</MenuItem>
+                                <MenuItem value="SBAC Bank">SBAC Bank</MenuItem>
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          <Grid item lg={6}>
+                            <TextField
+                              fullWidth
+                              label="Account Number "
+                              {...register("check_no")}
+                            />
+                          </Grid>
+                          <Grid item lg={6}>
+                            <TextField
+                              fullWidth
+                              label="Check No"
+                              {...register("check_no")}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      {payment === "Bank Transfer" && (
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Bank Account No"
+                            {...register("bank_account_no")}
+                            marginTop={2}
+                          />
+                        </Grid>
+                      )}
+                      {payment === "Cash" && (
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            multiline
+                            rows={4}
+                            placeholder="Expense Note"
+                            {...register("cash_expense_note")}
+                            marginTop={2}
+                          />
+                        </Grid>
+                      )}
+                      {payment === "Card" && (
+                        <>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Number"
+                              {...register("card_number")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Holder Name"
+                              {...register("card_holder_name")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Transaction No."
+                              {...register("card_transaction_no")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Card Type"
+                              {...register("card_type")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Month"
+                              {...register("month_first")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Year"
+                              {...register("year")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Month"
+                              {...register("month_second")}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Security Code"
+                              {...register("security_code")}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      {payment === "Other" && (
+                        <>
+                          <Grid item  lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Transition No"
+                              {...register("other_transaction_no")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Transition ID"
+                              {...register("other_transaction_id")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      {(payment === "Bkash" ||
+                        payment === "Nagad" ||
+                        payment === "Rocket") && (
+                        <>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Transition No"
+                              {...register("other_transaction_no")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Transition ID"
+                              {...register("other_transaction_id")}
+                              marginTop={2}
+                            />
+                          </Grid>
+                        </>
+                      )}
+                      <Grid item  lg={6} md={6} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          multiline
+                          rows={4}
+                          placeholder="Expense Note"
+                          {...register("other_expense_note")}
+                          marginTop={4}
+                        />
+                      </Grid>
+                    </>
+                  )}
+                </Grid>
+              </Box>
+              <div className="flex justify-end mt-3">
+                <Button sx={{ color: "white", width: "200px" }}>Submit</Button>
+              </div>
+            </Box>
             <div className="my-2">
               {createError && (
                 <ErrorMessage messages={createError.data.errorSources} />

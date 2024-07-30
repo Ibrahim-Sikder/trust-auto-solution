@@ -20,19 +20,15 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import BillPayList from "./BillPayList";
 
-const UpdateBillPay = () => {
+const BillPay = () => {
   const { register, watch } = useForm();
   const payment = watch("payment_method");
-  //   const [payment, setPayment] = useState("");
-  //   const handlePaymentChange = (e) => {
-  //     setPayment(e.target.value);
-  //   };
 
   const onSubmit = async (data) => {};
 
   return (
     <Box>
-      <section>
+      <section className="py-5 xl:py-0">
         <div className="addProductWraps">
           <div className="flex justify-between  border-b-2">
             <HeaderButton />
@@ -51,7 +47,16 @@ const UpdateBillPay = () => {
             </div>
           </div>
 
-          <Paper sx={{ width: "1200px", margin: "auto", padding: "30px" }}>
+          <Paper
+            sx={{
+              width: {
+                lg: "1200px",
+                md: "100%",
+              },
+              margin: "auto",
+              padding: "30px",
+            }}
+          >
             <Box>
               <Typography
                 variant="h5"
@@ -62,28 +67,28 @@ const UpdateBillPay = () => {
                 Bill Info{" "}
               </Typography>
               <Grid container spacing={2}>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Supplier ID" id="Tax" />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Name" id="Tax" />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Mobile" id="Tax" />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Address" id="Tax" />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Email" id="Tax" />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Shop Name" id="Tax" />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Against Bill" id="Tax" />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <FormControl fullWidth>
                     <InputLabel htmlFor="grouped-native-select">
                       Vendor Categories
@@ -117,24 +122,24 @@ const UpdateBillPay = () => {
                 Payment Method
               </Typography>
               <Grid container spacing={2}>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Amount" {...register("amount")} />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Paid On"
                     {...register("paid_on")}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Individual Markup"
                     {...register("payment_individual_markup")}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <FormControl fullWidth>
                     <InputLabel htmlFor="payment-method-select">
                       Payment Method
@@ -156,13 +161,13 @@ const UpdateBillPay = () => {
                   </FormControl>
                 </Grid>
               </Grid>
-              <Box marginTop={4}>
+              <Box marginTop={4} md={6} sm={12} xs={12}>
                 <Grid container spacing={2}>
                   {payment && (
                     <>
                       {payment === "Check" && (
                         <>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <FormControl fullWidth>
                               <InputLabel htmlFor="payment-account-select">
                                 Select Bank
@@ -247,14 +252,14 @@ const UpdateBillPay = () => {
                               </Select>
                             </FormControl>
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Account Number "
                               {...register("check_no")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Check No"
@@ -264,7 +269,7 @@ const UpdateBillPay = () => {
                         </>
                       )}
                       {payment === "Bank Transfer" && (
-                        <Grid item lg={6}>
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
                           <TextField
                             fullWidth
                             label="Bank Account No"
@@ -274,7 +279,7 @@ const UpdateBillPay = () => {
                         </Grid>
                       )}
                       {payment === "Cash" && (
-                        <Grid item lg={6}>
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
                           <TextField
                             fullWidth
                             multiline
@@ -287,56 +292,56 @@ const UpdateBillPay = () => {
                       )}
                       {payment === "Card" && (
                         <>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Card Number"
                               {...register("card_number")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Card Holder Name"
                               {...register("card_holder_name")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Card Transaction No."
                               {...register("card_transaction_no")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Card Type"
                               {...register("card_type")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Month"
                               {...register("month_first")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Year"
                               {...register("year")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Month"
                               {...register("month_second")}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Security Code"
@@ -347,7 +352,7 @@ const UpdateBillPay = () => {
                       )}
                       {payment === "Other" && (
                         <>
-                          <Grid item lg={12}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Transition No"
@@ -369,7 +374,7 @@ const UpdateBillPay = () => {
                         payment === "Nagad" ||
                         payment === "Rocket") && (
                         <>
-                          <Grid item lg={6}>
+                          <Grid itemlg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Transition No"
@@ -377,7 +382,7 @@ const UpdateBillPay = () => {
                               marginTop={2}
                             />
                           </Grid>
-                          <Grid item lg={6}>
+                          <Grid itemlg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Transition ID"
@@ -387,7 +392,7 @@ const UpdateBillPay = () => {
                           </Grid>
                         </>
                       )}
-                      <Grid item lg={12}>
+                      <Grid item lg={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           multiline
@@ -400,17 +405,17 @@ const UpdateBillPay = () => {
                     </>
                   )}
                 </Grid>
-                
               </Box>
-             <div className="flex justify-end mt-3">
-             <Button sx={{color:'white', width:'200px'}}>Update</Button>
-             </div>
+              <div className="flex justify-end mt-3">
+                <Button sx={{ color: "white", width: "200px" }}>Update</Button>
+              </div>
             </Box>
           </Paper>
         </div>
+        <BillPayList />
       </section>
     </Box>
   );
 };
 
-export default UpdateBillPay;
+export default BillPay;

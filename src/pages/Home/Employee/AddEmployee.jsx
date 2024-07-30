@@ -13,15 +13,17 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import {
   Autocomplete,
+  Box,
+  Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Pagination,
   Select,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { toast } from "react-toastify";
 import swal from "sweetalert";
 import { countries } from "../../../constant";
@@ -199,257 +201,294 @@ const AddEmployee = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="addEmployeeFieldWraps space-y-3">
               <div>
-                <h3 className="text-xl font-bold">Personal Info </h3>
-                <TextField
-                  className="productField"
-                  label="Full Name "
-                  id="Full Name "
-                  {...register("full_name")}
-                />
-
-                <TextField
-                  className="productField"
-                  label="Date of Birth"
-                  {...register("date_of_birth")}
-                />
-                <TextField
-                  className="productField"
-                  label="NID Number"
-                  {...register("nid_number")}
-                />
-                <TextField
-                  className="productField"
-                  label="Blood Group "
-                  {...register("blood_group")}
-                />
-                {/* <TextField
-                  className="productField"
-                  label="Phone Number "
-                  id="Phone Number "
-                  {...register("phone_number")}
-                /> */}
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
+                <h3 className="text-xl font-bold mb-3 text-center ">
+                  Employee Information{" "}
+                </h3>
+                <Box>
+                  <Grid container spacing={2}>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                        fullWidth
+                        label="Full Name "
+                        id="Full Name "
+                        {...register("full_name")}
                       />
-                    )}
-                  />
-                  <TextField
-                    {...register("phone_number")}
-                    className="productField2"
-                    label="Phone No"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
-                  />
-                </div>
-                <TextField
-                  className="productField"
-                  label="Email Address "
-                  id="Email Address "
-                  {...register("email")}
-                />
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Gender
-                  </InputLabel>
-                  <Select
-                    className=""
-                    native
-                    id="grouped-native-select"
-                    label="Gender"
-                    {...register("gender")}
-                  >
-                    <option>Select</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </Select>
-                </FormControl>
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Join Date  "
-                  id="Join Date  "
-                  {...register("join_date")}
-                />
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Designation  "
-                  id="Designation  "
-                  {...register("designation")}
-                />
-
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Select Status
-                  </InputLabel>
-                  <Select
-                    className="productField"
-                    native
-                    id="grouped-native-select"
-                    label="Select Status "
-                    {...register("status")}
-                  >
-                    <option>Select</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </Select>
-                </FormControl>
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Password"
-                  id="Password"
-                  {...register("password")}
-                  type="password"
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Confirm Password "
-                  id="Confirm Password  "
-                  {...register("confirm_password")}
-                  type="password"
-                />
-              </div>
-
-              <div>
-                <h3 className="text-xl font-bold">Family Address </h3>
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Father Name "
-                  {...register("father_name")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Mother Name "
-                  {...register("mother_name")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Guardian Name"
-                  {...register("guardian_name")}
-                />
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={guardianCountryCode}
-                    onChange={(event, newValue) => {
-                      setGuardianCountryCode(newValue);
-                      setGuardianPhoneNumber("");
-                    }}
-                    renderInput={(params) => (
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                        fullWidth
+                        label="Full Name "
+                        id="Full Name "
+                        {...register("full_name")}
                       />
-                    )}
-                  />
-                  <TextField
-                    {...register("guardian_contact")}
-                    className="productField2"
-                    label="Guardian Phone No"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={guardianPhoneNumber}
-                    onChange={handleGuardianPhoneNumberChange}
-                  />
-                </div>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Date of Birth"
+                        {...register("date_of_birth")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="NID Number"
+                        {...register("nid_number")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Blood Group "
+                        {...register("blood_group")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item lg={4} md={6} sm={3} xs={12}>
+                          <Autocomplete
+                            sx={{ marginRight: "2px", marginLeft: "5px" }}
+                            fullWidth
+                            freeSolo
+                            options={countries}
+                            getOptionLabel={(option) => option.code}
+                            value={countryCode}
+                            onChange={(event, newValue) => {
+                              setCountryCode(newValue);
+                              setPhoneNumber(""); // Reset the phone number when changing country codes
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="Select Country Code"
+                                variant="outlined"
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item lg={8} md={6} sm={9} xs={12}>
+                          <TextField
+                            {...register("phone_number")}
+                            fullWidth
+                            label="Phone No"
+                            variant="outlined"
+                            type="tel"
+                            value={phoneNumber}
+                            onChange={handlePhoneNumberChange}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Email Address "
+                        id="Email Address "
+                        {...register("email")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Gender
+                        </InputLabel>
+                        <Select
+                          className=""
+                          native
+                          id="grouped-native-select"
+                          label="Gender"
+                          {...register("gender")}
+                        >
+                          <option>Select</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Join Date  "
+                        id="Join Date  "
+                        {...register("join_date")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Designation  "
+                        id="Designation  "
+                        {...register("designation")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Select Status
+                        </InputLabel>
+                        <Select
+                          native
+                          id="grouped-native-select"
+                          label="Select Status "
+                          {...register("status")}
+                        >
+                          <option>Select</option>
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Password"
+                        id="Password"
+                        {...register("password")}
+                        type="password"
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Confirm Password "
+                        id="Confirm Password  "
+                        {...register("confirm_password")}
+                        type="password"
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Father Name "
+                        {...register("father_name")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Mother Name "
+                        {...register("mother_name")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Guardian Name"
+                        {...register("guardian_name")}
+                      />
+                    </Grid>
 
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Relationship"
-                  {...register("relationship")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Nationality"
-                  {...register("nationality")}
-                />
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid container spacing={2}>
+                        <Grid item lg={4} md={6} sm={3} xs={12}>
+                          <Autocomplete
+                            sx={{ marginRight: "2px", marginLeft: "5px" }}
+                            className="jobCardSelect2"
+                            freeSolo
+                            options={countries}
+                            getOptionLabel={(option) => option.code}
+                            value={guardianCountryCode}
+                            onChange={(event, newValue) => {
+                              setGuardianCountryCode(newValue);
+                              setGuardianPhoneNumber("");
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label="Select Country Code"
+                                variant="outlined"
+                              />
+                            )}
+                          />
+                        </Grid>
+                        <Grid item lg={8} md={6} sm={9} xs={12}>
+                          <TextField
+                            {...register("guardian_contact")}
+                            className="productField2"
+                            label="Guardian Phone No"
+                            variant="outlined"
+                            fullWidth
+                            type="tel"
+                            value={guardianPhoneNumber}
+                            onChange={handleGuardianPhoneNumberChange}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Grid>
 
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Religion"
-                  {...register("religion")}
-                />
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Country "
-                  {...register("country")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Town/City "
-                  {...register("city")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Local Address "
-                  {...register("local_address")}
-                />
-                <div className="productField">
-                  <input
-                    onChange={handleImageUpload}
-                    type="file"
-                    id="files"
-                    className="hidden"
-                  />
-                  <label
-                    for="files"
-                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                  >
-                    <span>
-                      <FaCloudUploadAlt size={30} className="mr-2" />
-                    </span>
-                    {imageLoading ? (
-                      <span>Uploading...</span>
-                    ) : (
-                      <>
-                        {url ? (
-                          <span>Uploaded</span>
-                        ) : (
-                          <span> Upload Image</span>
-                        )}
-                      </>
-                    )}
-                  </label>
-                </div>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Relationship"
+                        {...register("relationship")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Nationality"
+                        {...register("nationality")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Religion"
+                        {...register("religion")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Country "
+                        {...register("country")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Town/City "
+                        {...register("city")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Local Address "
+                        {...register("local_address")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <div className="productField">
+                        <input
+                          onChange={handleImageUpload}
+                          type="file"
+                          id="files"
+                          className="hidden"
+                        />
+                        <label
+                          for="files"
+                          className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                        >
+                          <span>
+                            <FaCloudUploadAlt size={30} className="mr-2" />
+                          </span>
+                          {imageLoading ? (
+                            <span>Uploading...</span>
+                          ) : (
+                            <>
+                              {url ? (
+                                <span>Uploaded</span>
+                              ) : (
+                                <span> Upload Image</span>
+                              )}
+                            </>
+                          )}
+                        </label>
+                      </div>
+                    </Grid>
+                  </Grid>
+                </Box>
               </div>
             </div>
             <div className="my-2">
@@ -458,11 +497,13 @@ const AddEmployee = () => {
               )}
             </div>
             <div className="flex justify-end">
-              <div className="submitQutationBtn">
-                <button type="submit" disabled={createLoading}>
-                  Add Employee
-                </button>
-              </div>
+              <Button
+                sx={{ color: "white" }}
+                type="submit"
+                disabled={createLoading}
+              >
+                Add Employee
+              </Button>
             </div>
           </form>
         </div>
@@ -473,7 +514,7 @@ const AddEmployee = () => {
             {" "}
             Employee List:{" "}
           </h3>
-          <div className="flex flex-wrap items-center">
+          <div className="flex flex-wrap gap-3 items-center m">
             <button
               onClick={handleAllEmployee}
               className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"

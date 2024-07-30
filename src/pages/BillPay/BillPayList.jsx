@@ -88,7 +88,7 @@ const BillPayList = () => {
                 <TableCell align="center">{row.againstBill}</TableCell>
                 <TableCell align="center">
                   <div className="flex justify-center">
-                    <Link href={`/dashboard/student/profile/${row.id}`}>
+                    <Link to={`/dashboard/billpay-view`}>
                       <IconButton title="See Profile">
                         <VisibilityIcon className="text-green-600" />
                       </IconButton>

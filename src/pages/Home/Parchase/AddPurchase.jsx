@@ -235,7 +235,7 @@ const AddSuppliers = () => {
             <h3 className="text-xl font-bold mb-3">Saller Info </h3>
             <Box>
               <Grid container spacing={2}>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Full Name "
@@ -243,7 +243,7 @@ const AddSuppliers = () => {
                     {...register("full_name")}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <Autocomplete
                     fullWidth
                     sx={{ marginRight: "2px", marginLeft: "5px" }}
@@ -264,7 +264,7 @@ const AddSuppliers = () => {
                     )}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     label="Phone No"
                     variant="outlined"
@@ -274,7 +274,7 @@ const AddSuppliers = () => {
                     onChange={handlePhoneNumberChange}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Email Address "
@@ -282,7 +282,7 @@ const AddSuppliers = () => {
                     {...register("email")}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <FormControl fullWidth>
                     <InputLabel htmlFor="grouped-native-select">
                       Vendor Categories
@@ -308,7 +308,7 @@ const AddSuppliers = () => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Shop Name"
@@ -316,24 +316,24 @@ const AddSuppliers = () => {
                     {...register("shop_name")}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Country "
                     {...register("country")}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Town/City "
                     {...register("city")}
                   />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="State " {...register("state")} />
                 </Grid>
-                <Grid item lg={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <div className="productField">
                     <input
                       onChange={handleImageUpload}
@@ -492,7 +492,6 @@ const AddSuppliers = () => {
 
               <Button>Download </Button>
               <Button>Print </Button>
-             
             </div>
             <div className="submitQutationBtn">
               <Button type="submit">Add Purchase </Button>
