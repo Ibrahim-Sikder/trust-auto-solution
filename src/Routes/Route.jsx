@@ -393,6 +393,10 @@ export const router = createBrowserRouter([
         path: "shift-list",
         element: <ShiftList />,
       },
+      {
+        path: "tests",
+        element: <Practice />,
+      },
     ],
   },
 ]);
