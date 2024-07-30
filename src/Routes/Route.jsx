@@ -40,7 +40,6 @@ import AddSuppliers from "../pages/Home/Suppliers/AddSuppliers";
 import SupplierList from "../pages/Home/Suppliers/SupplierList";
 import UpdateSupplier from "../pages/Home/Suppliers/UpdateSupplier";
 import SupplierProfile from "../pages/Home/Suppliers/SupplierProfile";
-import PurchaseList from "../pages/Home/Parchase/PurchaseList";
 import AddPurchase from "../pages/Home/Parchase/AddPurchase";
 import UpdatePurchase from "../pages/Home/Parchase/UpdatePurchase";
 import CompanyList from "../pages/Home/Company/CompanyList";
@@ -73,6 +72,7 @@ import ShiftList from "../pages/Home/Employee/ShiftAndSchedule/ShiftList";
 import PrivateRoute from "./PrivateRoute";
 import UpdateBillPay from "../pages/BillPay/UpdateBillPay";
 import BillPayInvoice from "../pages/BillPay/BillPayInvoice";
+import PurchaseList from "../pages/Home/Parchase/PurchasList";
 
 export const router = createBrowserRouter([
   {
@@ -234,7 +234,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "purchase-list",
-        element: <PurchaseList />,
+        element: <PurchaseList/>,
       },
       {
         path: "add-purchase",
