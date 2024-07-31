@@ -52,7 +52,7 @@
     padding-bottom: 0rem !important;
   }
   
-  .css-15v22id-MuiAccordionDetails-root {
+  /* .css-15v22id-MuiAccordionDetails-root {
     padding: 0px 0px 0px !important;
     padding-bottom: 0px !important;
   }
@@ -63,7 +63,7 @@
   .css-o4b71y-MuiAccordionSummary-content.Mui-expanded,
   .css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
     margin: 0px !important;
-  }
+  } */
   
   table {
     width: 100%;
@@ -117,7 +117,7 @@
   input:focus {
     outline: none;
   }
-  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+  /* .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
     height: 1em !important;
   }
   .css-ffg8md-MuiNativeSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
@@ -148,11 +148,11 @@
   
   .css-w9q2zk-Input2 {
     height: 35px !important;
-  }
+  } */
   
   /* time picker css */
   
-  .css-oucraa-MuiStack-root > .MuiTextField-root,
+  /* .css-oucraa-MuiStack-root > .MuiTextField-root,
   .css-oucraa-MuiStack-root > .MuiPickersTextField-root {
     min-width: 100px !important ;
   }
@@ -160,8 +160,8 @@
     height: 35px;
     width: 130px;
     margin: 0 auto;
-  }
-  .css-oucraa-MuiStack-root > .MuiTextField-root,
+  } */
+  /* .css-oucraa-MuiStack-root > .MuiTextField-root,
   .css-oucraa-MuiStack-root > .MuiPickersTextField-root {
     min-width: 130px;
   }
@@ -169,15 +169,15 @@
   .css-oucraa-MuiStack-root > .MuiTextField-root,
   .css-oucraa-MuiStack-root > .MuiPickersTextField-root {
     min-width: 50px;
-  }
-  .css-v0pjtz-MuiStack-root {
+  } */
+  /* .css-v0pjtz-MuiStack-root {
     overflow: hidden !important;
     padding-top: 3px !important;
-  }
+  } */
   
-  .css-l0h214-MuiResponsiveChart-container {
+  /* .css-l0h214-MuiResponsiveChart-container {
     height: 500px !important;
-  }
+  } */
   
   .sectionMargin {
     margin-top: 80px;

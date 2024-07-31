@@ -4,7 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
@@ -77,11 +77,11 @@ const UpdateQuotation = () => {
   const [removeQuotation, { isLoading: removeLoading, error: removeError }] =
     useRemoveQuotationMutation();
 
-    useEffect(() => {
-      if (specificQuotation?.date) {
-        setSelectedDate(specificQuotation.date);
-      }
-    }, [specificQuotation]);
+  useEffect(() => {
+    if (specificQuotation?.date) {
+      setSelectedDate(specificQuotation.date);
+    }
+  }, [specificQuotation]);
 
   const handleRemove = (index) => {
     if (!index) {
@@ -507,8 +507,6 @@ const UpdateQuotation = () => {
     handleSubmit(onSubmit)();
   };
 
-  
-
   return (
     <div className="px-5 py-10">
       <div className=" addJobCardHeads">
@@ -537,315 +535,326 @@ const UpdateQuotation = () => {
               />
             </div>
           </div>
-          <div className="mb-10 jobCardFieldWraps">
-            <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
-              <div className="mt-3">
-                <TextField
-                  type="number"
-                  className="addJobInputField"
-                  label="Serial No"
-                  {...register("job_no")}
-                  value={specificQuotation?.job_no}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      job_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.job_no,
-                  }}
-                />
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-10 ">
+            <Box>
+              <h3 className="text-xl lg:text-3xl  font-bold mb-3 ">
+                Customer Info
+              </h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Job Card No"
 
-              <div className="mt-3">
-                <TextField
-                  readonly
-                  className="addJobInputField"
-                  label="Customer Id"
-                  {...register("customerId")}
-                  value={specificQuotation?.Id}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      Id: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.Id,
-                  }}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company Name "
-                  value={specificQuotation?.company_name}
-                  {...register("company_name")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      company_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.company_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer"
-                  value={specificQuotation?.customer_name}
-                  {...register("customer_name")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      customer_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.customer_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Phone"
-                  value={specificQuotation?.customer_contact}
-                  {...register("customer_contact")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      customer_contact: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.customer_contact,
-                  }}
-                /> */}
-                <div className="flex sm:flex-row flex-col gap-1 items-center">
-                  <Autocomplete
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    // value={jobCardData?.data?.job_no}
+                    // focused={jobCardData?.data?.job_no}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    type="number"
+                    fullWidth
+                    label="Serial No"
+                    {...register("job_no")}
+                    value={specificQuotation?.job_no}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        job_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.job_no,
                     }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    readonly
+                    fullWidth
+                    label="Customer Id"
+                    {...register("customerId")}
+                    value={specificQuotation?.Id}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        Id: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.Id,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Company Name "
+                    value={specificQuotation?.company_name}
+                    {...register("company_name")}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        company_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.company_name,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Customer"
+                    value={specificQuotation?.customer_name}
+                    {...register("customer_name")}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        customer_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.customer_name,
+                    }}
+                  />
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={2} md={6} sm={3} xs={12}>
+                      <Autocomplete
+                        fullWidth
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            fullWidth
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item lg={10} md={6} sm={9} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Phone"
+                        value={specificQuotation?.customer_contact}
+                        {...register("customer_contact")}
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          if (inputValue.length <= 11) {
+                            setSpecificQuotation({
+                              ...specificQuotation,
+                              customer_contact: inputValue,
+                            });
+                          }
+                        }}
+                        InputLabelProps={{
+                          shrink: !!specificQuotation.customer_contact,
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Address"
+                    value={specificQuotation?.customer_address}
+                    {...register("customer_address")}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        customer_address: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.customer_address,
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <h3 className="text-xl lg:text-3xl font-bold mb-3">
+                Vehicle Info
+              </h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                    disabled={
+                      specificQuotation?.vehicle?.length === 0 ||
+                      !specificQuotation?.vehicle
+                    }
+                    disableClearable
+                    freeSolo
+                    fullWidth
+                    onChange={handleChassisChange}
+                    // options={specificQuotation?.vehicle?.map(
+                    //   (option) => option.chassis_no
+                    // )}
                     renderInput={(params) => (
                       <TextField
+                        fullWidth
                         {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                        className="addJobInputField"
+                        label="Chassis No"
+                        {...register("chassis_no")}
+                        inputProps={{
+                          ...params.inputProps,
+                          maxLength:
+                            specificQuotation?.chassis_no?.length || 30,
+                        }}
                       />
                     )}
                   />
-                  <TextField
-                    className="carRegField"
-                    label="Phone"
-                    value={specificQuotation?.customer_contact}
-                    {...register("customer_contact")}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                    sx={{ marginRight: "5px" }}
+                    freeSolo
+                    fullWidth
+                    id="free-solo-demo"
+                    options={cmDmOptions.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Vehicle Reg No ( New field ) "
+                        {...register("carReg_no")}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="flex mt-3  md:gap-0 gap-4 items-center">
+                    <TextField
+                      fullWidth
+                      label="Car R (N)"
+                      {...register("car_registration_no", {
+                        pattern: {
+                          value: /^[\d-]+$/,
+                          message: "Only numbers and hyphens are allowed",
+                        },
+                        minLength: {
+                          value: 7,
+                          message:
+                            "Car registration number must be exactly 6 digits",
+                        },
+                        maxLength: {
+                          value: 7,
+                          message:
+                            "Car registration number must be exactly 6 digits",
+                        },
+                      })}
+                      value={specificQuotation?.car_registration_no}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value.length === 7) {
+                          setRegistrationError("");
+                        } else if (value.length < 7) {
+                          setRegistrationError(
+                            "Car registration number must be 7 characters"
+                          );
+                        }
+                        const formattedValue = value
+                          .replace(/\D/g, "")
+                          .slice(0, 6)
+                          .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                         setSpecificQuotation({
                           ...specificQuotation,
-                          customer_contact: inputValue,
+                          car_registration_no: formattedValue,
                         });
+                      }}
+                      InputLabelProps={{
+                        shrink: !!specificQuotation?.car_registration_no,
+                      }}
+                      error={
+                        !!errors.car_registration_no || !!registrationError
                       }
-                    }}
+                    />
+                  </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Chassis No"
+                    value={specificQuotation?.chassis_no}
+                    {...register("chassis_no")}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        chassis_no: e.target.value,
+                      })
+                    }
                     InputLabelProps={{
-                      shrink: !!specificQuotation.customer_contact,
+                      shrink: !!specificQuotation.chassis_no,
                     }}
                   />
-                </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Address"
-                  value={specificQuotation?.customer_address}
-                  {...register("customer_address")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      customer_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.customer_address,
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-              <div className="mt-3">
-                <Autocomplete
-                  disabled={
-                    specificQuotation?.vehicle?.length === 0 ||
-                    !specificQuotation?.vehicle
-                  }
-                  disableClearable
-                  freeSolo
-                  className="addJobInputField"
-                  onChange={handleChassisChange}
-                  options={specificQuotation?.vehicle?.map(
-                    (option) => option.chassis_no
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      className="addJobInputField"
-                      label="Chassis No"
-                       
-                      {...register("chassis_no")}
-                      inputProps={{
-                        ...params.inputProps,
-                        maxLength: specificQuotation?.chassis_no?.length || 30,
-                      }}
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex mt-3  md:gap-0 gap-4 items-center">
-                <Autocomplete
-                  sx={{ marginRight: "5px" }}
-                  freeSolo
-                  className="jobCardSelect2 "
-                  id="free-solo-demo"
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Reg No ( New field ) "
-                      {...register("carReg_no")}
-                    />
-                  )}
-                />
-
-                <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers and hyphens are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  value={specificQuotation?.car_registration_no}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length === 7) {
-                      setRegistrationError("");
-                    } else if (value.length < 7) {
-                      setRegistrationError(
-                        "Car registration number must be 7 characters"
-                      );
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Engine & CC"
+                    value={specificQuotation?.engine_no}
+                    {...register("engine_no")}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        engine_no: e.target.value,
+                      })
                     }
-                    const formattedValue = value
-                      .replace(/\D/g, "")
-                      .slice(0, 6)
-                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      car_registration_no: formattedValue,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!specificQuotation?.car_registration_no,
-                  }}
-                  error={!!errors.car_registration_no || !!registrationError}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  value={specificQuotation?.chassis_no}
-                  {...register("chassis_no")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      chassis_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.chassis_no,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Engine & CC"
-                  value={specificQuotation?.engine_no}
-                  {...register("engine_no")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      engine_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.engine_no,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle Name"
-                  value={specificQuotation?.vehicle_name}
-                  {...register("vehicle_name")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      vehicle_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.vehicle_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Mileage"
-                  value={specificQuotation?.mileage}
-                  {...register("mileage")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      mileage: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.mileage,
-                  }}
-                />
-              </div>
-            </div>
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.engine_no,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Vehicle Name"
+                    value={specificQuotation?.vehicle_name}
+                    {...register("vehicle_name")}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        vehicle_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.vehicle_name,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Mileage"
+                    value={specificQuotation?.mileage}
+                    {...register("mileage")}
+                    onChange={(e) =>
+                      setSpecificQuotation({
+                        ...specificQuotation,
+                        mileage: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificQuotation.mileage,
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
           </div>
 
           <div className="flex items-center justify-around labelWrap">
@@ -1297,14 +1306,16 @@ const UpdateQuotation = () => {
 
             <Button>Download </Button>
             <Button>Print </Button>
-            <Button LinkComponent={Link} to='/dashboard/invoice'>Invoice </Button>
+            <Button LinkComponent={Link} to="/dashboard/invoice">
+              Invoice{" "}
+            </Button>
           </div>
         </div>
 
         <div className="mt-10">
           <div className="flex  justify-center align-items-center">
             <Button
-              sx={{ background: "#42A1DA" }}
+              sx={{ background: "#42A1DA",  color:'white' }}
               onClick={handleOnSubmit}
               className="addJobBtn"
               disabled={updateLoading}

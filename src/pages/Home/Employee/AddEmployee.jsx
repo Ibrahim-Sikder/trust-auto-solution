@@ -201,7 +201,7 @@ const AddEmployee = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="addEmployeeFieldWraps space-y-3">
               <div>
-                <h3 className="text-xl font-bold mb-3 text-center ">
+                <h3 className="text-xl font-bold mb-5 text-center ">
                   Employee Information{" "}
                 </h3>
                 <Box>

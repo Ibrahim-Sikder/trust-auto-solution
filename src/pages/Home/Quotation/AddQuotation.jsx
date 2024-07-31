@@ -11,6 +11,7 @@ import {
   Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Pagination,
@@ -60,7 +61,7 @@ const AddQuotation = () => {
   const [vat, setVAT] = useState(0);
   const [partsTotal, setPartsTotal] = useState(0);
   const [serviceTotal, setServiceTotal] = useState(0);
- 
+
   const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
 
   const [items, setItems] = useState([
@@ -100,40 +101,47 @@ const AddQuotation = () => {
       searchTerm: filterType,
     });
 
+  useEffect(() => {
+    if (jobCardData?.data) {
+      reset({
+        Id: jobCardData?.data?.Id,
+        company_name: jobCardData?.data?.company_name,
+        vehicle_username: jobCardData?.data?.vehicle_username,
+        company_address: jobCardData?.data?.company_address,
+        customer_name: jobCardData?.data?.customer_name,
+        customer_country_code: jobCardData?.data?.customer_country_code,
+        customer_contact: phoneNumber || jobCardData?.data?.customer_contact,
+        customer_email: jobCardData?.data?.customer_email,
+        customer_address: jobCardData?.data?.customer_address,
+        reference_name: jobCardData?.data?.reference_name,
 
-
-
-
-    useEffect(() => {
-      if (jobCardData?.data) {
-        reset({
-          Id: jobCardData?.data?.Id,
-          company_name: jobCardData?.data?.company_name,
-          vehicle_username: jobCardData?.data?.vehicle_username,
-          company_address: jobCardData?.data?.company_address,
-          customer_name: jobCardData?.data?.customer_name,
-          customer_country_code: jobCardData?.data?.customer_country_code,
-          customer_contact: phoneNumber || jobCardData?.data?.customer_contact,
-          customer_email: jobCardData?.data?.customer_email,
-          customer_address: jobCardData?.data?.customer_address,
-          reference_name: jobCardData?.data?.reference_name,
-  
-          carReg_no: getDataWithChassisNo?.carReg_no,
-          car_registration_no: getDataWithChassisNo?.car_registration_no,
-          engine_no: getDataWithChassisNo?.engine_no,
-          vehicle_brand: getDataWithChassisNo?.vehicle_brand,
-          vehicle_name: getDataWithChassisNo?.vehicle_name,
-          vehicle_model: getDataWithChassisNo?.vehicle_model,
-          vehicle_category: getDataWithChassisNo?.vehicle_category,
-          color_code: getDataWithChassisNo?.color_code,
-          mileage: getDataWithChassisNo?.mileage,
-          fuel_type: getDataWithChassisNo?.fuel_type,
-        });
-      }
-    }, [getDataWithChassisNo?.carReg_no, getDataWithChassisNo?.car_registration_no, getDataWithChassisNo?.color_code, getDataWithChassisNo?.engine_no, getDataWithChassisNo?.fuel_type, getDataWithChassisNo?.mileage, getDataWithChassisNo?.vehicle_brand, getDataWithChassisNo?.vehicle_category, getDataWithChassisNo?.vehicle_model, getDataWithChassisNo?.vehicle_name, jobCardData?.data, phoneNumber, reset]);
-
-
-
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+        vehicle_model: getDataWithChassisNo?.vehicle_model,
+        vehicle_category: getDataWithChassisNo?.vehicle_category,
+        color_code: getDataWithChassisNo?.color_code,
+        mileage: getDataWithChassisNo?.mileage,
+        fuel_type: getDataWithChassisNo?.fuel_type,
+      });
+    }
+  }, [
+    getDataWithChassisNo?.carReg_no,
+    getDataWithChassisNo?.car_registration_no,
+    getDataWithChassisNo?.color_code,
+    getDataWithChassisNo?.engine_no,
+    getDataWithChassisNo?.fuel_type,
+    getDataWithChassisNo?.mileage,
+    getDataWithChassisNo?.vehicle_brand,
+    getDataWithChassisNo?.vehicle_category,
+    getDataWithChassisNo?.vehicle_model,
+    getDataWithChassisNo?.vehicle_name,
+    jobCardData?.data,
+    phoneNumber,
+    reset,
+  ]);
 
   const handleRemove = (index) => {
     if (!index) {
@@ -413,12 +421,9 @@ const AddQuotation = () => {
     return <Loading />;
   }
 
- 
   // const handleCustomerIdChange = (e) => {
   //   setCustomerType(e.targer?.value);
   // };
-  
- 
 
   return (
     <div className="px-5 py-10">
@@ -449,265 +454,268 @@ const AddQuotation = () => {
               />
             </div>
           </div>
-          <div className="mb-10 jobCardFieldWraps">
-            <div className="jobCardFieldLeftSide">
-            <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Job Card No"
-                  onChange={(e) => setOrderNumber(e.target.value)}
-                  // value={jobCardData?.data?.job_no}
-                  // focused={jobCardData?.data?.job_no}
-                />
-              </div>
-
-             
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-
-                  label="Customer Id"
-                  {...register("Id")}
-                  focused={jobCardData?.data?.Id}
-                  readOnly
-                 
-                  // onChange={handleInputChange}
-                  // value={jobCardData?.data?.Id}
-                  // focused={jobCardData?.data?.Id}
-                  // required
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company"
-                  // value={jobCardData?.data?.company_name}
-                  // focused={jobCardData?.data?.company_name}
-                  {...register("company_name")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     company_name: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.company_name,
-                  // }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer"
-                  // value={jobCardData?.data?.customer_name}
-                  // focused={jobCardData?.data?.customer_name}
-                  {...register("customer_name")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     customer_name: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.data?.customer_name,
-                  // }}
-                />
-              </div>
-              <div className="mt-3">
-                <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
-                  <Autocomplete
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-
+          <div className="grid grid-cols-2 gap-3 my-10">
+            <Box>
+              <h3 className="text-xl lg:text-3xl font-bold mb-3 ">
+                Customer Info
+              </h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextField
-                    {...register("customer_contact")}
-                    className="carRegField"
-                    variant="outlined"
                     fullWidth
-                    type="tel"
-                    // value={
-                    //   phoneNumber ? phoneNumber : jobCardData?.customer_contact
+                    label="Job Card No"
+                    onChange={(e) => setOrderNumber(e.target.value)}
+                    // value={jobCardData?.data?.job_no}
+                    // focused={jobCardData?.data?.job_no}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Customer Id"
+                    {...register("Id")}
+                    focused={jobCardData?.data?.Id}
+                    readOnly
+
+                    // onChange={handleInputChange}
+                    // value={jobCardData?.data?.Id}
+                    // focused={jobCardData?.data?.Id}
+                    // required
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Company"
+                    // value={jobCardData?.data?.company_name}
+                    // focused={jobCardData?.data?.company_name}
+                    {...register("company_name")}
+                    // onChange={(e) =>
+                    //   setJobCardData({
+                    //     ...jobCardData,
+                    //     company_name: e.target.value,
+                    //   })
                     // }
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Customer Contact No (N)"
                     // InputLabelProps={{
-                    //   shrink: !!jobCardData?.customer_contact,
+                    //   shrink: !!jobCardData?.company_name,
                     // }}
                   />
-                </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Address"
-                  // value={jobCardData?.customer_address}
-                  // focused={jobCardData?.customer_address}
-                  {...register("customer_address")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     customer_address: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.customer_address,
-                  // }}
-                />
-              </div>
-            </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Customer"
+                    // value={jobCardData?.data?.customer_name}
+                    // focused={jobCardData?.data?.customer_name}
+                    {...register("customer_name")}
+                    // onChange={(e) =>
+                    //   setJobCardData({
+                    //     ...jobCardData,
+                    //     customer_name: e.target.value,
+                    //   })
+                    // }
+                    // InputLabelProps={{
+                    //   shrink: !!jobCardData?.data?.customer_name,
+                    // }}
+                  />
+                </Grid>
 
-            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-              <div className="mt-3">
-                <Autocomplete
-                  disabled={
-                    jobCardData?.data?.vehicle?.length === 0 ||
-                    !jobCardData?.data?.vehicle
-                  }
-                  disableClearable
-                  freeSolo
-                  className="addJobInputField"
-                  onChange={handleChassisChange}
-                  options={jobCardData?.data?.vehicle?.map(
-                    (option) => option.chassis_no
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      className="addJobInputField"
-                      label="Chassis No"
-                       
-                      {...register("chassis_no")}
-                      inputProps={{
-                        ...params.inputProps,
-                        maxLength: jobCardData?.data?.chassis_no?.length || 30,
-                      }}
-                    />
-                  )}
-                />
-              </div>
-              <div className="flex mt-3  md:gap-0 gap-4 items-center">
-                <Autocomplete
-                  sx={{ marginRight: "5px" }}
-                  freeSolo
-                  className="jobCardSelect2 "
-                  id="free-solo-demo"
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Reg No"
-                      {...register("carReg_no")}
-                    />
-                  )}
-                />
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={2} md={6} sm={3} xs={12}>
+                      <Autocomplete
+                        fullWidth
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            fullWidth
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item lg={10} md={6} sm={9} xs={12}>
+                      <TextField
+                        {...register("customer_contact")}
+                        fullWidth
+                        variant="outlined"
+                        type="tel"
+                        // value={
+                        //   phoneNumber ? phoneNumber : jobCardData?.customer_contact
+                        // }
+                        onChange={handlePhoneNumberChange}
+                        placeholder="Customer Contact No (N)"
+                        // InputLabelProps={{
+                        //   shrink: !!jobCardData?.customer_contact,
+                        // }}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
 
-                <InputMask
-                  mask="99-9999"
-                  maskChar={null}
-                  {...register("car_registration_no")}
-                >
-                  {(inputProps) => (
-                    <TextField
-                      {...inputProps}
-                      {...register("car_registration_no")}
-                      className="carRegField"
-                      label="Car R (N)"
-                      focused={jobCardData?.car_registration_no || ""}
-                    />
-                  )}
-                </InputMask>
-              </div>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Address"
+                    // value={jobCardData?.customer_address}
+                    // focused={jobCardData?.customer_address}
+                    {...register("customer_address")}
+                    // onChange={(e) =>
+                    //   setJobCardData({
+                    //     ...jobCardData,
+                    //     customer_address: e.target.value,
+                    //   })
+                    // }
+                    // InputLabelProps={{
+                    //   shrink: !!jobCardData?.customer_address,
+                    // }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
 
-              {/* <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  // value={jobCardData?.chassis_no}
-                  // focused={jobCardData?.chassis_no}
-                  {...register("chassis_no")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     chassis_no: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.chassis_no,
-                  // }}
-                /> */}
-              {/* </div> */}
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Engine & CC"
-                  // value={jobCardData?.engine_no}
-                  // focused={jobCardData?.engine_no}
-                  {...register("engine_no")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     engine_no: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.engine_no,
-                  // }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle Name"
-                  // value={jobCardData?.vehicle_name}
-                  // focused={jobCardData?.vehicle_name}
-                  {...register("vehicle_name")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     vehicle_name: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.vehicle_name,
-                  // }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Mileage"
-                  // value={jobCardData?.mileage}
-                  // focused={jobCardData?.mileage}
-                  {...register("mileage")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     mileage: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.mileage,
-                  // }}
-                />
-              </div>
-            </div>
+            <Box>
+              <h3 className="text-xl lg:text-3xl font-bold mb-3 ">
+                Vehicle Info
+              </h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div>
+                    <Autocomplete
+                      disabled={
+                        jobCardData?.data?.vehicle?.length === 0 ||
+                        !jobCardData?.data?.vehicle
+                      }
+                      disableClearable
+                      freeSolo
+                      fullWidth
+                      onChange={handleChassisChange}
+                      options={jobCardData?.data?.vehicle?.map(
+                        (option) => option.chassis_no
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          fullWidth
+                          {...params}
+                          className="addJobInputField"
+                          label="Chassis No"
+                          {...register("chassis_no")}
+                          inputProps={{
+                            ...params.inputProps,
+                            maxLength:
+                              jobCardData?.data?.chassis_no?.length || 30,
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={2} md={6} sm={3} xs={12}>
+                      <Autocomplete
+                        sx={{ marginRight: "5px" }}
+                        freeSolo
+                        fullWidth
+                        id="free-solo-demo"
+                        options={cmDmOptions.map((option) => option.label)}
+                        renderInput={(params) => (
+                          <TextField
+                            fullWidth
+                            {...params}
+                            label="Vehicle Reg No"
+                            {...register("carReg_no")}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item lg={10} md={6} sm={9} xs={12}>
+                      <InputMask
+                        mask="99-9999"
+                        maskChar={null}
+                        {...register("car_registration_no")}
+                      >
+                        {(inputProps) => (
+                          <TextField
+                            fullWidth
+                            {...inputProps}
+                            {...register("car_registration_no")}
+                            className="carRegField"
+                            label="Car R (N)"
+                            focused={jobCardData?.car_registration_no || ""}
+                          />
+                        )}
+                      </InputMask>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Engine & CC"
+                    // value={jobCardData?.engine_no}
+                    // focused={jobCardData?.engine_no}
+                    {...register("engine_no")}
+                    // onChange={(e) =>
+                    //   setJobCardData({
+                    //     ...jobCardData,
+                    //     engine_no: e.target.value,
+                    //   })
+                    // }
+                    // InputLabelProps={{
+                    //   shrink: !!jobCardData?.engine_no,
+                    // }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Vehicle Name"
+                    // value={jobCardData?.vehicle_name}
+                    // focused={jobCardData?.vehicle_name}
+                    {...register("vehicle_name")}
+                    // onChange={(e) =>
+                    //   setJobCardData({
+                    //     ...jobCardData,
+                    //     vehicle_name: e.target.value,
+                    //   })
+                    // }
+                    // InputLabelProps={{
+                    //   shrink: !!jobCardData?.vehicle_name,
+                    // }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Mileage"
+                    // value={jobCardData?.mileage}
+                    // focused={jobCardData?.mileage}
+                    {...register("mileage")}
+                    // onChange={(e) =>
+                    //   setJobCardData({
+                    //     ...jobCardData,
+                    //     mileage: e.target.value,
+                    //   })
+                    // }
+                    // InputLabelProps={{
+                    //   shrink: !!jobCardData?.mileage,
+                    // }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
           </div>
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>

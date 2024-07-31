@@ -212,22 +212,7 @@
   font-size: 14px;
 }
 
-.jobCardFieldWraps {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-.jobCardFieldLeftSide,
-.jobCardFieldRightSide {
-  width: 50%;
-}
-.jobCardFieldLeftSide {
-  margin-right: 5px;
-}
-/* .jobCardFieldRightSide {
-  margin-left: 5px;
-} */
+
 
 .topSearchBar {
   width: 200px !important;
@@ -277,29 +262,17 @@
   .vehicleInputs {
     width: 638px !important;
   }
-  .carRegField {
-    width: 635px !important;
-  }
-  .drawer-content .carRegField{
-    width: 560px !important;
-  }
+
+ 
 }
 
 @media only screen and (max-width: 1440px) {
   .vehicleInputs {
     width: 310px !important;
   }
-  /* .carRegField {
-    width: 410px !important;
-  } */
-}
-@media only screen and (min-width: 1024px) {
-  .addJobInputField {
-    width: 98% !important;
-    margin-right: 10px;
-  }
 
 }
+
 
 @media only screen and (max-width: 1024px) {
   .jobCardSingleForm label {
@@ -330,12 +303,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
-  .addJobInputField {
-    width: 100% !important;
-    margin-right: 0px !important;
-  }
-}
+
 
 @media only screen and (max-width: 768px) {
   .addJobLogoImg {
@@ -369,20 +337,13 @@
     font-size: 11px;
   }
 
-  .jobCardFieldWraps {
-    flex-wrap: wrap;
-  }
-  .jobCardFieldLeftSide,
-  .jobCardFieldRightSide {
-    width: 100%;
-  }
+
+
   .addJobCardWraps {
     width: 100%;
     padding: 0px 0px;
   }
-  .jobCardFieldLeftSide {
-    margin-right: 0px;
-  }
+
   .vehicleReport {
     flex-wrap: wrap;
   }
@@ -396,9 +357,7 @@
   .imgWrap {
     height: 300px;
   }
-  /* .carRegField {
-    width: 100% !important;
-  } */
+
   
 }
 

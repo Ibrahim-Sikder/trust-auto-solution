@@ -4,7 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
@@ -513,288 +513,289 @@ const UpdateInvoice = () => {
               <TADatePickers />
             </div>
           </div>
-          <div className="mb-10 jobCardFieldWraps">
-            <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
-              <div className="mt-3">
-                <TextField
-                  type="number"
-                  className="addJobInputField"
-                  label="Serial No"
-                  {...register("job_no")}
-                  value={specificInvoice?.job_no}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      job_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.job_no,
-                  }}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  readonly
-                  className="addJobInputField"
-                  label="Customer Id"
-                  {...register("customerId")}
-                  value={specificInvoice?.Id}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      Id: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.Id,
-                  }}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company Name "
-                  value={specificInvoice?.company_name}
-                  {...register("company_name")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      company_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.company_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer"
-                  value={specificInvoice?.customer_name}
-                  {...register("customer_name")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      customer_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.customer_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Phone"
-                  value={specificInvoice?.customer_contact}
-                  {...register("customer_contact")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      customer_contact: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.customer_contact,
-                  }}
-                /> */}
-                <div className="flex sm:flex-row flex-col gap-1 items-center">
-                  <Autocomplete
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-10 ">
+            <Box>
+              <h3 className="text-xl lg:text-3xl  font-bold mb-3 ">
+                Customer Info
+              </h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    type="number"
+                    fullWidth
+                    label="Serial No"
+                    {...register("job_no")}
+                    value={specificInvoice?.job_no}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        job_no: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.job_no,
                     }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    readonly
+                    fullWidth
+                    label="Customer Id"
+                    {...register("customerId")}
+                    value={specificInvoice?.Id}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        Id: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.Id,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Company Name "
+                    value={specificInvoice?.company_name}
+                    {...register("company_name")}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        company_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.company_name,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Customer"
+                    value={specificInvoice?.customer_name}
+                    {...register("customer_name")}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        customer_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.customer_name,
+                    }}
+                  />
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={2} md={6} sm={3} xs={12}>
+                      <Autocomplete
+                        fullWidth
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            fullWidth
+                            {...params}
+                            label="Select Country Code"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item lg={10} md={6} sm={9} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Phone"
+                        value={specificInvoice?.customer_contact}
+                        {...register("customer_contact")}
+                        onChange={(e) => {
+                          const inputValue = e.target.value;
+                          if (inputValue.length <= 11) {
+                            setSpecificInvoice({
+                              ...specificInvoice,
+                              customer_contact: inputValue,
+                            });
+                          }
+                        }}
+                        InputLabelProps={{
+                          shrink: !!specificInvoice.customer_contact,
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Address"
+                    value={specificInvoice?.customer_address}
+                    {...register("customer_address")}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        customer_address: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.customer_address,
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+
+            <Box>
+              <h3 className="text-xl lg:text-3xl font-bold mb-3">
+                Vehicle Info
+              </h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                    sx={{ marginRight: "5px" }}
+                    freeSolo
+                    fullWidth
+                    id="free-solo-demo"
+                    options={cmDmOptions.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Select Country Code"
-                        variant="outlined"
+                        label="Vehicle Reg No ( New field ) "
+                        {...register("carReg_no")}
                       />
                     )}
                   />
-                  <TextField
-                    className="carRegField"
-                    label="Phone"
-                    value={specificInvoice?.customer_contact}
-                    {...register("customer_contact")}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="flex mt-3  md:gap-0 gap-4 items-center">
+                    <TextField
+                      fullWidth
+                      label="Car R (N)"
+                      {...register("car_registration_no", {
+                        pattern: {
+                          value: /^[\d-]+$/,
+                          message: "Only numbers and hyphens are allowed",
+                        },
+                        minLength: {
+                          value: 7,
+                          message:
+                            "Car registration number must be exactly 6 digits",
+                        },
+                        maxLength: {
+                          value: 7,
+                          message:
+                            "Car registration number must be exactly 6 digits",
+                        },
+                      })}
+                      value={specificInvoice?.car_registration_no}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value.length === 7) {
+                          setRegistrationError("");
+                        } else if (value.length < 7) {
+                          setRegistrationError(
+                            "Car registration number must be 7 characters"
+                          );
+                        }
+                        const formattedValue = value
+                          .replace(/\D/g, "")
+                          .slice(0, 6)
+                          .replace(/(\d{2})(\d{1,4})/, "$1-$2");
                         setSpecificInvoice({
                           ...specificInvoice,
-                          customer_contact: inputValue,
+                          car_registration_no: formattedValue,
                         });
+                      }}
+                      InputLabelProps={{
+                        shrink: !!specificInvoice?.car_registration_no,
+                      }}
+                      error={
+                        !!errors.car_registration_no || !!registrationError
                       }
-                    }}
+                    />
+                  </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Chassis No"
+                    value={specificInvoice?.chassis_no}
+                    {...register("chassis_no")}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        chassis_no: e.target.value,
+                      })
+                    }
                     InputLabelProps={{
-                      shrink: !!specificInvoice.customer_contact,
+                      shrink: !!specificInvoice.chassis_no,
                     }}
                   />
-                </div>
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Address"
-                  value={specificInvoice?.customer_address}
-                  {...register("customer_address")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      customer_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.customer_address,
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-
-              <div className="flex mt-3  md:gap-0 gap-4 items-center">
-                <Autocomplete
-                  sx={{ marginRight: "5px" }}
-                  freeSolo
-                  className="jobCardSelect2 "
-                  id="free-solo-demo"
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Reg No ( New field ) "
-                      {...register("carReg_no")}
-                    />
-                  )}
-                />
-
-                <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers and hyphens are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  value={specificInvoice?.car_registration_no}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length === 7) {
-                      setRegistrationError("");
-                    } else if (value.length < 7) {
-                      setRegistrationError(
-                        "Car registration number must be 7 characters"
-                      );
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Engine & CC"
+                    value={specificInvoice?.engine_no}
+                    {...register("engine_no")}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        engine_no: e.target.value,
+                      })
                     }
-                    const formattedValue = value
-                      .replace(/\D/g, "")
-                      .slice(0, 6)
-                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      car_registration_no: formattedValue,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!specificInvoice?.car_registration_no,
-                  }}
-                  error={!!errors.car_registration_no || !!registrationError}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  value={specificInvoice?.chassis_no}
-                  {...register("chassis_no")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      chassis_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.chassis_no,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Engine & CC"
-                  value={specificInvoice?.engine_no}
-                  {...register("engine_no")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      engine_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.engine_no,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle Name"
-                  value={specificInvoice?.vehicle_name}
-                  {...register("vehicle_name")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      vehicle_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.vehicle_name,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Mileage"
-                  value={specificInvoice?.mileage}
-                  {...register("mileage")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      mileage: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.mileage,
-                  }}
-                />
-              </div>
-            </div>
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.engine_no,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Vehicle Name"
+                    value={specificInvoice?.vehicle_name}
+                    {...register("vehicle_name")}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        vehicle_name: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.vehicle_name,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Mileage"
+                    value={specificInvoice?.mileage}
+                    {...register("mileage")}
+                    onChange={(e) =>
+                      setSpecificInvoice({
+                        ...specificInvoice,
+                        mileage: e.target.value,
+                      })
+                    }
+                    InputLabelProps={{
+                      shrink: !!specificInvoice.mileage,
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
           </div>
 
           <div className="flex items-center justify-around labelWrap">
@@ -814,7 +815,7 @@ const UpdateInvoice = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "parts")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
@@ -996,6 +997,7 @@ const UpdateInvoice = () => {
               </>
             )}
           </div>
+
           <div className="flex items-center justify-around labelWrap">
             <label>SL No </label>
             <label>Service description </label>
@@ -1013,7 +1015,7 @@ const UpdateInvoice = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "service")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
@@ -1255,6 +1257,20 @@ const UpdateInvoice = () => {
         </div>
 
         <div>
+          <div className="mt-8 buttonGroup">
+            <div>
+              <Button>Preview</Button>
+
+              <Button>Print </Button>
+              <Button>Download </Button>
+              <Button>Money Receipt </Button>
+            </div>
+            <div className="submitQutationBtn">
+              <button type="submit" className="">
+                Add To Invoice
+              </button>
+            </div>
+          </div>
           <div className="flex  justify-center align-items-center">
             <Button
               sx={{ background: "#42A1DA" }}

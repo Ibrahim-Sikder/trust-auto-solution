@@ -28,10 +28,7 @@
 	padding: 10px 75px;
 	flex-wrap:wrap;
 }
-.productField {
-	width: 600px !important;
-	margin: 5px !important;
-}
+
 .productFieldWrap {
 	display: flex;
 	align-items: center;
@@ -187,16 +184,11 @@
 	.productHeadWrap {
 		padding: 10px 35px;
 	}
-	.productField {
-		width: 450px !important;
-	}
+
 	
 }
 @media only screen and (max-width: 768px) {
 
-	.productField {
-		width: 100% !important;
-	}
 	.productFieldWrap {
 		display: block
 	}
@@ -217,16 +209,4 @@
 
 }
 
-@media only screen and (max-width: 375px) {
 
-	/* .productField {
-		width: 350px !important;
-	} */
-}
-
-@media only screen and (max-width: 300px) {
-
-	/* .productField {
-		width: 220px !important;
-	} */
-}
