@@ -75,6 +75,7 @@ import BillPayInvoice from "../pages/BillPay/BillPayInvoice";
 import PurchaseList from "../pages/Home/Parchase/PurchasList";
 import Income from "../pages/Income/Income";
 import IncomeList from "../pages/Income/IncomeList";
+import UpdateIncome from "../pages/Income/UpdateIncome";
 
 export const router = createBrowserRouter([
   {
@@ -402,6 +403,10 @@ export const router = createBrowserRouter([
       {
         path: "income-list",
         element: <IncomeList />,
+      },
+      {
+        path: "update-income",
+        element: <UpdateIncome />,
       },
       {
         path: "tests",

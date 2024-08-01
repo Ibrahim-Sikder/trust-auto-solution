@@ -113,12 +113,8 @@ const IncomeList = () => {
                 <TableCell align="center">{row.Date}</TableCell>
                 <TableCell align="center">
                   <div className="flex justify-center">
-                    <Link to={`/dashboard/billpay-view`}>
-                      <IconButton title="See Profile">
-                        <VisibilityIcon className="text-green-600" />
-                      </IconButton>
-                    </Link>
-                    <Link to={`/dashboard/billpay-update`}>
+                   
+                    <Link to={`/dashboard/update-income`}>
                       <IconButton title="Edit">
                         <EditIcon />
                       </IconButton>

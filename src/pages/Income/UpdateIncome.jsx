@@ -22,19 +22,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { incomeCategories } from "../../constant";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
-const AddExpense = () => {
+const UpdateIncome = () => {
   const [value, setValue] = useState();
 
   return (
@@ -57,7 +46,7 @@ const AddExpense = () => {
             textAlign="center"
             marginBottom="20px"
           >
-            Add Income
+            Update Income
           </Typography>
           <form>
             <Grid container spacing={2}>
@@ -148,4 +137,4 @@ const AddExpense = () => {
   );
 };
 
-export default AddExpense;
+export default UpdateIncome;
