@@ -595,7 +595,7 @@ const AddExpense = () => {
             </Box>
             <div className="my-2">
               {createError && (
-                <ErrorMessage messages={createError.data.errorSources} />
+                <ErrorMessage messages={createError?.data?.errorSources} />
               )}
             </div>
             <div className="mt-2 savebtn">
