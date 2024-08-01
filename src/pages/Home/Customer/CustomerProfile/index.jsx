@@ -11,15 +11,13 @@ import CustomerMoneyList from "./CustomerMoneyList";
 import CustomerAccount from "./CustomerAccount";
 import VehicleDetails from "./VehicleDetails";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import Message from "../../../../shared/Message/Message";
 import { useGetSingleCustomerQuery } from "../../../../redux/api/customerApi";
 import Loading from "../../../../components/Loading/Loading";
 
 const CustomerProfile = () => {
- 
-  
   const [value, setValue] = useState(0);
 
   const location = useLocation();
@@ -31,13 +29,9 @@ const CustomerProfile = () => {
     error: customerError,
   } = useGetSingleCustomerQuery(id);
 
-   
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
- 
 
   if (isLoading) {
     return <Loading />;
@@ -46,7 +40,7 @@ const CustomerProfile = () => {
   if (customerError) {
     return <div>Something went wrong</div>;
   }
-  // console.log({data})
+  
 
   const tabStyles = {
     width: 115,
@@ -138,33 +132,30 @@ const CustomerProfile = () => {
           <CustomerAccount profileData={profileData} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <VehicleDetails />
+          <VehicleDetails id={id} />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <CustomerJobCardList
-            // jobCardData={jobCardData}
-            // setJobCardData={setJobCardData}
+             
+             
             id={id}
           />
         </TabPanel>
         <TabPanel value={value} index={3}>
           <CustomerQoutationList
-            // quotationData={quotationData}
-            // setQuotationData={setQuotationData}
+            
             id={id}
           />
         </TabPanel>
         <TabPanel value={value} index={4}>
           <CustomerInvoiceList
-            // invoiceData={invoiceData}
-            // setInvoiceData={setInvoiceData}
+             
             id={id}
           />
         </TabPanel>
         <TabPanel value={value} index={5}>
           <CustomerMoneyList
-            // moneyReceiptData={moneyReceiptData}
-            // setMoneyReceiptData={setMoneyReceiptData}
+             
             id={id}
           />
         </TabPanel>

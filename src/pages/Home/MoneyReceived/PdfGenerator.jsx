@@ -1,38 +1,29 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
-import { useRef, useEffect, useState } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { usePDF } from 'react-to-pdf';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
-import { Email, Home, WhatsApp, LocalPhone } from '@mui/icons-material';
-import { Link, useLocation } from 'react-router-dom';
-import logo from '../../../../public/assets/logo.png';
-import './MoneyReceived.css';
-import './PrintStyle.css'
+import { useRef, useEffect, useState } from "react";
+import { useReactToPrint } from "react-to-print";
+import { usePDF } from "react-to-pdf";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
+import { Email, Home, WhatsApp, LocalPhone } from "@mui/icons-material";
+import { Link, useLocation } from "react-router-dom";
+import logo from "../../../../public/assets/logo.png";
+import "./MoneyReceived.css";
+import "./PrintStyle.css";
+import { useGetSingleMoneyReceiptQuery } from "../../../redux/api/money-receipt";
+import Loading from "../../../components/Loading/Loading";
 const PdfGenerator = () => {
   const location = useLocation();
-  const id = new URLSearchParams(location.search).get('id');
-  const [specificMoneyReceipt, setSpecificMoneyReceipt] = useState({});
-  console.log(specificMoneyReceipt)
+  const id = new URLSearchParams(location.search).get("id");
+
   const componentRef = useRef();
-  const { targetRef } = usePDF({ filename: 'page.pdf' });
+  const { targetRef } = usePDF({ filename: "page.pdf" });
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-         
-          setSpecificMoneyReceipt(data);
-        });
-    }
-  }, [id]);
+  const { data: singleMoneyReceipt, isLoading } =
+    useGetSingleMoneyReceiptQuery(id);
 
   const downloadPdf = async () => {
     const targetElement = componentRef.current;
@@ -46,11 +37,11 @@ const PdfGenerator = () => {
       scale: 2, // Increase scale for better quality
     });
 
-    const imgData = canvas.toDataURL('image/png');
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF({
-      orientation: 'portrait', // Set to 'portrait' for A4 size
-      unit: 'mm',
-      format: 'a4',
+      orientation: "portrait", // Set to 'portrait' for A4 size
+      unit: "mm",
+      format: "a4",
     });
 
     // Set a fixed height of 500px
@@ -61,12 +52,25 @@ const PdfGenerator = () => {
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     // Add image to PDF with padding and fixed height
-    pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight, null, null, null, pdfHeight);
+    pdf.addImage(
+      imgData,
+      "PNG",
+      10,
+      10,
+      imgWidth,
+      imgHeight,
+      null,
+      null,
+      null,
+      pdfHeight
+    );
 
-    pdf.save('downloaded.pdf');
+    pdf.save("downloaded.pdf");
   };
 
-
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <section className="viewMoneyReceiptWrap">
@@ -82,7 +86,7 @@ const PdfGenerator = () => {
                 <h2 className="receivedTitle receivedTitle2">
                   Trust Auto Solution{" "}
                 </h2>
-                <span className='mt-1 block'>
+                <span className="mt-1 block">
                   It's trusted computerized Organization for all kinds of
                   vehicle check up & maintenance such as computerized Engine
                   Analysis, Engine tune up, Denting, Painting, Engine, AC,
@@ -100,13 +104,13 @@ const PdfGenerator = () => {
                 </div>
                 <div className="flex items-center">
                   <Home className="hotlineIcon"> </Home>
-                  <small >
+                  <small>
                     Ka-93/4/C Kuril Bishawroad, <br /> Dhaka-1212
                   </small>
                 </div>
                 <div className="flex items-center">
                   <WhatsApp className="hotlineIcon" />
-                  <small >+88 1972-216465</small>
+                  <small>+88 1972-216465</small>
                 </div>
               </div>
             </div>
@@ -115,66 +119,99 @@ const PdfGenerator = () => {
             </div>
 
             <div className="flex justify-between ">
-              <small>Job No: {specificMoneyReceipt?.job_no} </small>
-              <small>Date: {specificMoneyReceipt?.default_date} </small>
+              <small>Job No: {singleMoneyReceipt?.data?.job_no} </small>
+              <small>Date: {singleMoneyReceipt?.data?.default_date} </small>
             </div>
             <div className="allInputWraps">
               <div className="flex items-center justify-center receivedField ">
                 <label className="receivedMoneyText2">
                   Received with thanks from{" "}
                 </label>
-                {/* <input disabled  type="text" autoComplete='off' /> */}
-                <span className="text-sm">{specificMoneyReceipt.thanks_from}</span>
+
+                <span className="text-sm">
+                  {singleMoneyReceipt?.data?.thanks_from}
+                </span>
               </div>
               <div className=" payAdvance mt-2">
                 <div className="flex items-center justify-center  receivedField">
                   <label className="advance2">
-                    Advance/Final Payment against bill no:{" "}
+                    {singleMoneyReceipt?.data?.against_bill_no_method}
                   </label>
-                  <span className="text-sm">{specificMoneyReceipt.against_bill_no}</span>
+                  <span className="text-sm">
+                    {singleMoneyReceipt?.data?.job_no}
+                  </span>
                 </div>
                 <div className="flex items-center justify-center receivedField">
                   <label className="vehicleText2">Vehicle No: </label>
-                  <span className="text-sm">{specificMoneyReceipt.vehicle_no}</span>{" "}
+                  <span className="text-sm">
+                    {singleMoneyReceipt?.data?.vehicle?.fullRegNum}
+                  </span>{" "}
                 </div>
               </div>
               <div className="payAdvance mt-2">
                 <div className="flex items-center justify-center  receivedField">
                   <label className="checqueText2">Bkash</label>
-                  <span className="text-sm">{specificMoneyReceipt.cheque_no}</span>{" "}
+                  <span className="text-sm">
+                    {singleMoneyReceipt?.data?.payment_number}
+                  </span>{" "}
                 </div>
                 <div className="flex items-center justify-center receivedField">
                   <label className="date">Date: </label>
-                  <span className="text-sm">{specificMoneyReceipt?.date_one}</span>
+                  <span className="text-sm">
+                    {singleMoneyReceipt?.data?.date_one}
+                  </span>
                 </div>
               </div>
               <div className=" payAdvance mt-2">
                 <div className="flex items-center justify-center  receivedField">
                   <label className="backText2">Bank : </label>
-                  <span className="text-sm">{specificMoneyReceipt.bank}</span>{" "}
+                  <span className="text-sm">
+                    {singleMoneyReceipt?.data?.bank_number}
+                  </span>{" "}
                 </div>
                 <div className="flex items-center justify-center receivedField">
                   <label className="date">Date : </label>
-                  <span className="text-sm">{specificMoneyReceipt?.date_two}</span>{" "}
+                  <span className="text-sm">
+                    {singleMoneyReceipt?.data?.date_two}
+                  </span>{" "}
                 </div>
               </div>
               <div className="amount moneyReceiptAmount mt-2">
                 <div className="flex items-center justify-center receivedField">
                   <label className="totalAmountText">Total Amount Tk:</label>
-                  <input readOnly className="amountTextBG" type="text" defaultValue={specificMoneyReceipt.total_amount} />
+                  <input
+                    readOnly
+                    className="amountTextBG"
+                    type="text"
+                    defaultValue={singleMoneyReceipt?.data?.total_amount}
+                  />
                 </div>
-                <div className="flex items-center justify-center receivedField">
-                  <label>Advance:</label>
-                  <input readOnly className="amountTextBG" type="text" defaultValue={specificMoneyReceipt.advance} />
-                </div>
+                {singleMoneyReceipt?.data?.advance && (
+                  <div className="flex items-center justify-center receivedField">
+                    <label>Advance:</label>
+                    <input
+                      readOnly
+                      className="amountTextBG"
+                      type="text"
+                      defaultValue={singleMoneyReceipt?.data?.advance}
+                    />
+                  </div>
+                )}
                 <div className="flex items-center justify-center receivedField">
                   <label>Remaining:</label>
-                  <input readOnly className="amountTextBG" type="text" defaultValue={specificMoneyReceipt.remaining} />
+                  <input
+                    readOnly
+                    className="amountTextBG"
+                    type="text"
+                    defaultValue={singleMoneyReceipt?.data?.remaining}
+                  />
                 </div>
               </div>
               <div className="wordTaka mt-2 receivedField flex items-center justify-center">
                 <label className="tkText">in word (taka) </label>
-                <span className='text-[12px]'>{specificMoneyReceipt.taka_in_word}</span>
+                <span className="text-[12px]">
+                  {singleMoneyReceipt?.data?.taka_in_word}
+                </span>
               </div>
             </div>
             <div className="mt-5">
@@ -185,7 +222,6 @@ const PdfGenerator = () => {
       </div>
       <div className="moneyReceiptBtnGroup mt-5">
         <button onClick={handlePrint}>Print </button>
-        {/* <button onClick={downloadPdf}>Download </button> */}
         <Link to={`/dashboard/money-receipt-update?id=${id}`}>
           <button> Edit </button>
         </Link>

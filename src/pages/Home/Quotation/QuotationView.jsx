@@ -262,12 +262,11 @@ const Detail = () => {
                       <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
                         <span className="w-[200px] ">
                           {" "}
-                          <b>Customer ID:</b> {invoicePreview.Id}
+                          <b>ID:</b> {invoicePreview.Id}
                         </span>
                         <b className="mr-[88px] uppercase">Quotation</b>
                         <b>
-                          Date:
-                          {formatDate(invoicePreview?.createdAt)}
+                          Date: {invoicePreview?.date}
                         </b>
                       </div>
 
@@ -281,12 +280,26 @@ const Detail = () => {
                             <b>Address</b>
                           </div>
                           <div className="invoiceCustomerInfo">
-                            <small>: {invoicePreview.job_no}ssssssddddd</small>
-                            <small>: {invoicePreview.company_name}</small>
-                            <small>: {invoicePreview.customer_name}</small>
-                            <small>: {invoicePreview.customer_contact}</small>
+                            <small>: {invoicePreview?.quotation_no}</small>
                             <small>
-                              : {invoicePreview.customer_address}dddddddddddd
+                              : {invoicePreview?.customer?.company_name ||
+                                invoicePreview?.company?.company_name ||
+                                invoicePreview?.showRoom?.company_name}
+                            </small>
+                            <small>
+                              : {invoicePreview?.customer?.customer_name ||
+                                invoicePreview?.company?.vehicle_username ||
+                                invoicePreview?.showRoom?.vehicle_username}
+                            </small>
+                            <small>
+                              : {invoicePreview?.customer?.fullCustomerNum ||
+                                invoicePreview?.company?.fullCustomerNum ||
+                                invoicePreview?.showRoom?.fullCustomerNum}
+                            </small>
+                            <small>
+                              : {invoicePreview?.customer?.customer_address ||
+                                invoicePreview?.company?.company_address ||
+                                invoicePreview?.showRoom?.showRoom_address}
                             </small>
                           </div>
                         </div>
@@ -301,12 +314,12 @@ const Detail = () => {
                           </div>
                           <div className="invoiceCustomerInfo">
                             <small>
-                              : {invoicePreview.car_registration_no}
+                              : {invoicePreview?.vehicle?.fullRegNum}
                             </small>
-                            <small>: {invoicePreview.chassis_no}</small>
-                            <small>: {invoicePreview.engine_no}</small>
-                            <small>: {invoicePreview.vehicle_name}</small>
-                            <small>: {invoicePreview.mileage}</small>
+                            <small>: {invoicePreview?.vehicle?.chassis_no}</small>
+                            <small>: {invoicePreview?.vehicle?.engine_no}</small>
+                            <small>: {invoicePreview?.vehicle?.vehicle_name}</small>
+                            <small>: {invoicePreview?.vehicle?.mileage}</small>
                           </div>
                         </div>
                       </div>
@@ -344,42 +357,7 @@ const Detail = () => {
                       </>
                     </tbody>
                   </table>
-                  {/* <div className="flex items-center justify-end text-[12px] mt-2">
-                    <span>Total Amount :</span>
-                    <b className="ml-3 ">৳ 5456765</b>
-                  </div> */}
-                  {/* <table className="mt-5 invoiceTable2 qutationTables">
-                    <thead className="tableWrap">
-                      <tr>
-                        <th className="serialNo">SL No</th>
-                        <th>Description</th>
-                        <th>Qty </th>
-                        <th>Rate</th>
-                        <th>Amount </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <>
-                        {pageData?.map((data, index) => (
-                          <tr key={data._id}>
-                            <td>
-                              {pageNumber === 0 && index + 1}
-                              {pageNumber === 1 && 28 + index + 1}
-                              {pageNumber === 2 && pageNumber * 30 + index}
-                              {pageNumber === 3 && pageNumber * 30 + index + 1}
-                              {pageNumber === 4 && pageNumber * 30 + index + 2}
-                              {pageNumber === 5 && pageNumber * 30 + index + 3}
-                              {pageNumber === 6 && pageNumber * 30 + index + 4}
-                            </td>
-                            <td>{data.description}</td>
-                            <td>{data.quantity}</td>
-                            <td>{data.rate}</td>
-                            <td>{data.total}</td>
-                          </tr>
-                        ))}
-                      </>
-                    </tbody>
-                  </table> */}
+
                   <div className="flex items-center justify-end text-[12px] mt-2">
                     <span>Total Amount :</span>
                     <b className="ml-3 ">৳ {invoicePreview?.parts_total}</b>

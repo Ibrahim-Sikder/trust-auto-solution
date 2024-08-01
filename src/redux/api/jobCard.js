@@ -11,10 +11,10 @@ const jobCardApi = baseApi.injectEndpoints({
       invalidatesTags: ["jobCard"],
     }),
     getAllJobCards: builder.query({
-      query: ({ limit, page, searchTerm }) => ({
+      query: ({ id, limit, page, searchTerm }) => ({
         url: `/jobCards`,
         method: "GET",
-        params: { limit, page, searchTerm },
+        params: { id,limit, page, searchTerm },
       }),
       providesTags: ["jobCard"],
     }),

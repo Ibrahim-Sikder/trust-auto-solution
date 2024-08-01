@@ -1023,7 +1023,7 @@ const UpdateJobCard = () => {
                 />
 
                 <InputMask
-                  mask="**-****"
+                  mask="99-9999"
                   maskChar={null}
                   {...register("car_registration_no")}
                 >

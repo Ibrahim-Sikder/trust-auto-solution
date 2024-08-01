@@ -37,6 +37,7 @@ import {
   Typography,
 } from "@mui/material";
 import { HiOutlineSearch } from "react-icons/hi";
+import uploadFile from "../../../helper/uploadFile";
 
 const AddExpense = () => {
   const textInputRef = useRef(null);
@@ -47,7 +48,7 @@ const AddExpense = () => {
 
   const payment = watch("payment_method");
   const [url, setUrl] = useState("");
-  const [imageLoading, setImageLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const limit = 10;
@@ -68,30 +69,16 @@ const AddExpense = () => {
     searchTerm: filterType,
   });
 
-  const handleImageUpload = async (e) => {
-    try {
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("image", file);
-      setImageLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files?.[0];
 
-      const data = await response.json();
-      if (data.message === "Image uploaded successful") {
-        setUrl(data.image_url);
-        setImageLoading(false);
-      }
-    } catch (error) {
-      setImageLoading(false);
+    if (file) {
+      const uploadPhoto = await uploadFile(file);
+      setUrl(uploadPhoto?.secure_url);
+      setLoading(false);
     }
   };
-
   const onSubmit = async (data) => {
     data.payment_method = payment;
     data.image = url;
@@ -229,7 +216,7 @@ const AddExpense = () => {
                           <span>
                             <FaCloudUploadAlt size={30} className="mr-2" />
                           </span>
-                          {imageLoading ? (
+                          {loading ? (
                             <span>Uploading...</span>
                           ) : (
                             <>
@@ -608,11 +595,11 @@ const AddExpense = () => {
             </Box>
             <div className="my-2">
               {createError && (
-                <ErrorMessage messages={createError.data.errorSources} />
+                <ErrorMessage messages={createError?.data?.errorSources} />
               )}
             </div>
             <div className="mt-2 savebtn">
-              <button disabled={createLoading}>Add Expense </button>
+              <button disabled={createLoading || loading}>Add Expense </button>
             </div>
           </form>
         </div>

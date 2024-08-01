@@ -6,34 +6,28 @@ import { ImUserTie } from "react-icons/im";
 import "../../Customer/Customer.css";
 import SupplierPaymentList from "../../Suppliers/SupplierPaymentList";
 import CompanyAccount from "./CompanyAccount";
- 
+
 import CompanyJobCardList from "./CompanyJobCardList";
 import CompanyQuotationList from "./CompanyQuotationList";
 import CompanyInvoiceList from "./CompanyInvoiceList";
 import CompanyMoneyList from "./CompanyMoneyList";
-import { useEffect, useState } from "react";
-import {  useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import Message from "../../../../shared/Message/Message";
 import VehicleDetails from "../../Customer/CustomerProfile/VehicleDetails";
 import { useGetSingleCompanyQuery } from "../../../../redux/api/companyApi";
 import Loading from "../../../../components/Loading/Loading";
+import CustomerJobCardList from "../../Customer/CustomerProfile/CustomerJobCardList";
+import CustomerQoutationList from "../../Customer/CustomerProfile/CustomerQoutationList";
+import CustomerInvoiceList from "../../Customer/CustomerProfile/CustomerInvoiceList";
+import CustomerMoneyList from "../../Customer/CustomerProfile/CustomerMoneyList";
 const CompanyProfile = () => {
-  const [loading, setLoading] = useState(false);
-  // const [profileData, setProfileData] = useState({});
-  // console.log(profileData);
-
   const [jobCardData, setJobCardData] = useState([]);
   const [quotationData, setQuotationData] = useState([]);
-
-  // console.log(quotationData);
-
   const [invoiceData, setInvoiceData] = useState([]);
-  // console.log(invoiceData);
 
   const [moneyReceiptData, setMoneyReceiptData] = useState([]);
-  // console.log(moneyReceiptData);
 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
@@ -43,87 +37,6 @@ const CompanyProfile = () => {
     isLoading,
     error: companyError,
   } = useGetSingleCompanyQuery(id);
-
-  // useEffect(() => {
-  //   if (id) {
-  //     setLoading(true);
-  //     fetch(`${import.meta.env.VITE_API_URL}/api/v1/company/${id}`)
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setProfileData(data);
-  //         setLoading(false);
-  //       });
-  //   }
-  // }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setJobCardData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setQuotationData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setInvoiceData(data.jobCard);
-          }
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "success") {
-            setMoneyReceiptData(data.card);
-          }
-        })
-        .catch((error) => {
-          toast.error(error.message);
-          // Handle errors
-        });
-    }
-  }, [id]);
 
   const [value, setValue] = useState(0);
 
@@ -226,50 +139,48 @@ const CompanyProfile = () => {
         </Box>
 
         <TabPanel value={value} index={0}>
-          <CompanyAccount
-            profileData={profileData}
-            // jobCardData={jobCardData}
-            // quotationData={quotationData}
-            // invoiceData={invoiceData}
-            // moneyReceiptData={moneyReceiptData}
-          />
+          <CompanyAccount profileData={profileData} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <VehicleDetails/>
+          <VehicleDetails id={id} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <CompanyJobCardList
+          {/* <CompanyJobCardList
             jobCardData={jobCardData}
             setJobCardData={setJobCardData}
             id={id}
-          />
+          /> */}
+          <CustomerJobCardList id={id} />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <CompanyQuotationList
+          {/* <CompanyQuotationList
             quotationData={quotationData}
             setQuotationData={setQuotationData}
             id={id}
-          />
+          /> */}
+          <CustomerQoutationList id={id} />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          <CompanyInvoiceList
+          {/* <CompanyInvoiceList
             invoiceData={invoiceData}
             setInvoiceData={setInvoiceData}
             id={id}
-          />
+          /> */}
+          <CustomerInvoiceList id={id} />
         </TabPanel>
         <TabPanel value={value} index={5}>
-          <CompanyMoneyList
+          {/* <CompanyMoneyList
             moneyReceiptData={moneyReceiptData}
             setMoneyReceiptData={setMoneyReceiptData}
             id={id}
-          />
+          /> */}
+          <CustomerMoneyList id={id} />
         </TabPanel>
         <TabPanel value={value} index={6}>
           <SupplierPaymentList />
         </TabPanel>
         <TabPanel value={value} index={7}>
-         <Message/>
+          <Message />
         </TabPanel>
       </div>
 

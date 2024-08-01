@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import InputMask from "react-input-mask";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
@@ -27,7 +28,7 @@ const UpdateInvoice = () => {
   const [advance, setAdvance] = useState(0);
 
   const [error, setError] = useState("");
-  const [registrationError, setRegistrationError] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [removeButton, setRemoveButton] = useState("");
   const [reload, setReload] = useState(false);
@@ -72,8 +73,112 @@ const UpdateInvoice = () => {
 
   const [updateInvoice, { isLoading: updateLoading, error: updateError }] =
     useUpdateInvoiceMutation();
+
   const [removeInvoice, { isLoading: removeLoading, error: removeError }] =
     useRemoveInvoiceMutation();
+
+  useEffect(() => {
+    if (specificInvoice?.date) {
+      setSelectedDate(specificInvoice.date);
+    }
+  }, [specificInvoice]);
+
+  useEffect(() => {
+    if (specificInvoice?.user_type === "customer") {
+      reset({
+        Id: specificInvoice?.Id,
+        job_no: specificInvoice?.job_no,
+        company_name: specificInvoice?.customer?.company_name,
+
+        customer_name: specificInvoice?.customer?.customer_name,
+        customer_country_code: specificInvoice?.customer?.customer_country_code,
+        customer_contact: specificInvoice?.customer?.customer_contact,
+
+        customer_address: specificInvoice?.customer?.customer_address,
+
+        carReg_no: specificInvoice?.vehicle?.carReg_no,
+        car_registration_no: specificInvoice?.vehicle?.car_registration_no,
+        engine_no: specificInvoice?.vehicle?.engine_no,
+        vehicle_brand: specificInvoice?.vehicle?.vehicle_brand,
+        vehicle_name: specificInvoice?.vehicle?.vehicle_name,
+        chassis_no: specificInvoice?.vehicle?.chassis_no,
+        mileage: specificInvoice?.vehicle?.mileage,
+      });
+    }
+    if (specificInvoice?.user_type === "company") {
+      reset({
+        Id: specificInvoice?.Id,
+        job_no: specificInvoice?.job_no,
+        company_name: specificInvoice?.company?.company_name,
+        vehicle_username: specificInvoice?.company?.vehicle_username,
+        company_address: specificInvoice?.company?.company_address,
+        company_contact: specificInvoice?.company?.company_contact,
+        company_country_code: specificInvoice?.company?.company_country_code,
+        company_email: specificInvoice?.company?.company_email,
+        customer_address: specificInvoice?.company?.customer_address,
+
+        carReg_no: specificInvoice?.vehicle?.carReg_no,
+        car_registration_no: specificInvoice?.vehicle?.car_registration_no,
+        engine_no: specificInvoice?.vehicle?.engine_no,
+        vehicle_brand: specificInvoice?.vehicle?.vehicle_brand,
+        vehicle_name: specificInvoice?.vehicle?.vehicle_name,
+        chassis_no: specificInvoice?.vehicle?.chassis_no,
+        mileage: specificInvoice?.vehicle?.mileage,
+      });
+    }
+    if (specificInvoice?.user_type === "showRoom") {
+      reset({
+        Id: specificInvoice?.Id,
+        job_no: specificInvoice?.job_no,
+        showRoom_name: specificInvoice?.showRoom_name,
+        vehicle_username: specificInvoice?.vehicle_username,
+        showRoom_address: specificInvoice?.showRoom_address,
+        company_name: specificInvoice?.company_name,
+        company_contact: phoneNumber || specificInvoice?.company_contact,
+        company_country_code: specificInvoice?.company_country_code,
+
+        carReg_no: specificInvoice?.vehicle?.carReg_no,
+        car_registration_no: specificInvoice?.vehicle?.car_registration_no,
+        engine_no: specificInvoice?.vehicle?.engine_no,
+        vehicle_brand: specificInvoice?.vehicle?.vehicle_brand,
+        vehicle_name: specificInvoice?.vehicle?.vehicle_name,
+        chassis_no: specificInvoice?.vehicle?.chassis_no,
+
+        mileage: specificInvoice?.vehicle?.mileage,
+      });
+    }
+  }, [
+    phoneNumber,
+    reset,
+    specificInvoice?.Id,
+    specificInvoice?.company?.company_address,
+    specificInvoice?.company?.company_contact,
+    specificInvoice?.company?.company_country_code,
+    specificInvoice?.company?.company_email,
+    specificInvoice?.company?.company_name,
+    specificInvoice?.company?.customer_address,
+    specificInvoice?.company?.vehicle_username,
+    specificInvoice?.company_contact,
+    specificInvoice?.company_country_code,
+    specificInvoice?.company_name,
+    specificInvoice?.customer?.company_name,
+    specificInvoice?.customer?.customer_address,
+    specificInvoice?.customer?.customer_contact,
+    specificInvoice?.customer?.customer_country_code,
+    specificInvoice?.customer?.customer_name,
+    specificInvoice?.job_no,
+    specificInvoice?.showRoom_address,
+    specificInvoice?.showRoom_name,
+    specificInvoice?.user_type,
+    specificInvoice?.vehicle?.carReg_no,
+    specificInvoice?.vehicle?.car_registration_no,
+    specificInvoice?.vehicle?.chassis_no,
+    specificInvoice?.vehicle?.engine_no,
+    specificInvoice?.vehicle?.mileage,
+    specificInvoice?.vehicle?.vehicle_brand,
+    specificInvoice?.vehicle?.vehicle_name,
+    specificInvoice?.vehicle_username,
+  ]);
 
   const handleRemove = (index) => {
     if (!index) {
@@ -359,13 +464,21 @@ const UpdateInvoice = () => {
   };
 
   const calculateDue = () => {
+    let due;
+
     if (advance && advance !== 0) {
-      const due = calculateFinalTotal() - advance;
-      return due;
+      due = calculateFinalTotal() - advance;
     } else {
-      const due = calculateFinalTotal() - specificInvoice.advance;
-      return parseFloat(due).toFixed(2);
+      due = calculateFinalTotal() - specificInvoice.advance;
     }
+
+    if (isNaN(due)) {
+      due = 0;
+    } else {
+      due = parseFloat(due).toFixed(2);
+    }
+
+    return !isNaN(due) ? due : specificInvoice?.due || 0;
   };
 
   const handleAddClick = () => {
@@ -451,7 +564,53 @@ const UpdateInvoice = () => {
     setRemoveButton("");
 
     try {
-      const values = {
+      const customer = {
+        company_name: data.company_name,
+
+        customer_name: data.customer_name,
+        customer_contact: data.customer_contact,
+        customer_country_code: data.company_country_code,
+
+        customer_address: data.customer_address,
+      };
+
+      const company = {
+        company_name: data.company_name,
+        vehicle_username: data.vehicle_username,
+        company_address: data.company_address,
+        company_contact: data.company_contact,
+        company_country_code: data.company_country_code,
+      };
+
+      const showRoom = {
+        showRoom_name: data.showRoom_name,
+        vehicle_username: data.vehicle_username,
+
+        company_name: data.company_name,
+        company_contact: data.company_contact,
+        company_country_code: data.company_country_code,
+
+        company_address: data.company_address,
+      };
+
+      data.mileage = Number(data.mileage);
+
+      const vehicle = {
+        carReg_no: data.carReg_no,
+        car_registration_no: data.car_registration_no,
+        chassis_no: data.chassis_no,
+        engine_no: data.engine_no,
+        vehicle_brand: data.vehicle_brand,
+        vehicle_name: data.vehicle_name,
+        mileage: data.mileage,
+      };
+
+      const invoice = {
+        user_type: specificInvoice?.user_type,
+        Id: specificInvoice?.Id,
+        job_no: specificInvoice?.job_no,
+        date: selectedDate || specificInvoice?.date,
+
         parts_total: partsTotal || specificInvoice.parts_total,
         service_total: serviceTotal || specificInvoice.serviceTotal,
         total_amount: grandTotal || specificInvoice?.total_amount,
@@ -462,6 +621,14 @@ const UpdateInvoice = () => {
         due: calculateDue() || specificInvoice.due,
         input_data: input_data,
         service_input_data: service_input_data,
+      };
+
+      const values = {
+        customer,
+        company,
+        showRoom,
+        vehicle,
+        invoice,
       };
 
       const newValue = {
@@ -515,96 +682,77 @@ const UpdateInvoice = () => {
           </div>
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
-                  type="number"
                   className="addJobInputField"
-                  label="Serial No"
+                  label="Job Card No"
                   {...register("job_no")}
-                  value={specificInvoice?.job_no}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      job_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.job_no,
+                  // onChange={(e) => setOrderNumber(e.target.value)}
+                  focused={specificInvoice?.job_no || ""}
+                  required
+                  InputProps={{
+                    readOnly: true,
                   }}
                 />
               </div>
 
               <div className="mt-3">
                 <TextField
-                  readonly
                   className="addJobInputField"
                   label="Customer Id"
-                  {...register("customerId")}
-                  value={specificInvoice?.Id}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      Id: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.Id,
+                  {...register("Id")}
+                  focused={specificInvoice?.Id || ""}
+                  required
+                  InputProps={{
+                    readOnly: true,
                   }}
                 />
               </div>
-
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Company Name "
-                  value={specificInvoice?.company_name}
+                  label="Company"
+                  focused={
+                    specificInvoice?.customer?.company_name ||
+                    specificInvoice?.company?.company_name ||
+                    specificInvoice?.showRoom?.company_name
+                  }
                   {...register("company_name")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      company_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.company_name,
-                  }}
                 />
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer"
-                  value={specificInvoice?.customer_name}
-                  {...register("customer_name")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      customer_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.customer_name,
-                  }}
-                />
+                {!specificInvoice && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={specificInvoice?.customer?.customer_name || ""}
+                    {...register("customer_name")}
+                  />
+                )}
+                {specificInvoice?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={specificInvoice?.customer?.customer_name || ""}
+                    {...register("customer_name")}
+                  />
+                )}
+                {(specificInvoice?.user_type === "company" ||
+                  specificInvoice?.user_type === "showRoom") && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={
+                      specificInvoice?.company?.vehicle_username ||
+                      specificInvoice?.showRoom?.vehicle_username
+                    }
+                    {...register("vehicle_username")}
+                  />
+                )}
               </div>
               <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Phone"
-                  value={specificInvoice?.customer_contact}
-                  {...register("customer_contact")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      customer_contact: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.customer_contact,
-                  }}
-                /> */}
-                <div className="flex sm:flex-row flex-col gap-1 items-center">
+                <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
                   <Autocomplete
                     className="jobCardSelect2"
                     freeSolo
@@ -618,53 +766,123 @@ const UpdateInvoice = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("customer_country_code")}
                         label="Select Country Code"
                         variant="outlined"
+                        focused={
+                          specificInvoice?.customer?.customer_country_code || ""
+                        }
                       />
                     )}
                   />
-                  <TextField
-                    className="carRegField"
-                    label="Phone"
-                    value={specificInvoice?.customer_contact}
-                    {...register("customer_contact")}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
-                        setSpecificInvoice({
-                          ...specificInvoice,
-                          customer_contact: inputValue,
-                        });
+
+                  {!specificInvoice && (
+                    <TextField
+                      {...register("customer_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : specificInvoice?.customer?.customer_contact
                       }
-                    }}
-                    InputLabelProps={{
-                      shrink: !!specificInvoice.customer_contact,
-                    }}
-                  />
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
+                    />
+                  )}
+                  {specificInvoice?.user_type === "customer" && (
+                    <TextField
+                      {...register("customer_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : specificInvoice?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
+                      focused={
+                        specificInvoice?.customer?.customer_contact || ""
+                      }
+                    />
+                  )}
+                  {(specificInvoice?.user_type === "company" ||
+                    specificInvoice?.user_type === "showRoom") && (
+                    <TextField
+                      {...register("company_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : specificInvoice?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Company Contact No (N)"
+                      focused={
+                        specificInvoice?.company?.company_contact ||
+                        specificInvoice?.showRoom?.company_contact
+                      }
+                    />
+                  )}
                 </div>
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Address"
-                  value={specificInvoice?.customer_address}
-                  {...register("customer_address")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      customer_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.customer_address,
-                  }}
-                />
+                {!specificInvoice && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                  />
+                )}
+                {specificInvoice?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                    focused={specificInvoice?.customer?.customer_address}
+                  />
+                )}
+                {specificInvoice?.user_type === "company" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("company_address")}
+                    focused={specificInvoice?.company?.company_address || ""}
+                  />
+                )}
+                {specificInvoice?.user_type === "showRoom" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("showRoom_address")}
+                    focused={specificInvoice?.showRoom?.showRoom_address || ""}
+                  />
+                )}
               </div>
             </div>
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-
+              <div className="mt-3">
+                <TextField
+                  className="addJobInputField"
+                  label="Chassis No"
+                  value={specificInvoice?.chassis_no}
+                  {...register("chassis_no")}
+                  focused={specificInvoice?.vehicle?.chassis_no || ""}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </div>
               <div className="flex mt-3  md:gap-0 gap-4 items-center">
                 <Autocomplete
                   sx={{ marginRight: "5px" }}
@@ -677,87 +895,37 @@ const UpdateInvoice = () => {
                       {...params}
                       label="Vehicle Reg No ( New field ) "
                       {...register("carReg_no")}
+                      focused={specificInvoice?.vehicle?.carReg_no}
                     />
                   )}
                 />
 
-                <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers and hyphens are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  value={specificInvoice?.car_registration_no}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length === 7) {
-                      setRegistrationError("");
-                    } else if (value.length < 7) {
-                      setRegistrationError(
-                        "Car registration number must be 7 characters"
-                      );
-                    }
-                    const formattedValue = value
-                      .replace(/\D/g, "")
-                      .slice(0, 6)
-                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      car_registration_no: formattedValue,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!specificInvoice?.car_registration_no,
-                  }}
-                  error={!!errors.car_registration_no || !!registrationError}
-                />
+                <InputMask
+                  mask="99-9999"
+                  maskChar={null}
+                  {...register("car_registration_no")}
+                >
+                  {(inputProps) => (
+                    <TextField
+                      {...inputProps}
+                      {...register("car_registration_no")}
+                      className="carRegField"
+                      label="Car R (N)"
+                      focused={
+                        specificInvoice?.vehicle?.car_registration_no || ""
+                      }
+                    />
+                  )}
+                </InputMask>
               </div>
 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  value={specificInvoice?.chassis_no}
-                  {...register("chassis_no")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      chassis_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.chassis_no,
-                  }}
-                />
-              </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Engine & CC"
                   value={specificInvoice?.engine_no}
                   {...register("engine_no")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      engine_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.engine_no,
-                  }}
+                  focused={specificInvoice?.vehicle?.engine_no || ""}
                 />
               </div>
               <div className="mt-3">
@@ -766,15 +934,7 @@ const UpdateInvoice = () => {
                   label="Vehicle Name"
                   value={specificInvoice?.vehicle_name}
                   {...register("vehicle_name")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      vehicle_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.vehicle_name,
-                  }}
+                  focused={specificInvoice?.vehicle?.vehicle_name || ""}
                 />
               </div>
               <div className="mt-3">
@@ -783,15 +943,7 @@ const UpdateInvoice = () => {
                   label="Mileage"
                   value={specificInvoice?.mileage}
                   {...register("mileage")}
-                  onChange={(e) =>
-                    setSpecificInvoice({
-                      ...specificInvoice,
-                      mileage: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificInvoice.mileage,
-                  }}
+                  focused={specificInvoice?.vehicle?.mileage || ""}
                 />
               </div>
             </div>
@@ -814,7 +966,7 @@ const UpdateInvoice = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "parts")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
@@ -1013,7 +1165,7 @@ const UpdateInvoice = () => {
                         <div onClick={() => setRemoveButton("remove")}>
                           {items.length !== 0 && (
                             <button
-                            disabled={removeLoading}
+                              disabled={removeLoading}
                               onClick={() => handleRemoveButton(i, "service")}
                               className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
                             >
@@ -1250,7 +1402,9 @@ const UpdateInvoice = () => {
 
           <div className="flex items-center ">
             <b className="mr-2">Due: </b>
-            <span>{calculateDue() ? calculateDue() : specificInvoice.due}</span>
+            <span>
+              {calculateDue()}
+            </span>
           </div>
         </div>
 

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 import AddMoneyReceiptList from "./AddMoneyReceiptList";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaGlobe } from "react-icons/fa";
 import TADatePickers from "../../../components/form/TADatePickers";
 import {
@@ -24,36 +24,52 @@ import {
 import { FaLocationDot } from "react-icons/fa6";
 import Loading from "../../../components/Loading/Loading";
 import { useGetSingleJobCardWithJobNoQuery } from "../../../redux/api/jobCard";
+import {
+  useCreateMoneyReceiptMutation,
+  useGetAllMoneyReceiptsQuery,
+} from "../../../redux/api/money-receipt";
+import { ErrorMessage } from "../../../components/error-message";
 
 const MoneyReceiptView = () => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-  const [advance, setAdvance] = useState(null);
-  const [totalAmount, setTotalAmount] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
-
-  const [job_no, setJob_no] = useState(null);
-  const [jobCardData, setJobCardData] = useState({});
-  const [loading, setLoading] = useState(false);
-
-  const [advanceSelect, setAdvanceSelect] = useState(false);
-  const [finalPayment, setFinalPayment] = useState(false);
-  const [cash, setCash] = useState(false);
-  const [cheque, setCheque] = useState(false);
-
-  const navigate = useNavigate();
-
   const parsedDate = new Date();
   const day = parsedDate.getDate().toString().padStart(2, "0");
   const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
   const year = parsedDate.getFullYear();
   const formattedDate = `${day}-${month}-${year}`;
 
-  const { data, isLoading } = useGetSingleJobCardWithJobNoQuery(job_no);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const [advance, setAdvance] = useState(0);
+  const [remaining, setRemaining] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(formattedDate);
+
+  const [job_no, setJob_no] = useState(null);
+
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [billNo, setBillNo] = useState("Final Payment / against bill no");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterType, setFilterType] = useState("");
+
+  const navigate = useNavigate();
+  const limit = 10;
+
+  const [createMoneyReceipt, { isLoading: createLoading, error: createError }] =
+    useCreateMoneyReceiptMutation();
+
+  const { data: jobCard, isLoading } =
+    useGetSingleJobCardWithJobNoQuery(job_no);
+
+  const { data: allMoneyReceipts, isLoading: moneyReceiptLoading } =
+    useGetAllMoneyReceiptsQuery({
+      limit,
+      page: currentPage,
+      searchTerm: filterType,
+    });
 
   const amountInWords = (amount) => {
     const numberWords = [
@@ -168,7 +184,8 @@ const MoneyReceiptView = () => {
     return `${takaInWords} only`;
   };
 
-  const totalAmountInWords = amountInWords(advance);
+  const totalAmountInWords = amountInWords(advance ? advance : remaining);
+  // const totalRemainingAmountInWords = amountInWords(remaining);
 
   const handleDateChange = (newDate) => {
     setSelectedDate(formatDate(newDate));
@@ -182,14 +199,12 @@ const MoneyReceiptView = () => {
   };
 
   useEffect(() => {
-    if (data?.data) {
+    if (jobCard?.data && !isLoading) {
       reset({
-        vehicle_no: data?.data?.vehicle[0]?.fullRegNum,
+        vehicle_no: jobCard?.data?.vehicle[0]?.fullRegNum,
       });
     }
-  }, [data?.data, data?.data?.vehicle, reset]);
-
-  console.log(data);
+  }, [isLoading, jobCard?.data, reset]);
 
   const formatDate = (dateString) => {
     const parsedDate = new Date(dateString);
@@ -204,67 +219,45 @@ const MoneyReceiptView = () => {
     const dateOne = formatDate(data.date_one);
     const dateTwo = formatDate(data.date_two);
 
+    data.bank_number = Number(data.bank_number);
+    data.total_amount = Number(data.total_amount);
+    data.advance = Number(data.advance);
+    data.remaining = Number(data.remaining);
+
     const values = {
-      Id: data?.data?.Id,
+      Id: jobCard?.data?.Id,
+      user_type: jobCard?.data?.user_type,
       job_no: job_no,
-      default_date: selectedDate || formattedDate || jobCardData.date,
+      default_date: selectedDate || formattedDate || jobCard?.data?.date,
       thanks_from: data.thanks_from,
 
-      advance_select: advanceSelect,
-      final_payment: finalPayment,
+      against_bill_no_method: data.against_bill_no_method,
 
-      against_bill_no: data.against_bill_no,
       vehicle_no: data.vehicle_no,
-      cash: cash,
-      cheque: cheque,
+      chassis_no: jobCard?.data?.vehicle[0]?.chassis_no,
 
-      cheque_no: data.cheque_no,
+      payment_method: paymentMethod,
+      payment_number: data.payment_number,
+
       date_one: dateOne,
-      bank: data.bank,
+      bank_number: data.bank_number,
       date_two: dateTwo,
       total_amount: data.total_amount,
-      advance: data.advance,
+      advance: Number(data.advance),
       remaining: getRemaining(),
       taka_in_word: totalAmountInWords,
     };
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/money_receipt`,
-        values
-      );
 
-      if (
-        response.data.message ===
-        "Successfully added money receipt information."
-      ) {
-        reset();
-        navigate("/dashboard/money-receipt-list");
+    try {
+      const response = await createMoneyReceipt(values).unwrap();
+      if (response.success) {
+        toast.success(response.message);
+        navigate("");
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error?.message);
     }
   };
-
-  const handleAdvanceSelect = () => {
-    setAdvanceSelect(!advanceSelect);
-    setFinalPayment(false);
-  };
-  const handleFinalPayment = () => {
-    setFinalPayment(!finalPayment);
-    setAdvanceSelect(false);
-  };
-  const handleCash = () => {
-    setCash(!cash);
-    setCheque(false);
-  };
-  const handleCheque = () => {
-    setCheque(!cheque);
-    setCash(false);
-  };
-
-  const [paymentMethod, setPaymentMethod] = useState("");
-  const [billNo, setBillNo] = useState(" Final Payment / against bill no");
-  // const [advance, setAdvance] = useState(" Final Payment / against bill no");
 
   const handleChange = (event) => {
     setPaymentMethod(event.target.value);
@@ -273,10 +266,20 @@ const MoneyReceiptView = () => {
     setBillNo(event.target.value);
   };
 
+  const handleTotalAmount = (value) => {
+    setTotalAmount(value);
+    setRemaining(value);
+  };
   const buttonStyle = {
     color: "white",
     borderRadius: "20px",
   };
+
+  if (moneyReceiptLoading) {
+    return <Loading />;
+  }
+
+  console.log(remaining);
 
   return (
     <>
@@ -319,10 +322,10 @@ const MoneyReceiptView = () => {
           <Button>Receipt</Button>
         </div>
         <div className="flex justify-between mt-5 md:mt-0 items-center lg:mt-0  mb-5">
-          <b>Job No: {data?.data?.job_no ? data?.data?.job_no : 0}</b>
+          <b>Job No: {jobCard?.data?.job_no ? jobCard?.data?.job_no : 0}</b>
 
           <TADatePickers
-            date={data?.data?.date}
+            // date={data?.data?.date}
             handleDateChange={handleDateChange}
             selectedDate={selectedDate}
           />
@@ -366,8 +369,9 @@ const MoneyReceiptView = () => {
                   value={billNo}
                   label="Payment Method "
                   onChange={handleChange2}
+                  {...register("against_bill_no_method", { required: true })}
                 >
-                  <MenuItem value=" Final Payment / against bill no">
+                  <MenuItem value="Final Payment / against bill no">
                     {" "}
                     Final Payment / against bill no
                   </MenuItem>
@@ -379,7 +383,7 @@ const MoneyReceiptView = () => {
               </FormControl>
               <div>
                 <input
-                  {...register("against_bill_no", { required: true })}
+                  // {...register("against_bill_no_method", { required: true })}
                   className="moneyViewInputField advanceInput "
                   // type="number"
                   onChange={(e) => setJob_no(e.target.value)}
@@ -440,7 +444,7 @@ const MoneyReceiptView = () => {
               </FormControl>
               <div>
                 <input
-                  {...register("cheque_no", { required: true })}
+                  {...register("payment_number", { required: true })}
                   className="cashInput moneyViewInputField"
                   type="text"
                   autoComplete="off"
@@ -474,7 +478,7 @@ const MoneyReceiptView = () => {
               <label className="backText">Bank: </label>
               <div>
                 <input
-                  {...register("bank", { required: true })}
+                  {...register("bank_number", { required: true })}
                   className=" moneyViewInputField bankInput"
                   type="text"
                   autoComplete="off"
@@ -512,7 +516,7 @@ const MoneyReceiptView = () => {
                     {...register("total_amount", { required: true })}
                     className="moneyViewInputField totalAmountInput"
                     type="number"
-                    onChange={(e) => setTotalAmount(e.target.value)}
+                    onChange={(e) => handleTotalAmount(e.target.value)}
                   />
                   {errors.total_amount && totalAmount === null && (
                     <span className="text-sm text-red-400">
@@ -521,14 +525,14 @@ const MoneyReceiptView = () => {
                   )}
                 </div>
               </div>
-              {billNo == "Advance / against bill no" ? null : (
+              {billNo === "Advance / against bill no" ? null : (
                 <div className="flex lg:flex-row  flex-col ">
                   <label>Payable Amount :</label>
                   <input
                     {...register("remaining")}
                     className="moneyViewInputField totalAmountInput"
                     type="text"
-                    value={getRemaining()}
+                    value={remaining}
                     readOnly
                   />
                 </div>
@@ -560,6 +564,7 @@ const MoneyReceiptView = () => {
                   className="moneyViewInputField totalAmountInput"
                   type="text"
                   value={getRemaining()}
+                  onChange={(e) => setRemaining(e.target.value)}
                   readOnly
                 />
               </div>
@@ -571,9 +576,16 @@ const MoneyReceiptView = () => {
           </div>
 
           <div className="my-5 receivedBtn">
-            <Button type="submit">Submit</Button>
+            <Button type="submit" disabled={createLoading}>
+              Submit
+            </Button>
           </div>
         </form>
+        <div className="my-2">
+          {createError && (
+            <ErrorMessage messages={createError?.data?.errorSources} />
+          )}
+        </div>
         <div>
           <small className="signature">Authorized Signature</small>
         </div>
@@ -584,7 +596,12 @@ const MoneyReceiptView = () => {
         </div>
       </div>
 
-      <AddMoneyReceiptList />
+      <AddMoneyReceiptList
+        moneyReceipts={allMoneyReceipts?.data}
+        setFilterType={setFilterType}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </>
   );
 };

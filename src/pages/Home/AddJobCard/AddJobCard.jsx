@@ -58,8 +58,6 @@ const AddJobCard = () => {
   const [userId, setUserId] = useState(null);
   const [newId, setNewId] = useState("customer");
 
-  // const [showCustomerData, setShowCustomerData] = useState({});
-
   const [inputValue, setInputValue] = useState("");
 
   // country code
@@ -1612,14 +1610,14 @@ const AddJobCard = () => {
                           {/* <td>{lastVehicle?.fullRegNum}</td> */}
                           <td>{card?.user_type}</td>
 
-                          {card?.customer?.length !== 0 && (
-                            <td>{card?.customer[0]?.fullCustomerNum}</td>
+                          {card?.customer  && (
+                            <td>{card?.customer?.fullCustomerNum}</td>
                           )}
-                          {card?.company?.length !== 0 && (
-                            <td>{card?.company[0]?.fullCompanyNum}</td>
+                          {card?.company && (
+                            <td>{card?.company?.fullCompanyNum}</td>
                           )}
-                          {card?.showRoom.length !== 0 && (
-                            <td>{card?.showRoom[0]?.fullCompanyNum}</td>
+                          {card?.showRoom && (
+                            <td>{card?.showRoom?.fullCompanyNum}</td>
                           )}
                           <td>{card?.date}</td>
 

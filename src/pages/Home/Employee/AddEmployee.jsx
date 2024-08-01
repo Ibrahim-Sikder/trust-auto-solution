@@ -35,6 +35,7 @@ import {
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
 import { HiOutlineSearch } from "react-icons/hi";
+import uploadFile from "../../../helper/uploadFile";
 
 const AddEmployee = () => {
   const [active, setActive] = useState("");
@@ -85,27 +86,14 @@ const AddEmployee = () => {
     setActive(event.target.value);
   };
 
-  const handleImageUpload = async (e) => {
-    try {
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("image", file);
-      setImageLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files?.[0];
 
-      const data = await response.json();
-      if (data.message === "Image uploaded successful") {
-        setUrl(data.image_url);
-        setImageLoading(false);
-      }
-    } catch (error) {
-      setImageLoading(false);
+    if (file) {
+      const uploadPhoto = await uploadFile(file);
+      setUrl(uploadPhoto?.secure_url);
+      setLoading(false);
     }
   };
 

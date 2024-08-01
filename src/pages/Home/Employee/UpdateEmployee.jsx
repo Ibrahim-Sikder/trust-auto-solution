@@ -23,10 +23,11 @@ import {
 import ImageUploader from "../../../helper/uploadImage";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
+import uploadFile from "../../../helper/uploadFile";
 
 const UpdateEmployee = () => {
   const [url, setUrl] = useState("");
-  const [imageLoading, setImageLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [guardianCountryCode, setGuardianCountryCode] = useState(countries[0]);
@@ -96,31 +97,16 @@ const UpdateEmployee = () => {
     return url.split("/").pop().split(".")[0]; // Extract only the file name without extension
   }
 
-  const handleImageUpload = async (e) => {
-    try {
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("image", file);
-      setImageLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files?.[0];
 
-      const data = await response.json();
-
-      if (data.message === "Image uploaded successful") {
-        setUrl(data.image_url);
-        setImageLoading(false);
-      }
-    } catch (error) {
-      setImageLoading(false);
+    if (file) {
+      const uploadPhoto = await uploadFile(file);
+      setUrl(uploadPhoto?.secure_url);
+      setLoading(false);
     }
   };
-
   const onSubmit = async (data) => {
     data.country_code = countryCode.code;
     data.guardian_country_code = guardianCountryCode.code;
@@ -485,7 +471,7 @@ const UpdateEmployee = () => {
                     <span>
                       <FaCloudUploadAlt size={30} className="mr-2" />
                     </span>
-                    {imageLoading ? (
+                    {loading ? (
                       <span>Uploading...</span>
                     ) : (
                       <>
@@ -509,7 +495,7 @@ const UpdateEmployee = () => {
             </div>
             <div className="flex justify-end">
               <div className="bg-[#42a1da] text-white px-4 py-[10px] rounded-md">
-                <button disabled={updateLoading} type="submit">
+                <button disabled={updateLoading || loading} type="submit">
                   Update Employee
                 </button>
               </div>

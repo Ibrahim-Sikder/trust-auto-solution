@@ -20,30 +20,110 @@ import {
 } from "@mui/material";
 import { FaGlobe } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import {
+  useGetSingleMoneyReceiptQuery,
+  useUpdateMoneyReceiptMutation,
+} from "../../../redux/api/money-receipt";
+import { ErrorMessage } from "../../../components/error-message";
+
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-  const [specificMoneyReceipt, setSpecificMoneyReceipt] = useState({});
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-  const [advance, setAdvance] = useState(null);
-  const [totalAmount, setTotalAmount] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
 
-  const [job_no, setJob_no] = useState(null);
-  const [jobCardData, setJobCardData] = useState({});
-  const [loading, setLoading] = useState(false);
+  const { data: singleMoneyReceipt, refetch } =
+    useGetSingleMoneyReceiptQuery(id);
+
+  const [updateMoneyReceipt, { isLoading: updateLoading, error: updateError }] =
+    useUpdateMoneyReceiptMutation();
+
+  const [advance, setAdvance] = useState(0);
+  const [remaining, setRemaining] = useState(
+    singleMoneyReceipt?.data?.remaining
+  );
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [billNo, setBillNo] = useState("Final Payment / against bill no");
+  const [totalAmount, setTotalAmount] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [advanceSelect, setAdvanceSelect] = useState(false);
   const [finalPayment, setFinalPayment] = useState(false);
   const [cash, setCash] = useState(false);
   const [cheque, setCheque] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (singleMoneyReceipt?.data?.default_date) {
+      setSelectedDate(singleMoneyReceipt?.data?.default_date);
+    }
+  }, [singleMoneyReceipt?.data?.default_date]);
+
+  const formatDateForInput = (date) => {
+    const [day, month, year] = date.split("-");
+    return `${year}-${month}-${day}`;
+  };
+
+  const defaultDateOne = formatDateForInput(
+    singleMoneyReceipt?.data?.date_one || ""
+  );
+  const defaultDateTwo = formatDateForInput(
+    singleMoneyReceipt?.data?.date_two || ""
+  );
+
+  useEffect(() => {
+    reset({
+      Id: singleMoneyReceipt?.data?.Id,
+      job_no: singleMoneyReceipt?.data?.job_no,
+      default_date: selectedDate || singleMoneyReceipt?.data?.default_date,
+
+      advance_select: singleMoneyReceipt?.data?.advance_select,
+      final_payment: singleMoneyReceipt?.data?.final_payment,
+
+      thanks_from: singleMoneyReceipt?.data?.thanks_from,
+      against_bill_no_method: singleMoneyReceipt?.data?.against_bill_no_method,
+      vehicle_no: singleMoneyReceipt?.data?.vehicle?.fullRegNum,
+
+      payment_method: singleMoneyReceipt?.data?.payment_method,
+      payment_number: singleMoneyReceipt?.data?.payment_number,
+      bank_number: singleMoneyReceipt?.data?.bank_number,
+      date_one: defaultDateOne,
+      date_two: defaultDateTwo,
+      total_amount: singleMoneyReceipt?.data?.total_amount,
+      advance: singleMoneyReceipt?.data?.advance,
+      remaining: singleMoneyReceipt?.data?.remaining,
+      taka_in_word: singleMoneyReceipt?.data?.taka_in_word,
+    });
+  }, [
+    defaultDateOne,
+    defaultDateTwo,
+    reset,
+    selectedDate,
+    singleMoneyReceipt?.data?.Id,
+    singleMoneyReceipt?.data?.advance,
+    singleMoneyReceipt?.data?.advance_select,
+    singleMoneyReceipt?.data?.against_bill_no_method,
+    singleMoneyReceipt?.data?.bank_number,
+    singleMoneyReceipt?.data?.cash,
+    singleMoneyReceipt?.data?.cheque,
+    singleMoneyReceipt?.data.date_two,
+    singleMoneyReceipt?.data?.default_date,
+    singleMoneyReceipt?.data?.final_payment,
+    singleMoneyReceipt?.data?.job_no,
+    singleMoneyReceipt?.data?.payment_method,
+    singleMoneyReceipt?.data?.payment_number,
+    singleMoneyReceipt?.data?.remaining,
+    singleMoneyReceipt?.data?.taka_in_word,
+    singleMoneyReceipt?.data?.thanks_from,
+    singleMoneyReceipt?.data?.total_amount,
+    singleMoneyReceipt?.data?.vehicle?.fullRegNum,
+  ]);
 
   const amountInWords = (amount) => {
     const numberWords = [
@@ -158,17 +238,7 @@ const UpdateMoneyReceipt = () => {
     return `${takaInWords} only`;
   };
 
-  const totalAmountInWords = amountInWords(advance);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setSpecificMoneyReceipt(data);
-        });
-    }
-  }, [id]);
+  const totalAmountInWords = amountInWords(advance ? advance : remaining);
 
   const handleDateChange = (newDate) => {
     setSelectedDate(formatDate(newDate));
@@ -181,49 +251,46 @@ const UpdateMoneyReceipt = () => {
     }
 
     if (totalAmount === null && advance) {
-      const remaining = specificMoneyReceipt.total_amount - advance;
+      const remaining = singleMoneyReceipt?.data?.total_amount - advance;
       return remaining;
     }
     if (totalAmount && advance === null) {
-      const remaining = totalAmount - specificMoneyReceipt.advance;
+      const remaining =
+        totalAmount - singleMoneyReceipt?.data?.total_amount.advance;
       return remaining;
     }
   };
   const onSubmit = async (data) => {
-    const values = {
-      Id: specificMoneyReceipt.Id,
-      job_no: specificMoneyReceipt.job_no,
-      default_date: selectedDate || specificMoneyReceipt.default_date,
+    const dateOne = formatDate(data.date_one);
+    const dateTwo = formatDate(data.date_two);
 
-      advance_select: specificMoneyReceipt.advance_select,
-      final_payment: specificMoneyReceipt.final_payment,
+    data.bank_number = Number(data.bank_number);
+    data.total_amount = Number(data.total_amount);
+    data.advance = Number(data.advance);
+    data.remaining = Number(data.remaining);
+    data.default_date = selectedDate || singleMoneyReceipt?.data?.default_date;
+    data.payment_method = paymentMethod;
 
-      cash: specificMoneyReceipt.cash,
-      cheque: specificMoneyReceipt.cheque,
+    data.date_one = dateOne;
 
-      thanks_from: data.thanks_from || specificMoneyReceipt.thanks_from,
-      against_bill_no:
-        data.against_bill_no || specificMoneyReceipt.against_bill_no,
-      vehicle_no: data.vehicle_no || specificMoneyReceipt.vehicle_no,
-      cheque_no: data.cheque_no || specificMoneyReceipt.cheque_no,
-      date_one: data.date_one || specificMoneyReceipt.date_one,
-      bank: data.bank || specificMoneyReceipt.bank,
-      date_two: data.date_two || specificMoneyReceipt.date_two,
-      total_amount: data.total_amount || specificMoneyReceipt.total_amount,
-      advance: data.advance || specificMoneyReceipt.advance,
-      remaining: getRemaining() || specificMoneyReceipt.remaining,
-      taka_in_word: advance
-        ? totalAmountInWords
-        : specificMoneyReceipt.taka_in_word,
-    };
+    data.date_two = dateTwo;
+
+    data.advance = Number(data.advance);
+    data.remaining = getRemaining() || remaining;
+    data.taka_in_word = totalAmountInWords;
+
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/v1/money_receipt/${id}`,
-        values
-      );
+      const values = {
+        id,
+        data,
+      };
 
-      if (response.data.message === "Successfully update card.") {
+      const response = await updateMoneyReceipt(values).unwrap();
+
+      if (response.success) {
+        toast.success(response.message);
         navigate("/dashboard/money-receipt-list");
+        refetch()
       }
     } catch (error) {
       toast.error(error.message);
@@ -247,12 +314,14 @@ const UpdateMoneyReceipt = () => {
     setCash(false);
   };
 
-  const [paymentMethod, setPaymentMethod] = useState("");
-
   const handleChange = (event) => {
     setPaymentMethod(event.target.value);
   };
-  const [billNo, setBillNo] = useState(" Final Payment / against bill no");
+
+  const handleTotalAmount = (value) => {
+    setTotalAmount(value);
+    setRemaining(value);
+  };
 
   const handleChange2 = (event) => {
     setBillNo(event.target.value);
@@ -302,10 +371,10 @@ const UpdateMoneyReceipt = () => {
         <Button>Receipt</Button>
       </div>
       <div className="flex justify-between mt-5 md:mt-0">
-        <b>Job No: {specificMoneyReceipt.against_bill_no}</b>
+        <b>Job No: {singleMoneyReceipt?.data?.job_no}</b>
         <b className="flex gap-x-2">
           <TADatePickers
-            date={specificMoneyReceipt?.default_date}
+            // date={specificMoneyReceipt?.default_date}
             handleDateChange={handleDateChange}
             selectedDate={selectedDate}
           />
@@ -316,19 +385,25 @@ const UpdateMoneyReceipt = () => {
           <label className="receivedMoneyText">
             Received with thanks from{" "}
           </label>
-          <input
-            className="moneyViewInputField receiptInput"
-            type="text"
-            autoComplete="off"
-            defaultValue={specificMoneyReceipt.thanks_from}
-            {...register("thanks_from")}
-          />
-        </div>
-        <div className="mt-5 flex md:flex-row flex-col ">
           <div>
+            <input
+              {...register("thanks_from", { required: true })}
+              className="moneyViewInputField receiptInput"
+              type="text"
+              autoComplete="off"
+            />
+            {errors.thanks_from && (
+              <span className="text-sm text-red-400">
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="mt-5 lg:flex-row  flex flex-col gap-4 ">
+          <div className="flex f ">
             <FormControl
               sx={{
-                minWidth: 200,
+                minWidth: 170,
                 minHeight: "30px",
                 marginRight: 0.5,
                 backgroundColor: "#D9D9D9",
@@ -344,152 +419,227 @@ const UpdateMoneyReceipt = () => {
                 value={billNo}
                 label="Payment Method "
                 onChange={handleChange2}
+                {...register("against_bill_no_method", { required: true })}
               >
-                <MenuItem value=" Final Payment / against bill no">
+                <MenuItem value="Final Payment / against bill no">
                   {" "}
                   Final Payment / against bill no
                 </MenuItem>
-                <MenuItem value="Advance / against bill no ">
+                <MenuItem value="Advance / against bill no">
                   {" "}
                   Advance / against bill no{" "}
                 </MenuItem>
               </Select>
             </FormControl>
-          </div>
-          <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
-            <label className="vehicleText2">Vehicle No: </label>
-            <input
-              defaultValue={specificMoneyReceipt.vehicle_no}
-              className=" moneyViewInputField"
-              type="text"
-              autoComplete="off"
-              {...register("vehicle_no")}
-            />
-          </div>
-        </div>
-        <div className="mt-5 payAdvance flex flex-col lg:flex-row">
-          {/* <div className="flex flex-col md:flex-row ">
-            <div className="checqueText space-x-1">
-              {" "}
-              <input type="checkbox" checked={cash} onClick={handleCash} />{" "}
-              <span className=" font-semibold">Cash </span>
-              <input type="checkbox" checked={cheque} onClick={handleCheque} />
-              <span className=" font-semibold">Cheque No:</span>{" "}
-            </div>
             <div>
               <input
-                defaultValue={specificMoneyReceipt.cheque_no}
-                {...register("cheque_no")}
+                {...register("job_no", { required: true })}
+                className="moneyViewInputField advanceInput "
+                // type="number"
+                // onChange={(e) => setJob_no(e.target.value)}
+                autoComplete="off"
+                readOnly
+              />
+              {errors.against_bill_no && (
+                <span className="text-sm text-red-400">
+                  This field is required
+                </span>
+              )}
+            </div>
+          </div>
+          <div>
+            <div className="flex mt-12 md:mt-6 receivedField lg:mt-0">
+              <label className="vehicleText">Vehicle No: </label>
+              <input
+                {...register("vehicle_no", { required: true })}
+                className=" moneyViewInputField advanceInput"
+                type="text"
+                autoComplete="off"
+                readOnly
+              />
+              <br />
+            </div>
+            {errors.vehicle_no && (
+              <span className="text-sm text-red-400 ml-24">
+                This field is required
+              </span>
+            )}
+          </div>
+        </div>
+        <div className="mt-5 payAdvance lg:flex-row flex flex-col gap-4">
+          <div className="flex lg:flex-row flex-col ">
+            <FormControl
+              sx={{
+                minWidth: 170,
+                minHeight: "30px",
+                marginRight: 0.5,
+                backgroundColor: "#D9D9D9",
+              }}
+              size="small"
+            >
+              <InputLabel id="demo-select-small-label">
+                Payment Method{" "}
+              </InputLabel>
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={paymentMethod}
+                label="Payment Method "
+                onChange={handleChange}
+              >
+                <MenuItem value="Bkash">Bkash</MenuItem>
+                <MenuItem value="Nagad">Nagad</MenuItem>
+                <MenuItem value="Nagad">Rocket</MenuItem>
+                <MenuItem value="Check">Check</MenuItem>
+                <MenuItem value="Bank">Bank Transfer</MenuItem>
+              </Select>
+            </FormControl>
+            <div>
+              <input
+                {...register("payment_number", { required: true })}
                 className="cashInput moneyViewInputField"
                 type="text"
                 autoComplete="off"
               />
+              {errors.cheque_no && (
+                <span className="text-sm text-red-400">
+                  This field is required
+                </span>
+              )}
             </div>
-          </div> */}
-          <FormControl
-            sx={{
-              minWidth: 170,
-              minHeight: "30px",
-              marginRight: 0.5,
-              backgroundColor: "#D9D9D9",
-            }}
-            size="small"
-          >
-            <InputLabel id="demo-select-small-label">
-              Payment Method{" "}
-            </InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={paymentMethod}
-              label="Payment Method "
-              onChange={handleChange}
-            >
-              <MenuItem value="Bkash">Bkash</MenuItem>
-              <MenuItem value="Nagad">Nagad</MenuItem>
-              <MenuItem value="Nagad">Rocket</MenuItem>
-              <MenuItem value="Check">Check</MenuItem>
-              <MenuItem value="Bank">Bank </MenuItem>
-            </Select>
-          </FormControl>
+          </div>
           <div className="flex mt-6 receivedField md:mt-0">
-            <b className="date">Date: </b>
-            <input
-              defaultValue={specificMoneyReceipt?.date_one}
-              className="dateInput moneyViewInputField"
-              type="text"
-              autoComplete="off"
-              {...register("date_one")}
-            />
+            <b className="mr-2 date2">Date: </b>
+            <div>
+              <input
+                {...register("date_one", { required: true })}
+                className="cashInput moneyViewInputField cursor-pointer"
+                type="date"
+                autoComplete="off"
+                // defaultValue={defaultDate}
+              />
+              {errors.date_one && (
+                <span className="text-sm text-red-400">
+                  This field is required
+                </span>
+              )}
+            </div>
           </div>
         </div>
-        <div className="mt-5 flex flex-col lg:flex-row payAdvance">
+        <div className="mt-5 payAdvance lg:flex-row sm:flex flex-col gap-4">
           <div className="flex receivedField">
-            <label className="backText">Bank : </label>
-            <input
-              defaultValue={specificMoneyReceipt.bank}
-              className=" moneyViewInputField"
-              type="text"
-              autoComplete="off"
-              {...register("bank")}
-            />
+            <label className="backText">Bank: </label>
+            <div>
+              <input
+                {...register("bank_number", { required: true })}
+                className=" moneyViewInputField bankInput"
+                type="text"
+                autoComplete="off"
+              />
+              {errors.bank && (
+                <span className="text-sm text-red-400">
+                  This field is required
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex receivedField">
-            <label className="date">Date : </label>
-            <input
-              defaultValue={specificMoneyReceipt?.date_two}
-              className=" moneyViewInputField"
-              type="text"
-              autoComplete="off"
-              {...register("date_two")}
-            />
+            <label className="date2 "> Date:</label>
+            <div>
+              <input
+                {...register("date_two", { required: true })}
+                className=" moneyViewInputField bankInput"
+                type="date"
+                autoComplete="off"
+              />
+              {errors.date_two && (
+                <span className="text-sm text-red-400">
+                  This field is required
+                </span>
+              )}
+            </div>
           </div>
         </div>
-        <div className="mt-5 amount2 flex flex-col lg:flex-row gap-2">
-          <div className="flex flex-col md:flex-row">
-            <label className="totalAmountText2">Total Amount Tk:</label>
-            <input
-              defaultValue={specificMoneyReceipt?.total_amount}
-              className="moneyViewInputField  totalAmountInput"
-              type="text"
-              {...register("total_amount")}
-              onChange={(e) => setTotalAmount(e.target.value)}
-            />
+        <div className="mt-5 amount2 lg:flex-row sm:flex flex-col gap-4">
+          <div className="flex items-center">
+            <div className="flex lg:flex-row  flex-col">
+              <label className="totalAmountText2">Total Amount Tk:</label>
+              <div>
+                <input
+                  {...register("total_amount", { required: true })}
+                  className="moneyViewInputField totalAmountInput"
+                  type="number"
+                  onChange={(e) => handleTotalAmount(e.target.value)}
+                />
+                {errors.total_amount && totalAmount === null && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
+            </div>
+            {billNo == "Advance / against bill no" ? null : (
+              <div className="flex lg:flex-row  flex-col ">
+                <label>Payable Amount :</label>
+                <input
+                  {...register("remaining")}
+                  className="moneyViewInputField totalAmountInput"
+                  type="text"
+                  value={remaining}
+                  readOnly
+                />
+              </div>
+            )}
           </div>
-          <div className="flex flex-col md:flex-row ">
-            <label>Advance:</label>
-            <input
-              defaultValue={specificMoneyReceipt.advance}
-              className="moneyViewInputField totalAmountInput"
-              type="text"
-              {...register("advance")}
-              onChange={(e) => setAdvance(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col md:flex-row ">
-            <label>Remaining:</label>
-            <input
-              value={
-                getRemaining() ? getRemaining() : specificMoneyReceipt.remaining
-              }
-              className="moneyViewInputField totalAmountInput"
-              type="text"
-              {...register("remaining")}
-            />
-          </div>
+          {billNo == "Advance / against bill no" ? (
+            <div className="flex lg:flex-row  flex-col">
+              <label>Advance:</label>
+              <div>
+                <input
+                  {...register("advance", { required: true })}
+                  className="moneyViewInputField totalAmountInput"
+                  type="number"
+                  onChange={(e) => setAdvance(e.target.value)}
+                />
+                {errors.advance && advance === null && (
+                  <span className="text-sm text-red-400">
+                    This field is required
+                  </span>
+                )}
+              </div>
+            </div>
+          ) : null}
+          {billNo == "Advance / against bill no" ? (
+            <div className="flex lg:flex-row  flex-col ">
+              <label>Remaining:</label>
+              <input
+                {...register("remaining")}
+                className="moneyViewInputField totalAmountInput"
+                type="text"
+                value={getRemaining()}
+                readOnly
+              />
+            </div>
+          ) : null}
         </div>
         <div className="mt-5 wordTaka">
           <label>in word (taka) </label>
-
-          {advance ? totalAmountInWords : specificMoneyReceipt?.taka_in_word}
+          {advance || remaining
+            ? totalAmountInWords
+            : singleMoneyReceipt?.data?.taka_in_word}
         </div>
-        {/* <div>
-            <button className="w-full my-10 btn btn-warning"> Update</button>
-        </div> */}
+
         <div className="my-5 receivedBtn">
-          <Button type="submit">Update</Button>
+          <Button type="submit" disabled={updateLoading}>
+            Submit
+          </Button>
         </div>
       </form>
+      <div className="my-2">
+        {updateError && (
+          <ErrorMessage messages={updateError?.data?.errorSources} />
+        )}
+      </div>
       <div className="">
         <small className="signature">Authorized Signature</small>
       </div>
