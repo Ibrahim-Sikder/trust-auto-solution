@@ -9,6 +9,7 @@ import {
   Paper,
   Select,
   Stack,
+  styled,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,7 +20,19 @@ import { FaUserGear } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import BillPayList from "./BillPayList";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 const BillPay = () => {
   const { register, watch } = useForm();
   const payment = watch("payment_method");
@@ -124,6 +137,9 @@ const BillPay = () => {
               <Grid container spacing={2}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField fullWidth label="Amount" {...register("amount")} />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField fullWidth label="Payment Against Bill" {...register("payment_against_bill")} />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
@@ -266,6 +282,27 @@ const BillPay = () => {
                               {...register("check_no")}
                             />
                           </Grid>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <Button
+                              component="label"
+                              role={undefined}
+                              variant="contained"
+                              tabIndex={-1}
+                              startIcon={<CloudUploadIcon />}
+                              sx={{
+                                fontSize: "12px",
+                                color: "#FFFFFF",
+                                padding: "10px",
+                                backgroundColor: "#1976d2",
+                                "&:hover": {
+                                  backgroundColor: "#115293",
+                                },
+                              }}
+                            >
+                              Upload File / Image
+                              <VisuallyHiddenInput type="file" />
+                            </Button>
+                          </Grid>
                         </>
                       )}
                       {payment === "Bank Transfer" && (
@@ -352,7 +389,7 @@ const BillPay = () => {
                       )}
                       {payment === "Other" && (
                         <>
-                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={12}>
                             <TextField
                               fullWidth
                               label="Transition No"
@@ -374,7 +411,7 @@ const BillPay = () => {
                         payment === "Nagad" ||
                         payment === "Rocket") && (
                         <>
-                          <Grid itemlg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={6}>
                             <TextField
                               fullWidth
                               label="Transition No"
@@ -382,7 +419,7 @@ const BillPay = () => {
                               marginTop={2}
                             />
                           </Grid>
-                          <Grid itemlg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={6}>
                             <TextField
                               fullWidth
                               label="Transition ID"
@@ -407,7 +444,7 @@ const BillPay = () => {
                 </Grid>
               </Box>
               <div className="flex justify-end mt-3">
-                <Button sx={{ color: "white", width: "200px" }}>Update</Button>
+                <Button sx={{ color: "white", width: "200px" }}>Submit</Button>
               </div>
             </Box>
           </Paper>

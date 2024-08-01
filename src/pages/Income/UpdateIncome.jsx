@@ -8,6 +8,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   Grid,
   MenuItem,
   styled,
@@ -22,8 +23,19 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { incomeCategories } from "../../constant";
 
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
-const UpdateIncome = () => {
+const AddExpense = () => {
   const [value, setValue] = useState();
 
   return (
@@ -33,7 +45,7 @@ const UpdateIncome = () => {
           <div className="flex items-center md:justify-center ">
             <FaFileInvoice className="invoicIcon" />
             <div className="ml-2">
-              <h3 className="md:text-2xl font-bold">Add Income </h3>
+              <h3 className="md:text-2xl font-bold">Update Income </h3>
               <span className="text-sm">Dashboard / Income </span>
             </div>
           </div>
@@ -51,35 +63,44 @@ const UpdateIncome = () => {
           <form>
             <Grid container spacing={2}>
               <Grid item lg={6} md={6} xs={12} sm={6}>
-               
                 <Autocomplete
-                fullWidth
                   multiple
-                  limitTags={2}
-                  id="multiple-limit-tags"
-                  options={incomeCategories}
-                  getOptionLabel={(option) => option?.title}
-                  defaultValue={[
-                    incomeCategories[13],
-                    incomeCategories[12],
-                    incomeCategories[11],
-                  ]}
+                  id="tags-filled"
+                  options={incomeCategories.map((option) => option.title)}
+                  defaultValue={[incomeCategories[13]?.title]}
+                  freeSolo
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => {
+                      const { key, ...tagProps } = getTagProps({ index });
+                      return (
+                        <Chip
+                          variant="outlined"
+                          label={option}
+                          key={key}
+                          {...tagProps}
+                        />
+                      );
+                    })
+                  }
                   renderInput={(params) => (
                     <TextField
-                    fullWidth
                       {...params}
+                      variant="filled"
                       label="Income Category"
                       placeholder="Income Category"
                     />
                   )}
-                  sx={{ width: "500px" }}
                 />
               </Grid>
               <Grid item lg={6} md={6} xs={12} sm={6}>
                 <TextField name="income" label="Income Name" fullWidth />
               </Grid>
               <Grid item lg={6} md={6} xs={12} sm={6}>
-                <TextField name="invoice" label="Invoice Number" fullWidth />
+                <TextField
+                  name="invoice"
+                  label="Income Against Invoice "
+                  fullWidth
+                />
               </Grid>
               <Grid item lg={6} md={6} xs={12} sm={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -137,4 +158,4 @@ const UpdateIncome = () => {
   );
 };
 
-export default UpdateIncome;
+export default AddExpense;

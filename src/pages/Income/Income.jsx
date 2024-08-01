@@ -8,6 +8,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   Grid,
   MenuItem,
   styled,
@@ -62,35 +63,44 @@ const AddExpense = () => {
           <form>
             <Grid container spacing={2}>
               <Grid item lg={6} md={6} xs={12} sm={6}>
-               
                 <Autocomplete
-                fullWidth
                   multiple
-                  limitTags={2}
-                  id="multiple-limit-tags"
-                  options={incomeCategories}
-                  getOptionLabel={(option) => option?.title}
-                  defaultValue={[
-                    incomeCategories[13],
-                    incomeCategories[12],
-                    incomeCategories[11],
-                  ]}
+                  id="tags-filled"
+                  options={incomeCategories.map((option) => option.title)}
+                  defaultValue={[incomeCategories[13]?.title]}
+                  freeSolo
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => {
+                      const { key, ...tagProps } = getTagProps({ index });
+                      return (
+                        <Chip
+                          variant="outlined"
+                          label={option}
+                          key={key}
+                          {...tagProps}
+                        />
+                      );
+                    })
+                  }
                   renderInput={(params) => (
                     <TextField
-                    fullWidth
                       {...params}
+                      variant="filled"
                       label="Income Category"
                       placeholder="Income Category"
                     />
                   )}
-                  sx={{ width: "500px" }}
                 />
               </Grid>
               <Grid item lg={6} md={6} xs={12} sm={6}>
                 <TextField name="income" label="Income Name" fullWidth />
               </Grid>
               <Grid item lg={6} md={6} xs={12} sm={6}>
-                <TextField name="invoice" label="Invoice Number" fullWidth />
+                <TextField
+                  name="invoice"
+                  label="Income Against Invoice "
+                  fullWidth
+                />
               </Grid>
               <Grid item lg={6} md={6} xs={12} sm={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

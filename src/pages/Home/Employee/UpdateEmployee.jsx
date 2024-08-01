@@ -4,7 +4,9 @@
 
 import {
   Autocomplete,
+  Box,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -189,303 +191,321 @@ const UpdateEmployee = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="addEmployeeFieldWraps space-y-3">
-              <div>
-                <h3 className="text-xl font-bold">Personal Info </h3>
-                <TextField
-                  className="productField"
-                  label="Full Name "
-                  id="Full Name "
-                  {...register("full_name")}
-                  focused={singleEmployee?.data?.full_name || ""}
-                />
+            <div className=" space-y-3">
+              <Box>
+                <h3 className="text-xl font-bold mb-5 text-center ">
+                  Employee Information{" "}
+                </h3>
+                <Grid container spacing={2}>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Full Name "
+                      id="Full Name "
+                      {...register("full_name")}
+                      focused={singleEmployee?.data?.full_name || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Date of Birth"
+                      {...register("date_of_birth")}
+                      focused={singleEmployee?.data?.date_of_birth || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="NID Number"
+                      {...register("nid_number")}
+                      focused={singleEmployee?.data?.nid_number || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Blood Group "
+                      {...register("blood_group")}
+                      focused={singleEmployee?.data?.blood_group || ""}
+                    />
+                  </Grid>
 
-                <TextField
-                  className="productField"
-                  label="Date of Birth"
-                  {...register("date_of_birth")}
-                  focused={singleEmployee?.data?.date_of_birth || ""}
-                />
-                <TextField
-                  className="productField"
-                  label="NID Number"
-                  {...register("nid_number")}
-                  focused={singleEmployee?.data?.nid_number || ""}
-                />
-                <TextField
-                  className="productField"
-                  label="Blood Group "
-                  {...register("blood_group")}
-                  focused={singleEmployee?.data?.blood_group || ""}
-                />
-                {/* <TextField
-                  className="productField"
-                  label="Phone Number "
-                  id="Phone Number "
-                  {...register("phone_number")}
-                /> */}
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={
-                      countryCode
-                        ? countryCode
-                        : singleEmployee?.data?.country_code
-                    }
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register("country_code")}
-                        label="Select Country Code"
-                        variant="outlined"
-                        focused={singleEmployee?.data?.country_code || ""}
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <Grid container spacing={2}>
+                      <Grid item lg={4} md={6} sm={3} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          fullWidth
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.code}
+                          value={
+                            countryCode
+                              ? countryCode
+                              : singleEmployee?.data?.country_code
+                          }
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber("");
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              {...register("country_code")}
+                              label="Select Country Code"
+                              variant="outlined"
+                              focused={singleEmployee?.data?.country_code || ""}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={8} md={6} sm={9} xs={12}>
+                        <TextField
+                          {...register("phone_number")}
+                          className="productField2"
+                          label="Phone No"
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : singleEmployee?.data?.phone_number
+                          }
+                          onChange={handlePhoneNumberChange}
+                          focused={singleEmployee?.data?.phone_number || ""}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Email Address "
+                      id="Email Address "
+                      {...register("email")}
+                      focused={singleEmployee?.data?.email || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="grouped-native-select">
+                        Gender
+                      </InputLabel>
+                      <Select
+                        fullWidth
+                        native
+                        id="grouped-native-select"
+                        label="Gender"
+                        {...register("gender")}
+                      >
+                        <option>Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Join Date  "
+                      id="Join Date  "
+                      {...register("join_date")}
+                      focused={singleEmployee?.data?.join_date || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Designation  "
+                      id="Designation  "
+                      {...register("designation")}
+                      focused={singleEmployee?.data?.designation || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="grouped-native-select">
+                        Select Status
+                      </InputLabel>
+                      <Select
+                        fullWidth
+                        native
+                        id="grouped-native-select"
+                        label="Select Status "
+                        {...register("status")}
+                      >
+                        <option>Select</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Password"
+                      id="Password"
+                      {...register("password")}
+                      type="password"
+                      focused={singleEmployee?.data?.password || ""}
+                    />
+                  </Grid>
+                  
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Father Name "
+                      {...register("father_name")}
+                      focused={singleEmployee?.data?.father_name || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Mother Name "
+                      {...register("mother_name")}
+                      focused={singleEmployee?.data?.mother_name || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Guardian Name"
+                      {...register("guardian_name")}
+                      focused={singleEmployee?.data?.guardian_name || ""}
+                    />
+                  </Grid>
+
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <Grid container spacing={2}>
+                      <Grid item lg={4} md={6} sm={3} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.code}
+                          value={
+                            guardianCountryCode
+                              ? guardianCountryCode
+                              : singleEmployee?.data?.guardian_country_code
+                          }
+                          onChange={(event, newValue) => {
+                            setGuardianCountryCode(newValue);
+                            setGuardianPhoneNumber("");
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              {...register("guardian_country_code")}
+                              label="Select Country Code"
+                              variant="outlined"
+                              focused={
+                                singleEmployee?.data?.guardian_country_code ||
+                                ""
+                              }
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={8} md={6} sm={9} xs={12}>
+                        <TextField
+                          {...register("guardian_contact")}
+                          className="productField2"
+                          label="Guardian Phone No"
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            guardianPhoneNumber
+                              ? guardianPhoneNumber
+                              : singleEmployee?.data?.guardian_contact
+                          }
+                          onChange={handleGuardianPhoneNumberChange}
+                          focused={singleEmployee?.data?.guardian_contact || ""}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Relationship"
+                      {...register("relationship")}
+                      focused={singleEmployee?.data?.relationship || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Nationality"
+                      {...register("nationality")}
+                      focused={singleEmployee?.data?.nationality || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Religion"
+                      {...register("religion")}
+                      focused={singleEmployee?.data?.religion || ""}
+                    />
+                  </Grid>
+                 
+                 
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Present Address "
+                      {...register("local_address")}
+                      focused={singleEmployee?.data?.local_address || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Permanent Address "
+                      {...register("local_address")}
+                      focused={singleEmployee?.data?.local_address || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <div className="productField">
+                      <input
+                        onChange={handleImageUpload}
+                        type="file"
+                        id="files"
+                        className="hidden"
                       />
-                    )}
-                  />
-                  <TextField
-                    {...register("phone_number")}
-                    className="productField2"
-                    label="Phone No"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      phoneNumber
-                        ? phoneNumber
-                        : singleEmployee?.data?.phone_number
-                    }
-                    onChange={handlePhoneNumberChange}
-                    focused={singleEmployee?.data?.phone_number || ""}
-                  />
-                </div>
-                <TextField
-                  className="productField"
-                  label="Email Address "
-                  id="Email Address "
-                  {...register("email")}
-                  focused={singleEmployee?.data?.email || ""}
-                />
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Gender
-                  </InputLabel>
-                  <Select
-                    className=""
-                    native
-                    id="grouped-native-select"
-                    label="Gender"
-                    {...register("gender")}
-                  >
-                    <option>Select</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </Select>
-                </FormControl>
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Join Date  "
-                  id="Join Date  "
-                  {...register("join_date")}
-                  focused={singleEmployee?.data?.join_date || ""}
-                />
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Designation  "
-                  id="Designation  "
-                  {...register("designation")}
-                  focused={singleEmployee?.data?.designation || ""}
-                />
-
-                <FormControl className="productField">
-                  <InputLabel htmlFor="grouped-native-select">
-                    Select Status
-                  </InputLabel>
-                  <Select
-                    className="productField"
-                    native
-                    id="grouped-native-select"
-                    label="Select Status "
-                    {...register("status")}
-                  >
-                    <option>Select</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </Select>
-                </FormControl>
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Password"
-                  id="Password"
-                  {...register("password")}
-                  type="password"
-                  focused={singleEmployee?.data?.password || ""}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Confirm Password "
-                  id="Confirm Password  "
-                  {...register("confirm_password")}
-                  type="password"
-                  focused={singleEmployee?.data?.confirm_password || ""}
-                />
-              </div>
-
-              <div>
-                <h3 className="text-xl font-bold">Family Address </h3>
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Father Name "
-                  {...register("father_name")}
-                  focused={singleEmployee?.data?.father_name || ""}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Mother Name "
-                  {...register("mother_name")}
-                  focused={singleEmployee?.data?.mother_name || ""}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Guardian Name"
-                  {...register("guardian_name")}
-                  focused={singleEmployee?.data?.guardian_name || ""}
-                />
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={
-                      guardianCountryCode
-                        ? guardianCountryCode
-                        : singleEmployee?.data?.guardian_country_code
-                    }
-                    onChange={(event, newValue) => {
-                      setGuardianCountryCode(newValue);
-                      setGuardianPhoneNumber("");
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register("guardian_country_code")}
-                        label="Select Country Code"
-                        variant="outlined"
-                        focused={
-                          singleEmployee?.data?.guardian_country_code || ""
-                        }
-                      />
-                    )}
-                  />
-                  <TextField
-                    {...register("guardian_contact")}
-                    className="productField2"
-                    label="Guardian Phone No"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      guardianPhoneNumber
-                        ? guardianPhoneNumber
-                        : singleEmployee?.data?.guardian_contact
-                    }
-                    onChange={handleGuardianPhoneNumberChange}
-                    focused={singleEmployee?.data?.guardian_contact || ""}
-                  />
-                </div>
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Relationship"
-                  {...register("relationship")}
-                  focused={singleEmployee?.data?.relationship || ""}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Nationality"
-                  {...register("nationality")}
-                  focused={singleEmployee?.data?.nationality || ""}
-                />
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Religion"
-                  {...register("religion")}
-                  focused={singleEmployee?.data?.religion || ""}
-                />
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Country "
-                  {...register("country")}
-                  focused={singleEmployee?.data?.country || ""}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Town/City "
-                  {...register("city")}
-                  focused={singleEmployee?.data?.city || ""}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Local Address "
-                  {...register("local_address")}
-                  focused={singleEmployee?.data?.local_address || ""}
-                />
-                <div className="productField">
-                  <input
-                    onChange={handleImageUpload}
-                    type="file"
-                    id="files"
-                    className="hidden"
-                  />
-                  <label
-                    for="files"
-                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                  >
-                    <span>
-                      <FaCloudUploadAlt size={30} className="mr-2" />
-                    </span>
-                    {loading ? (
-                      <span>Uploading...</span>
-                    ) : (
-                      <>
-                        {url ? (
-                          <span>Uploaded</span>
+                      <label
+                        for="files"
+                        className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                      >
+                        {/* <span>
+                          <FaCloudUploadAlt size={30} className="mr-2" />
+                        </span>
+                        {imageLoading ? (
+                          <span>Uploading...</span>
                         ) : (
-                          <span> Upload Image</span>
-                        )}
-                      </>
-                    )}
-                  </label>
-                  <ImageUploader />
-                </div>
-              </div>
+                          <>
+                            {url ? (
+                              <span>Uploaded</span>
+                            ) : (
+                              <span> Upload Image</span>
+                            )}
+                          </>
+                        )} */}
+                      </label>
+                      <ImageUploader />
+                    </div>
+                  </Grid>
+                </Grid>
+              </Box>
             </div>
 
             <div className="my-2">

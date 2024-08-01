@@ -189,7 +189,7 @@ const AddEmployee = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="addEmployeeFieldWraps space-y-3">
               <div>
-                <h3 className="text-xl font-bold mb-3 text-center ">
+                <h3 className="text-xl font-bold mb-5 text-center ">
                   Employee Information{" "}
                 </h3>
                 <Box>
@@ -202,14 +202,7 @@ const AddEmployee = () => {
                         {...register("full_name")}
                       />
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Full Name "
-                        id="Full Name "
-                        {...register("full_name")}
-                      />
-                    </Grid>
+                    
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
@@ -335,15 +328,7 @@ const AddEmployee = () => {
                         type="password"
                       />
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Confirm Password "
-                        id="Confirm Password  "
-                        {...register("confirm_password")}
-                        type="password"
-                      />
-                    </Grid>
+                   
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
@@ -425,24 +410,19 @@ const AddEmployee = () => {
                         {...register("religion")}
                       />
                     </Grid>
+                   
+                    
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
-                        label="Country "
-                        {...register("country")}
+                        label="Present Address "
+                        {...register("local_address")}
                       />
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
-                        label="Town/City "
-                        {...register("city")}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Local Address "
+                        label="Permanent Address "
                         {...register("local_address")}
                       />
                     </Grid>

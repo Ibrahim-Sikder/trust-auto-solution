@@ -7,12 +7,15 @@ import swal from "sweetalert";
 import { useEffect, useRef, useState } from "react";
 import {
   Autocomplete,
+  Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Pagination,
   Select,
+  Stack,
   TextField,
 } from "@mui/material";
 import ReactQuill from "react-quill";
@@ -552,7 +555,7 @@ const AddJobCard = () => {
           <img src={logo} alt="logo" className=" addJobLogoImg" />
           <div>
             <h2 className=" trustAutoTitle trustAutoTitleQutation">
-              Trust Auto Solution{" "}
+              Trust Auto Solution
             </h2>
             <span className="text-[12px] lg:text-xl mt-5 block">
               Office: Ka-93/4/C, Kuril Bishawroad, Dhaka-1229
@@ -633,10 +636,7 @@ const AddJobCard = () => {
                     type="date"
                     placeholder="Date"
                     max={currentDate}
-                    defaultValue={
-                      currentDate
-                      // formattedDate ? formatDate(formattedDate) : currentDate
-                    }
+                    defaultValue={currentDate}
                   />
                 </div>
 
@@ -662,7 +662,7 @@ const AddJobCard = () => {
                     <Link to="/dashboard/add-show-room">
                       {" "}
                       <span className="flex items-center">
-                        <HiOutlinePlus size={20} /> Add Show Room{" "}
+                        <HiOutlinePlus size={20} /> Add Show Room
                       </span>
                     </Link>
                   </div>
@@ -671,683 +671,699 @@ const AddJobCard = () => {
             </div>
           </div>
 
-          <div className="jobCardFieldWraps">
-            <div className="jobCardFieldRightSide">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Box>
               {newId &&
                 (newId === "customer" ? (
                   <div>
                     <h3 className="mb-5 text-xl font-bold ">
-                      Customer Information{" "}
+                      Customer Information
                     </h3>
-                    <div>
-                      <TextField
-                        className="addJobInputField"
-                        label="Customer Name (T)"
-                        {...register("customer_name")}
-                        focused={getDataWithId?.customer_name || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Customer Email Address (T)"
-                        {...register("customer_email")}
-                        type="email"
-                        focused={getDataWithId?.customer_email || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Customer Address (T) "
-                        {...register("customer_address")}
-                        focused={getDataWithId?.customer_address || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        {...register("company_name")}
-                        label="Company Name (T)"
-                        focused={getDataWithId?.company_name || ""}
-                      />
-                    </div>
 
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Company Address (T)"
-                        {...register("company_address")}
-                        focused={getDataWithId?.company_address || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Vehicle User Name (T)"
-                        {...register("vehicle_username")}
-                        focused={getDataWithId?.vehicle_username || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <div className="flex items-center">
-                        <Autocomplete
-                          sx={{ marginRight: "2px" }}
-                          className="jobCardSelect2"
-                          freeSolo
-                          options={countries}
-                          getOptionLabel={(option) => option.label}
-                          value={
-                            countryCode || getDataWithId?.customer_country_code
-                          }
-                          onChange={(event, newValue) => {
-                            setCountryCode(newValue);
-                            setPhoneNumber("");
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Select Country Code"
-                              variant="outlined"
-                              {...register("customer_country_code")}
-                            />
-                          )}
-                        />
-                        <TextField
-                          {...register("customer_contact")}
-                          className="carRegField"
-                          label=""
-                          variant="outlined"
-                          fullWidth
-                          type="tel"
-                          value={
-                            phoneNumber
-                              ? phoneNumber
-                              : getDataWithId?.customer_contact
-                          }
-                          onChange={handlePhoneNumberChange}
-                          placeholder="Customer Contact No (N)"
-                          focused={getDataWithId?.customer_contact || ""}
-                        />
-                      </div>
-                    </div>
+                    <Box>
+                      <Grid container spacing={2}>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Customer Name (T)"
+                            {...register("customer_name")}
+                            focused={getDataWithId?.customer_name || ""}
+                          />
+                        </Grid>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Customer Email Address (T)"
+                            {...register("customer_email")}
+                            type="email"
+                            focused={getDataWithId?.customer_email || ""}
+                          />
+                        </Grid>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Customer Address (T) "
+                            {...register("customer_address")}
+                            focused={getDataWithId?.customer_address || ""}
+                          />
+                        </Grid>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            {...register("company_name")}
+                            label="Company Name (T)"
+                            focused={getDataWithId?.company_name || ""}
+                          />
+                        </Grid>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Company Address (T)"
+                            {...register("company_address")}
+                            focused={getDataWithId?.company_address || ""}
+                          />
+                        </Grid>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Vehicle User Name (T)"
+                            {...register("vehicle_username")}
+                            focused={getDataWithId?.vehicle_username || ""}
+                          />
+                        </Grid>
 
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Driver Name (T)"
-                        {...register("driver_name")}
-                        focused={getDataWithId?.driver_name || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <div className="flex items-center">
-                        <Autocomplete
-                          sx={{ marginRight: "2px" }}
-                          className="jobCardSelect2"
-                          freeSolo
-                          options={countries}
-                          getOptionLabel={(option) => option.label}
-                          value={
-                            driverCountryCode ||
-                            getDataWithId?.driver_country_code
-                          }
-                          onChange={(event, newValue) => {
-                            setDriverCountryCode(newValue);
-                            setPhoneNumber("");
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Select Country Code"
-                              {...register("driver_country_code")}
-                              variant="outlined"
-                            />
-                          )}
-                        />
-                        <TextField
-                          {...register("driver_contact")}
-                          className="carRegField"
-                          label=""
-                          variant="outlined"
-                          fullWidth
-                          type="tel"
-                          value={
-                            driverPhoneNumber
-                              ? driverPhoneNumber
-                              : getDataWithId?.driver_contact
-                          }
-                          onChange={handleDriverPhoneNumberChange}
-                          placeholder="Driver Contact Number "
-                          focused={getDataWithId?.driver_contact || ""}
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Reference Name (T) "
-                        {...register("reference_name")}
-                        focused={getDataWithId?.reference_name || ""}
-                      />
-                    </div>
+
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <Grid container spacing={1}>
+                            <Grid item lg={2} md={6} sm={3} xs={12}>
+                              <Autocomplete
+                                sx={{ marginRight: "2px" }}
+                                fullWidth
+                                freeSolo
+                                options={countries}
+                                getOptionLabel={(option) => option.label}
+                                value={
+                                  countryCode ||
+                                  getDataWithId?.customer_country_code
+                                }
+                                onChange={(event, newValue) => {
+                                  setCountryCode(newValue);
+                                  setPhoneNumber("");
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    fullWidth
+                                    {...params}
+                                    label="Select Country Code"
+                                    variant="outlined"
+                                    {...register("customer_country_code")}
+                                  />
+                                )}
+                              />
+                            </Grid>
+                            <Grid item lg={10} md={6} sm={9} xs={12}>
+                              <TextField
+                                {...register("customer_contact")}
+                                label=""
+                                variant="outlined"
+                                fullWidth
+                                type="tel"
+                                value={
+                                  phoneNumber
+                                    ? phoneNumber
+                                    : getDataWithId?.customer_contact
+                                }
+                                onChange={handlePhoneNumberChange}
+                                placeholder="Customer Contact No (N)"
+                                focused={getDataWithId?.customer_contact || ""}
+                              />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Driver Name (T)"
+                            {...register("driver_name")}
+                            focused={getDataWithId?.driver_name || ""}
+                          />
+                        </Grid>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <Grid container spacing={1}>
+                            <Grid item lg={2} md={6} sm={3} xs={12}>
+                              <Autocomplete
+                                sx={{ marginRight: "2px" }}
+                                fullWidth
+                                freeSolo
+                                options={countries}
+                                getOptionLabel={(option) => option.label}
+                                value={
+                                  driverCountryCode ||
+                                  getDataWithId?.driver_country_code
+                                }
+                                onChange={(event, newValue) => {
+                                  setDriverCountryCode(newValue);
+                                  setPhoneNumber("");
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    fullWidth
+                                    {...params}
+                                    label="Select Country Code"
+                                    {...register("driver_country_code")}
+                                    variant="outlined"
+                                  />
+                                )}
+                              />
+                            </Grid>
+                            <Grid item lg={10} md={6} sm={9} xs={12}>
+                              <TextField
+                                {...register("driver_contact")}
+                                label=""
+                                variant="outlined"
+                                fullWidth
+                                type="tel"
+                                value={
+                                  driverPhoneNumber
+                                    ? driverPhoneNumber
+                                    : getDataWithId?.driver_contact
+                                }
+                                onChange={handleDriverPhoneNumberChange}
+                                placeholder="Driver Contact Number "
+                                focused={getDataWithId?.driver_contact || ""}
+                              />
+                            </Grid>
+                          </Grid>
+                        </Grid>
+
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Reference Name (T) "
+                            {...register("reference_name")}
+                            focused={getDataWithId?.reference_name || ""}
+                          />
+                        </Grid>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                          <TextField
+                            fullWidth
+                            label="Reference Name (T) "
+                            {...register("reference_name")}
+                            focused={getDataWithId?.reference_name || ""}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Box>
                   </div>
                 ) : newId === "company" ? (
-                  <div>
+                  <Box>
                     <h3 className="mb-5 text-xl font-bold ">
-                      Company Information{" "}
+                      Company Information
                     </h3>
-                    <div>
-                      <TextField
-                        className="addJobInputField"
-                        {...register("company_name")}
-                        label="Company Name (T)"
-                        focused={getDataWithId?.company_name || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Vehicle User Name (T)"
-                        {...register("vehicle_username")}
-                        focused={getDataWithId?.vehicle_username || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Company Address (T)"
-                        {...register("company_address")}
-                        focused={getDataWithId?.company_address || ""}
-                      />
-                    </div>
-
-                    <div className="mt-3">
-                      <div className="flex items-center">
-                        <Autocomplete
-                          sx={{ marginRight: "2px" }}
-                          className="jobCardSelect2"
-                          freeSolo
-                          options={countries}
-                          getOptionLabel={(option) => option.label}
-                          value={
-                            countryCode || getDataWithId?.company_country_code
-                          }
-                          onChange={(event, newValue) => {
-                            setCountryCode(newValue);
-                            setPhoneNumber("");
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              {...register("company_country_code")}
-                              label="Select Country Code"
-                              variant="outlined"
-                            />
-                          )}
-                        />
+                    <Grid container spacing={2}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
-                          {...register("company_contact")}
-                          className="carRegField"
-                          label=""
-                          variant="outlined"
                           fullWidth
-                          type="tel"
-                          value={
-                            phoneNumber
-                              ? phoneNumber
-                              : getDataWithId?.company_contact
-                          }
-                          onChange={handlePhoneNumberChange}
-                          placeholder="Company Contact No"
-                          focused={getDataWithId?.company_contact || ""}
+                          {...register("company_name")}
+                          label="Company Name (T)"
+                          focused={getDataWithId?.company_name || ""}
                         />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Company Email Address"
-                        {...register("company_email")}
-                        type="email"
-                        focused={getDataWithId?.company_email || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Driver Name (T)"
-                        {...register("driver_name")}
-                        focused={getDataWithId?.driver_name || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <div className="flex items-center">
-                        <Autocomplete
-                          sx={{ marginRight: "2px" }}
-                          className="jobCardSelect2"
-                          freeSolo
-                          options={countries}
-                          getOptionLabel={(option) => option.label}
-                          value={
-                            driverCountryCode ||
-                            getDataWithId?.driver_country_code
-                          }
-                          onChange={(event, newValue) => {
-                            setDriverCountryCode(newValue);
-                            setPhoneNumber("");
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              {...register("driver_country_code")}
-                              label="Select Country Code"
-                              variant="outlined"
-                            />
-                          )}
-                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
-                          {...register("driver_contact")}
-                          className="carRegField"
-                          label=""
-                          variant="outlined"
                           fullWidth
-                          type="tel"
-                          value={
-                            driverPhoneNumber
-                              ? driverPhoneNumber
-                              : getDataWithId?.driver_contact
-                          }
-                          onChange={handleDriverPhoneNumberChange}
-                          placeholder="Driver Contact Number "
-                          focused={getDataWithId?.driver_contact || ""}
+                          label="Vehicle User Name (T)"
+                          {...register("vehicle_username")}
+                          focused={getDataWithId?.vehicle_username || ""}
                         />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Reference Name (T) "
-                        {...register("reference_name")}
-                        focused={getDataWithId?.reference_name || ""}
-                      />
-                    </div>
-                  </div>
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Company Address (T)"
+                          {...register("company_address")}
+                          focused={getDataWithId?.company_address || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div className="flex items-center">
+                          <Autocomplete
+                            sx={{ marginRight: "2px" }}
+                            fullWidth
+                            freeSolo
+                            options={countries}
+                            getOptionLabel={(option) => option.label}
+                            value={
+                              countryCode || getDataWithId?.company_country_code
+                            }
+                            onChange={(event, newValue) => {
+                              setCountryCode(newValue);
+                              setPhoneNumber("");
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                fullWidth
+                                {...params}
+                                {...register("company_country_code")}
+                                label="Select Country Code"
+                                variant="outlined"
+                              />
+                            )}
+                          />
+                          <TextField
+                            {...register("company_contact")}
+                            label=""
+                            variant="outlined"
+                            fullWidth
+                            type="tel"
+                            value={
+                              phoneNumber
+                                ? phoneNumber
+                                : getDataWithId?.company_contact
+                            }
+                            onChange={handlePhoneNumberChange}
+                            placeholder="Company Contact No"
+                            focused={getDataWithId?.company_contact || ""}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Company Email Address"
+                          {...register("company_email")}
+                          type="email"
+                          focused={getDataWithId?.company_email || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Driver Name (T)"
+                          {...register("driver_name")}
+                          focused={getDataWithId?.driver_name || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div className="flex items-center">
+                          <Autocomplete
+                            sx={{ marginRight: "2px" }}
+                            fullWidth
+                            freeSolo
+                            options={countries}
+                            getOptionLabel={(option) => option.label}
+                            value={
+                              driverCountryCode ||
+                              getDataWithId?.driver_country_code
+                            }
+                            onChange={(event, newValue) => {
+                              setDriverCountryCode(newValue);
+                              setPhoneNumber("");
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                fullWidth
+                                {...params}
+                                {...register("driver_country_code")}
+                                label="Select Country Code"
+                                variant="outlined"
+                              />
+                            )}
+                          />
+                          <TextField
+                            {...register("driver_contact")}
+                            label=""
+                            variant="outlined"
+                            fullWidth
+                            type="tel"
+                            value={
+                              driverPhoneNumber
+                                ? driverPhoneNumber
+                                : getDataWithId?.driver_contact
+                            }
+                            onChange={handleDriverPhoneNumberChange}
+                            placeholder="Driver Contact Number "
+                            focused={getDataWithId?.driver_contact || ""}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Reference Name (T) "
+                          {...register("reference_name")}
+                          focused={getDataWithId?.reference_name || ""}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Box>
                 ) : newId === "showRoom" ? (
-                  <div>
+                  <Box>
                     <h3 className="mb-5 text-xl font-bold ">
-                      Show Room Information{" "}
+                      Show Room Information
                     </h3>
-                    <div>
-                      <TextField
-                        className="addJobInputField"
-                        on
-                        label="Show Room Name (T)"
-                        {...register("showRoom_name")}
-                        focused={getDataWithId?.showRoom_name || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Vehicle User Name (T)  "
-                        {...register("vehicle_username")}
-                        focused={getDataWithId?.vehicle_username || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        on
-                        label="Show Room Address (T)  "
-                        {...register("showRoom_address")}
-                        focused={getDataWithId?.showRoom_address || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        {...register("company_name")}
-                        label="Company Name (T)"
-                        focused={getDataWithId?.company_name || ""}
-                      />
-                    </div>
-
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Company Address (T)"
-                        {...register("company_address")}
-                        focused={getDataWithId?.company_address || ""}
-                      />
-                    </div>
-
-                    <div className="mt-3">
-                      <div className="flex items-center my-1">
-                        <Autocomplete
-                          className="jobCardSelect2"
-                          freeSolo
-                          options={countries}
-                          getOptionLabel={(option) => option.label}
-                          value={
-                            countryCode || getDataWithId?.company_country_code
-                          }
-                          onChange={(event, newValue) => {
-                            setCountryCode(newValue);
-                            setPhoneNumber(""); // Reset the phone number when changing country codes
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              {...register("company_country_code")}
-                              label="Select Country Code"
-                              variant="outlined"
-                            />
-                          )}
-                        />
+                    <Grid container spacing={2}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
-                          {...register("company_contact")}
-                          className="carRegField"
-                          label="Company Contact No (N) (new field) "
-                          variant="outlined"
                           fullWidth
-                          type="tel"
-                          value={phoneNumber || getDataWithId?.company_contact}
-                          onChange={handlePhoneNumberChange}
-                          placeholder="Enter phone number"
-                          focused={getDataWithId?.company_contact || ""}
+                          label="Show Room Name (T)"
+                          {...register("showRoom_name")}
+                          focused={getDataWithId?.showRoom_name || ""}
                         />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Company Email Address"
-                        {...register("company_email")}
-                        type="email"
-                        focused={getDataWithId?.company_email || ""}
-                      />
-                    </div>
-
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Driver Name (T)"
-                        {...register("driver_name")}
-                        focused={getDataWithId?.driver_name || ""}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <div className="flex items-center">
-                        <Autocomplete
-                          sx={{ marginRight: "2px" }}
-                          className="jobCardSelect2"
-                          freeSolo
-                          options={countries}
-                          getOptionLabel={(option) => option.label}
-                          value={
-                            driverCountryCode ||
-                            getDataWithId?.driver_country_code
-                          }
-                          onChange={(event, newValue) => {
-                            setDriverCountryCode(newValue);
-                            setPhoneNumber(""); // Reset the phone number when changing country codes
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              {...register("driver_country_code")}
-                              label="Select Country Code"
-                              variant="outlined"
-                            />
-                          )}
-                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
-                          {...register("driver_contact")}
-                          className="carRegField"
-                          label=""
-                          variant="outlined"
                           fullWidth
-                          type="tel"
-                          value={
-                            driverPhoneNumber
-                              ? driverPhoneNumber
-                              : getDataWithId?.driver_contact
-                          }
-                          onChange={handleDriverPhoneNumberChange}
-                          placeholder="Driver Contact Number "
-                          focused={getDataWithId?.driver_contact || ""}
+                          label="Vehicle User Name (T)  "
+                          {...register("vehicle_username")}
+                          focused={getDataWithId?.vehicle_username || ""}
                         />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <TextField
-                        className="addJobInputField"
-                        label="Reference Name (T) "
-                        {...register("reference_name")}
-                        focused={getDataWithId?.reference_name || ""}
-                      />
-                    </div>
-                  </div>
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          on
+                          label="Show Room Address (T)  "
+                          {...register("showRoom_address")}
+                          focused={getDataWithId?.showRoom_address || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          {...register("company_name")}
+                          label="Company Name (T)"
+                          focused={getDataWithId?.company_name || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Company Address (T)"
+                          {...register("company_address")}
+                          focused={getDataWithId?.company_address || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div className="flex items-center my-1">
+                          <Autocomplete
+                            fullWidth
+                            freeSolo
+                            options={countries}
+                            getOptionLabel={(option) => option.label}
+                            value={
+                              countryCode || getDataWithId?.company_country_code
+                            }
+                            onChange={(event, newValue) => {
+                              setCountryCode(newValue);
+                              setPhoneNumber("");
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                fullWidth
+                                {...params}
+                                {...register("company_country_code")}
+                                label="Select Country Code"
+                                variant="outlined"
+                              />
+                            )}
+                          />
+                          <TextField
+                            {...register("company_contact")}
+                            label="Company Contact No (N) (new field) "
+                            variant="outlined"
+                            fullWidth
+                            type="tel"
+                            value={
+                              phoneNumber || getDataWithId?.company_contact
+                            }
+                            onChange={handlePhoneNumberChange}
+                            placeholder="Enter phone number"
+                            focused={getDataWithId?.company_contact || ""}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Company Email Address"
+                          {...register("company_email")}
+                          type="email"
+                          focused={getDataWithId?.company_email || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Driver Name (T)"
+                          {...register("driver_name")}
+                          focused={getDataWithId?.driver_name || ""}
+                        />
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div className="flex items-center">
+                          <Autocomplete
+                            sx={{ marginRight: "2px" }}
+                            fullWidth
+                            freeSolo
+                            options={countries}
+                            getOptionLabel={(option) => option.label}
+                            value={
+                              driverCountryCode ||
+                              getDataWithId?.driver_country_code
+                            }
+                            onChange={(event, newValue) => {
+                              setDriverCountryCode(newValue);
+                              setPhoneNumber("");
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                fullWidth
+                                {...params}
+                                {...register("driver_country_code")}
+                                label="Select Country Code"
+                                variant="outlined"
+                              />
+                            )}
+                          />
+                          <TextField
+                            {...register("driver_contact")}
+                            label=""
+                            variant="outlined"
+                            fullWidth
+                            type="tel"
+                            value={
+                              driverPhoneNumber
+                                ? driverPhoneNumber
+                                : getDataWithId?.driver_contact
+                            }
+                            onChange={handleDriverPhoneNumberChange}
+                            placeholder="Driver Contact Number "
+                            focused={getDataWithId?.driver_contact || ""}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Reference Name (T) "
+                          {...register("reference_name")}
+                          focused={getDataWithId?.reference_name || ""}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Box>
                 ) : null)}
-            </div>
-            <div className="jobCardFieldLeftSide lg:mt-0 mt-5">
-              <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
+            </Box>
 
-              <div className="mb-3">
-                {getDataWithId?.vehicles ? (
+            <Box>
+              <h3 className="mb-5 text-xl font-bold">Vehicle Information </h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={2} md={6} sm={3} xs={12}>
+                      <Autocomplete
+                        sx={{ marginRight: "5px" }}
+                        freeSolo
+                        fullWidth
+                        id="free-solo-demo"
+                        inputValue={inputValue}
+                        onInputChange={(event, newValue) =>
+                          setInputValue(newValue)
+                        }
+                        options={cmDmOptions.map((option) => option?.label)}
+                        renderInput={(params) => (
+                          <TextField
+                            fullWidth
+                            {...params}
+                            label="Vehicle Reg No"
+                            {...register("carReg_no")}
+                            focused={getDataWithChassisNo?.carReg_no || ""}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item lg={10} md={6} sm={9} xs={12}>
+                      <InputMask
+                        mask="**-****"
+                        maskChar={null}
+                        {...register("car_registration_no")}
+                      >
+                        {(inputProps) => (
+                          <TextField
+                            {...inputProps}
+                            {...register("car_registration_no")}
+                            fullWidth
+                            label="Car R (N)"
+                            focused={
+                              getDataWithChassisNo?.car_registration_no || ""
+                            }
+                          />
+                        )}
+                      </InputMask>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    {...register("engine_no")}
+                    label="ENGINE NO & CC (T&N) "
+                    focused={getDataWithChassisNo?.engine_no || ""}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Autocomplete
-                    disableClearable
+                    fullWidth
                     freeSolo
-                    className="addJobInputField mb-3"
-                    onChange={handleChassisChange}
-                    options={
-                      getDataWithId?.vehicles
-                        ? getDataWithId?.vehicles?.map(
-                            (option) => option?.chassis_no
-                          )
-                        : ""
-                    }
+                    onInputChange={(event, newValue) => {
+                      handleBrandChange(newValue);
+                    }}
+                    options={carBrands.map((option) => option.label)}
                     renderInput={(params) => (
                       <TextField
+                        fullWidth
                         {...params}
-                        label="Select Chassis no"
-                        {...register("chassis_no")}
-                        inputProps={{
-                          ...params.inputProps,
-                          maxLength:
-                            getDataWithChassisNo?.chassis_no?.length || 30,
-                        }}
-                        required
+                        label="Vehicle Brand"
+                        {...register("vehicle_brand")}
+                        focused={Boolean(getDataWithChassisNo?.vehicle_brand)}
+                      />
+                    )}
+                    onChange={handleBrandChange}
+                    value={selectedBrand}
+                    style={{ marginBottom: 20 }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                    fullWidth
+                    freeSolo
+                    Vehicle
+                    Name
+                    options={filteredVehicles.map((option) => option.value)}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        label="Vehicle Name "
+                        {...register("vehicle_name")}
+                        focused={getDataWithChassisNo?.vehicle_name || ""}
+                      />
+                    )}
+                    getOptionLabel={(option) => option || ""}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="mt-3 relative">
+                    <input
+                      value={yearSelectInput}
+                      onInput={handleYearSelectInput}
+                      {...register("vehicle_model")}
+                      type="text"
+                      className="border border-[#11111163] mb-5 w-[100%] h-14 p-3 rounded-md"
+                      placeholder="Vehicle Model"
+                      defaultValue={getDataWithChassisNo?.vehicle_model}
+                    />
+                    {yearSelectInput && (
+                      <ul className="options-list">
+                        {filteredOptions.map((option, index) => (
+                          <li
+                            key={index}
+                            onClick={() => handleOptionClick(option)}
+                          >
+                            {option.label}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                    fullWidth
+                    id="free-solo-demo"
+                    Vehicle
+                    Types
+                    freeSolo
+                    options={vehicleTypes.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        label=" Vehicle Categories "
+                        {...register("vehicle_category")}
+                        focused={getDataWithChassisNo?.vehicle_category || ""}
                       />
                     )}
                   />
-                ) : (
-                  <div>
-                    <TextField
-                      className="addJobInputField"
-                      {...register("chassis_no")}
-                      label="Chassis no"
-                      focused={getDataWithChassisNo?.chassis_no || ""}
-                      required
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="flex  md:gap-0 gap-4 items-center">
-                <Autocomplete
-                  sx={{ marginRight: "5px" }}
-                  freeSolo
-                  className="jobCardSelect2"
-                  id="free-solo-demo"
-                  inputValue={inputValue}
-                  onInputChange={(event, newValue) => setInputValue(newValue)}
-                  options={cmDmOptions.map((option) => option?.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Reg No"
-                      {...register("carReg_no")}
-                      focused={getDataWithChassisNo?.carReg_no || ""}
-                    />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    {...register("color_code")}
+                    label="Color & Code (T&N) "
+                    focused={getDataWithChassisNo?.color_code || ""}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Mileage (N) "
+                    {...register("mileage", {
+                      pattern: {
+                        value: /^\d+$/,
+                        message: "Please enter a valid number.",
+                      },
+                    })}
+                    focused={getDataWithChassisNo?.mileage || ""}
+                  />
+                  {errors.mileage && (
+                    <span className="text-sm text-red-400">
+                      {errors.mileage.message}
+                    </span>
                   )}
-                />
-
-                <InputMask
-                  mask="**-****"
-                  maskChar={null}
-                  {...register("car_registration_no")}
-                >
-                  {(inputProps) => (
-                    <TextField
-                      {...inputProps}
-                      {...register("car_registration_no")}
-                      className="carRegField"
-                      label="Car R (N)"
-                      focused={getDataWithChassisNo?.car_registration_no || ""}
-                    />
-                  )}
-                </InputMask>
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  {...register("engine_no")}
-                  label="ENGINE NO & CC (T&N) "
-                  focused={getDataWithChassisNo?.engine_no || ""}
-                />
-              </div>
-
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  freeSolo
-                  onInputChange={(event, newValue) => {
-                    handleBrandChange(newValue);
-                  }}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Brand"
-                      {...register("vehicle_brand")}
-                      focused={Boolean(getDataWithChassisNo?.vehicle_brand)}
-                    />
-                  )}
-                  onChange={handleBrandChange}
-                  value={selectedBrand}
-                  style={{ marginBottom: 20 }}
-                />
-              </div>
-
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  freeSolo
-                  Vehicle
-                  Name
-                  options={filteredVehicles.map((option) => option.value)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Name "
-                      {...register("vehicle_name")}
-                      focused={getDataWithChassisNo?.vehicle_name || ""}
-                    />
-                  )}
-                  getOptionLabel={(option) => option || ""}
-                />
-              </div>
-
-              <div className="mt-3 relative">
-                <input
-                  value={yearSelectInput}
-                  onInput={handleYearSelectInput}
-                  {...register("vehicle_model")}
-                  type="text"
-                  className="border border-[#11111163] mb-5 w-[98%] h-12 p-3 rounded-md"
-                  placeholder="Vehicle Model"
-                  defaultValue={getDataWithChassisNo?.vehicle_model}
-                  // focused={getDataWithChassisNo?.vehicle_model}
-                />
-                {yearSelectInput && (
-                  <ul className="options-list">
-                    {filteredOptions.map((option, index) => (
-                      <li key={index} onClick={() => handleOptionClick(option)}>
-                        {option.label}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              <div>
-                <Autocomplete
-                  className="addJobInputField"
-                  id="free-solo-demo"
-                  Vehicle
-                  Types
-                  freeSolo
-                  options={vehicleTypes.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label=" Vehicle Categories "
-                      {...register("vehicle_category")}
-                      focused={getDataWithChassisNo?.vehicle_category || ""}
-                    />
-                  )}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  {...register("color_code")}
-                  label="Color & Code (T&N) "
-                  focused={getDataWithChassisNo?.color_code || ""}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Mileage (N) "
-                  {...register("mileage", {
-                    // required: "This field is required.",
-                    pattern: {
-                      value: /^\d+$/,
-                      message: "Please enter a valid number.",
-                    },
-                  })}
-                  focused={getDataWithChassisNo?.mileage || ""}
-                />
-                {errors.mileage && (
-                  <span className="text-sm text-red-400">
-                    {errors.mileage.message}
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  id="free-solo-demo"
-                  Fuel
-                  Type
-                  freeSolo
-                  options={fuelType.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label=" Fuel Type"
-                      {...register("fuel_type")}
-                      focused={getDataWithChassisNo?.fuel_type || ""}
-                    />
-                  )}
-                />
-              </div>
-            </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                    fullWidth
+                    id="free-solo-demo"
+                    Fuel
+                    Type
+                    freeSolo
+                    options={fuelType.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        label=" Fuel Type"
+                        {...register("fuel_type")}
+                        focused={getDataWithChassisNo?.fuel_type || ""}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                    fullWidth
+                    id="free-solo-demo"
+                    Fuel
+                    Type
+                    freeSolo
+                    options={fuelType.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        label=" Fuel Type"
+                        {...register("fuel_type")}
+                        focused={getDataWithChassisNo?.fuel_type || ""}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
           </div>
 
           <div className="mt-10 vehicleReport">
@@ -1507,16 +1523,8 @@ const AddJobCard = () => {
               >
                 Preview
               </button>
-              <button
-               
-              >
-                Print
-              </button>
-              <button
-               
-              >
-                Download
-              </button>
+              <button>Print</button>
+              <button>Download</button>
 
               <button
                 disabled={createJobCardLoading}
