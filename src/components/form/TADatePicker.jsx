@@ -10,7 +10,7 @@ const TADatePicker = () => {
       <DatePicker
         label="Select Date"
         onChange={""}
-         
+         fullWidth
         inputFormat="DD/MM/YY"
       />
       
