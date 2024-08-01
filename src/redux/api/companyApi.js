@@ -16,7 +16,7 @@ const companyApi = baseApi.injectEndpoints({
         method: "GET",
         params: { limit, page, searchTerm },
       }),
-      providesTags: ["company"],
+      providesTags: ["company", "jobCard", "invoice", "quotation", "vehicle"],
     }),
 
     getSingleCompany: builder.query({
@@ -24,7 +24,13 @@ const companyApi = baseApi.injectEndpoints({
         url: `/companies/${id}`,
         method: "GET",
       }),
-      invalidatesTags: ["company"],
+      invalidatesTags: [
+        "company",
+        "jobCard",
+        "invoice",
+        "quotation",
+        "vehicle",
+      ],
     }),
     updateCompany: builder.mutation({
       query: (companyInfo) => {

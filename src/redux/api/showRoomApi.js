@@ -16,7 +16,7 @@ const showRoomApi = baseApi.injectEndpoints({
         method: "GET",
         params: { limit, page, searchTerm },
       }),
-      providesTags: ["showroom"],
+      providesTags: ["showroom", "jobCard", "invoice", "quotation", "vehicle"],
     }),
 
     getSingleShowRoom: builder.query({
@@ -24,7 +24,13 @@ const showRoomApi = baseApi.injectEndpoints({
         url: `/showrooms/${id}`,
         method: "GET",
       }),
-      invalidatesTags: ["showroom"],
+      invalidatesTags: [
+        "showroom",
+        "jobCard",
+        "invoice",
+        "quotation",
+        "vehicle",
+      ],
     }),
     updateShowRoom: builder.mutation({
       query: (showroomInfo) => {

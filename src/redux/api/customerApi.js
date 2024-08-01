@@ -16,7 +16,7 @@ const customerApi = baseApi.injectEndpoints({
         method: "GET",
         params: { limit, page, searchTerm },
       }),
-      providesTags: ["customer"],
+      providesTags: ["customer", "vehicle", "jobCard", "quotation", "invoice"],
     }),
 
     getSingleCustomer: builder.query({
@@ -24,16 +24,16 @@ const customerApi = baseApi.injectEndpoints({
         url: `/customers/${id}`,
         method: "GET",
       }),
-      invalidatesTags: ["customer"],
+      invalidatesTags: ["customer", "vehicle", "jobCard", "quotation", "invoice"],
     }),
     updateCustomer: builder.mutation({
       query: (customerInfo) => {
-        console.log(customerInfo)
-        return ({
+        console.log(customerInfo);
+        return {
           url: `/customers/${customerInfo.id}`,
           method: "PUT",
           body: customerInfo.data,
-        })
+        };
       },
       invalidatesTags: ["customer"],
     }),

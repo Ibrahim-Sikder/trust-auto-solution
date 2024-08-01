@@ -1,20 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { FaCarSide, FaInfo, FaRegEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 import Card from "../../../../components/Card/Card";
 import React from "react";
 import { Link } from "react-router-dom";
 import { HiOutlineEye } from "react-icons/hi";
 import { formatDate } from "../../../../utils/formateDate";
-// import invoice from "../../../../../public/assets/invoice.png";
+ 
 
-const ShowRoomAccount = ({
-  profileData,
-  jobCardData,
-  quotationData,
-  moneyReceiptData,
-  invoiceData,
-}) => {
+const ShowRoomAccount = ({ profileData }) => {
   const lastVehicle =
     profileData?.data?.vehicles?.length > 0
       ? [...profileData.data.vehicles].sort(
@@ -81,6 +75,9 @@ const ShowRoomAccount = ({
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )[1]
       : null;
+
+
+ 
 
   return (
     <div className="customerProfileWrap">
@@ -306,7 +303,7 @@ const ShowRoomAccount = ({
                   <div className="flex items-center">
                     <b className="recentJobs">Vehicle Name</b>:{" "}
                     <small className="ml-3">
-                      {lastQuotation?.vehicle_name}
+                      {lastQuotation?.vehicle?.vehicle_name}
                     </small>
                   </div>
                 )}
@@ -354,7 +351,7 @@ const ShowRoomAccount = ({
                   <div className="flex items-center">
                     <b className="recentJobs">Vehicle Name </b>:{" "}
                     <small className="ml-3">
-                      {beforeLastQuotation?.vehicle_name}
+                      {beforeLastQuotation?.vehicle?.vehicle_name}
                     </small>
                   </div>
                 )}
@@ -415,7 +412,7 @@ const ShowRoomAccount = ({
                 {lastInvoice && (
                   <div className="flex items-center ">
                     <b className="recentJobs">Vehicle Name </b>:{" "}
-                    <span className="ml-3">{lastInvoice?.vehicle_name}</span>
+                    <span className="ml-3">{lastInvoice?.vehicle?.vehicle_name}</span>
                   </div>
                 )}
                 {lastInvoice && (
@@ -461,7 +458,7 @@ const ShowRoomAccount = ({
                   <div className="flex items-center ">
                     <b className="recentJobs">Vehicle Name </b>:{" "}
                     <span className="ml-3">
-                      {beforeLastInvoice?.vehicle_name}
+                      {beforeLastInvoice?.vehicle?.vehicle_name}
                     </span>
                   </div>
                 )}

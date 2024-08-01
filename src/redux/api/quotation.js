@@ -11,10 +11,10 @@ const quotationApi = baseApi.injectEndpoints({
       invalidatesTags: ["quotation"],
     }),
     getAllQuotations: builder.query({
-      query: ({ limit, page, searchTerm }) => ({
+      query: ({ id,limit, page, searchTerm }) => ({
         url: `/quotations`,
         method: "GET",
-        params: { limit, page, searchTerm },
+        params: { id ,limit, page, searchTerm },
       }),
       providesTags: ["quotation"],
     }),

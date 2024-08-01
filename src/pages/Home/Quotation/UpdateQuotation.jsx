@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import InputMask from "react-input-mask";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
@@ -77,11 +78,11 @@ const UpdateQuotation = () => {
   const [removeQuotation, { isLoading: removeLoading, error: removeError }] =
     useRemoveQuotationMutation();
 
-    useEffect(() => {
-      if (specificQuotation?.date) {
-        setSelectedDate(specificQuotation.date);
-      }
-    }, [specificQuotation]);
+  useEffect(() => {
+    if (specificQuotation?.date) {
+      setSelectedDate(specificQuotation.date);
+    }
+  }, [specificQuotation]);
 
   const handleRemove = (index) => {
     if (!index) {
@@ -114,6 +115,73 @@ const UpdateQuotation = () => {
         setSpecificQuotation(data.data);
       });
   }, [id, reload]);
+
+  useEffect(() => {
+    if (specificQuotation?.user_type === "customer") {
+      reset({
+        Id: specificQuotation?.Id,
+        job_no: specificQuotation?.job_no,
+        company_name: specificQuotation?.customer?.company_name,
+
+        customer_name: specificQuotation?.customer?.customer_name,
+        customer_country_code:
+          specificQuotation?.customer?.customer_country_code,
+        customer_contact: specificQuotation?.customer?.customer_contact,
+
+        customer_address: specificQuotation?.customer?.customer_address,
+
+        carReg_no: specificQuotation?.vehicle?.carReg_no,
+        car_registration_no: specificQuotation?.vehicle?.car_registration_no,
+        engine_no: specificQuotation?.vehicle?.engine_no,
+        vehicle_brand: specificQuotation?.vehicle?.vehicle_brand,
+        vehicle_name: specificQuotation?.vehicle?.vehicle_name,
+        chassis_no: specificQuotation?.vehicle?.chassis_no,
+        mileage: specificQuotation?.vehicle?.mileage,
+      });
+    }
+    if (specificQuotation?.user_type === "company") {
+      reset({
+        Id: specificQuotation?.Id,
+        job_no: specificQuotation?.job_no,
+        company_name: specificQuotation?.company?.company_name,
+        vehicle_username: specificQuotation?.company?.vehicle_username,
+        company_address: specificQuotation?.company?.company_address,
+        company_contact: specificQuotation?.company?.company_contact,
+        company_country_code: specificQuotation?.company?.company_country_code,
+        company_email: specificQuotation?.company?.company_email,
+        customer_address: specificQuotation?.company?.customer_address,
+
+        carReg_no: specificQuotation?.vehicle?.carReg_no,
+        car_registration_no: specificQuotation?.vehicle?.car_registration_no,
+        engine_no: specificQuotation?.vehicle?.engine_no,
+        vehicle_brand: specificQuotation?.vehicle?.vehicle_brand,
+        vehicle_name: specificQuotation?.vehicle?.vehicle_name,
+        chassis_no: specificQuotation?.vehicle?.chassis_no,
+        mileage: specificQuotation?.vehicle?.mileage,
+      });
+    }
+    if (specificQuotation?.user_type === "showRoom") {
+      reset({
+        Id: specificQuotation?.Id,
+        job_no: specificQuotation?.job_no,
+        showRoom_name: specificQuotation?.showRoom_name,
+        vehicle_username: specificQuotation?.vehicle_username,
+        showRoom_address: specificQuotation?.showRoom_address,
+        company_name: specificQuotation?.company_name,
+        company_contact: phoneNumber || specificQuotation?.company_contact,
+        company_country_code: specificQuotation?.company_country_code,
+
+        carReg_no: specificQuotation?.vehicle?.carReg_no,
+        car_registration_no: specificQuotation?.vehicle?.car_registration_no,
+        engine_no: specificQuotation?.vehicle?.engine_no,
+        vehicle_brand: specificQuotation?.vehicle?.vehicle_brand,
+        vehicle_name: specificQuotation?.vehicle?.vehicle_name,
+        chassis_no: specificQuotation?.vehicle?.chassis_no,
+
+        mileage: specificQuotation?.vehicle?.mileage,
+      });
+    }
+  }, [phoneNumber, reset, specificQuotation?.Id, specificQuotation?.company?.company_address, specificQuotation?.company?.company_contact, specificQuotation?.company?.company_country_code, specificQuotation?.company?.company_email, specificQuotation?.company?.company_name, specificQuotation?.company?.customer_address, specificQuotation?.company?.vehicle_username, specificQuotation?.company_contact, specificQuotation?.company_country_code, specificQuotation?.company_name, specificQuotation?.customer?.company_name, specificQuotation?.customer?.customer_address, specificQuotation?.customer?.customer_contact, specificQuotation?.customer?.customer_country_code, specificQuotation?.customer?.customer_name, specificQuotation?.job_no, specificQuotation?.showRoom_address, specificQuotation?.showRoom_name, specificQuotation?.user_type, specificQuotation?.vehicle?.carReg_no, specificQuotation?.vehicle?.car_registration_no, specificQuotation?.vehicle?.chassis_no, specificQuotation?.vehicle?.engine_no, specificQuotation?.vehicle?.mileage, specificQuotation?.vehicle?.vehicle_brand, specificQuotation?.vehicle?.vehicle_name, specificQuotation?.vehicle_username]);
 
   useEffect(() => {
     const totalSum = specificQuotation.input_data?.reduce(
@@ -445,11 +513,46 @@ const UpdateQuotation = () => {
   const onSubmit = async (data) => {
     setRemoveButton("");
     try {
-      const customer = {};
-      const company = {};
-
-      const showRoom = {};
-      const vehicle = {};
+      const customer = {
+        company_name: data.company_name,
+  
+        customer_name: data.customer_name,
+        customer_contact: data.customer_contact,
+        customer_country_code: data.company_country_code,
+  
+        customer_address: data.customer_address,
+      };
+  
+      const company = {
+        company_name: data.company_name,
+        vehicle_username: data.vehicle_username,
+        company_address: data.company_address,
+        company_contact: data.company_contact,
+        company_country_code: data.company_country_code,
+      };
+  
+      const showRoom = {
+        showRoom_name: data.showRoom_name,
+        vehicle_username: data.vehicle_username,
+  
+        company_name: data.company_name,
+        company_contact: data.company_contact,
+        company_country_code: data.company_country_code,
+  
+        company_address: data.company_address,
+      };
+  
+      data.mileage = Number(data.mileage);
+  
+      const vehicle = {
+        carReg_no: data.carReg_no,
+        car_registration_no: data.car_registration_no,
+        chassis_no: data.chassis_no,
+        engine_no: data.engine_no,
+        vehicle_brand: data.vehicle_brand,
+        vehicle_name: data.vehicle_name,
+        mileage: data.mileage,
+      };
 
       const quotation = {
         user_type: specificQuotation?.user_type,
@@ -507,8 +610,6 @@ const UpdateQuotation = () => {
     handleSubmit(onSubmit)();
   };
 
-  
-
   return (
     <div className="px-5 py-10">
       <div className=" addJobCardHeads">
@@ -539,96 +640,77 @@ const UpdateQuotation = () => {
           </div>
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
-                  type="number"
                   className="addJobInputField"
-                  label="Serial No"
+                  label="Job Card No"
                   {...register("job_no")}
-                  value={specificQuotation?.job_no}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      job_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.job_no,
+                  // onChange={(e) => setOrderNumber(e.target.value)}
+                  focused={specificQuotation?.job_no || ""}
+                  required
+                  InputProps={{
+                    readOnly: true,
                   }}
                 />
               </div>
 
               <div className="mt-3">
                 <TextField
-                  readonly
                   className="addJobInputField"
                   label="Customer Id"
-                  {...register("customerId")}
-                  value={specificQuotation?.Id}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      Id: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.Id,
+                  {...register("Id")}
+                  focused={specificQuotation?.Id || ""}
+                  required
+                  InputProps={{
+                    readOnly: true,
                   }}
                 />
               </div>
-
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Company Name "
-                  value={specificQuotation?.company_name}
+                  label="Company"
+                  focused={
+                    specificQuotation?.customer?.company_name ||
+                    specificQuotation?.company?.company_name ||
+                    specificQuotation?.showRoom?.company_name
+                  }
                   {...register("company_name")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      company_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.company_name,
-                  }}
                 />
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer"
-                  value={specificQuotation?.customer_name}
-                  {...register("customer_name")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      customer_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.customer_name,
-                  }}
-                />
+                {!specificQuotation && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={specificQuotation?.customer?.customer_name || ""}
+                    {...register("customer_name")}
+                  />
+                )}
+                {specificQuotation?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={specificQuotation?.customer?.customer_name || ""}
+                    {...register("customer_name")}
+                  />
+                )}
+                {(specificQuotation?.user_type === "company" ||
+                  specificQuotation?.user_type === "showRoom") && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={
+                      specificQuotation?.company?.vehicle_username ||
+                      specificQuotation?.showRoom?.vehicle_username
+                    }
+                    {...register("vehicle_username")}
+                  />
+                )}
               </div>
               <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Phone"
-                  value={specificQuotation?.customer_contact}
-                  {...register("customer_contact")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      customer_contact: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.customer_contact,
-                  }}
-                /> */}
-                <div className="flex sm:flex-row flex-col gap-1 items-center">
+                <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
                   <Autocomplete
                     className="jobCardSelect2"
                     freeSolo
@@ -642,78 +724,125 @@ const UpdateQuotation = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("customer_country_code")}
                         label="Select Country Code"
                         variant="outlined"
+                        focused={
+                          specificQuotation?.customer?.customer_country_code || ""
+                        }
                       />
                     )}
                   />
-                  <TextField
-                    className="carRegField"
-                    label="Phone"
-                    value={specificQuotation?.customer_contact}
-                    {...register("customer_contact")}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      if (inputValue.length <= 11) {
-                        setSpecificQuotation({
-                          ...specificQuotation,
-                          customer_contact: inputValue,
-                        });
+
+                  {!specificQuotation && (
+                    <TextField
+                      {...register("customer_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : specificQuotation?.customer?.customer_contact
                       }
-                    }}
-                    InputLabelProps={{
-                      shrink: !!specificQuotation.customer_contact,
-                    }}
-                  />
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
+                    />
+                  )}
+                  {specificQuotation?.user_type === "customer" && (
+                    <TextField
+                      {...register("customer_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : specificQuotation?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
+                      focused={
+                        specificQuotation?.customer?.customer_contact || ""
+                      }
+                    />
+                  )}
+                  {(specificQuotation?.user_type === "company" ||
+                    specificQuotation?.user_type === "showRoom") && (
+                    <TextField
+                      {...register("company_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : specificQuotation?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Company Contact No (N)"
+                      focused={
+                        specificQuotation?.company?.company_contact ||
+                        specificQuotation?.showRoom?.company_contact
+                      }
+                    />
+                  )}
                 </div>
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Address"
-                  value={specificQuotation?.customer_address}
-                  {...register("customer_address")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      customer_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.customer_address,
-                  }}
-                />
+                {!specificQuotation && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                  />
+                )}
+                {specificQuotation?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                    focused={specificQuotation?.customer?.customer_address}
+                  />
+                )}
+                {specificQuotation?.user_type === "company" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("company_address")}
+                    focused={specificQuotation?.company?.company_address || ""}
+                  />
+                )}
+                {specificQuotation?.user_type === "showRoom" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("showRoom_address")}
+                    focused={
+                      specificQuotation?.showRoom?.showRoom_address || ""
+                    }
+                  />
+                )}
               </div>
             </div>
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
               <div className="mt-3">
-                <Autocomplete
-                  disabled={
-                    specificQuotation?.vehicle?.length === 0 ||
-                    !specificQuotation?.vehicle
-                  }
-                  disableClearable
-                  freeSolo
+                <TextField
                   className="addJobInputField"
-                  onChange={handleChassisChange}
-                  options={specificQuotation?.vehicle?.map(
-                    (option) => option.chassis_no
-                  )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      className="addJobInputField"
-                      label="Chassis No"
-                       
-                      {...register("chassis_no")}
-                      inputProps={{
-                        ...params.inputProps,
-                        maxLength: specificQuotation?.chassis_no?.length || 30,
-                      }}
-                    />
-                  )}
+                  label="Chassis No"
+                  value={specificQuotation?.chassis_no}
+                  {...register("chassis_no")}
+                  focused={
+                    specificQuotation?.vehicle?.chassis_no || ""
+                  }
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
               </div>
               <div className="flex mt-3  md:gap-0 gap-4 items-center">
@@ -728,87 +857,41 @@ const UpdateQuotation = () => {
                       {...params}
                       label="Vehicle Reg No ( New field ) "
                       {...register("carReg_no")}
+                      focused={specificQuotation?.vehicle?.carReg_no}
                     />
                   )}
                 />
 
-                <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers and hyphens are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  value={specificQuotation?.car_registration_no}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length === 7) {
-                      setRegistrationError("");
-                    } else if (value.length < 7) {
-                      setRegistrationError(
-                        "Car registration number must be 7 characters"
-                      );
-                    }
-                    const formattedValue = value
-                      .replace(/\D/g, "")
-                      .slice(0, 6)
-                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      car_registration_no: formattedValue,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!specificQuotation?.car_registration_no,
-                  }}
-                  error={!!errors.car_registration_no || !!registrationError}
-                />
+                <InputMask
+                  mask="99-9999"
+                  maskChar={null}
+                  {...register("car_registration_no")}
+                >
+                  {(inputProps) => (
+                    <TextField
+                      {...inputProps}
+                      {...register("car_registration_no")}
+                      className="carRegField"
+                      label="Car R (N)"
+                      focused={
+                        specificQuotation?.vehicle?.car_registration_no || ""
+                      }
+                     
+                    />
+                  )}
+                </InputMask>
               </div>
 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  value={specificQuotation?.chassis_no}
-                  {...register("chassis_no")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      chassis_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.chassis_no,
-                  }}
-                />
-              </div>
+             
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Engine & CC"
                   value={specificQuotation?.engine_no}
                   {...register("engine_no")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      engine_no: e.target.value,
-                    })
+                  focused={
+                    specificQuotation?.vehicle?.engine_no || ""
                   }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.engine_no,
-                  }}
                 />
               </div>
               <div className="mt-3">
@@ -817,15 +900,9 @@ const UpdateQuotation = () => {
                   label="Vehicle Name"
                   value={specificQuotation?.vehicle_name}
                   {...register("vehicle_name")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      vehicle_name: e.target.value,
-                    })
+                  focused={
+                    specificQuotation?.vehicle?.vehicle_name || ""
                   }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.vehicle_name,
-                  }}
                 />
               </div>
               <div className="mt-3">
@@ -834,15 +911,9 @@ const UpdateQuotation = () => {
                   label="Mileage"
                   value={specificQuotation?.mileage}
                   {...register("mileage")}
-                  onChange={(e) =>
-                    setSpecificQuotation({
-                      ...specificQuotation,
-                      mileage: e.target.value,
-                    })
+                  focused={
+                    specificQuotation?.vehicle?.mileage || ""
                   }
-                  InputLabelProps={{
-                    shrink: !!specificQuotation.mileage,
-                  }}
                 />
               </div>
             </div>
@@ -1297,7 +1368,9 @@ const UpdateQuotation = () => {
 
             <Button>Download </Button>
             <Button>Print </Button>
-            <Button LinkComponent={Link} to='/dashboard/invoice'>Invoice </Button>
+            <Button LinkComponent={Link} to="/dashboard/invoice">
+              Invoice{" "}
+            </Button>
           </div>
         </div>
 

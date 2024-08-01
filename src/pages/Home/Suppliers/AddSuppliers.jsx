@@ -80,38 +80,13 @@ const AddSuppliers = () => {
     const file = event.target.files?.[0];
 
     if (file) {
-      // setValue(name, file);
-
       const uploadPhoto = await uploadFile(file);
-      console.log(uploadPhoto);
       setUrl(uploadPhoto?.secure_url);
       setLoading(false);
     }
   };
 
-  // const handleImageUpload = async (e) => {
-  //   try {
-  //     const file = e.target.files[0]; // Get the selected file
-  //     const formData = new FormData();
-  //     formData.append("image", file); // Use "image" as the key for single image upload
-  //     setImageLoading(true);
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-
-  //     const data = await response.json();
-  //     if (data.message === "Image uploaded successful") {
-  //       setUrl(data.image_url);
-  //       setImageLoading(false);
-  //     }
-  //   } catch (error) {
-  //     setImageLoading(false);
-  //   }
-  // };
+   
 
   const onSubmit = async (data) => {
     setError("");
@@ -224,7 +199,7 @@ const AddSuppliers = () => {
                     value={countryCode}
                     onChange={(event, newValue) => {
                       setCountryCode(newValue);
-                      setPhoneNumber(""); 
+                      setPhoneNumber("");
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -344,7 +319,7 @@ const AddSuppliers = () => {
               )}
             </div>
             <div className="mt-2 savebtn flex justify-end">
-              <button disabled={createLoading}>Add Supplier </button>
+              <button disabled={createLoading || loading}>Add Supplier </button>
             </div>
           </form>
         </div>

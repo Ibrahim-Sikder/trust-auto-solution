@@ -11,10 +11,10 @@ const invoiceApi = baseApi.injectEndpoints({
       invalidatesTags: ["invoice"],
     }),
     getAllInvoices: builder.query({
-      query: ({ limit, page, searchTerm }) => ({
+      query: ({ id, limit, page, searchTerm }) => ({
         url: `/invoices`,
         method: "GET",
-        params: { limit, page, searchTerm },
+        params: { id, limit, page, searchTerm },
       }),
       providesTags: ["invoice"],
     }),

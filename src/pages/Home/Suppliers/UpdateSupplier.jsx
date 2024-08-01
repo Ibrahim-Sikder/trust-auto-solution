@@ -21,6 +21,7 @@ import {
 } from "../../../redux/api/supplier";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
+import uploadFile from "../../../helper/uploadFile";
 
 const UpdateSupplier = () => {
   const [url, setUrl] = useState("");
@@ -68,30 +69,16 @@ const UpdateSupplier = () => {
     }
   }, [getSingleSuppliers.image, reset, singleSupplier?.data, url]);
 
-  const handleImageUpload = async (e) => {
-    try {
-      const file = e.target.files[0]; // Get the selected file
-      const formData = new FormData();
-      formData.append("image", file); // Use "image" as the key for single image upload
-      setImageLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files?.[0];
 
-      const data = await response.json();
-      if (data.message === "Image uploaded successfully") {
-        setUrl(data.image_url);
-        setImageLoading(false);
-      }
-    } catch (error) {
-      setImageLoading(false);
+    if (file) {
+      const uploadPhoto = await uploadFile(file);
+      setUrl(uploadPhoto?.secure_url);
+      setLoading(false);
     }
   };
-
   const onSubmit = async (data) => {
     const values = {
       id,
@@ -329,7 +316,9 @@ const UpdateSupplier = () => {
               )}{" "}
             </div>
             <div className="mt-2 savebtn">
-              <button disabled={updateLoading}>Update Supplier </button>
+              <button disabled={updateLoading || loading}>
+                Update Supplier{" "}
+              </button>
             </div>
           </form>
         </div>

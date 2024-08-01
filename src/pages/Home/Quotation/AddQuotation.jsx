@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../../public/assets/logo.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
 import InputMask from "react-input-mask";
@@ -44,6 +44,7 @@ const AddQuotation = () => {
   const [orderNumber, setOrderNumber] = useState(job_no);
 
   const navigate = useNavigate();
+  const textInputRef = useRef(null);
 
   const [filterType, setFilterType] = useState("");
 
@@ -60,7 +61,7 @@ const AddQuotation = () => {
   const [vat, setVAT] = useState(0);
   const [partsTotal, setPartsTotal] = useState(0);
   const [serviceTotal, setServiceTotal] = useState(0);
- 
+
   const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
 
   const [items, setItems] = useState([
@@ -84,56 +85,120 @@ const AddQuotation = () => {
     formState: { errors },
   } = useForm();
 
-  const [createQuotation, { error: createQuotationError }] =
-    useCreateQuotationMutation();
+  const [
+    createQuotation,
+    { error: createQuotationError, isLoading: createLoading },
+  ] = useCreateQuotationMutation();
 
   const [deleteQuotation, { isLoading: deleteLoading, error: deleteError }] =
     useDeleteQuotationMutation();
 
-  const { data: jobCardData, isLoading } =
+  const { data: jobCardData, refetch } =
     useGetSingleJobCardWithJobNoQuery(orderNumber);
 
-  const { data: allQuotations, isLoading: quotationLoading } =
-    useGetAllQuotationsQuery({
-      limit,
-      page: currentPage,
-      searchTerm: filterType,
-    });
+  const {
+    data: allQuotations,
+    isLoading: quotationLoading,
+    refetch: allQuotationRefetch,
+  } = useGetAllQuotationsQuery({
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
 
+  useEffect(() => {
+    if (jobCardData?.data?.user_type === "customer") {
+      reset({
+        Id: jobCardData?.data?.Id,
+        company_name: jobCardData?.data?.customer?.company_name,
 
+        customer_name: jobCardData?.data?.customer?.customer_name,
+        customer_country_code:
+          jobCardData?.data?.customer?.customer_country_code,
+        customer_contact: jobCardData?.data?.customer?.customer_contact,
 
+        customer_address: jobCardData?.data?.customer?.customer_address,
 
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
 
-    useEffect(() => {
-      if (jobCardData?.data) {
-        reset({
-          Id: jobCardData?.data?.Id,
-          company_name: jobCardData?.data?.company_name,
-          vehicle_username: jobCardData?.data?.vehicle_username,
-          company_address: jobCardData?.data?.company_address,
-          customer_name: jobCardData?.data?.customer_name,
-          customer_country_code: jobCardData?.data?.customer_country_code,
-          customer_contact: phoneNumber || jobCardData?.data?.customer_contact,
-          customer_email: jobCardData?.data?.customer_email,
-          customer_address: jobCardData?.data?.customer_address,
-          reference_name: jobCardData?.data?.reference_name,
-  
-          carReg_no: getDataWithChassisNo?.carReg_no,
-          car_registration_no: getDataWithChassisNo?.car_registration_no,
-          engine_no: getDataWithChassisNo?.engine_no,
-          vehicle_brand: getDataWithChassisNo?.vehicle_brand,
-          vehicle_name: getDataWithChassisNo?.vehicle_name,
-          vehicle_model: getDataWithChassisNo?.vehicle_model,
-          vehicle_category: getDataWithChassisNo?.vehicle_category,
-          color_code: getDataWithChassisNo?.color_code,
-          mileage: getDataWithChassisNo?.mileage,
-          fuel_type: getDataWithChassisNo?.fuel_type,
-        });
-      }
-    }, [getDataWithChassisNo?.carReg_no, getDataWithChassisNo?.car_registration_no, getDataWithChassisNo?.color_code, getDataWithChassisNo?.engine_no, getDataWithChassisNo?.fuel_type, getDataWithChassisNo?.mileage, getDataWithChassisNo?.vehicle_brand, getDataWithChassisNo?.vehicle_category, getDataWithChassisNo?.vehicle_model, getDataWithChassisNo?.vehicle_name, jobCardData?.data, phoneNumber, reset]);
+        mileage: getDataWithChassisNo?.mileage,
+      });
+    }
+    if (jobCardData?.data?.user_type === "company") {
+      reset({
+        Id: jobCardData?.data?.Id,
+        company_name: jobCardData?.data?.company?.company_name,
+        vehicle_username: jobCardData?.data?.company?.vehicle_username,
+        company_address: jobCardData?.data?.company?.company_address,
+        company_contact: jobCardData?.data?.company?.company_contact,
+        company_country_code: jobCardData?.data?.company?.company_country_code,
+        company_email: jobCardData?.data?.company?.company_email,
+        customer_address: jobCardData?.data?.company?.customer_address,
 
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
 
+        mileage: getDataWithChassisNo?.mileage,
+      });
+    }
+    if (jobCardData?.data?.user_type === "showRoom") {
+      reset({
+        Id: jobCardData?.data?.Id,
+        showRoom_name: jobCardData?.data?.showRoom_name,
+        vehicle_username: jobCardData?.data?.vehicle_username,
+        showRoom_address: jobCardData?.data?.showRoom_address,
+        company_name: jobCardData?.data?.company_name,
+        company_contact: phoneNumber || jobCardData?.data?.company_contact,
+        company_country_code: jobCardData?.data?.company_country_code,
 
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+
+        mileage: getDataWithChassisNo?.mileage,
+      });
+    }
+  }, [
+    getDataWithChassisNo?.carReg_no,
+    getDataWithChassisNo?.car_registration_no,
+    getDataWithChassisNo?.engine_no,
+    getDataWithChassisNo?.mileage,
+    getDataWithChassisNo?.vehicle_brand,
+    getDataWithChassisNo?.vehicle_name,
+    jobCardData?.data?.Id,
+    jobCardData?.data?.company?.company_address,
+    jobCardData?.data?.company?.company_contact,
+    jobCardData?.data?.company?.company_country_code,
+    jobCardData?.data?.company?.company_email,
+    jobCardData?.data?.company?.company_name,
+    jobCardData?.data?.company?.customer_address,
+    jobCardData?.data?.company?.vehicle_username,
+    jobCardData?.data?.company_address,
+    jobCardData?.data?.company_contact,
+    jobCardData?.data?.company_country_code,
+    jobCardData?.data?.company_email,
+    jobCardData?.data?.company_name,
+    jobCardData?.data?.customer?.company_name,
+    jobCardData?.data?.customer?.customer_address,
+    jobCardData?.data?.customer?.customer_contact,
+    jobCardData?.data?.customer?.customer_country_code,
+    jobCardData?.data?.customer?.customer_name,
+    jobCardData?.data?.showRoom_address,
+    jobCardData?.data?.showRoom_name,
+    jobCardData?.data?.user_type,
+    jobCardData?.data?.vehicle_username,
+    phoneNumber,
+    reset,
+  ]);
 
   const handleRemove = (index) => {
     if (!index) {
@@ -148,7 +213,17 @@ const AddQuotation = () => {
   };
 
   const handleAddClick = () => {
-    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
+    setItems([
+      ...items,
+      { description: "", quantity: "", rate: "", total: "" },
+    ]);
+  };
+
+  const handleServiceAdd = () => {
+    setServiceItems([
+      ...serviceItems,
+      { description: "", quantity: "", rate: "", total: "" },
+    ]);
   };
 
   const handleServiceDescriptionRemove = (index) => {
@@ -163,13 +238,6 @@ const AddQuotation = () => {
     }
   };
 
-  const handleServiceDescriptionAdd = () => {
-    setServiceItems([
-      ...serviceItems,
-      { servicesDescription: "", quantity: "", rate: "", total: "" },
-    ]);
-  };
-
   useEffect(() => {
     const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
     const serviceTotalSum = serviceItems.reduce(
@@ -178,8 +246,8 @@ const AddQuotation = () => {
     );
 
     const roundedTotalSum = parseFloat(totalSum + serviceTotalSum).toFixed(2);
-    setPartsTotal(totalSum);
-    setServiceTotal(serviceTotalSum);
+    setPartsTotal(Number(totalSum));
+    setServiceTotal(Number(serviceTotalSum));
     setGrandTotal(Number(roundedTotalSum));
   }, [items, serviceItems]);
 
@@ -294,11 +362,46 @@ const AddQuotation = () => {
   };
 
   const onSubmit = async (data) => {
-    const customer = {};
-    const company = {};
+    const customer = {
+      company_name: data.company_name,
 
-    const showRoom = {};
-    const vehicle = {};
+      customer_name: data.customer_name,
+      customer_contact: data.customer_contact,
+      customer_country_code: data.company_country_code,
+
+      customer_address: data.customer_address,
+    };
+
+    const company = {
+      company_name: data.company_name,
+      vehicle_username: data.vehicle_username,
+      company_address: data.company_address,
+      company_contact: data.company_contact,
+      company_country_code: data.company_country_code,
+    };
+
+    const showRoom = {
+      showRoom_name: data.showRoom_name,
+      vehicle_username: data.vehicle_username,
+
+      company_name: data.company_name,
+      company_contact: data.company_contact,
+      company_country_code: data.company_country_code,
+
+      company_address: data.company_address,
+    };
+
+    data.mileage = Number(data.mileage);
+
+    const vehicle = {
+      carReg_no: data.carReg_no,
+      car_registration_no: data.car_registration_no,
+      chassis_no: data.chassis_no,
+      engine_no: data.engine_no,
+      vehicle_brand: data.vehicle_brand,
+      vehicle_name: data.vehicle_name,
+      mileage: data.mileage,
+    };
 
     const quotation = {
       user_type: jobCardData?.data?.user_type,
@@ -324,63 +427,13 @@ const AddQuotation = () => {
     };
 
     const res = await createQuotation(values).unwrap();
-    console.log(res);
+
     if (res.success) {
       toast.success(res.message);
-      //       navigate("/dashboard/quotaiton-list");
+      navigate("/dashboard/quotaiton-list");
+      refetch();
+      allQuotationRefetch();
     }
-
-    // try {
-    //   const values = {
-    //     username: jobCardData.username || data.username,
-    //     Id: customerId || jobCardData.Id,
-    //     job_no: job_no || jobCardData.job_no,
-    //     date: selectedDate || jobCardData.date,
-
-    //     company_name: data.company_name || jobCardData.company_name,
-    //     customer_name: data.customer_name || jobCardData.customer_name,
-    //     customer_contact: data.customer_contact || jobCardData.customer_contact,
-    //     customer_address: data.customer_address || jobCardData.customer_address,
-
-    //     car_registration_no:
-    //       data.car_registration_no || jobCardData.car_registration_no,
-    //     chassis_no: data.chassis_no || jobCardData.chassis_no,
-    //     engine_no: data.engine_no || jobCardData.engine_no,
-    //     vehicle_name: data.vehicle_name || jobCardData.vehicle_name,
-    //     mileage: data.mileage || jobCardData.mileage,
-
-    //     total_amount: grandTotal,
-    //     discount: discount,
-    //     vat: vat,
-    //     net_total: calculateFinalTotal(),
-    //     input_data: items,
-    //   };
-    //   console.log(values);
-
-    //   const response = await axios.post(
-    //     `${import.meta.env.VITE_API_URL}/api/v1/quotation`,
-    //     values
-    //   );
-
-    //   if (response.data.message === "Successfully quotation post") {
-    //     if (preview === "") {
-    //       toast.success("Quotation added successful.");
-    //       navigate("/dashboard/quotaiton-list");
-    //     }
-
-    //     if (preview === "preview") {
-    //       fetch(`${import.meta.env.VITE_API_URL}/api/v1/quotation`)
-    //         .then((res) => res.json())
-    //         .then((data) => {
-    //           if (data) {
-    //             navigate(`/dashboard/quotation-view?id=${data._id}`);
-    //           }
-    //         });
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   const deletePackage = async (id) => {
@@ -409,16 +462,19 @@ const AddQuotation = () => {
     setGetDataWithChassisNo(filtered);
   };
 
+  const handleAllQuotation = () => {
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
+  };
+
   if (quotationLoading) {
     return <Loading />;
   }
-
- 
-  // const handleCustomerIdChange = (e) => {
-  //   setCustomerType(e.targer?.value);
-  // };
-  
- 
+  if (deleteError) {
+    toast.error(deleteError?.message);
+  }
 
   return (
     <div className="px-5 py-10">
@@ -451,68 +507,66 @@ const AddQuotation = () => {
           </div>
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-            <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Job Card No"
                   onChange={(e) => setOrderNumber(e.target.value)}
-                  // value={jobCardData?.data?.job_no}
-                  // focused={jobCardData?.data?.job_no}
+                  required
                 />
               </div>
 
-             
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-
                   label="Customer Id"
                   {...register("Id")}
                   focused={jobCardData?.data?.Id}
-                  readOnly
-                 
-                  // onChange={handleInputChange}
-                  // value={jobCardData?.data?.Id}
-                  // focused={jobCardData?.data?.Id}
-                  // required
+                  required
                 />
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Company"
-                  // value={jobCardData?.data?.company_name}
-                  // focused={jobCardData?.data?.company_name}
+                  focused={
+                    jobCardData?.data?.customer?.company_name ||
+                    jobCardData?.data?.company?.company_name ||
+                    jobCardData?.data?.showRoom?.company_name
+                  }
                   {...register("company_name")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     company_name: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.company_name,
-                  // }}
                 />
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer"
-                  // value={jobCardData?.data?.customer_name}
-                  // focused={jobCardData?.data?.customer_name}
-                  {...register("customer_name")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     customer_name: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.data?.customer_name,
-                  // }}
-                />
+                {!jobCardData?.data && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={jobCardData?.data?.customer?.customer_name}
+                    {...register("customer_name")}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={jobCardData?.data?.customer?.customer_name}
+                    {...register("customer_name")}
+                  />
+                )}
+                {(jobCardData?.data?.user_type === "company" ||
+                  jobCardData?.data?.user_type === "showRoom") && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={
+                      jobCardData?.data?.company?.vehicle_username ||
+                      jobCardData?.data?.showRoom?.vehicle_username
+                    }
+                    {...register("vehicle_username")}
+                  />
+                )}
               </div>
               <div className="mt-3">
                 <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
@@ -529,46 +583,108 @@ const AddQuotation = () => {
                     renderInput={(params) => (
                       <TextField
                         {...params}
+                        {...register("customer_country_code")}
                         label="Select Country Code"
                         variant="outlined"
+                        focused={
+                          jobCardData?.data?.customer?.customer_country_code
+                        }
                       />
                     )}
                   />
 
-                  <TextField
-                    {...register("customer_contact")}
-                    className="carRegField"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    // value={
-                    //   phoneNumber ? phoneNumber : jobCardData?.customer_contact
-                    // }
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Customer Contact No (N)"
-                    // InputLabelProps={{
-                    //   shrink: !!jobCardData?.customer_contact,
-                    // }}
-                  />
+                  {!jobCardData?.data && (
+                    <TextField
+                      {...register("customer_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : jobCardData?.data?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
+                    />
+                  )}
+                  {jobCardData?.data?.user_type === "customer" && (
+                    <TextField
+                      {...register("customer_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : jobCardData?.data?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
+                      focused={
+                        jobCardData?.data?.customer?.customer_contact || ""
+                      }
+                    />
+                  )}
+                  {(jobCardData?.data?.user_type === "company" ||
+                    jobCardData?.data?.user_type === "showRoom") && (
+                    <TextField
+                      {...register("company_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : jobCardData?.data?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Company Contact No (N)"
+                      focused={
+                        jobCardData?.data?.company?.company_contact ||
+                        jobCardData?.data?.showRoom?.company_contact
+                      }
+                    />
+                  )}
                 </div>
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Address"
-                  // value={jobCardData?.customer_address}
-                  // focused={jobCardData?.customer_address}
-                  {...register("customer_address")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     customer_address: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.customer_address,
-                  // }}
-                />
+                {!jobCardData?.data && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                    focused={jobCardData?.data?.customer?.customer_address}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "company" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("company_address")}
+                    focused={jobCardData?.data?.company?.company_address || ""}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "showRoom" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("showRoom_address")}
+                    focused={
+                      jobCardData?.data?.showRoom?.showRoom_address || ""
+                    }
+                  />
+                )}
               </div>
             </div>
 
@@ -592,12 +708,12 @@ const AddQuotation = () => {
                       {...params}
                       className="addJobInputField"
                       label="Chassis No"
-                       
                       {...register("chassis_no")}
                       inputProps={{
                         ...params.inputProps,
                         maxLength: jobCardData?.data?.chassis_no?.length || 30,
                       }}
+                      required
                     />
                   )}
                 />
@@ -614,6 +730,7 @@ const AddQuotation = () => {
                       {...params}
                       label="Vehicle Reg No"
                       {...register("carReg_no")}
+                      focused={getDataWithChassisNo?.carReg_no || ""}
                     />
                   )}
                 />
@@ -629,82 +746,34 @@ const AddQuotation = () => {
                       {...register("car_registration_no")}
                       className="carRegField"
                       label="Car R (N)"
-                      focused={jobCardData?.car_registration_no || ""}
+                      focused={getDataWithChassisNo?.carReg_no || ""}
                     />
                   )}
                 </InputMask>
               </div>
 
-              {/* <div className="mt-3">
-                {/* <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  // value={jobCardData?.chassis_no}
-                  // focused={jobCardData?.chassis_no}
-                  {...register("chassis_no")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     chassis_no: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.chassis_no,
-                  // }}
-                /> */}
-              {/* </div> */}
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Engine & CC"
-                  // value={jobCardData?.engine_no}
-                  // focused={jobCardData?.engine_no}
                   {...register("engine_no")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     engine_no: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.engine_no,
-                  // }}
+                  focused={getDataWithChassisNo?.engine_no || ""}
                 />
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Vehicle Name"
-                  // value={jobCardData?.vehicle_name}
-                  // focused={jobCardData?.vehicle_name}
                   {...register("vehicle_name")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     vehicle_name: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.vehicle_name,
-                  // }}
+                  focused={getDataWithChassisNo?.vehicle_name || ""}
                 />
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Mileage"
-                  // value={jobCardData?.mileage}
-                  // focused={jobCardData?.mileage}
                   {...register("mileage")}
-                  // onChange={(e) =>
-                  //   setJobCardData({
-                  //     ...jobCardData,
-                  //     mileage: e.target.value,
-                  //   })
-                  // }
-                  // InputLabelProps={{
-                  //   shrink: !!jobCardData?.mileage,
-                  // }}
+                  focused={getDataWithChassisNo?.mileage || ""}
                 />
               </div>
             </div>
@@ -880,7 +949,7 @@ const AddQuotation = () => {
                   <div className="addInvoiceItem">
                     {serviceItems.length - 1 === i && (
                       <div
-                        onClick={handleServiceDescriptionAdd}
+                        onClick={handleServiceAdd}
                         className="flex justify-end mt-2 addQuotationBtns "
                       >
                         <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white p-2 rounded-md">
@@ -936,11 +1005,13 @@ const AddQuotation = () => {
               <Button>Invoice </Button>
             </div>
             <div className="submitQutationBtn">
-              <button type="submit">Add Quotation </button>
+              <button type="submit" disabled={createLoading}>
+                Add Quotation{" "}
+              </button>
             </div>
           </div>
         </form>
-        <div>
+        <div className="my-2">
           {createQuotationError && (
             <ErrorMessage messages={createQuotationError?.data?.errorSources} />
           )}
@@ -951,7 +1022,7 @@ const AddQuotation = () => {
           <h3 className="text-3xl font-bold text-center "> Quotation List: </h3>
           <div className="flex items-center">
             <button
-              // onClick={handleAllShowRoom}
+              onClick={handleAllQuotation}
               className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
             >
               All
@@ -961,7 +1032,7 @@ const AddQuotation = () => {
               type="text"
               placeholder="Search"
               className="border py-2 px-3 rounded-md border-[#ddd]"
-              // ref={textInputRef}
+              ref={textInputRef}
             />
             <button className="SearchBtn ">Search</button>
           </div>
@@ -981,9 +1052,9 @@ const AddQuotation = () => {
                 <table className="table">
                   <thead className="tableWrap">
                     <tr>
-                      <th>SL No</th>
-                      <th>Customer Name</th>
                       <th>Order Number </th>
+                      <th>Name</th>
+
                       <th>Car Number </th>
                       <th>Mobile Number</th>
                       <th>Date</th>
@@ -992,20 +1063,30 @@ const AddQuotation = () => {
                   </thead>
                   <tbody>
                     {allQuotations?.data?.quotations?.map((card, index) => {
-                      const lastVehicle = card?.vehicles
-                        ? [...card.vehicles].sort(
-                            (a, b) =>
-                              new Date(b.createdAt) - new Date(a.createdAt)
-                          )[0]
-                        : null;
-
                       return (
                         <tr key={card._id}>
-                          <td>{index + 1}</td>
-                          <td>{card.customer_name}</td>
                           <td>{card.job_no}</td>
-                          <td>{card.car_registration_no}</td>
-                          <td> {card.customer_contact} </td>
+
+                          {card?.customer && (
+                            <td>{card?.customer?.customer_name}</td>
+                          )}
+                          {card?.company && (
+                            <td>{card?.company?.company_name}</td>
+                          )}
+                          {card?.showRoom && (
+                            <td>{card?.showRoom?.showRoom_name}</td>
+                          )}
+
+                          <td>{card?.vehicle?.fullRegNum}</td>
+                          {card?.customer && (
+                            <td>{card?.customer?.fullCustomerNum}</td>
+                          )}
+                          {card?.company && (
+                            <td>{card?.company?.fullCompanyNum}</td>
+                          )}
+                          {card?.showRoom && (
+                            <td>{card?.showRoom?.fullCompanyNum}</td>
+                          )}
                           <td>{card.date}</td>
                           <td>
                             <div

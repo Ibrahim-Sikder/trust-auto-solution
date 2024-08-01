@@ -107,7 +107,7 @@ const JobCardList = () => {
           <div className="flex flex-wrap items-center justify-between mb-5">
             <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl">
               {" "}
-              Customer List:{" "}
+              Job Card List:{" "}
             </h3>
             <div className="flex flex-wrap items-center">
               <button
@@ -165,14 +165,14 @@ const JobCardList = () => {
                             <td>{card?.Id}</td>
 
                             <td>{card?.user_type}</td>
-                            {card?.customer?.length !== 0 && (
-                              <td>{card?.customer[0]?.fullCustomerNum}</td>
+                            {card?.customer && (
+                              <td>{card?.customer?.fullCustomerNum}</td>
                             )}
-                            {card?.company?.length !== 0 && (
-                              <td>{card?.company[0]?.fullCompanyNum}</td>
+                            {card?.company && (
+                              <td>{card?.company?.fullCompanyNum}</td>
                             )}
-                            {card?.showRoom.length !== 0 && (
-                              <td>{card?.showRoom[0]?.fullCompanyNum}</td>
+                            {card?.showRoom && (
+                              <td>{card?.showRoom?.fullCompanyNum}</td>
                             )}
 
                             {/* <td>{card?.company[0]?.fullCompanyNum}</td>

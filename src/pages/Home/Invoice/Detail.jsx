@@ -259,12 +259,12 @@ const Detail = () => {
                       <div className="flex text-[12px] items-center justify-between border-b-2 pb-1 border-[#351E98]">
                         <span className="w-[200px] ">
                           {" "}
-                          <b>Customer ID:</b> {invoicePreview.Id}
+                          <b>ID:</b> {invoicePreview.Id}
                         </span>
                         <b className="mr-[88px] uppercase">Invoice</b>
                         <b>
                           Date:
-                          {formatDate(invoicePreview?.createdAt)}
+                          {invoicePreview?.date}
                         </b>
                       </div>
 
@@ -279,13 +279,27 @@ const Detail = () => {
                           </div>
                           <div className="invoiceCustomerInfo">
                             <small>
-                              : {invoicePreview?.job_no}55555555555555
+                              : {invoicePreview?.invoice_no}
                             </small>
-                            <small>: {invoicePreview?.company_name}</small>
-                            <small>: {invoicePreview?.customer_name}</small>
-                            <small>: {invoicePreview?.customer_contact}</small>
                             <small>
-                              : {invoicePreview?.customer_address}5555555555555
+                              : {invoicePreview?.customer?.company_name ||
+                                invoicePreview?.company?.company_name ||
+                                invoicePreview?.showRoom?.company_name}
+                            </small>
+                            <small>
+                              : {invoicePreview?.customer?.customer_name ||
+                                invoicePreview?.company?.vehicle_username ||
+                                invoicePreview?.showRoom?.vehicle_username}
+                            </small>
+                            <small>
+                              : {invoicePreview?.customer?.fullCustomerNum ||
+                                invoicePreview?.company?.fullCustomerNum ||
+                                invoicePreview?.showRoom?.fullCustomerNum}
+                            </small>
+                            <small>
+                              : {invoicePreview?.customer?.customer_address ||
+                                invoicePreview?.company?.company_address ||
+                                invoicePreview?.showRoom?.showRoom_address}
                             </small>
                           </div>
                         </div>
@@ -299,13 +313,13 @@ const Detail = () => {
                             <b>Mileage </b>
                           </div>
                           <div className="invoiceCustomerInfo">
-                            <small>
-                              : {invoicePreview.car_registration_no}
+                          <small>
+                              : {invoicePreview?.vehicle?.fullRegNum}
                             </small>
-                            <small>: {invoicePreview.chassis_no}</small>
-                            <small>: {invoicePreview.engine_no}</small>
-                            <small>: {invoicePreview.vehicle_name}</small>
-                            <small>: {invoicePreview.mileage}</small>
+                            <small>: {invoicePreview?.vehicle?.chassis_no}</small>
+                            <small>: {invoicePreview?.vehicle?.engine_no}</small>
+                            <small>: {invoicePreview?.vehicle?.vehicle_name}</small>
+                            <small>: {invoicePreview?.vehicle?.mileage}</small>
                           </div>
                         </div>
                       </div>

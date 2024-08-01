@@ -39,6 +39,9 @@ const CustomerAccount = ({ profileData }) => {
         )[0]
       : null;
 
+
+
+
   const beforeLastQuotation =
     profileData?.data?.quotations?.length > 0
       ? [...profileData.data.quotations].sort(
@@ -60,18 +63,22 @@ const CustomerAccount = ({ profileData }) => {
         )[1]
       : null;
   const lastMoneyReceipt =
-    profileData?.data?.moneyReceipts?.length > 0
-      ? [...profileData.data.moneyReceipts].sort(
+    profileData?.data?.money_receipts?.length > 0
+      ? [...profileData.data.money_receipts].sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )[0]
       : null;
 
   const beforeLastMoneyReceipt =
-    profileData?.data?.moneyReceipts?.length > 0
-      ? [...profileData.data.moneyReceipts].sort(
+    profileData?.data?.money_receipts?.length > 0
+      ? [...profileData.data.money_receipts
+      ].sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         )[1]
       : null;
+
+
+ console.log(lastQuotation)
 
   return (
     <div className="customerProfileWrap">
@@ -328,7 +335,7 @@ const CustomerAccount = ({ profileData }) => {
                   <div className="flex items-center">
                     <b className="recentJobs">Vehicle Name</b>:{" "}
                     <small className="ml-3">
-                      {lastQuotation?.vehicle_name}
+                      {lastQuotation?.vehicle?.vehicle_name}
                     </small>
                   </div>
                 )}
@@ -376,7 +383,7 @@ const CustomerAccount = ({ profileData }) => {
                   <div className="flex items-center">
                     <b className="recentJobs">Vehicle Name </b>:{" "}
                     <small className="ml-3">
-                      {beforeLastQuotation?.vehicle_name}
+                      {beforeLastQuotation?.vehicle?.vehicle_name}
                     </small>
                   </div>
                 )}
@@ -437,7 +444,7 @@ const CustomerAccount = ({ profileData }) => {
                 {lastInvoice && (
                   <div className="flex items-center ">
                     <b className="recentJobs">Vehicle Name </b>:{" "}
-                    <span className="ml-3">{lastInvoice?.vehicle_name}</span>
+                    <span className="ml-3">{lastInvoice?.vehicle?.vehicle_name}</span>
                   </div>
                 )}
                 {lastInvoice && (
@@ -483,7 +490,7 @@ const CustomerAccount = ({ profileData }) => {
                   <div className="flex items-center ">
                     <b className="recentJobs">Vehicle Name </b>:{" "}
                     <span className="ml-3">
-                      {beforeLastInvoice?.vehicle_name}
+                      {beforeLastInvoice?.vehicle?.vehicle_name}
                     </span>
                   </div>
                 )}
@@ -537,7 +544,7 @@ const CustomerAccount = ({ profileData }) => {
                       <b className="recentJobs">Against bill no</b>:
                       <span className="ml-3">
                         {" "}
-                        {lastMoneyReceipt?.against_bill_no}
+                        {lastMoneyReceipt?.job_no}
                       </span>
                     </div>
                   </div>
@@ -598,7 +605,7 @@ const CustomerAccount = ({ profileData }) => {
                       <b className="recentJobs">Against bill no</b>:{" "}
                       <span className="ml-3">
                         {" "}
-                        {beforeLastMoneyReceipt?.against_bill_no}
+                        {beforeLastMoneyReceipt?.job_no}
                       </span>
                     </div>
                   </div>

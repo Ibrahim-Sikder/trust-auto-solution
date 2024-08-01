@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaTrashAlt, FaEdit, FaEye, FaFileInvoice } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import swal from "sweetalert";
@@ -17,17 +17,17 @@ import {
 import { Pagination } from "@mui/material";
 import { Button } from "react-scroll";
 const ViewInvoice = () => {
-  const [select, setSelect] = useState(null);
-  const [getAllInvoice, setGetAllInvoice] = useState([]);
+ 
+   
 
   const [filterType, setFilterType] = useState("");
-  const [noMatching, setNoMatching] = useState(null);
-  const [loading, setLoading] = useState(false);
+  
 
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
+  const textInputRef = useRef(null);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
@@ -43,7 +43,7 @@ const ViewInvoice = () => {
       searchTerm: filterType,
     });
 
-  // pagination
+ 
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -63,59 +63,13 @@ const ViewInvoice = () => {
     }
   };
 
-  //   <table className="table bg-[#fff]">
-  //   <thead className="tableWrap">
-  //     <tr>
-  //       <th>SL No</th>
-  //       <th>Customer Name</th>
-  //       <th>Order Number </th>
-  //       <th>Car Number </th>
-  //       <th>Mobile Number</th>
-  //       <th>Date</th>
-  //       <th colSpan={3}>Action</th>
-  //     </tr>
-  //   </thead>
-  //   <tbody>
-  //     {getAllInvoice?.map((card, index) => (
-  //       <tr key={card._id}>
-  //         <td>{index + 1}</td>
-  //         <td>{card.customer_name}</td>
-  //         <td>{card.job_no}</td>
-  //         <td>{card.car_registration_no}</td>
-  //         <td> {card.customer_contact} </td>
-  //         <td>{card.date}</td>
-  //         <td>
-  //           <div
-  //             onClick={() => handleIconPreview(card._id)}
-  //             className="editIconWrap edit2"
-  //           >
-
-  //             <FaEye className="editIcon" />
-
-  //           </div>
-  //         </td>
-  //         <td>
-  //           <div className="editIconWrap edit">
-  //             <Link to={`/dashboard/update-invoice?id=${card._id}`}>
-  //               <FaEdit className="editIcon" />
-  //             </Link>
-  //           </div>
-  //         </td>
-  //         <td>
-  //           <div
-  //             onClick={() => deletePackage(card._id)}
-  //             className="editIconWrap"
-  //           >
-  //             <FaTrashAlt className="deleteIcon" />
-  //           </div>
-  //         </td>
-  //       </tr>
-  //     ))}
-  //   </tbody>
-  // </table>
+   
 
   const handleAllInvoice = () => {
     setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
   };
   return (
     <div className="mt-5 overflow-x-auto">
@@ -153,7 +107,8 @@ const ViewInvoice = () => {
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
                 type="text"
-                placeholder={select}
+                placeholder="Write here"
+                ref={textInputRef}
               />
             </div>
             <button className="SearchBtn ">Search </button>
@@ -174,9 +129,9 @@ const ViewInvoice = () => {
                 <table className="table">
                   <thead className="tableWrap">
                     <tr>
-                      <th>SL No</th>
+                    <th>Order Number </th> 
                       <th>Customer Name</th>
-                      <th>Order Number </th> 
+                     
                       <th>Car Number </th>
                       <th>Mobile Number</th>
                       <th>Date</th> 
@@ -185,20 +140,30 @@ const ViewInvoice = () => {
                   </thead>
                   <tbody>
                     {allInvoices?.data?.invoices?.map((card, index) => {
-                      const lastVehicle = card?.vehicles
-                        ? [...card.vehicles].sort(
-                            (a, b) =>
-                              new Date(b.createdAt) - new Date(a.createdAt)
-                          )[0]
-                        : null;
+                       
 
                       return (
                         <tr key={card._id}>
-                          <td>{index + 1}</td>
-                          <td>{card.customer_name}</td>
-                          <td>{card.job_no}</td>
-                          <td>{card.car_registration_no}</td>
-                          <td> {card.customer_contact} </td>
+                          <td>{card?.job_no}</td>
+                          {card?.customer && (
+                            <td>{card?.customer?.customer_name}</td>
+                          )}
+                          {card?.company && (
+                            <td>{card?.company?.company_name}</td>
+                          )}
+                          {card?.showRoom && (
+                            <td>{card?.showRoom?.showRoom_name}</td>
+                          )}
+                          <td>{card?.vehicle?.fullRegNum}</td>
+                          {card?.customer && (
+                            <td>{card?.customer?.fullCustomerNum}</td>
+                          )}
+                          {card?.company && (
+                            <td>{card?.company?.fullCompanyNum}</td>
+                          )}
+                          {card?.showRoom && (
+                            <td>{card?.showRoom?.fullCompanyNum}</td>
+                          )}
                           <td>{card.date}</td>
                           <td>
                             <div

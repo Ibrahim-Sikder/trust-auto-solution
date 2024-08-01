@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaTrashAlt,
   FaEdit,
@@ -23,13 +23,12 @@ import {
   useGetAllQuotationsQuery,
 } from "../../../redux/api/quotation";
 const QuotationList = () => {
-  const [getAllQuotation, setGetAllQuotation] = useState([]);
-  console.log(getAllQuotation);
+ 
   const [filterType, setFilterType] = useState("");
-  const [noMatching, setNoMatching] = useState(null);
-  const [loading, setLoading] = useState(false);
+ 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const textInputRef = useRef(null);
   const navigate = useNavigate();
   const limit = 10;
 
@@ -68,6 +67,9 @@ const QuotationList = () => {
 
   const handleAllQuotation = () => {
     setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
   };
   return (
     <div>
@@ -103,7 +105,7 @@ const QuotationList = () => {
             </h3>
             <div className="flex items-center">
               <button
-                // onClick={handleAllShowRoom}
+                onClick={handleAllQuotation}
                 className="mx-6 font-semibold cursor-pointer bg-[#42A1DA] px-2 py-1 rounded-md text-white"
               >
                 All
@@ -113,7 +115,7 @@ const QuotationList = () => {
                 type="text"
                 placeholder="Search"
                 className="border py-2 px-3 rounded-md border-[#ddd]"
-                // ref={textInputRef}
+                ref={textInputRef}
               />
               <button className="SearchBtn ">Search</button>
             </div>
@@ -124,7 +126,7 @@ const QuotationList = () => {
             </div>
           ) : (
             <div>
-              {allQuotations?.data?.showrooms?.length === 0 ? (
+              {allQuotations?.data?.quotations?.length === 0 ? (
                 <div className="flex items-center justify-center h-full text-xl text-center">
                   No matching card found.
                 </div>
@@ -133,9 +135,9 @@ const QuotationList = () => {
                   <table className="table">
                     <thead className="tableWrap">
                       <tr>
-                        <th>SL No</th>
-                        <th>Customer Name</th>
-                        <th>Order Number </th>
+                      <th>Order Number </th>
+                        <th>Name</th>
+                       
                         <th>Car Number </th>
                         <th>Mobile Number</th>
                         <th>Date</th>
@@ -144,20 +146,31 @@ const QuotationList = () => {
                     </thead>
                     <tbody>
                       {allQuotations?.data?.quotations?.map((card, index) => {
-                        const lastVehicle = card?.vehicles
-                          ? [...card.vehicles].sort(
-                              (a, b) =>
-                                new Date(b.createdAt) - new Date(a.createdAt)
-                            )[0]
-                          : null;
-
                         return (
                           <tr key={card._id}>
-                            <td>{index + 1}</td>
-                            <td>{card.customer_name}</td>
                             <td>{card.job_no}</td>
-                            <td>{card.car_registration_no}</td>
-                            <td> {card.customer_contact} </td>
+
+                            {card?.customer && (
+                              <td>{card?.customer?.customer_name}</td>
+                            )}
+                            {card?.company && (
+                              <td>{card?.company?.company_name}</td>
+                            )}
+                            {card?.showRoom && (
+                              <td>{card?.showRoom?.showRoom_name}</td>
+                            )}
+
+                           
+                            <td>{card?.vehicle?.fullRegNum}</td>
+                            {card?.customer && (
+                              <td>{card?.customer?.fullCustomerNum}</td>
+                            )}
+                            {card?.company && (
+                              <td>{card?.company?.fullCompanyNum}</td>
+                            )}
+                            {card?.showRoom && (
+                              <td>{card?.showRoom?.fullCompanyNum}</td>
+                            )}
                             <td>{card.date}</td>
                             <td>
                               <div

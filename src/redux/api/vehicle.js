@@ -10,41 +10,36 @@ const vehicleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["vehicle"],
     }),
-    // getAllCompanies: builder.query({
-    //   query: ({ limit, page, searchTerm }) => ({
-    //     url: `/companies`,
-    //     method: "GET",
-    //     params: { limit, page, searchTerm },
-    //   }),
-    //   providesTags: ["company"],
-    // }),
+    getAllVehicles: builder.query({
+      query: ({ id, limit, page, searchTerm }) => ({
+        url: `/vehicles`,
+        method: "GET",
+        params: { id, limit, page, searchTerm },
+      }),
+      providesTags: ["vehicle"],
+    }),
 
-    // getSingleCompany: builder.query({
-    //   query: (id) => ({
-    //     url: `/companies/${id}`,
-    //     method: "GET",
-    //   }),
-    //   invalidatesTags: ["company"],
-    // }),
-    // updateCompany: builder.mutation({
-    //   query: (companyInfo) => {
-    //     return {
-    //       url: `/companies/${companyInfo.id}`,
-    //       method: "PUT",
-    //       body: companyInfo.data,
-    //     };
-    //   },
-    //   invalidatesTags: ["company"],
-    // }),
+    getSingleVehicle: builder.query({
+      query: (id) => ({
+        url: `/vehicles/${id}`,
+        method: "GET",
+      }),
+      invalidatesTags: ["vehicle"],
+    }),
 
-    // deleteCompany: builder.mutation({
-    //   query: (id) => ({
-    //     url: `/companies/${id}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["company"],
-    // }),
+    deleteVehicle: builder.mutation({
+      query: (id) => ({
+        url: `/vehicles/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["vehicle"],
+    }),
   }),
 });
 
-export const { useCreateVehicleMutation } = vehicleApi;
+export const {
+  useCreateVehicleMutation,
+  useGetAllVehiclesQuery,
+  useGetSingleVehicleQuery,
+  useDeleteVehicleMutation,
+} = vehicleApi;

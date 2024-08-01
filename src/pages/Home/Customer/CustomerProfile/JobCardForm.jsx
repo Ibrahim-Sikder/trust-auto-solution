@@ -23,7 +23,7 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const [createVehicle, { isLoading, error }] = useCreateVehicleMutation();
 
@@ -41,28 +41,11 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
     data.mileage = Number(data.mileage);
 
     const res = await createVehicle(data).unwrap();
+
     if (res.success) {
       onClose();
       toast.success(res.message);
     }
-    console.log(res);
-    // try {
-    //   const response = await axios.post(
-    //     `${import.meta.env.VITE_API_URL}/api/v1/vehicle`,
-    //     data
-    //   );
-
-    //   if (response.data.message === "Successfully add to vehicle post") {
-    //     toast.success("Successfully add to vehicle post");
-    //     onClose();
-    //     setLoading(false);
-    //     reset();
-    //     setReload(!reload);
-    //   }
-    // } catch (error) {
-    //   toast.error(error.message);
-    //   setLoading(false);
-    // }
   };
 
   const [selectedBrand, setSelectedBrand] = useState("");
@@ -321,7 +304,7 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
               {error && <ErrorMessage messages={error?.data?.errorSources} />}
             </div>
             <button
-              disabled={loading}
+              disabled={isLoading}
               className="block mt-3 w-full bg-[#42A1DA] text-white font-bold p-4 rounded-lg"
             >
               Add Vehicle

@@ -37,6 +37,7 @@ import {
   Typography,
 } from "@mui/material";
 import { HiOutlineSearch } from "react-icons/hi";
+import uploadFile from "../../../helper/uploadFile";
 
 const AddExpense = () => {
   const textInputRef = useRef(null);
@@ -46,11 +47,9 @@ const AddExpense = () => {
 
   const payment = watch("payment_method");
   const [url, setUrl] = useState("");
-  const [imageLoading, setImageLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);
 
   const limit = 10;
-
 
   const [createExpense, { isLoading: createLoading, error: createError }] =
     useCreateExpenseMutation();
@@ -68,30 +67,16 @@ const AddExpense = () => {
     searchTerm: filterType,
   });
 
-  const handleImageUpload = async (e) => {
-    try {
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("image", file);
-      setImageLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+  const handleImageUpload = async (event) => {
+    setLoading(true);
+    const file = event.target.files?.[0];
 
-      const data = await response.json();
-      if (data.message === "Image uploaded successful") {
-        setUrl(data.image_url);
-        setImageLoading(false);
-      }
-    } catch (error) {
-      setImageLoading(false);
+    if (file) {
+      const uploadPhoto = await uploadFile(file);
+      setUrl(uploadPhoto?.secure_url);
+      setLoading(false);
     }
   };
-
   const onSubmit = async (data) => {
     data.payment_method = payment;
     data.image = url;
@@ -178,12 +163,11 @@ const AddExpense = () => {
                       </FormControl>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <FormControl fullWidth >
+                      <FormControl fullWidth>
                         <InputLabel htmlFor="grouped-native-select">
                           Sub Category
                         </InputLabel>
                         <Select
-                          
                           labelId="payment-method-label"
                           id="grouped-native-select"
                           label="Sub Category"
@@ -199,7 +183,6 @@ const AddExpense = () => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                       
                         fullWidth
                         label="Expense For"
                         id="Tax"
@@ -208,7 +191,6 @@ const AddExpense = () => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                      
                         fullWidth
                         label="Tax Applicable"
                         id="Tax"
@@ -231,7 +213,7 @@ const AddExpense = () => {
                           <span>
                             <FaCloudUploadAlt size={30} className="mr-2" />
                           </span>
-                          {imageLoading ? (
+                          {loading ? (
                             <span>Uploading...</span>
                           ) : (
                             <>
@@ -249,7 +231,6 @@ const AddExpense = () => {
                       <textarea
                         placeholder="Expense Note "
                         className="productDetail"
-                  
                         id=""
                         cols="30"
                         rows="10"
@@ -258,7 +239,6 @@ const AddExpense = () => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                       
                         fullWidth
                         label="Amount"
                         id="Tax"
@@ -267,7 +247,6 @@ const AddExpense = () => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                      
                         fullWidth
                         label="Paid On "
                         id="Tax"
@@ -288,7 +267,6 @@ const AddExpense = () => {
                           Payment Method
                         </InputLabel>
                         <Select
-                        
                           // {...register("payment_account_first")}
                           labelId="payment-method-label"
                           label="Payment Method"
@@ -608,7 +586,12 @@ const AddExpense = () => {
                 </Grid>
               </Box>
               <div className="flex justify-end mt-3">
-                <Button sx={{ color: "white", width: "200px" }}>Update</Button>
+                <Button
+                  disabled={loading || createLoading}
+                  sx={{ color: "white", width: "200px" }}
+                >
+                  Update
+                </Button>
               </div>
             </Box>
             <div className="my-2">
@@ -616,11 +599,9 @@ const AddExpense = () => {
                 <ErrorMessage messages={createError.data.errorSources} />
               )}
             </div>
-           
           </form>
         </div>
       </div>
-    
     </section>
   );
 };

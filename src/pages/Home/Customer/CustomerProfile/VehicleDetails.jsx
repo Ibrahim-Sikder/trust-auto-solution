@@ -1,30 +1,38 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { HiOutlinePlus, HiOutlineSearch } from "react-icons/hi";
 import AddVehicleModal from "./AddVehicleModal";
 import VehicleDetailsModal from "./VehicleDetailsModal";
-import axios from "axios";
 import Loading from "../../../../components/Loading/Loading";
-import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Pagination } from "@mui/material";
 import swal from "sweetalert";
+import {
+  useDeleteVehicleMutation,
+  useGetAllVehiclesQuery,
+} from "../../../../redux/api/vehicle";
 
-const VehicleDetails = () => {
-  const location = useLocation();
-  const id = new URLSearchParams(location.search).get("id");
-
+const VehicleDetails = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [vehicleDetails, setVehicleDetails] = useState(false);
+  const [getId, setGetId] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [limit, setLimit] = useState(10);
+
+  const [reload, setReload] = useState(false);
+
+  const [filterType, setFilterType] = useState("");
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [getId, setGetId] = useState("");
 
   const handVehicleDetailsOpen = (id) => {
     setVehicleDetails(true);
@@ -32,87 +40,22 @@ const VehicleDetails = () => {
   };
   const handleVehicleDetailsClose = () => setVehicleDetails(false);
 
-  const [vehicleList, setVehicleList] = useState([]);
-  const [vehiclePage, setVehiclePage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const textInputRef = useRef();
 
-  const [limit, setLimit] = useState(10);
+  const { data: allVehicle, isLoading } = useGetAllVehiclesQuery({
+    id,
+    limit,
+    page: currentPage,
+    searchTerm: filterType,
+  });
 
-  const [reload, setReload] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const [filterType, setFilterType] = useState("");
-  const [noMatching, setNoMatching] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    try {
-      fetch(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/v1/vehicle/${id}?page=${currentPage}&limit=${limit}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setVehicleList(data?.allVehicle);
-          setVehiclePage(data?.totalPages);
-          if (data?.vehicleList?.length === 0) {
-            setCurrentPage((pre) => pre - 1);
-          }
-
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error.message);
-      setLoading(false);
-    }
-  }, [currentPage, id, limit, reload]);
-
-  const handleFilterType = async () => {
-    try {
-      const data = {
-        filterType,
-      };
-      setSearchLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/v1/vehicle/all`,
-        data
-      );
-
-      if (response.data.message === "Filter successful") {
-        setVehicleList(response.data.result);
-        setNoMatching(null);
-        setSearchLoading(false);
-      }
-      if (response.data.message === "No matching found") {
-        setNoMatching(response.data.message);
-        setSearchLoading(false);
-      }
-    } catch (error) {
-      setSearchLoading(false);
-    }
-  };
+  const [deleteVehicle, { isLoading: deleteLoading, error: deleteError }] =
+    useDeleteVehicleMutation();
 
   const handleAllVehicle = () => {
-    setLoading(true);
-
-    try {
-      fetch(
-        `${
-          import.meta.env.VITE_API_URL
-        }/api/v1/vehicle/${id}?page=${currentPage}&limit=${limit}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setVehicleList(data?.allVehicle);
-          setVehiclePage(data?.totalPages);
-          setNoMatching(null);
-          setLoading(false);
-        });
-    } catch (error) {
-      toast.error(error.message);
-      setLoading(false);
+    setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
     }
   };
 
@@ -126,24 +69,17 @@ const VehicleDetails = () => {
 
     if (willDelete) {
       try {
-        const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/v1/vehicle/one/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-        const data = await res.json();
-
-        if (data.message == "Customer card delete successful") {
-          setVehicleList(vehicleList?.filter((pkg) => pkg._id !== id));
-          setReload(!reload);
-        }
+        await deleteVehicle(id).unwrap();
         swal("Deleted!", "Card delete successful.", "success");
       } catch (error) {
         swal("Error", "An error occurred while deleting the card.", "error");
       }
     }
   };
+
+  if (deleteError) {
+    toast.error(deleteError?.message);
+  }
 
   return (
     <div className="w-full mt-10 mb-24 ">
@@ -185,25 +121,22 @@ const VehicleDetails = () => {
             placeholder="Search"
             className="border py-2 px-3 rounded-md border-[#ddd]"
             onChange={(e) => setFilterType(e.target.value)}
+            ref={textInputRef}
           />
-          <button
-            onClick={handleFilterType}
-            className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1"
-            disabled={filterType === ""}
-          >
+          <button className="bg-[#42A1DA] text-white px-2 py-2 rounded-sm ml-1">
             {" "}
             <HiOutlineSearch size={22} />
           </button>
         </div>
       </div>
 
-      {searchLoading ? (
+      {isLoading ? (
         <div className="flex items-center justify-center text-xl">
           <Loading />
         </div>
       ) : (
         <div>
-          {vehicleList?.length === 0 || noMatching ? (
+          {allVehicle?.data?.vehicles?.length === 0 ? (
             <div className="flex items-center justify-center h-full text-xl text-center">
               No matching card found.
             </div>
@@ -222,10 +155,10 @@ const VehicleDetails = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {vehicleList?.map((card, index) => (
+                    {allVehicle?.data?.vehicles?.map((card, index) => (
                       <tr key={card._id}>
                         <td>{index + 1}</td>
-                        <td>{card.car_registration_no}</td>
+                        <td>{card.fullRegNum}</td>
                         <td>{card.chassis_no}</td>
                         <td>{card.engine_no}</td>
 
@@ -247,12 +180,13 @@ const VehicleDetails = () => {
                         </td> */}
 
                         <td>
-                          <div
+                          <button
+                            disabled={deleteLoading}
                             onClick={() => deletePackage(card._id)}
                             className="flex justify-center items-center cursor-pointer"
                           >
                             <FaTrashAlt className="text-red-600" size={24} />
-                          </div>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -264,10 +198,10 @@ const VehicleDetails = () => {
         </div>
       )}
 
-      {vehicleList?.length > 0 && (
+      {allVehicle?.data?.vehicles?.length > 0 && (
         <div className="flex justify-center mt-4">
           <Pagination
-            count={vehiclePage}
+            count={allVehicle?.data?.meta?.totalPages}
             page={currentPage}
             color="primary"
             onChange={(_, page) => setCurrentPage(page)}

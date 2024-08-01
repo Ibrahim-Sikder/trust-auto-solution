@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { HiLocationMarker } from "react-icons/hi";
 import { HiEnvelope, HiMiniPhone } from "react-icons/hi2";
@@ -6,21 +7,20 @@ import "../../Customer/Customer.css";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import ShowRoomAccount from "./ShowRoomAccount";
-import ShowRoomVehicleDetails from "./ShowRoomVehicleDetails";
-import ShowRoomJobCardList from "./ShowRoomJobCardList";
-import ShowRoomQuotationList from "./ShowRoomQuotationList";
 import ShowRoomInvoiceList from "./ShowRoomInvoiceList";
-import ShowRoomMoneyList from "./ShowRoomMoneyList";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import Message from "../../../../shared/Message/Message";
 import { useGetSingleShowRoomQuery } from "../../../../redux/api/showRoomApi";
 import Loading from "../../../../components/Loading/Loading";
+import VehicleDetails from "../../Customer/CustomerProfile/VehicleDetails";
+import CustomerJobCardList from "../../Customer/CustomerProfile/CustomerJobCardList";
+import CustomerQoutationList from "../../Customer/CustomerProfile/CustomerQoutationList";
+import CustomerInvoiceList from "../../Customer/CustomerProfile/CustomerInvoiceList";
 
 const ShowRoomProfile = () => {
-  const [jobCardData, setJobCardData] = useState([]);
-  const [quotationData, setQuotationData] = useState([]);
+ 
   const [invoiceData, setInvoiceData] = useState([]);
-  const [moneyReceiptData, setMoneyReceiptData] = useState([]);
+ 
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
@@ -57,6 +57,8 @@ const ShowRoomProfile = () => {
       borderBottom: "none",
     },
   };
+
+  
   if (isLoading) {
     return (
       <div className="flex items-center justify-center text-xl">
@@ -115,7 +117,7 @@ const ShowRoomProfile = () => {
             sx={tabsStyles}
           >
             <Tab sx={tabStyles} label="Account" />
-            <Tab sx={tabStyles} label="Show Room List" />
+            <Tab sx={tabStyles} label="Show Room" />
             <Tab sx={tabStyles} label="Job Card" />
             <Tab sx={tabStyles} label="Quotation" />
             <Tab sx={tabStyles} label="Invoice" />
@@ -127,28 +129,31 @@ const ShowRoomProfile = () => {
         <TabPanel value={value} index={0}>
           <ShowRoomAccount
             profileData={profileData}
-            jobCardData={jobCardData}
-            quotationData={quotationData}
-            invoiceData={invoiceData}
-            moneyReceiptData={moneyReceiptData}
+            // jobCardData={jobCardData}
+            // quotationData={quotationData}
+            // invoiceData={invoiceData}
+            // moneyReceiptData={moneyReceiptData}
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ShowRoomVehicleDetails />
+          {/* <ShowRoomVehicleDetails /> */}
+          <VehicleDetails id={id} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <ShowRoomJobCardList
+          {/* <ShowRoomJobCardList
             jobCardData={jobCardData}
             setJobCardData={setJobCardData}
             id={id}
-          />
+          /> */}
+           <CustomerJobCardList id={id} />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <ShowRoomQuotationList
+          {/* <ShowRoomQuotationList
             quotationData={quotationData}
             setQuotationData={setQuotationData}
             id={id}
-          />
+          /> */}
+           <CustomerQoutationList id={id} />
         </TabPanel>
         <TabPanel value={value} index={4}>
           <ShowRoomInvoiceList
@@ -158,11 +163,12 @@ const ShowRoomProfile = () => {
           />
         </TabPanel>
         <TabPanel value={value} index={5}>
-          <ShowRoomMoneyList
+          {/* <ShowRoomMoneyList
             moneyReceiptData={moneyReceiptData}
             setMoneyReceiptData={setMoneyReceiptData}
             id={id}
-          />
+          /> */}
+           <CustomerInvoiceList id={id} />
         </TabPanel>
 
         <TabPanel value={value} index={6}>

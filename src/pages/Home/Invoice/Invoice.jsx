@@ -1,33 +1,19 @@
 /* eslint-disable no-unused-vars */
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../../../public/assets/logo.png";
-import {
-  FaTrashAlt,
-  FaEdit,
-  FaArrowRight,
-  FaArrowLeft,
-  FaEye,
-  FaGlobe,
-} from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
 import "./Invoice.css";
-import axios from "axios";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
 import { Autocomplete, Box, Pagination, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import InputMask from "react-input-mask";
 
 import { formatDate } from "../../../utils/formateDate";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TADatePickers from "../../../components/form/TADatePickers";
 import { cmDmOptions, countries } from "../../../constant";
 import { Button } from "react-scroll";
-import { Email, WhatsApp } from "@mui/icons-material";
 import TrustAutoAddress from "../../../components/TrustAutoAddress/TrustAutoAddress";
 import {
   useCreateInvoiceMutation,
@@ -35,33 +21,28 @@ import {
   useGetAllInvoicesQuery,
 } from "../../../redux/api/invoice";
 import Loading from "../../../components/Loading/Loading";
+import { useGetSingleJobCardWithJobNoQuery } from "../../../redux/api/jobCard";
+import { ErrorMessage } from "../../../components/error-message";
 
-const theme = createTheme({
-  // Your theme configuration
-});
 const Invoice = () => {
-  const [select, setSelect] = useState(null);
+  const parsedDate = new Date();
+  const day = parsedDate.getDate().toString().padStart(2, "0");
+  const month = (parsedDate.getMonth() + 1).toString().padStart(2, "0");
+  const year = parsedDate.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
 
   const location = useLocation();
-  const orderNo = new URLSearchParams(location.search).get("serial_no");
+  const job_no = new URLSearchParams(location.search).get("order_no");
+
+  const [orderNumber, setOrderNumber] = useState(job_no);
+
   const navigate = useNavigate();
-  const [job_no, setJob_no] = useState(orderNo);
-  const [jobCardData, setJobCardData] = useState({});
-
-  const [error, setError] = useState("");
-  const [registrationError, setRegistrationError] = useState("");
-
-  const [postError, setPostError] = useState("");
-  const [getAllInvoice, setGetAllInvoice] = useState([]);
+  const textInputRef = useRef(null);
 
   const [filterType, setFilterType] = useState("");
-  const [noMatching, setNoMatching] = useState(null);
-  const [reload, setReload] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(formattedDate);
 
-  const [customerId, setCustomerId] = useState(null);
   const [preview, setPreview] = useState("");
 
   const [countryCode, setCountryCode] = useState(countries[0]);
@@ -71,18 +52,20 @@ const Invoice = () => {
   const [discount, setDiscount] = useState(0);
   const [vat, setVAT] = useState(0);
   const [advance, setAdvance] = useState(0);
-  const [due, setDue] = useState(0);
+
   const [partsTotal, setPartsTotal] = useState(0);
   const [serviceTotal, setServiceTotal] = useState(0);
+  const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
   ]);
   const [serviceItems, setServiceItems] = useState([
-    { servicesDescription: "", quantity: "", rate: "", total: "" },
+    { description: "", quantity: "", rate: "", total: "" },
   ]);
-  const [limit, setLimit] = useState(10);
+
   const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
 
   const {
     register,
@@ -91,11 +74,16 @@ const Invoice = () => {
     formState: { errors },
   } = useForm();
 
-  const [createInvoice, { error: createInvoiceError }] =
-    useCreateInvoiceMutation();
+  const [
+    createInvoice,
+    { isLoading: createLoading, error: createInvoiceError },
+  ] = useCreateInvoiceMutation();
 
   const [deleteInvoice, { isLoading: deleteLoading, error: deleteError }] =
     useDeleteInvoiceMutation();
+
+  const { data: jobCardData, refetch } =
+    useGetSingleJobCardWithJobNoQuery(orderNumber);
 
   const { data: allInvoices, isLoading: invoiceLoading } =
     useGetAllInvoicesQuery({
@@ -105,16 +93,111 @@ const Invoice = () => {
     });
 
   useEffect(() => {
-    if (job_no) {
-      setLoading(true);
-      fetch(`${import.meta.env.VITE_API_URL}/api/v1/jobCard/invoice/${job_no}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setJobCardData(data);
-          setLoading(false);
-        });
+    if (jobCardData?.data?.user_type === "customer") {
+      reset({
+        Id: jobCardData?.data?.Id,
+        company_name: jobCardData?.data?.customer?.company_name,
+
+        customer_name: jobCardData?.data?.customer?.customer_name,
+        customer_country_code:
+          jobCardData?.data?.customer?.customer_country_code,
+        customer_contact: jobCardData?.data?.customer?.customer_contact,
+
+        customer_address: jobCardData?.data?.customer?.customer_address,
+
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+
+        mileage: getDataWithChassisNo?.mileage,
+      });
     }
-  }, [job_no]);
+    if (jobCardData?.data?.user_type === "company") {
+      reset({
+        Id: jobCardData?.data?.Id,
+        company_name: jobCardData?.data?.company?.company_name,
+        vehicle_username: jobCardData?.data?.company?.vehicle_username,
+        company_address: jobCardData?.data?.company?.company_address,
+        company_contact: jobCardData?.data?.company?.company_contact,
+        company_country_code: jobCardData?.data?.company?.company_country_code,
+        company_email: jobCardData?.data?.company?.company_email,
+        customer_address: jobCardData?.data?.company?.customer_address,
+
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+
+        mileage: getDataWithChassisNo?.mileage,
+      });
+    }
+    if (jobCardData?.data?.user_type === "showRoom") {
+      reset({
+        Id: jobCardData?.data?.Id,
+        showRoom_name: jobCardData?.data?.showRoom_name,
+        vehicle_username: jobCardData?.data?.vehicle_username,
+        showRoom_address: jobCardData?.data?.showRoom_address,
+        company_name: jobCardData?.data?.company_name,
+        company_contact: phoneNumber || jobCardData?.data?.company_contact,
+        company_country_code: jobCardData?.data?.company_country_code,
+
+        carReg_no: getDataWithChassisNo?.carReg_no,
+        car_registration_no: getDataWithChassisNo?.car_registration_no,
+        engine_no: getDataWithChassisNo?.engine_no,
+        vehicle_brand: getDataWithChassisNo?.vehicle_brand,
+        vehicle_name: getDataWithChassisNo?.vehicle_name,
+
+        mileage: getDataWithChassisNo?.mileage,
+      });
+    }
+  }, [
+    getDataWithChassisNo?.carReg_no,
+    getDataWithChassisNo?.car_registration_no,
+    getDataWithChassisNo?.engine_no,
+    getDataWithChassisNo?.mileage,
+    getDataWithChassisNo?.vehicle_brand,
+    getDataWithChassisNo?.vehicle_name,
+    jobCardData?.data?.Id,
+    jobCardData?.data?.company?.company_address,
+    jobCardData?.data?.company?.company_contact,
+    jobCardData?.data?.company?.company_country_code,
+    jobCardData?.data?.company?.company_email,
+    jobCardData?.data?.company?.company_name,
+    jobCardData?.data?.company?.customer_address,
+    jobCardData?.data?.company?.vehicle_username,
+    jobCardData?.data?.company_address,
+    jobCardData?.data?.company_contact,
+    jobCardData?.data?.company_country_code,
+    jobCardData?.data?.company_email,
+    jobCardData?.data?.company_name,
+    jobCardData?.data?.customer?.company_name,
+    jobCardData?.data?.customer?.customer_address,
+    jobCardData?.data?.customer?.customer_contact,
+    jobCardData?.data?.customer?.customer_country_code,
+    jobCardData?.data?.customer?.customer_name,
+    jobCardData?.data?.showRoom_address,
+    jobCardData?.data?.showRoom_name,
+    jobCardData?.data?.user_type,
+    jobCardData?.data?.vehicle_username,
+    phoneNumber,
+    reset,
+  ]);
+
+  useEffect(() => {
+    const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
+    const serviceTotalSum = serviceItems.reduce(
+      (sum, item) => sum + Number(item.total),
+      0
+    );
+
+    const roundedTotalSum = parseFloat(totalSum + serviceTotalSum).toFixed(2);
+    setPartsTotal(totalSum);
+    setServiceTotal(serviceTotalSum);
+    setGrandTotal(Number(roundedTotalSum));
+  }, [items, serviceItems]);
 
   const handleDateChange = (newDate) => {
     setSelectedDate(formatDate(newDate));
@@ -157,27 +240,17 @@ const Invoice = () => {
   };
 
   const handleAddClick = () => {
-    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
+    setItems([
+      ...items,
+      { description: "", quantity: "", rate: "", total: "" },
+    ]);
   };
   const handleServiceDescriptionAdd = () => {
     setServiceItems([
       ...serviceItems,
-      { servicesDescription: "", quantity: "", rate: "", total: "" },
+      { description: "", quantity: "", rate: "", total: "" },
     ]);
   };
-
-  useEffect(() => {
-    const totalSum = items.reduce((sum, item) => sum + Number(item.total), 0);
-    const serviceTotalSum = serviceItems.reduce(
-      (sum, item) => sum + Number(item.total),
-      0
-    );
-
-    const roundedTotalSum = parseFloat(totalSum + serviceTotalSum).toFixed(2);
-    setPartsTotal(totalSum);
-    setServiceTotal(serviceTotalSum);
-    setGrandTotal(Number(roundedTotalSum));
-  }, [items, serviceItems]);
 
   const handleDescriptionChange = (index, value) => {
     const newItems = [...items];
@@ -281,106 +354,82 @@ const Invoice = () => {
     return parseFloat(due).toFixed(2);
   };
 
-  // const onSubmit = async (data) => {
-  //   if (!jobCardData.Id) {
-  //     return toast.error("No account found.");
-  //   }
-  //   try {
-  //     const values = {
-  //       username: jobCardData.username || data.username,
-  //       Id: customerId || jobCardData.Id,
-  //       job_no: job_no || jobCardData.job_no,
-  //       date: selectedDate || jobCardData.date,
-
-  //       company_name: data.company_name || jobCardData.company_name,
-  //       customer_name: data.customer_name || jobCardData.customer_name,
-  //       customer_contact: data.customer_contact || jobCardData.customer_contact,
-  //       customer_address: data.customer_address || jobCardData.customer_address,
-
-  //       car_registration_no:
-  //         data.car_registration_no || jobCardData.car_registration_no,
-  //       chassis_no: data.chassis_no || jobCardData.chassis_no,
-  //       engine_no: data.engine_no || jobCardData.engine_no,
-  //       vehicle_name: data.vehicle_name || jobCardData.vehicle_name,
-  //       mileage: data.mileage || jobCardData.mileage,
-
-  //       total_amount: grandTotal,
-  //       discount: discount,
-  //       vat: vat,
-  //       net_total: calculateFinalTotal(),
-  //       input_data: items,
-  //       advance: advance,
-  //       due: calculateDue(),
-  //     };
-
-  //     setLoading(true);
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_API_URL}/api/v1/invoice`,
-  //       values
-  //     );
-
-  //     if (response.data.message === "Successfully Invoice post") {
-  //       setReload(!reload);
-
-  //       setPostError("");
-  //       setError("");
-  //       if (preview === "") {
-  //         toast.success("Invoice added successful.");
-  //         navigate("/dashboard/invoice-view");
-  //       }
-  //       if (preview === "preview") {
-  //         fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice`)
-  //           .then((res) => res.json())
-  //           .then((data) => {
-  //             if (data) {
-  //               navigate(`/dashboard/detail?id=${data._id}`);
-  //             }
-  //           });
-  //       }
-  //       setLoading(false);
-  //     }
-  //   } catch (error) {
-  //     if (error.response) {
-  //       setPostError(error.response.data.message);
-  //       setError("");
-  //     }
-  //   }
-  // };
-
   const onSubmit = async (data) => {
-    const values = {
+    const customer = {
+      company_name: data.company_name,
+
+      customer_name: data.customer_name,
+      customer_contact: data.customer_contact,
+      customer_country_code: data.company_country_code,
+
+      customer_address: data.customer_address,
+    };
+
+    const company = {
+      company_name: data.company_name,
+      vehicle_username: data.vehicle_username,
+      company_address: data.company_address,
+      company_contact: data.company_contact,
+      company_country_code: data.company_country_code,
+    };
+
+    const showRoom = {
+      showRoom_name: data.showRoom_name,
+      vehicle_username: data.vehicle_username,
+
+      company_name: data.company_name,
+      company_contact: data.company_contact,
+      company_country_code: data.company_country_code,
+
+      company_address: data.company_address,
+    };
+
+    data.mileage = Number(data.mileage);
+
+    const vehicle = {
+      carReg_no: data.carReg_no,
+      car_registration_no: data.car_registration_no,
+      chassis_no: data.chassis_no,
+      engine_no: data.engine_no,
+      vehicle_brand: data.vehicle_brand,
+      vehicle_name: data.vehicle_name,
+      mileage: data.mileage,
+    };
+
+    const invoice = {
+      user_type: jobCardData?.data?.user_type,
+      Id: jobCardData?.data?.Id,
+      job_no: orderNumber,
+      date: selectedDate,
       parts_total: partsTotal,
       service_total: serviceTotal,
       total_amount: grandTotal,
       discount: discount,
       vat: vat,
-      advance,
-      due: calculateDue(),
       net_total: calculateFinalTotal(),
       input_data: items,
       service_input_data: serviceItems,
     };
 
+    const values = {
+      customer,
+      company,
+      showRoom,
+      vehicle,
+      invoice,
+    };
+
     const res = await createInvoice(values).unwrap();
-    console.log(res);
+
     if (res.success) {
       toast.success(res.message);
-      //       navigate("/dashboard/quotaiton-list");
+      refetch();
+      navigate("/dashboard/invoice-view");
     }
   };
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/detail?id=${e}`);
   };
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   fetch(`${import.meta.env.VITE_API_URL}/api/v1/invoice/all`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setGetAllInvoice(data);
-  //       setLoading(false);
-  //     });
-  // }, [reload]);
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -400,8 +449,18 @@ const Invoice = () => {
     }
   };
 
+  const handleChassisChange = (_, newValue) => {
+    const filtered = jobCardData?.data?.vehicle?.find(
+      (vehicle) => vehicle.chassis_no === newValue
+    );
+    setGetDataWithChassisNo(filtered);
+  };
+
   const handleAllInvoice = () => {
     setFilterType("");
+    if (textInputRef.current) {
+      textInputRef.current.value = "";
+    }
   };
   return (
     <div className="px-5 py-5 lg:py-10">
@@ -427,7 +486,7 @@ const Invoice = () => {
 
             <div>
               <TADatePickers
-                date={jobCardData?.date}
+                // date={jobCardData?.date}
                 handleDateChange={handleDateChange}
                 selectedDate={selectedDate}
               />
@@ -436,124 +495,218 @@ const Invoice = () => {
 
           <div className="mb-10 jobCardFieldWraps">
             <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl  font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Job No"
-                  onChange={(e) => setJob_no(e.target.value)}
-                  value={jobCardData?.job_no}
-                  focused={jobCardData?.job_no}
+                  label="Job Card No"
+                  onChange={(e) => setOrderNumber(e.target.value)}
+                  required
                 />
               </div>
+
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Customer Id"
-                  // onChange={handleInputChange}
-                  value={jobCardData?.Id}
-                  focused={jobCardData?.Id}
-                  // required
+                  {...register("Id")}
+                  focused={jobCardData?.data?.Id}
+                  required
+                  inputProps={{ readOnly: true }}
                 />
               </div>
-
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Company"
-                  value={jobCardData?.company_name}
-                  focused={jobCardData?.company_name}
-                  {...register("company_name")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      company_name: e.target.value,
-                    })
+                  focused={
+                    jobCardData?.data?.customer?.company_name ||
+                    jobCardData?.data?.company?.company_name ||
+                    jobCardData?.data?.showRoom?.company_name
                   }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.company_name,
-                  }}
+                  {...register("company_name")}
                 />
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer"
-                  value={jobCardData?.customer_name}
-                  focused={jobCardData?.customer_name}
-                  {...register("customer_name")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      customer_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.customer_name,
-                  }}
-                />
+                {!jobCardData?.data && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={jobCardData?.data?.customer?.customer_name}
+                    {...register("customer_name")}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={jobCardData?.data?.customer?.customer_name}
+                    {...register("customer_name")}
+                  />
+                )}
+                {(jobCardData?.data?.user_type === "company" ||
+                  jobCardData?.data?.user_type === "showRoom") && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Customer"
+                    focused={
+                      jobCardData?.data?.company?.vehicle_username ||
+                      jobCardData?.data?.showRoom?.vehicle_username
+                    }
+                    {...register("vehicle_username")}
+                  />
+                )}
               </div>
+              <div className="mt-3">
+                <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
+                  <Autocomplete
+                    className="jobCardSelect2"
+                    freeSolo
+                    options={countries}
+                    getOptionLabel={(option) => option.label}
+                    value={countryCode}
+                    onChange={(event, newValue) => {
+                      setCountryCode(newValue);
+                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...register("customer_country_code")}
+                        label="Select Country Code"
+                        variant="outlined"
+                        focused={
+                          jobCardData?.data?.customer?.customer_country_code
+                        }
+                      />
+                    )}
+                  />
 
-              <div className="flex sm:flex-row flex-col gap-1 items-center mt-3 ">
-                <Autocomplete
-                  className="jobCardSelect2"
-                  freeSolo
-                  options={countries}
-                  getOptionLabel={(option) => option.label}
-                  value={countryCode}
-                  onChange={(event, newValue) => {
-                    setCountryCode(newValue);
-                    setPhoneNumber(""); // Reset the phone number when changing country codes
-                  }}
-                  renderInput={(params) => (
+                  {!jobCardData?.data && (
                     <TextField
-                      {...params}
-                      label="Select Country Code"
+                      {...register("customer_contact")}
+                      className="carRegField"
                       variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : jobCardData?.data?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
                     />
                   )}
-                />
-                <TextField
-                  className="carRegField"
-                  label="Phone"
-                  value={jobCardData?.customer_contact}
-                  {...register("customer_contact")}
-                  onChange={(e) => {
-                    const inputValue = e.target.value;
-                    if (inputValue.length <= 11) {
-                      setJobCardData({
-                        ...jobCardData,
-                        customer_contact: inputValue,
-                      });
-                    }
-                  }}
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.customer_contact,
-                  }}
-                />
+                  {jobCardData?.data?.user_type === "customer" && (
+                    <TextField
+                      {...register("customer_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : jobCardData?.data?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Customer Contact No (N)"
+                      focused={
+                        jobCardData?.data?.customer?.customer_contact || ""
+                      }
+                    />
+                  )}
+                  {(jobCardData?.data?.user_type === "company" ||
+                    jobCardData?.data?.user_type === "showRoom") && (
+                    <TextField
+                      {...register("company_contact")}
+                      className="carRegField"
+                      variant="outlined"
+                      fullWidth
+                      type="tel"
+                      value={
+                        phoneNumber
+                          ? phoneNumber
+                          : jobCardData?.data?.customer?.customer_contact
+                      }
+                      onChange={handlePhoneNumberChange}
+                      placeholder="Company Contact No (N)"
+                      focused={
+                        jobCardData?.data?.company?.company_contact ||
+                        jobCardData?.data?.showRoom?.company_contact
+                      }
+                    />
+                  )}
+                </div>
               </div>
               <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Address"
-                  value={jobCardData?.customer_address}
-                  focused={jobCardData?.customer_address}
-                  {...register("customer_address")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      customer_address: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.customer_address,
-                  }}
-                />
+                {!jobCardData?.data && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "customer" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("customer_address")}
+                    focused={jobCardData?.data?.customer?.customer_address}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "company" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("company_address")}
+                    focused={jobCardData?.data?.company?.company_address || ""}
+                  />
+                )}
+                {jobCardData?.data?.user_type === "showRoom" && (
+                  <TextField
+                    className="addJobInputField"
+                    label="Address"
+                    {...register("showRoom_address")}
+                    focused={
+                      jobCardData?.data?.showRoom?.showRoom_address || ""
+                    }
+                  />
+                )}
               </div>
             </div>
 
             <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
+              <div className="mt-3">
+                <Autocomplete
+                  disabled={
+                    jobCardData?.data?.vehicle?.length === 0 ||
+                    !jobCardData?.data?.vehicle
+                  }
+                  disableClearable
+                  freeSolo
+                  className="addJobInputField"
+                  onChange={handleChassisChange}
+                  options={jobCardData?.data?.vehicle?.map(
+                    (option) => option.chassis_no
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      className="addJobInputField"
+                      label="Chassis No"
+                      {...register("chassis_no")}
+                      inputProps={{
+                        ...params.inputProps,
+                        maxLength: jobCardData?.data?.chassis_no?.length || 30,
+                      }}
+                      required
+                    />
+                  )}
+                />
+              </div>
               <div className="flex mt-3  md:gap-0 gap-4 items-center">
                 <Autocomplete
                   sx={{ marginRight: "5px" }}
@@ -564,127 +717,52 @@ const Invoice = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Vehicle Reg No ( New field ) "
+                      label="Vehicle Reg No"
                       {...register("carReg_no")}
+                      focused={getDataWithChassisNo?.carReg_no || ""}
                     />
                   )}
                 />
 
-                <TextField
-                  className="carRegField"
-                  label="Car R (N)"
-                  {...register("car_registration_no", {
-                    pattern: {
-                      value: /^[\d-]+$/,
-                      message: "Only numbers and hyphens are allowed",
-                    },
-                    minLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                    maxLength: {
-                      value: 7,
-                      message:
-                        "Car registration number must be exactly 6 digits",
-                    },
-                  })}
-                  value={jobCardData?.car_registration_no}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length === 7) {
-                      setRegistrationError("");
-                    } else if (value.length < 7) {
-                      setRegistrationError(
-                        "Car registration number must be 7 characters"
-                      );
-                    }
-                    const formattedValue = value
-                      .replace(/\D/g, "")
-                      .slice(0, 6)
-                      .replace(/(\d{2})(\d{1,4})/, "$1-$2");
-                    setJobCardData({
-                      ...jobCardData,
-                      car_registration_no: formattedValue,
-                    });
-                  }}
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.car_registration_no,
-                  }}
-                  error={!!errors.car_registration_no || !!registrationError}
-                />
+                <InputMask
+                  mask="99-9999"
+                  maskChar={null}
+                  {...register("car_registration_no")}
+                >
+                  {(inputProps) => (
+                    <TextField
+                      {...inputProps}
+                      {...register("car_registration_no")}
+                      className="carRegField"
+                      label="Car R (N)"
+                      focused={getDataWithChassisNo?.carReg_no || ""}
+                    />
+                  )}
+                </InputMask>
               </div>
 
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
-                  label="Chassis No"
-                  value={jobCardData?.chassis_no}
-                  focused={jobCardData?.chassis_no}
-                  {...register("chassis_no")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      chassis_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.chassis_no,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
                   label="Engine & CC"
-                  value={jobCardData?.engine_no}
-                  focused={jobCardData?.engine_no}
                   {...register("engine_no")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      engine_no: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.engine_no,
-                  }}
+                  focused={getDataWithChassisNo?.engine_no || ""}
                 />
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Vehicle Name"
-                  value={jobCardData?.vehicle_name}
-                  focused={jobCardData?.vehicle_name}
                   {...register("vehicle_name")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      vehicle_name: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.vehicle_name,
-                  }}
+                  focused={getDataWithChassisNo?.vehicle_name || ""}
                 />
               </div>
               <div className="mt-3">
                 <TextField
                   className="addJobInputField"
                   label="Mileage"
-                  value={jobCardData?.mileage}
-                  focused={jobCardData?.mileage}
                   {...register("mileage")}
-                  onChange={(e) =>
-                    setJobCardData({
-                      ...jobCardData,
-                      mileage: e.target.value,
-                    })
-                  }
-                  InputLabelProps={{
-                    shrink: !!jobCardData?.mileage,
-                  }}
+                  focused={getDataWithChassisNo?.mileage || ""}
                 />
               </div>
             </div>
@@ -936,18 +1014,17 @@ const Invoice = () => {
               <Button>Money Receipt </Button>
             </div>
             <div className="submitQutationBtn">
-              <button type="submit" className="">
+              <button type="submit" disabled={createLoading}>
                 Add To Invoice
               </button>
             </div>
           </div>
-          {error && (
-            <div className="pt-6 text-center text-red-400">{error}</div>
-          )}
-          {postError && (
-            <div className="pt-6 text-center text-red-400">{postError}</div>
-          )}
         </form>
+        <div className="my-2">
+          {createInvoiceError && (
+            <ErrorMessage messages={createInvoiceError?.data?.errorSources} />
+          )}
+        </div>
       </div>
       <div className="mt-20 overflow-x-auto">
         <div className="flex items-center justify-between mb-5">
@@ -961,7 +1038,8 @@ const Invoice = () => {
                 onChange={(e) => setFilterType(e.target.value)}
                 autoComplete="off"
                 type="text"
-                placeholder={select}
+                placeholder="Write here"
+                ref={textInputRef}
               />
             </div>
             <button className="SearchBtn ">Search </button>
@@ -982,9 +1060,9 @@ const Invoice = () => {
                 <table className="table">
                   <thead className="tableWrap">
                     <tr>
-                      <th>SL No</th>
-                      <th>Customer Name</th>
                       <th>Order Number </th>
+                      <th>Customer Name</th>
+
                       <th>Car Number </th>
                       <th>Mobile Number</th>
                       <th>Date</th>
@@ -993,20 +1071,28 @@ const Invoice = () => {
                   </thead>
                   <tbody>
                     {allInvoices?.data?.invoices?.map((card, index) => {
-                      const lastVehicle = card?.vehicles
-                        ? [...card.vehicles].sort(
-                            (a, b) =>
-                              new Date(b.createdAt) - new Date(a.createdAt)
-                          )[0]
-                        : null;
-
                       return (
                         <tr key={card._id}>
-                          <td>{index + 1}</td>
-                          <td>{card.customer_name}</td>
-                          <td>{card.job_no}</td>
-                          <td>{card.car_registration_no}</td>
-                          <td> {card.customer_contact} </td>
+                          <td>{card?.job_no}</td>
+                          {card?.customer && (
+                            <td>{card?.customer?.customer_name}</td>
+                          )}
+                          {card?.company && (
+                            <td>{card?.company?.company_name}</td>
+                          )}
+                          {card?.showRoom && (
+                            <td>{card?.showRoom?.showRoom_name}</td>
+                          )}
+                          <td>{card?.vehicle?.fullRegNum}</td>
+                          {card?.customer && (
+                            <td>{card?.customer?.fullCustomerNum}</td>
+                          )}
+                          {card?.company && (
+                            <td>{card?.company?.fullCompanyNum}</td>
+                          )}
+                          {card?.showRoom && (
+                            <td>{card?.showRoom?.fullCompanyNum}</td>
+                          )}
                           <td>{card.date}</td>
                           <td>
                             <div
