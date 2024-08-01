@@ -18,7 +18,11 @@ import {
   FaHospitalUser,
   FaSearch,
 } from "react-icons/fa";
-import { FaAnchorCircleCheck, FaCalendarDays, FaRegMessage } from "react-icons/fa6";
+import {
+  FaAnchorCircleCheck,
+  FaCalendarDays,
+  FaRegMessage,
+} from "react-icons/fa6";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -133,11 +137,11 @@ const DashboardLayout = () => {
     },
   ];
 
-const navigate = useNavigate()
- const handleLogout=()=>{
-  Cookies.remove("tas-auth")
-  navigate("/")
- }
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    Cookies.remove("tas-auth");
+    navigate("/");
+  };
 
   return (
     <main>
@@ -168,9 +172,12 @@ const navigate = useNavigate()
                 />
                 <FaSearch size={20} className="text-[#fff]" />
               </div>
-               <Link to='/dashboard/holiday'>
-               <FaCalendarDays size={20} className="text-[#fff] lg:block hidden"/>
-               </Link>
+              <Link to="/dashboard/holiday">
+                <FaCalendarDays
+                  size={20}
+                  className="text-[#fff] lg:block hidden"
+                />
+              </Link>
               <div className="relative lg:block hidden notificationIconsWraps cursor-pointer ">
                 <div className="absolute rounded-full bg-[#1A90FF] text-white p-2 w-5 h-5 flex items-center justify-center text-sm -top-1 left-5">
                   5
@@ -265,7 +272,9 @@ const navigate = useNavigate()
                     <p>Support</p>
                   </Link>
                   {/* <Link to="/"> */}
-                    <p className=" cursor-pointer" onClick={handleLogout}>Logout</p>
+                  <p className=" cursor-pointer" onClick={handleLogout}>
+                    Logout
+                  </p>
                   {/* </Link> */}
                 </div>
               </div>
@@ -280,7 +289,6 @@ const navigate = useNavigate()
           className={`${toggle ? `drawer-content` : `activeDrawer`}  `}
         >
           <Outlet />
-      
         </div>
 
         <aside className="flex ">
@@ -700,7 +708,6 @@ const navigate = useNavigate()
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
                     <NavLink to="/dashboard/holiday">Holiday</NavLink>
-                    
                   </span>
                 </Typography>
                 <Typography className="accordionTypoGrapy">
@@ -720,12 +727,10 @@ const navigate = useNavigate()
                 <Typography className="accordionTypoGrapy">
                   <span className="flex items-center">
                     <FaThLarge className="mr-2" />
-                    
-                    <NavLink to="/dashboard/shift-list">
-                    Shift & Schedule
-                    </NavLink>
 
-                   
+                    <NavLink to="/dashboard/shift-list">
+                      Shift & Schedule
+                    </NavLink>
                   </span>
                 </Typography>
               </AccordionDetails>
@@ -769,6 +774,40 @@ const navigate = useNavigate()
               </AccordionDetails>
             </Accordion>
 
+            <Accordion
+              sx={{ paddingBottom: "10px" }}
+              className="dashboardAccordion"
+              expanded={expanded === "panel14"}
+              onChange={handleChange("panel14")}
+            >
+              <AccordionSummary
+                sx={{ marginBottom: "-10px" }}
+                expandIcon={<ExpandMoreIcon className="accordionExpandIcon" />}
+                aria-controls="panel6a-content"
+                id="panel6a-header"
+              >
+                <Typography>
+                  <span className="flex items-center justify-center ">
+                    <ShoppingBag />
+                    <span className="ml-2"> Income </span>
+                  </span>
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography className="accordionTypoGrapy">
+                  <div className="flex items-center">
+                    <FaPlus className="mr-2" />
+                    <NavLink to="/dashboard/income"> Income Add </NavLink>
+                  </div>
+                </Typography>
+                <Typography className="accordionTypoGrapy">
+                  <div className="flex items-center">
+                    <FaThLarge className="mr-2" />
+                    <NavLink to="/dashboard/income-list">Income List</NavLink>
+                  </div>
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
             <Accordion
               sx={{ paddingBottom: "10px" }}
               className="dashboardAccordion"
@@ -864,9 +903,12 @@ const navigate = useNavigate()
                 </div>
               </NavLink>
               <NavLink to="/dashboard/services">
-                <div onClick={handleLogout} className="flex items-center dashboardItems">
+                <div
+                  onClick={handleLogout}
+                  className="flex items-center dashboardItems"
+                >
                   <Logout size={22} />
-                  <span  className="ml-2">Log Out </span>
+                  <span className="ml-2">Log Out </span>
                 </div>
               </NavLink>
             </div>
@@ -981,6 +1023,14 @@ const navigate = useNavigate()
                   <NavLink to="/dashboard/add-expense">
                     <FaCriticalRole className="tooltipIcon" />
                   </NavLink>
+                  <b className="toolTip">Income </b>
+                </div>
+              </div>
+              <div className="mt-[14px]">
+                <div className="toolTipWrap">
+                  <NavLink to="/dashboard/add-expense">
+                    <FaCriticalRole className="tooltipIcon" />
+                  </NavLink>
                   <b className="toolTip">Expense </b>
                 </div>
               </div>
@@ -1040,7 +1090,6 @@ const navigate = useNavigate()
           <FaAngleDoubleUp size={25} />
         </div>
       </button>
-      
     </main>
   );
 };

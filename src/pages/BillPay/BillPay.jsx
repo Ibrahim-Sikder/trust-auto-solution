@@ -139,6 +139,9 @@ const BillPay = () => {
                   <TextField fullWidth label="Amount" {...register("amount")} />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField fullWidth label="Payment Against Bill" {...register("payment_against_bill")} />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     fullWidth
                     label="Paid On"

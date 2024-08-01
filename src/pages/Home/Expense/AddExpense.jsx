@@ -253,61 +253,7 @@ const AddExpense = () => {
                         {...register("expense_note_second")}
                       />
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Amount"
-                        id="Tax"
-                        {...register("amount")}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Paid On "
-                        id="Tax"
-                        {...register("paid_on")}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label=" Individual Markup  "
-                        {...register("payment_individual_markup")}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <FormControl fullWidth className="productField">
-                        <InputLabel htmlFor="grouped-native-select">
-                          Payment Method
-                        </InputLabel>
-                        <Select
-                         
-                          // {...register("payment_account_first")}
-                          labelId="payment-method-label"
-                          label="Payment Method"
-                        >
-                          <MenuItem value="Bkash">Bkash</MenuItem>
-                          <MenuItem value="Nagad">Nagad</MenuItem>
-                          <MenuItem value="Rocket">Rocket</MenuItem>
-                          <MenuItem value="Check">Check</MenuItem>
-                          <MenuItem value="Card">Card</MenuItem>
-                          <MenuItem value="Bank Transfer">
-                            Bank Transfer
-                          </MenuItem>
-                          <MenuItem value="Other">Other</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label=" Individual Markup  "
-                        {...register("payment_individual_markup")}
-                      />
-                    </Grid>
+                  
                   </Grid>
                 </Box>
               </div>
@@ -611,9 +557,7 @@ const AddExpense = () => {
                 <ErrorMessage messages={createError.data.errorSources} />
               )}
             </div>
-            <div className="mt-2 savebtn">
-              <button disabled={createLoading}>Add Expense </button>
-            </div>
+           
           </form>
         </div>
       </div>

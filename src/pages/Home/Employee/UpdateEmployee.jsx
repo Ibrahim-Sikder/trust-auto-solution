@@ -367,16 +367,7 @@ const UpdateEmployee = () => {
                       focused={singleEmployee?.data?.password || ""}
                     />
                   </Grid>
-                  <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Confirm Password "
-                      id="Confirm Password  "
-                      {...register("confirm_password")}
-                      type="password"
-                      focused={singleEmployee?.data?.confirm_password || ""}
-                    />
-                  </Grid>
+                  
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
                       fullWidth
@@ -479,26 +470,20 @@ const UpdateEmployee = () => {
                       focused={singleEmployee?.data?.religion || ""}
                     />
                   </Grid>
+                 
+                 
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
                       fullWidth
-                      label="Country "
-                      {...register("country")}
-                      focused={singleEmployee?.data?.country || ""}
+                      label="Present Address "
+                      {...register("local_address")}
+                      focused={singleEmployee?.data?.local_address || ""}
                     />
                   </Grid>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
                       fullWidth
-                      label="Town/City "
-                      {...register("city")}
-                      focused={singleEmployee?.data?.city || ""}
-                    />
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Local Address "
+                      label="Permanent Address "
                       {...register("local_address")}
                       focused={singleEmployee?.data?.local_address || ""}
                     />

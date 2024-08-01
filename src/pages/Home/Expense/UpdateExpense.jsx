@@ -42,6 +42,7 @@ const AddExpense = () => {
   const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
   const { register, watch, handleSubmit } = useForm();
 
   const payment = watch("payment_method");
@@ -50,7 +51,6 @@ const AddExpense = () => {
 
 
   const limit = 10;
-
 
   const [createExpense, { isLoading: createLoading, error: createError }] =
     useCreateExpenseMutation();
@@ -178,12 +178,12 @@ const AddExpense = () => {
                       </FormControl>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <FormControl fullWidth >
+                      <FormControl fullWidth>
                         <InputLabel htmlFor="grouped-native-select">
                           Sub Category
                         </InputLabel>
                         <Select
-                          
+                         
                           labelId="payment-method-label"
                           id="grouped-native-select"
                           label="Sub Category"
@@ -199,7 +199,6 @@ const AddExpense = () => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                       
                         fullWidth
                         label="Expense For"
                         id="Tax"
@@ -208,7 +207,6 @@ const AddExpense = () => {
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
-                      
                         fullWidth
                         label="Tax Applicable"
                         id="Tax"
@@ -249,70 +247,13 @@ const AddExpense = () => {
                       <textarea
                         placeholder="Expense Note "
                         className="productDetail"
-                  
                         id=""
                         cols="30"
                         rows="10"
                         {...register("expense_note_second")}
                       />
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                       
-                        fullWidth
-                        label="Amount"
-                        id="Tax"
-                        {...register("amount")}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                      
-                        fullWidth
-                        label="Paid On "
-                        id="Tax"
-                        {...register("paid_on")}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label=" Individual Markup  "
-                        {...register("payment_individual_markup")}
-                      />
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <FormControl fullWidth className="productField">
-                        <InputLabel htmlFor="grouped-native-select">
-                          Payment Method
-                        </InputLabel>
-                        <Select
-                        
-                          // {...register("payment_account_first")}
-                          labelId="payment-method-label"
-                          label="Payment Method"
-                        >
-                          <MenuItem value="Bkash">Bkash</MenuItem>
-                          <MenuItem value="Nagad">Nagad</MenuItem>
-                          <MenuItem value="Rocket">Rocket</MenuItem>
-                          <MenuItem value="Check">Check</MenuItem>
-                          <MenuItem value="Card">Card</MenuItem>
-                          <MenuItem value="Bank Transfer">
-                            Bank Transfer
-                          </MenuItem>
-                          <MenuItem value="Other">Other</MenuItem>
-                        </Select>
-                      </FormControl>
-                    </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        className="productField"
-                        fullWidth
-                        label=" Individual Markup  "
-                        {...register("payment_individual_markup")}
-                      />
-                    </Grid>
+                  
                   </Grid>
                 </Box>
               </div>
@@ -368,7 +309,7 @@ const AddExpense = () => {
                     <>
                       {payment === "Check" && (
                         <>
-                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={6}>
                             <FormControl fullWidth>
                               <InputLabel htmlFor="payment-account-select">
                                 Select Bank
@@ -453,14 +394,14 @@ const AddExpense = () => {
                               </Select>
                             </FormControl>
                           </Grid>
-                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={6}>
                             <TextField
                               fullWidth
                               label="Account Number "
                               {...register("check_no")}
                             />
                           </Grid>
-                          <Grid item lg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={6}>
                             <TextField
                               fullWidth
                               label="Check No"
@@ -553,7 +494,7 @@ const AddExpense = () => {
                       )}
                       {payment === "Other" && (
                         <>
-                          <Grid item llg={6} md={6} sm={12} xs={12}>
+                          <Grid item  lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Transition No"
@@ -575,7 +516,7 @@ const AddExpense = () => {
                         payment === "Nagad" ||
                         payment === "Rocket") && (
                         <>
-                          <Grid item lg={6}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Transition No"
@@ -593,7 +534,7 @@ const AddExpense = () => {
                           </Grid>
                         </>
                       )}
-                      <Grid item llg={6} md={6} sm={12} xs={12}>
+                      <Grid item  lg={6} md={6} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           multiline
@@ -608,7 +549,7 @@ const AddExpense = () => {
                 </Grid>
               </Box>
               <div className="flex justify-end mt-3">
-                <Button sx={{ color: "white", width: "200px" }}>Update</Button>
+                <Button sx={{ color: "white", width: "200px" }}>Submit</Button>
               </div>
             </Box>
             <div className="my-2">
@@ -620,7 +561,113 @@ const AddExpense = () => {
           </form>
         </div>
       </div>
-    
+      <div className="w-full mt-5 mb-24">
+        <div className="flex flex-wrap items-center justify-between mb-5">
+          <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl">
+            {" "}
+            Expense List:{" "}
+          </h3>
+          <div className="flex flex-wrap items-center">
+            <button
+              onClick={handleAllExpense}
+              className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
+            >
+              All
+            </button>
+            <input
+              onChange={(e) => setFilterType(e.target.value)}
+              type="text"
+              placeholder="Search"
+              className="border py-2 px-3 rounded-md border-[#ddd]"
+              ref={textInputRef}
+            />
+            <button
+              className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
+              disabled={filterType === ""}
+            >
+              {" "}
+              <HiOutlineSearch size={25} />
+            </button>
+          </div>
+        </div>
+        {expenseLoading ? (
+          <div className="flex items-center justify-center text-xl">
+            <Loading />
+          </div>
+        ) : (
+          <div>
+            {allExpenses?.data?.expenses?.length === 0 ? (
+              <div className="flex items-center justify-center h-full text-xl text-center">
+                No matching card found.
+              </div>
+            ) : (
+              <section>
+                <table className="table">
+                  <thead className="tableWrap">
+                    <tr>
+                      <th>SL</th>
+                      <th>Expense Category </th>
+                      <th>Sub Category </th>
+                      <th>Expense For </th>
+                      <th>Total Amount </th>
+                      <th>Payment Method </th>
+                      <th colSpan={3}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allExpenses?.data?.expenses?.map((card, index) => (
+                      <tr key={card._id}>
+                        <td>{index + 1}</td>
+                        <td>{card?.category}</td>
+                        <td>{card?.sub_category}</td>
+                        <td>{card?.expense_for}</td>
+                        <td>{card?.amount}</td>
+                        <td>{card?.payment_method}</td>
+                        <td>
+                          <div className="flex items-center justify-center ">
+                            {/* <Link to="/dashboard/employee-profile"> */}
+                            <FaEye size={25} className="" />
+                            {/* </Link> */}
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="editIconWrap edit">
+                            <Link
+                              to={`/dashboard/update-expense?id=${card._id}`}
+                            >
+                              <FaEdit className="editIcon" />
+                            </Link>
+                          </div>
+                        </td>
+
+                        <td>
+                          <div
+                            onClick={() => deletePackage(card._id)}
+                            className="editIconWrap"
+                          >
+                            <FaTrashAlt className="deleteIcon" />
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
+            )}
+          </div>
+        )}
+        {allExpenses?.data?.expenses?.length > 0 && (
+          <div className="flex justify-center mt-4">
+            <Pagination
+              count={allExpenses?.data?.meta?.totalPages}
+              page={currentPage}
+              color="primary"
+              onChange={(_, page) => setCurrentPage(page)}
+            />
+          </div>
+        )}
+      </div>
     </section>
   );
 };

@@ -73,6 +73,9 @@ import PrivateRoute from "./PrivateRoute";
 import UpdateBillPay from "../pages/BillPay/UpdateBillPay";
 import BillPayInvoice from "../pages/BillPay/BillPayInvoice";
 import PurchaseList from "../pages/Home/Parchase/PurchasList";
+import Income from "../pages/Income/Income";
+import IncomeList from "../pages/Income/IncomeList";
+import UpdateIncome from "../pages/Income/UpdateIncome";
 
 export const router = createBrowserRouter([
   {
@@ -392,6 +395,18 @@ export const router = createBrowserRouter([
       {
         path: "shift-list",
         element: <ShiftList />,
+      },
+      {
+        path: "income",
+        element: <Income />,
+      },
+      {
+        path: "income-list",
+        element: <IncomeList />,
+      },
+      {
+        path: "update-income",
+        element: <UpdateIncome />,
       },
       {
         path: "tests",
