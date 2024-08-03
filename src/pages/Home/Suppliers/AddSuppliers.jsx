@@ -13,7 +13,9 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import {
   Autocomplete,
+  Box,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Pagination,
@@ -85,8 +87,6 @@ const AddSuppliers = () => {
       setLoading(false);
     }
   };
-
-   
 
   const onSubmit = async (data) => {
     setError("");
@@ -177,141 +177,160 @@ const AddSuppliers = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="block md:flex">
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 ">
+              <Box>
                 <h3 className="text-xl font-bold">Personal Info </h3>
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Full Name "
+                      id="Full Name "
+                      {...register("full_name")}
+                    />
+                  </Grid>
 
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Full Name "
-                  id="Full Name "
-                  {...register("full_name")}
-                />
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          fullWidth
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber("");
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Phone No"
+                          variant="outlined"
+                          type="tel"
+                          value={phoneNumber}
+                          onChange={handlePhoneNumberChange}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber("");
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <TextField
-                    className="productField2"
-                    label="Phone No"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
-                  />
-                </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Email Address "
+                      id="Email Address "
+                      {...register("email")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor="grouped-native-select">
+                        Vendor Categories
+                      </InputLabel>
+                      <Select
+                        fullWidth
+                        id="grouped-native-select"
+                        label="Car Registration No  "
+                        {...register("vendor")}
+                      >
+                        <MenuItem value="New Parts">New Parts</MenuItem>
+                        <MenuItem value="Recondition Parts">
+                          Recondition Parts
+                        </MenuItem>
+                        <MenuItem value="New & Recondition Parts">
+                          New & Recondition Parts
+                        </MenuItem>
+                        <MenuItem value="Body Items">Body Items</MenuItem>
+                        <MenuItem value="Engine & Suspension Items">
+                          Engine & Suspension Items
+                        </MenuItem>
+                        <MenuItem value="Electric Items">
+                          Electric Items
+                        </MenuItem>
+                        <MenuItem value="Others">Others</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Shop Name"
+                      id="Password"
+                      {...register("shop_name")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}></Grid>
+                </Grid>
+              </Box>
 
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Email Address "
-                  id="Email Address "
-                  {...register("email")}
-                />
-                <div>
-                  <FormControl className="productField">
-                    <InputLabel htmlFor="grouped-native-select">
-                      Vendor Categories
-                    </InputLabel>
-                    <Select
-                      className="addJobInputField"
-                      id="grouped-native-select"
-                      label="Car Registration No  "
-                      {...register("vendor")}
-                    >
-                      <MenuItem value="New Parts">New Parts</MenuItem>
-                      <MenuItem value="Recondition Parts">
-                        Recondition Parts
-                      </MenuItem>
-                      <MenuItem value="New & Recondition Parts">
-                        New & Recondition Parts
-                      </MenuItem>
-                      <MenuItem value="Body Items">Body Items</MenuItem>
-                      <MenuItem value="Engine & Suspension Items">
-                        Engine & Suspension Items
-                      </MenuItem>
-                      <MenuItem value="Electric Items">Electric Items</MenuItem>
-                      <MenuItem value="Others">Others</MenuItem>
-                    </Select>
-                  </FormControl>
-                </div>
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Shop Name"
-                  id="Password"
-                  {...register("shop_name")}
-                />
-              </div>
-
-              <div>
+              <Box>
                 <h3 className="text-xl font-bold">Address </h3>
 
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Country "
-                  {...register("country")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Town/City "
-                  {...register("city")}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="State "
-                  {...register("state")}
-                />
-                <div className="productField">
-                  <input
-                    onChange={handleImageUpload}
-                    type="file"
-                    id="files"
-                    className="hidden"
-                  />
-                  <label
-                    for="files"
-                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                  >
-                    <span>
-                      <FaCloudUploadAlt size={30} className="mr-2" />
-                    </span>
-                    {loading ? (
-                      <span>Uploading...</span>
-                    ) : (
-                      <>
-                        {url ? (
-                          <span>Uploaded</span>
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Country "
+                      {...register("country")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Town/City "
+                      {...register("city")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="State "
+                      {...register("state")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="productField">
+                      <input
+                        onChange={handleImageUpload}
+                        type="file"
+                        id="files"
+                        className="hidden"
+                      />
+                      <label
+                        for="files"
+                        className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                      >
+                        <span>
+                          <FaCloudUploadAlt size={30} className="mr-2" />
+                        </span>
+                        {loading ? (
+                          <span>Uploading...</span>
                         ) : (
-                          <span> Upload Image</span>
+                          <>
+                            {url ? (
+                              <span>Uploaded</span>
+                            ) : (
+                              <span> Upload Image</span>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
-                  </label>
-                </div>
-              </div>
+                      </label>
+                    </div>
+                  </Grid>
+                </Grid>
+              </Box>
             </div>
             <div className="my-2">
               {createError && (

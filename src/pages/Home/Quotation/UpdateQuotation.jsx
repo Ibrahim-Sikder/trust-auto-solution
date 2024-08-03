@@ -4,7 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import InputMask from "react-input-mask";
 import TADatePickers from "../../../components/form/TADatePickers";
@@ -181,7 +181,38 @@ const UpdateQuotation = () => {
         mileage: specificQuotation?.vehicle?.mileage,
       });
     }
-  }, [phoneNumber, reset, specificQuotation?.Id, specificQuotation?.company?.company_address, specificQuotation?.company?.company_contact, specificQuotation?.company?.company_country_code, specificQuotation?.company?.company_email, specificQuotation?.company?.company_name, specificQuotation?.company?.customer_address, specificQuotation?.company?.vehicle_username, specificQuotation?.company_contact, specificQuotation?.company_country_code, specificQuotation?.company_name, specificQuotation?.customer?.company_name, specificQuotation?.customer?.customer_address, specificQuotation?.customer?.customer_contact, specificQuotation?.customer?.customer_country_code, specificQuotation?.customer?.customer_name, specificQuotation?.job_no, specificQuotation?.showRoom_address, specificQuotation?.showRoom_name, specificQuotation?.user_type, specificQuotation?.vehicle?.carReg_no, specificQuotation?.vehicle?.car_registration_no, specificQuotation?.vehicle?.chassis_no, specificQuotation?.vehicle?.engine_no, specificQuotation?.vehicle?.mileage, specificQuotation?.vehicle?.vehicle_brand, specificQuotation?.vehicle?.vehicle_name, specificQuotation?.vehicle_username]);
+  }, [
+    phoneNumber,
+    reset,
+    specificQuotation?.Id,
+    specificQuotation?.company?.company_address,
+    specificQuotation?.company?.company_contact,
+    specificQuotation?.company?.company_country_code,
+    specificQuotation?.company?.company_email,
+    specificQuotation?.company?.company_name,
+    specificQuotation?.company?.customer_address,
+    specificQuotation?.company?.vehicle_username,
+    specificQuotation?.company_contact,
+    specificQuotation?.company_country_code,
+    specificQuotation?.company_name,
+    specificQuotation?.customer?.company_name,
+    specificQuotation?.customer?.customer_address,
+    specificQuotation?.customer?.customer_contact,
+    specificQuotation?.customer?.customer_country_code,
+    specificQuotation?.customer?.customer_name,
+    specificQuotation?.job_no,
+    specificQuotation?.showRoom_address,
+    specificQuotation?.showRoom_name,
+    specificQuotation?.user_type,
+    specificQuotation?.vehicle?.carReg_no,
+    specificQuotation?.vehicle?.car_registration_no,
+    specificQuotation?.vehicle?.chassis_no,
+    specificQuotation?.vehicle?.engine_no,
+    specificQuotation?.vehicle?.mileage,
+    specificQuotation?.vehicle?.vehicle_brand,
+    specificQuotation?.vehicle?.vehicle_name,
+    specificQuotation?.vehicle_username,
+  ]);
 
   useEffect(() => {
     const totalSum = specificQuotation.input_data?.reduce(
@@ -515,14 +546,14 @@ const UpdateQuotation = () => {
     try {
       const customer = {
         company_name: data.company_name,
-  
+
         customer_name: data.customer_name,
         customer_contact: data.customer_contact,
         customer_country_code: data.company_country_code,
-  
+
         customer_address: data.customer_address,
       };
-  
+
       const company = {
         company_name: data.company_name,
         vehicle_username: data.vehicle_username,
@@ -530,20 +561,20 @@ const UpdateQuotation = () => {
         company_contact: data.company_contact,
         company_country_code: data.company_country_code,
       };
-  
+
       const showRoom = {
         showRoom_name: data.showRoom_name,
         vehicle_username: data.vehicle_username,
-  
+
         company_name: data.company_name,
         company_contact: data.company_contact,
         company_country_code: data.company_country_code,
-  
+
         company_address: data.company_address,
       };
-  
+
       data.mileage = Number(data.mileage);
-  
+
       const vehicle = {
         carReg_no: data.carReg_no,
         car_registration_no: data.car_registration_no,
@@ -638,285 +669,283 @@ const UpdateQuotation = () => {
               />
             </div>
           </div>
-          <div className="mb-10 jobCardFieldWraps">
-            <div className="jobCardFieldLeftSide">
+
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 my-10">
+            <Box>
               <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Job Card No"
-                  {...register("job_no")}
-                  // onChange={(e) => setOrderNumber(e.target.value)}
-                  focused={specificQuotation?.job_no || ""}
-                  required
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Id"
-                  {...register("Id")}
-                  focused={specificQuotation?.Id || ""}
-                  required
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company"
-                  focused={
-                    specificQuotation?.customer?.company_name ||
-                    specificQuotation?.company?.company_name ||
-                    specificQuotation?.showRoom?.company_name
-                  }
-                  {...register("company_name")}
-                />
-              </div>
-              <div className="mt-3">
-                {!specificQuotation && (
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextField
-                    className="addJobInputField"
-                    label="Customer"
-                    focused={specificQuotation?.customer?.customer_name || ""}
-                    {...register("customer_name")}
-                  />
-                )}
-                {specificQuotation?.user_type === "customer" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Customer"
-                    focused={specificQuotation?.customer?.customer_name || ""}
-                    {...register("customer_name")}
-                  />
-                )}
-                {(specificQuotation?.user_type === "company" ||
-                  specificQuotation?.user_type === "showRoom") && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Customer"
-                    focused={
-                      specificQuotation?.company?.vehicle_username ||
-                      specificQuotation?.showRoom?.vehicle_username
-                    }
-                    {...register("vehicle_username")}
-                  />
-                )}
-              </div>
-              <div className="mt-3">
-                <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
-                  <Autocomplete
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    fullWidth
+                    label="Job Card No"
+                    {...register("job_no")}
+                    // onChange={(e) => setOrderNumber(e.target.value)}
+                    focused={specificQuotation?.job_no || ""}
+                    required
+                    InputProps={{
+                      readOnly: true,
                     }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register("customer_country_code")}
-                        label="Select Country Code"
-                        variant="outlined"
-                        focused={
-                          specificQuotation?.customer?.customer_country_code || ""
-                        }
-                      />
-                    )}
                   />
-
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Customer Id"
+                    {...register("Id")}
+                    focused={specificQuotation?.Id || ""}
+                    required
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Company"
+                    focused={
+                      specificQuotation?.customer?.company_name ||
+                      specificQuotation?.company?.company_name ||
+                      specificQuotation?.showRoom?.company_name
+                    }
+                    {...register("company_name")}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   {!specificQuotation && (
                     <TextField
-                      {...register("customer_contact")}
-                      className="carRegField"
-                      variant="outlined"
                       fullWidth
-                      type="tel"
-                      value={
-                        phoneNumber
-                          ? phoneNumber
-                          : specificQuotation?.customer?.customer_contact
-                      }
-                      onChange={handlePhoneNumberChange}
-                      placeholder="Customer Contact No (N)"
+                      label="Customer"
+                      focused={specificQuotation?.customer?.customer_name || ""}
+                      {...register("customer_name")}
                     />
                   )}
                   {specificQuotation?.user_type === "customer" && (
                     <TextField
-                      {...register("customer_contact")}
-                      className="carRegField"
-                      variant="outlined"
                       fullWidth
-                      type="tel"
-                      value={
-                        phoneNumber
-                          ? phoneNumber
-                          : specificQuotation?.customer?.customer_contact
-                      }
-                      onChange={handlePhoneNumberChange}
-                      placeholder="Customer Contact No (N)"
-                      focused={
-                        specificQuotation?.customer?.customer_contact || ""
-                      }
+                      label="Customer"
+                      focused={specificQuotation?.customer?.customer_name || ""}
+                      {...register("customer_name")}
                     />
                   )}
                   {(specificQuotation?.user_type === "company" ||
                     specificQuotation?.user_type === "showRoom") && (
                     <TextField
-                      {...register("company_contact")}
-                      className="carRegField"
-                      variant="outlined"
                       fullWidth
-                      type="tel"
-                      value={
-                        phoneNumber
-                          ? phoneNumber
-                          : specificQuotation?.customer?.customer_contact
-                      }
-                      onChange={handlePhoneNumberChange}
-                      placeholder="Company Contact No (N)"
+                      label="Customer"
                       focused={
-                        specificQuotation?.company?.company_contact ||
-                        specificQuotation?.showRoom?.company_contact
+                        specificQuotation?.company?.vehicle_username ||
+                        specificQuotation?.showRoom?.vehicle_username
+                      }
+                      {...register("vehicle_username")}
+                    />
+                  )}
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
+                    <Autocomplete
+                      fullWidth
+                      freeSolo
+                      options={countries}
+                      getOptionLabel={(option) => option.label}
+                      value={countryCode}
+                      onChange={(event, newValue) => {
+                        setCountryCode(newValue);
+                        setPhoneNumber(""); // Reset the phone number when changing country codes
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          fullWidth
+                          {...params}
+                          {...register("customer_country_code")}
+                          label="Select Country Code"
+                          variant="outlined"
+                          focused={
+                            specificQuotation?.customer
+                              ?.customer_country_code || ""
+                          }
+                        />
+                      )}
+                    />
+
+                    {!specificQuotation && (
+                      <TextField
+                        {...register("customer_contact")}
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          phoneNumber
+                            ? phoneNumber
+                            : specificQuotation?.customer?.customer_contact
+                        }
+                        onChange={handlePhoneNumberChange}
+                        placeholder="Customer Contact No (N)"
+                      />
+                    )}
+                    {specificQuotation?.user_type === "customer" && (
+                      <TextField
+                        {...register("customer_contact")}
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          phoneNumber
+                            ? phoneNumber
+                            : specificQuotation?.customer?.customer_contact
+                        }
+                        onChange={handlePhoneNumberChange}
+                        placeholder="Customer Contact No (N)"
+                        focused={
+                          specificQuotation?.customer?.customer_contact || ""
+                        }
+                      />
+                    )}
+                    {(specificQuotation?.user_type === "company" ||
+                      specificQuotation?.user_type === "showRoom") && (
+                      <TextField
+                        {...register("company_contact")}
+                        variant="outlined"
+                        fullWidth
+                        type="tel"
+                        value={
+                          phoneNumber
+                            ? phoneNumber
+                            : specificQuotation?.customer?.customer_contact
+                        }
+                        onChange={handlePhoneNumberChange}
+                        placeholder="Company Contact No (N)"
+                        focused={
+                          specificQuotation?.company?.company_contact ||
+                          specificQuotation?.showRoom?.company_contact
+                        }
+                      />
+                    )}
+                  </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  {!specificQuotation && (
+                    <TextField
+                      fullWidth
+                      label="Address"
+                      {...register("customer_address")}
+                    />
+                  )}
+                  {specificQuotation?.user_type === "customer" && (
+                    <TextField
+                      fullWidth
+                      label="Address"
+                      {...register("customer_address")}
+                      focused={specificQuotation?.customer?.customer_address}
+                    />
+                  )}
+                  {specificQuotation?.user_type === "company" && (
+                    <TextField
+                      fullWidth
+                      label="Address"
+                      {...register("company_address")}
+                      focused={
+                        specificQuotation?.company?.company_address || ""
                       }
                     />
                   )}
-                </div>
-              </div>
-              <div className="mt-3">
-                {!specificQuotation && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("customer_address")}
-                  />
-                )}
-                {specificQuotation?.user_type === "customer" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("customer_address")}
-                    focused={specificQuotation?.customer?.customer_address}
-                  />
-                )}
-                {specificQuotation?.user_type === "company" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("company_address")}
-                    focused={specificQuotation?.company?.company_address || ""}
-                  />
-                )}
-                {specificQuotation?.user_type === "showRoom" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("showRoom_address")}
-                    focused={
-                      specificQuotation?.showRoom?.showRoom_address || ""
-                    }
-                  />
-                )}
-              </div>
-            </div>
+                  {specificQuotation?.user_type === "showRoom" && (
+                    <TextField
+                      fullWidth
+                      label="Address"
+                      {...register("showRoom_address")}
+                      focused={
+                        specificQuotation?.showRoom?.showRoom_address || ""
+                      }
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            </Box>
 
-            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
+            <Box>
               <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  value={specificQuotation?.chassis_no}
-                  {...register("chassis_no")}
-                  focused={
-                    specificQuotation?.vehicle?.chassis_no || ""
-                  }
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </div>
-              <div className="flex mt-3  md:gap-0 gap-4 items-center">
-                <Autocomplete
-                  sx={{ marginRight: "5px" }}
-                  freeSolo
-                  className="jobCardSelect2 "
-                  id="free-solo-demo"
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Reg No ( New field ) "
-                      {...register("carReg_no")}
-                      focused={specificQuotation?.vehicle?.carReg_no}
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Chassis No"
+                    value={specificQuotation?.chassis_no}
+                    {...register("chassis_no")}
+                    focused={specificQuotation?.vehicle?.chassis_no || ""}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="flex mt-3  md:gap-0 gap-4 items-center">
+                    <Autocomplete
+                      sx={{ marginRight: "5px" }}
+                      freeSolo
+                      fullWidth
+                      id="free-solo-demo"
+                      options={cmDmOptions.map((option) => option.label)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Vehicle Reg No ( New field ) "
+                          {...register("carReg_no")}
+                          focused={specificQuotation?.vehicle?.carReg_no}
+                        />
+                      )}
                     />
-                  )}
-                />
 
-                <InputMask
-                  mask="99-9999"
-                  maskChar={null}
-                  {...register("car_registration_no")}
-                >
-                  {(inputProps) => (
-                    <TextField
-                      {...inputProps}
+                    <InputMask
+                      mask="99-9999"
+                      maskChar={null}
                       {...register("car_registration_no")}
-                      className="carRegField"
-                      label="Car R (N)"
-                      focused={
-                        specificQuotation?.vehicle?.car_registration_no || ""
-                      }
-                     
-                    />
-                  )}
-                </InputMask>
-              </div>
-
-             
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Engine & CC"
-                  value={specificQuotation?.engine_no}
-                  {...register("engine_no")}
-                  focused={
-                    specificQuotation?.vehicle?.engine_no || ""
-                  }
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle Name"
-                  value={specificQuotation?.vehicle_name}
-                  {...register("vehicle_name")}
-                  focused={
-                    specificQuotation?.vehicle?.vehicle_name || ""
-                  }
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Mileage"
-                  value={specificQuotation?.mileage}
-                  {...register("mileage")}
-                  focused={
-                    specificQuotation?.vehicle?.mileage || ""
-                  }
-                />
-              </div>
-            </div>
+                    >
+                      {(inputProps) => (
+                        <TextField
+                          fullWidth
+                          {...inputProps}
+                          {...register("car_registration_no")}
+                          label="Car R (N)"
+                          focused={
+                            specificQuotation?.vehicle?.car_registration_no ||
+                            ""
+                          }
+                        />
+                      )}
+                    </InputMask>
+                  </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Engine & CC"
+                    value={specificQuotation?.engine_no}
+                    {...register("engine_no")}
+                    focused={specificQuotation?.vehicle?.engine_no || ""}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Vehicle Name"
+                    value={specificQuotation?.vehicle_name}
+                    {...register("vehicle_name")}
+                    focused={specificQuotation?.vehicle?.vehicle_name || ""}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Mileage"
+                    value={specificQuotation?.mileage}
+                    {...register("mileage")}
+                    focused={specificQuotation?.vehicle?.mileage || ""}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
           </div>
 
           <div className="flex items-center justify-around labelWrap">

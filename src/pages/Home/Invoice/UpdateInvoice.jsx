@@ -4,7 +4,7 @@ import logo from "../../../../public/assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import InputMask from "react-input-mask";
 import TADatePickers from "../../../components/form/TADatePickers";
@@ -680,273 +680,293 @@ const UpdateInvoice = () => {
               <TADatePickers />
             </div>
           </div>
-          <div className="mb-10 jobCardFieldWraps">
-            <div className="jobCardFieldLeftSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Job Card No"
-                  {...register("job_no")}
-                  // onChange={(e) => setOrderNumber(e.target.value)}
-                  focused={specificInvoice?.job_no || ""}
-                  required
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </div>
-
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Customer Id"
-                  {...register("Id")}
-                  focused={specificInvoice?.Id || ""}
-                  required
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Company"
-                  focused={
-                    specificInvoice?.customer?.company_name ||
-                    specificInvoice?.company?.company_name ||
-                    specificInvoice?.showRoom?.company_name
-                  }
-                  {...register("company_name")}
-                />
-              </div>
-              <div className="mt-3">
-                {!specificInvoice && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-10 ">
+            <Box>
+              <h3 className="text-xl lg:text-3xl font-bold mb-3 ">Customer Info</h3>
+              <Grid container spacing={2}>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextField
-                    className="addJobInputField"
-                    label="Customer"
-                    focused={specificInvoice?.customer?.customer_name || ""}
-                    {...register("customer_name")}
-                  />
-                )}
-                {specificInvoice?.user_type === "customer" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Customer"
-                    focused={specificInvoice?.customer?.customer_name || ""}
-                    {...register("customer_name")}
-                  />
-                )}
-                {(specificInvoice?.user_type === "company" ||
-                  specificInvoice?.user_type === "showRoom") && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Customer"
-                    focused={
-                      specificInvoice?.company?.vehicle_username ||
-                      specificInvoice?.showRoom?.vehicle_username
-                    }
-                    {...register("vehicle_username")}
-                  />
-                )}
-              </div>
-              <div className="mt-3">
-                <div className="flex md:flex-row flex-col gap-0.5 items-center mt-3">
-                  <Autocomplete
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
+                    fullWidth
+                    label="Job Card No"
+                    {...register("job_no")}
+                    // onChange={(e) => setOrderNumber(e.target.value)}
+                    focused={specificInvoice?.job_no || ""}
+                    required
+                    InputProps={{
+                      readOnly: true,
                     }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register("customer_country_code")}
-                        label="Select Country Code"
-                        variant="outlined"
-                        focused={
-                          specificInvoice?.customer?.customer_country_code || ""
-                        }
-                      />
-                    )}
                   />
-
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Customer Id"
+                    {...register("Id")}
+                    focused={specificInvoice?.Id || ""}
+                    required
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Company"
+                    focused={
+                      specificInvoice?.customer?.company_name ||
+                      specificInvoice?.company?.company_name ||
+                      specificInvoice?.showRoom?.company_name
+                    }
+                    {...register("company_name")}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   {!specificInvoice && (
                     <TextField
-                      {...register("customer_contact")}
-                      className="carRegField"
-                      variant="outlined"
                       fullWidth
-                      type="tel"
-                      value={
-                        phoneNumber
-                          ? phoneNumber
-                          : specificInvoice?.customer?.customer_contact
-                      }
-                      onChange={handlePhoneNumberChange}
-                      placeholder="Customer Contact No (N)"
+                      label="Customer"
+                      focused={specificInvoice?.customer?.customer_name || ""}
+                      {...register("customer_name")}
                     />
                   )}
                   {specificInvoice?.user_type === "customer" && (
                     <TextField
-                      {...register("customer_contact")}
-                      className="carRegField"
-                      variant="outlined"
                       fullWidth
-                      type="tel"
-                      value={
-                        phoneNumber
-                          ? phoneNumber
-                          : specificInvoice?.customer?.customer_contact
-                      }
-                      onChange={handlePhoneNumberChange}
-                      placeholder="Customer Contact No (N)"
-                      focused={
-                        specificInvoice?.customer?.customer_contact || ""
-                      }
+                      label="Customer"
+                      focused={specificInvoice?.customer?.customer_name || ""}
+                      {...register("customer_name")}
                     />
                   )}
                   {(specificInvoice?.user_type === "company" ||
                     specificInvoice?.user_type === "showRoom") && (
                     <TextField
-                      {...register("company_contact")}
-                      className="carRegField"
-                      variant="outlined"
                       fullWidth
-                      type="tel"
-                      value={
-                        phoneNumber
-                          ? phoneNumber
-                          : specificInvoice?.customer?.customer_contact
-                      }
-                      onChange={handlePhoneNumberChange}
-                      placeholder="Company Contact No (N)"
+                      label="Customer"
                       focused={
-                        specificInvoice?.company?.company_contact ||
-                        specificInvoice?.showRoom?.company_contact
+                        specificInvoice?.company?.vehicle_username ||
+                        specificInvoice?.showRoom?.vehicle_username
                       }
+                      {...register("vehicle_username")}
                     />
                   )}
-                </div>
-              </div>
-              <div className="mt-3">
-                {!specificInvoice && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("customer_address")}
-                  />
-                )}
-                {specificInvoice?.user_type === "customer" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("customer_address")}
-                    focused={specificInvoice?.customer?.customer_address}
-                  />
-                )}
-                {specificInvoice?.user_type === "company" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("company_address")}
-                    focused={specificInvoice?.company?.company_address || ""}
-                  />
-                )}
-                {specificInvoice?.user_type === "showRoom" && (
-                  <TextField
-                    className="addJobInputField"
-                    label="Address"
-                    {...register("showRoom_address")}
-                    focused={specificInvoice?.showRoom?.showRoom_address || ""}
-                  />
-                )}
-              </div>
-            </div>
+                </Grid>
 
-            <div className="mt-3 lg:mt-0 jobCardFieldRightSide">
-              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Chassis No"
-                  value={specificInvoice?.chassis_no}
-                  {...register("chassis_no")}
-                  focused={specificInvoice?.vehicle?.chassis_no || ""}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </div>
-              <div className="flex mt-3  md:gap-0 gap-4 items-center">
-                <Autocomplete
-                  sx={{ marginRight: "5px" }}
-                  freeSolo
-                  className="jobCardSelect2 "
-                  id="free-solo-demo"
-                  options={cmDmOptions.map((option) => option.label)}
-                  renderInput={(params) => (
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid container spacing={1}>
+                    <Grid item lg={3} md={4} sm={12} xs={12}>
+                      <Autocomplete
+                       fullWidth
+                        freeSolo
+                        options={countries}
+                        getOptionLabel={(option) => option.label}
+                        value={countryCode}
+                        onChange={(event, newValue) => {
+                          setCountryCode(newValue);
+                          setPhoneNumber(""); // Reset the phone number when changing country codes
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            {...register("customer_country_code")}
+                            label="Select Country Code"
+                            variant="outlined"
+                            focused={
+                              specificInvoice?.customer
+                                ?.customer_country_code || ""
+                            }
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item lg={9} md={5} sm={12} xs={12}>
+                      {!specificInvoice && (
+                        <TextField
+                          {...register("customer_contact")}
+                        
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : specificInvoice?.customer?.customer_contact
+                          }
+                          onChange={handlePhoneNumberChange}
+                          placeholder="Customer Contact No (N)"
+                        />
+                      )}
+                      {specificInvoice?.user_type === "customer" && (
+                        <TextField
+                          {...register("customer_contact")}
+                         
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : specificInvoice?.customer?.customer_contact
+                          }
+                          onChange={handlePhoneNumberChange}
+                          placeholder="Customer Contact No (N)"
+                          focused={
+                            specificInvoice?.customer?.customer_contact || ""
+                          }
+                        />
+                      )}
+                      {(specificInvoice?.user_type === "company" ||
+                        specificInvoice?.user_type === "showRoom") && (
+                        <TextField
+                          {...register("company_contact")}
+                         
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : specificInvoice?.customer?.customer_contact
+                          }
+                          onChange={handlePhoneNumberChange}
+                          placeholder="Company Contact No (N)"
+                          focused={
+                            specificInvoice?.company?.company_contact ||
+                            specificInvoice?.showRoom?.company_contact
+                          }
+                        />
+                      )}
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  {!specificInvoice && (
                     <TextField
-                      {...params}
-                      label="Vehicle Reg No ( New field ) "
-                      {...register("carReg_no")}
-                      focused={specificInvoice?.vehicle?.carReg_no}
+                     fullWidth
+                      label="Address"
+                      {...register("customer_address")}
                     />
                   )}
-                />
-
-                <InputMask
-                  mask="99-9999"
-                  maskChar={null}
-                  {...register("car_registration_no")}
-                >
-                  {(inputProps) => (
+                  {specificInvoice?.user_type === "customer" && (
                     <TextField
-                      {...inputProps}
-                      {...register("car_registration_no")}
-                      className="carRegField"
-                      label="Car R (N)"
+                      fullWidth
+                      label="Address"
+                      {...register("customer_address")}
+                      focused={specificInvoice?.customer?.customer_address}
+                    />
+                  )}
+                  {specificInvoice?.user_type === "company" && (
+                    <TextField
+                      fullWidth
+                      label="Address"
+                      {...register("company_address")}
+                      focused={specificInvoice?.company?.company_address || ""}
+                    />
+                  )}
+                  {specificInvoice?.user_type === "showRoom" && (
+                    <TextField
+                      fullWidth
+                      label="Address"
+                      {...register("showRoom_address")}
                       focused={
-                        specificInvoice?.vehicle?.car_registration_no || ""
+                        specificInvoice?.showRoom?.showRoom_address || ""
                       }
                     />
                   )}
-                </InputMask>
-              </div>
+                </Grid>
+              </Grid>
+            </Box>      
+              <Box>
+                <h3 className="text-xl lg:text-3xl font-bold mb-3">Vehicle Info</h3>
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                   fullWidth
+                      label="Chassis No"
+                      value={specificInvoice?.chassis_no}
+                      {...register("chassis_no")}
+                      focused={specificInvoice?.vehicle?.chassis_no || ""}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </Grid>
 
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Engine & CC"
-                  value={specificInvoice?.engine_no}
-                  {...register("engine_no")}
-                  focused={specificInvoice?.vehicle?.engine_no || ""}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Vehicle Name"
-                  value={specificInvoice?.vehicle_name}
-                  {...register("vehicle_name")}
-                  focused={specificInvoice?.vehicle?.vehicle_name || ""}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Mileage"
-                  value={specificInvoice?.mileage}
-                  {...register("mileage")}
-                  focused={specificInvoice?.vehicle?.mileage || ""}
-                />
-              </div>
-            </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "5px" }}
+                          freeSolo
+                         fullWidth
+                          id="free-solo-demo"
+                          options={cmDmOptions.map((option) => option.label)}
+                          renderInput={(params) => (
+                            <TextField
+                            fullWidth
+                              {...params}
+                              label="Vehicle Reg No ( New field ) "
+                              {...register("carReg_no")}
+                              focused={specificInvoice?.vehicle?.carReg_no}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={5} sm={12} xs={12}>
+                        <InputMask
+                          mask="99-9999"
+                          maskChar={null}
+                          {...register("car_registration_no")}
+                        >
+                          {(inputProps) => (
+                            <TextField
+                            fullWidth
+                              {...inputProps}
+                              {...register("car_registration_no")}
+                            
+                              label="Car R (N)"
+                              focused={
+                                specificInvoice?.vehicle?.car_registration_no ||
+                                ""
+                              }
+                            />
+                          )}
+                        </InputMask>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                    fullWidth
+                      label="Engine & CC"
+                      value={specificInvoice?.engine_no}
+                      {...register("engine_no")}
+                      focused={specificInvoice?.vehicle?.engine_no || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                    fullWidth
+                      label="Vehicle Name"
+                      value={specificInvoice?.vehicle_name}
+                      {...register("vehicle_name")}
+                      focused={specificInvoice?.vehicle?.vehicle_name || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                    fullWidth
+                      label="Mileage"
+                      value={specificInvoice?.mileage}
+                      {...register("mileage")}
+                      focused={specificInvoice?.vehicle?.mileage || ""}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+           
           </div>
 
           <div className="flex items-center justify-around labelWrap">
@@ -1402,9 +1422,7 @@ const UpdateInvoice = () => {
 
           <div className="flex items-center ">
             <b className="mr-2">Due: </b>
-            <span>
-              {calculateDue()}
-            </span>
+            <span>{calculateDue()}</span>
           </div>
         </div>
 

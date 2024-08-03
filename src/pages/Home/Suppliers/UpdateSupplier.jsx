@@ -5,7 +5,14 @@
 import TextField from "@mui/material/TextField";
 import { FaUsers, FaCloudUploadAlt } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Autocomplete, FormControl, InputLabel, Select } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  FormControl,
+  Grid,
+  InputLabel,
+  Select,
+} from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -137,178 +144,201 @@ const UpdateSupplier = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="block md:flex">
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <Box>
                 <h3 className="text-xl font-bold">Personal Info </h3>
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Full Name "
+                      id="Full Name "
+                      {...register("full_name")}
+                      focused={singleSupplier?.data?.full_name || ""}
+                    />
+                  </Grid>
 
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Full Name "
-                  id="Full Name "
-                  {...register("full_name")}
-                  focused={singleSupplier?.data?.full_name || ""}
-                />
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.label}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                              {...register("country_code")}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <TextField
+                          {...register("phone_number")}
+                          className="productField2"
+                          label="Phone No"
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : singleSupplier?.data?.phone_number
+                          }
+                          onChange={handlePhoneNumberChange}
+                          focused={singleSupplier?.data?.phone_number || ""}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.label}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
-                        {...register("country_code")}
-                      />
-                    )}
-                  />
-                  <TextField
-                    {...register("phone_number")}
-                    className="productField2"
-                    label="Phone No"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      phoneNumber
-                        ? phoneNumber
-                        : singleSupplier?.data?.phone_number
-                    }
-                    onChange={handlePhoneNumberChange}
-                    focused={singleSupplier?.data?.phone_number || ""}
-                  />
-                </div>
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Email Address "
-                  id="Email Address "
-                  {...register("email")}
-                  focused={singleSupplier?.data?.email}
-                />
-                <div>
-                  <FormControl className="productField">
-                    <InputLabel htmlFor={singleSupplier?.data?.vendor}>
-                      Vendor Categories
-                    </InputLabel>
-                    <Select
-                      className="addJobInputField"
-                      native
-                      id="grouped-native-select"
-                      label="Vendor Categories"
-                      {...register("vendor")}
-                      focused={singleSupplier?.data?.vendor}
-                    >
-                      <option>{singleSupplier?.data?.vendor} </option>
-                      <option value="New Parts">New Parts </option>
-                      <option value="Recondition Parts">
-                        Recondition Parts
-                      </option>
-                      <option value="New & Recondition Parts">
-                        New & Recondition Parts
-                      </option>
-                      <option value="Body Items">Body Items</option>
-                      <option value="Engine & Suspension Items">
-                        Engine & Suspension Items
-                      </option>
-                      <option value="Electric Items">Electric Items</option>
-                      <option value="Others">Others</option>
-                    </Select>
-                  </FormControl>
-                </div>
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Shop Name"
-                  id="Password"
-                  {...register("shop_name")}
-                  focused={singleSupplier?.data?.shop_name}
-                />
-              </div>
-
-              <div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Email Address "
+                      id="Email Address "
+                      {...register("email")}
+                      focused={singleSupplier?.data?.email}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel htmlFor={singleSupplier?.data?.vendor}>
+                        Vendor Categories
+                      </InputLabel>
+                      <Select
+                        className="addJobInputField"
+                        native
+                        id="grouped-native-select"
+                        label="Vendor Categories"
+                        {...register("vendor")}
+                        focused={singleSupplier?.data?.vendor}
+                      >
+                        <option>{singleSupplier?.data?.vendor} </option>
+                        <option value="New Parts">New Parts </option>
+                        <option value="Recondition Parts">
+                          Recondition Parts
+                        </option>
+                        <option value="New & Recondition Parts">
+                          New & Recondition Parts
+                        </option>
+                        <option value="Body Items">Body Items</option>
+                        <option value="Engine & Suspension Items">
+                          Engine & Suspension Items
+                        </option>
+                        <option value="Electric Items">Electric Items</option>
+                        <option value="Others">Others</option>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Shop Name"
+                      id="Password"
+                      {...register("shop_name")}
+                      focused={singleSupplier?.data?.shop_name}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box>
                 <h3 className="text-xl font-bold">Address </h3>
-
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Country "
-                  {...register("country")}
-                  focused={singleSupplier?.data?.country}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="Town/City "
-                  {...register("city")}
-                  focused={singleSupplier?.data?.city}
-                />
-                <TextField
-                  className="productField"
-                  fullWidth
-                  label="State "
-                  {...register("state")}
-                  focused={singleSupplier?.data?.state}
-                />
-                <div className="productField">
-                  <input
-                    onChange={handleImageUpload}
-                    type="file"
-                    id="files"
-                    className="hidden"
-                  />
-                  <label
-                    htmlFor="files"
-                    className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
-                  >
-                    <span>
-                      <FaCloudUploadAlt size={30} className="mr-2" />
-                    </span>
-                    {imageLoading ? (
-                      <span>Uploading...</span>
-                    ) : (
-                      <>
-                        {url || singleSupplier?.data?.image ? (
-                          <div>
-                            {/* Check if url exists, if yes, render it */}
-                            {url && (
-                              <span className="overflow-hidden">
-                                {url.slice(0, 4)}
-                                {/* Display only the first 4 characters */}
-                                {url.slice(url.lastIndexOf("."))}{" "}
-                                {/* Display file extension */}
-                              </span>
-                            )}
-                            {/* Check if getSingleSuppliers.image exists, if yes, render it */}
-                            {singleSupplier?.data?.image && (
-                              <span className="overflow-hidden">
-                                {singleSupplier?.data?.image.slice(0, 4)}
-                                {/* Display only the first 4 characters */}
-                                {singleSupplier?.data?.image.slice(
-                                  singleSupplier?.data?.image.lastIndexOf(".")
-                                )}{" "}
-                                {/* Display file extension */}
-                              </span>
-                            )}
-                          </div>
+                <Grid container spacing={2}>
+                  <Grid item l g={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Country "
+                      {...register("country")}
+                      focused={singleSupplier?.data?.country}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Town/City "
+                      {...register("city")}
+                      focused={singleSupplier?.data?.city}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="State "
+                      {...register("state")}
+                      focused={singleSupplier?.data?.state}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="productField">
+                      <input
+                        onChange={handleImageUpload}
+                        type="file"
+                        id="files"
+                        className="hidden"
+                      />
+                      <label
+                        htmlFor="files"
+                        className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
+                      >
+                        <span>
+                          <FaCloudUploadAlt size={30} className="mr-2" />
+                        </span>
+                        {imageLoading ? (
+                          <span>Uploading...</span>
                         ) : (
-                          <span>Upload Image</span>
+                          <>
+                            {url || singleSupplier?.data?.image ? (
+                              <div>
+                                {/* Check if url exists, if yes, render it */}
+                                {url && (
+                                  <span className="overflow-hidden">
+                                    {url.slice(0, 4)}
+                                    {/* Display only the first 4 characters */}
+                                    {url.slice(url.lastIndexOf("."))}{" "}
+                                    {/* Display file extension */}
+                                  </span>
+                                )}
+                                {/* Check if getSingleSuppliers.image exists, if yes, render it */}
+                                {singleSupplier?.data?.image && (
+                                  <span className="overflow-hidden">
+                                    {singleSupplier?.data?.image.slice(0, 4)}
+                                    {/* Display only the first 4 characters */}
+                                    {singleSupplier?.data?.image.slice(
+                                      singleSupplier?.data?.image.lastIndexOf(
+                                        "."
+                                      )
+                                    )}{" "}
+                                    {/* Display file extension */}
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <span>Upload Image</span>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
-                  </label>
-                </div>
-              </div>
+                      </label>
+                    </div>
+                  </Grid>
+                </Grid>
+              </Box>
             </div>
             <div className="text-start text-red-400 py-2">
               {updateError && (

@@ -289,7 +289,7 @@ const AddCustomer = () => {
                     </h3>
 
                     <Grid container spacing={2}>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           on
@@ -297,28 +297,68 @@ const AddCustomer = () => {
                           {...register("company_name")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Vehicle User Name (T)"
                           {...register("vehicle_username")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Company Address (T)"
                           {...register("company_address")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Customer Name (T)"
                           {...register("customer_name")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <Grid container spacing={1}>
+                          <Grid item lg={3} md={4} sm={12} xs={12}>
+                            <Autocomplete
+                              sx={{ marginLeft: "5px" }}
+                              fullWidth
+                              freeSolo
+                              options={countries}
+                              getOptionLabel={(option) => option.code}
+                              value={countryCode}
+                              onChange={(event, newValue) => {
+                                setCountryCode(newValue);
+                                setPhoneNumber("");
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  fullWidth
+                                  {...params}
+                                  label="Select Country Code"
+                                  variant="outlined"
+                                />
+                              )}
+                            />
+                          </Grid>
+                          <Grid item lg={9} md={8} sm={12} xs={12}>
+                            <TextField
+                              {...register("customer_contact")}
+                              label="Customer Contact No (N)"
+                              variant="outlined"
+                              fullWidth
+                              type="tel"
+                              value={phoneNumber}
+                              onChange={handlePhoneNumberChange}
+                              placeholder="Enter phone number"
+                            />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+
+                      {/* <Grid item lg={12} md={12} sm={12} xs={12}>
                         <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
                           <Autocomplete
                             sx={{ marginLeft: "5px" }}
@@ -351,42 +391,8 @@ const AddCustomer = () => {
                             placeholder="Enter phone number"
                           />
                         </div>
-                      </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
-                          <Autocomplete
-                            sx={{ marginLeft: "5px" }}
-                            fullWidth
-                            freeSolo
-                            options={countries}
-                            getOptionLabel={(option) => option.code}
-                            value={countryCode}
-                            onChange={(event, newValue) => {
-                              setCountryCode(newValue);
-                              setPhoneNumber("");
-                            }}
-                            renderInput={(params) => (
-                              <TextField
-                                fullWidth
-                                {...params}
-                                label="Select Country Code"
-                                variant="outlined"
-                              />
-                            )}
-                          />
-                          <TextField
-                            {...register("customer_contact")}
-                            label="Customer Contact No (N)"
-                            variant="outlined"
-                            fullWidth
-                            type="tel"
-                            value={phoneNumber}
-                            onChange={handlePhoneNumberChange}
-                            placeholder="Enter phone number"
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      </Grid> */}
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Customer Email Address (T)"
@@ -394,62 +400,68 @@ const AddCustomer = () => {
                           type="email"
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Customer Address (T) "
                           {...register("customer_address")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Driver Name (T)"
                           {...register("driver_name")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <div className="flex xl:flex-row flex-col gap-0.5 items-center my-1">
-                          <Autocomplete
-                            sx={{ marginLeft: "5px" }}
-                            fullWidth
-                            freeSolo
-                            options={countries}
-                            getOptionLabel={(option) => option.code}
-                            value={driverCountryCode}
-                            onChange={(event, newValue) => {
-                              setDriverCountryCode(newValue);
-                              setPhoneNumber("");
-                            }}
-                            renderInput={(params) => (
-                              <TextField
-                                fullWidth
-                                {...params}
-                                label="Select Country Code"
-                                variant="outlined"
-                              />
-                            )}
-                          />
-                          <TextField
-                            {...register("driver_contact")}
-                            label="Driver Contact No (N)"
-                            variant="outlined"
-                            fullWidth
-                            type="tel"
-                            value={driverPhoneNumber}
-                            onChange={handleDriverPhoneNumberChange}
-                            placeholder="Enter phone number"
-                          />
-                        </div>
+
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <Grid container spacing={1}>
+                          <Grid item lg={3} md={4} sm={12} xs={12}>
+                            <Autocomplete
+                              sx={{ marginLeft: "5px" }}
+                              fullWidth
+                              freeSolo
+                              options={countries}
+                              getOptionLabel={(option) => option.code}
+                              value={driverCountryCode}
+                              onChange={(event, newValue) => {
+                                setDriverCountryCode(newValue);
+                                setPhoneNumber("");
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  fullWidth
+                                  {...params}
+                                  label="Select Country Code"
+                                  variant="outlined"
+                                />
+                              )}
+                            />
+                          </Grid>
+                          <Grid item lg={9} md={8} sm={12} xs={12}>
+                            <TextField
+                              {...register("driver_contact")}
+                              label="Driver Contact No (N)"
+                              variant="outlined"
+                              fullWidth
+                              type="tel"
+                              value={driverPhoneNumber}
+                              onChange={handleDriverPhoneNumberChange}
+                              placeholder="Enter phone number"
+                            />
+                          </Grid>
+                        </Grid>
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Reference Name (T) "
                           {...register("reference_name")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Reference Name (T) "
@@ -463,62 +475,70 @@ const AddCustomer = () => {
                       Vehicle Information{" "}
                     </h3>
                     <Grid container spacing={2}>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <div className="flex items-center mt-1 productField">
-                          <Autocomplete
-                            freeSolo
-                            fullWidth
-                            id="reg"
-                            Car
-                            Registration
-                            No
-                            options={cmDmOptions.map((option) => option.label)}
-                            renderInput={(params) => (
-                              <TextField
-                                fullWidth
-                                {...params}
-                                label="Car Reg No"
-                                {...register("carReg_no")}
-                              />
-                            )}
-                          />
-                          <TextField
-                            fullWidth
-                            label="Car R (N)"
-                            {...register("car_registration_no", {
-                              pattern: {
-                                value: /^[\d-]+$/,
-                                message: "Only numbers and hyphens are allowed",
-                              },
-                              maxLength: {
-                                value: 7,
-                                message:
-                                  "Car registration number must be exactly 7 characters",
-                              },
-                            })}
-                            onChange={handleCarRegistrationChange}
-                            error={
-                              !!errors.car_registration_no ||
-                              !!registrationError
-                            }
-                          />
-                        </div>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <Grid container spacing={1}>
+                          <Grid item lg={3} md={4} sm={12} xs={12}>
+                            <Autocomplete
+                              freeSolo
+                              fullWidth
+                              id="reg"
+                              Car
+                              Registration
+                              No
+                              options={cmDmOptions.map(
+                                (option) => option.label
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  fullWidth
+                                  {...params}
+                                  label="Car Reg No"
+                                  {...register("carReg_no")}
+                                />
+                              )}
+                            />
+                          </Grid>
+                          <Grid item lg={9} md={8} sm={12} xs={12}>
+                            <TextField
+                              fullWidth
+                              label="Car R (N)"
+                              {...register("car_registration_no", {
+                                pattern: {
+                                  value: /^[\d-]+$/,
+                                  message:
+                                    "Only numbers and hyphens are allowed",
+                                },
+                                maxLength: {
+                                  value: 7,
+                                  message:
+                                    "Car registration number must be exactly 7 characters",
+                                },
+                              })}
+                              onChange={handleCarRegistrationChange}
+                              error={
+                                !!errors.car_registration_no ||
+                                !!registrationError
+                              }
+                            />
+                          </Grid>
+                        </Grid>
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Chassis No (T&N)"
                           {...register("chassis_no")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="ENGINE NO & CC (T&N) "
                           {...register("engine_no")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Autocomplete
                           fullWidth
                           freeSolo
@@ -535,10 +555,10 @@ const AddCustomer = () => {
                           )}
                           onChange={handleBrandChange}
                           value={selectedBrand}
-                          style={{ marginBottom: 20 }}
+                          
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Autocomplete
                           fullWidth
                           freeSolo
@@ -558,14 +578,14 @@ const AddCustomer = () => {
                           // disabled={!selectedBrand}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
-                        <div className="relative mt-3 ">
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div className="relative ">
                           <input
                             value={yearSelectInput}
                             onInput={handleYearSelectInput}
                             {...register("vehicle_model")}
                             type="text"
-                            className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
+                            className="border productField border-[#11111194] w-[100%] h-14 p-3 rounded-md"
                             placeholder="Vehicle Model"
                           />
                           {yearSelectInput && (
@@ -587,7 +607,7 @@ const AddCustomer = () => {
                           )}
                         </div>
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Autocomplete
                           freeSolo
                           fullWidth
@@ -604,7 +624,7 @@ const AddCustomer = () => {
                           )}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           freeSolo
                           fullWidth
@@ -612,7 +632,7 @@ const AddCustomer = () => {
                           {...register("color_code")}
                         />
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           label="Mileage (N)"
@@ -629,7 +649,7 @@ const AddCustomer = () => {
                           </span>
                         )}
                       </Grid>
-                      <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
                         <Autocomplete
                           freeSolo
                           fullWidth

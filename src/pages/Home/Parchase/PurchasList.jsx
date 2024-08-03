@@ -86,9 +86,7 @@ const PurchaseList = () => {
                 <TableCell align="center">{row.againstBill}</TableCell>
                 <TableCell align="center">
                   <div className="flex justify-center">
-                  <IconButton title="See Profile">
-                        <VisibilityIcon className="text-green-600" />
-                      </IconButton>
+                 
                     <Link to={`/dashboard/update-purchase`}>
                       <IconButton title="Edit">
                         <EditIcon />

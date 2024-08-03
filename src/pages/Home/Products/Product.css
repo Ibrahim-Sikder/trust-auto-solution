@@ -87,16 +87,7 @@
 .productDetail:active {
 	outline: #42A1DA;
 }
-.savebtn button {
-	background-color: #42A1DA;
-	padding: 8px;
-	margin-right: 5px;
-	color: #fff;
-	border-radius: 3px;
-}
-.savebtn button:first-child {
-	background: #42A1DA;
-}
+
 .invoicIcon {
 	color: #42A1DA !important;
 	font-size: 45px;

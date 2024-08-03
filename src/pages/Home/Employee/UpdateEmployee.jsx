@@ -35,7 +35,7 @@ const UpdateEmployee = () => {
   const [guardianCountryCode, setGuardianCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [guardianPhoneNumber, setGuardianPhoneNumber] = useState("");
-
+  const [imageLoading, setImageLoading] = useState(false);
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
   const navigate = useNavigate();
@@ -194,7 +194,7 @@ const UpdateEmployee = () => {
             <div className=" space-y-3">
               <Box>
                 <h3 className="text-xl font-bold mb-5 text-center ">
-                  Employee Information{" "}
+                  Personal Information{" "}
                 </h3>
                 <Grid container spacing={2}>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -228,6 +228,23 @@ const UpdateEmployee = () => {
                       label="Blood Group "
                       {...register("blood_group")}
                       focused={singleEmployee?.data?.blood_group || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Nationality"
+                      {...register("nationality")}
+                      focused={singleEmployee?.data?.nationality || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      className="productField"
+                      fullWidth
+                      label="Religion"
+                      {...register("religion")}
+                      focused={singleEmployee?.data?.religion || ""}
                     />
                   </Grid>
 
@@ -307,6 +324,24 @@ const UpdateEmployee = () => {
                       </Select>
                     </FormControl>
                   </Grid>
+
+                  <Grid item lg={6} md={6} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Password"
+                      id="Password"
+                      {...register("password")}
+                      type="password"
+                      focused={singleEmployee?.data?.password || ""}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box sx={{ marginTop: "30px" }}>
+                <h3 className="text-xl font-bold mb-5 text-center ">
+                  Employee Information{" "}
+                </h3>
+                <Grid container spacing={2}>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
                       fullWidth
@@ -343,17 +378,13 @@ const UpdateEmployee = () => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Password"
-                      id="Password"
-                      {...register("password")}
-                      type="password"
-                      focused={singleEmployee?.data?.password || ""}
-                    />
-                  </Grid>
-                  
+                </Grid>
+              </Box>
+              <Box sx={{ marginTop: "30px" }}>
+                <h3 className="text-xl font-bold mb-5 text-center ">
+                  Guardian Information
+                </h3>
+                <Grid container spacing={2}>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
                       fullWidth
@@ -380,7 +411,7 @@ const UpdateEmployee = () => {
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1}>
                       <Grid item lg={4} md={6} sm={3} xs={12}>
                         <Autocomplete
                           sx={{ marginRight: "2px", marginLeft: "5px" }}
@@ -439,25 +470,12 @@ const UpdateEmployee = () => {
                       focused={singleEmployee?.data?.relationship || ""}
                     />
                   </Grid>
-                  <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Nationality"
-                      {...register("nationality")}
-                      focused={singleEmployee?.data?.nationality || ""}
-                    />
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <TextField
-                      className="productField"
-                      fullWidth
-                      label="Religion"
-                      {...register("religion")}
-                      focused={singleEmployee?.data?.religion || ""}
-                    />
-                  </Grid>
                  
-                 
+                </Grid>
+              </Box>
+              <Box sx={{ marginTop: "30px" }}>
+                <h3 className="text-xl font-bold mb-5 text-center ">Address</h3>
+                <Grid container spacing={2}>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
                       fullWidth
@@ -486,7 +504,7 @@ const UpdateEmployee = () => {
                         for="files"
                         className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
                       >
-                        {/* <span>
+                        <span>
                           <FaCloudUploadAlt size={30} className="mr-2" />
                         </span>
                         {imageLoading ? (
@@ -499,7 +517,7 @@ const UpdateEmployee = () => {
                               <span> Upload Image</span>
                             )}
                           </>
-                        )} */}
+                        )}
                       </label>
                       <ImageUploader />
                     </div>

@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { Autocomplete, Pagination } from "@mui/material";
+import { Autocomplete, Box, Grid, Pagination } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
@@ -36,17 +36,12 @@ import {
 import { ErrorMessage } from "../../../components/error-message";
 
 const AddCompany = () => {
-
   const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
- 
+
   const [currentPage, setCurrentPage] = useState(1);
 
- 
-
   const [registrationError, setRegistrationError] = useState("");
-
- 
 
   const [selectedBrand, setSelectedBrand] = useState("");
   const [filteredVehicles, setFilteredVehicles] = useState([]);
@@ -202,7 +197,7 @@ const AddCompany = () => {
     };
 
     const res = await createCompany(newData).unwrap();
-    
+
     if (res.success) {
       toast.success("Successfully add to company post");
       navigate("/dashboard/company-list");
@@ -235,8 +230,6 @@ const AddCompany = () => {
     }
   };
 
-   
-
   const handleAllCompany = () => {
     setFilterType("");
     if (textInputRef.current) {
@@ -244,10 +237,8 @@ const AddCompany = () => {
     }
   };
 
-
   if (deleteError) {
     toast.error(deleteError?.message);
-    
   }
 
   if (companyLoading) {
@@ -284,308 +275,329 @@ const AddCompany = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="block md:flex">
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-10">
+              <Box>
                 <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
                   Company Information{" "}
                 </h3>
-                <div>
-                  <TextField
-                    className="productField"
-                    on
-                    label="Company Name (T)"
-                    {...register("company_name")}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    onC
-                    label="Vehicle User Name (T)"
-                    {...register("vehicle_username")}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    on
-                    label="Company Address (T)"
-                    {...register("company_address")}
-                  />
-                </div>
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      on
+                      label="Company Name (T)"
+                      {...register("company_name")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      onC
+                      label="Vehicle User Name (T)"
+                      {...register("vehicle_username")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      on
+                      label="Company Address (T)"
+                      {...register("company_address")}
+                    />
+                  </Grid>
 
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={countryCode}
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <TextField
-                    {...register("company_contact")}
-                    className="productField2"
-                    label="Company Contact No (N)"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneNumberChange}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Company Email Address (N)"
-                    {...register("company_email")}
-                    type="email"
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    o
-                    label="Driver Name (T)"
-                    {...register("driver_name")}
-                  />
-                </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          fullWidth
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.code}
+                          value={countryCode}
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <TextField
+                          {...register("company_contact")}
+                          fullWidth
+                          label="Company Contact No (N)"
+                          variant="outlined"
+                          type="tel"
+                          value={phoneNumber}
+                          onChange={handlePhoneNumberChange}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={driverCountryCode}
-                    onChange={(event, newValue) => {
-                      setDriverCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Country Code"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <TextField
-                    {...register("driver_contact")}
-                    className="productField2"
-                    label="Driver Contact No (N)"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={driverPhoneNumber}
-                    onChange={handleDriverPhoneNumberChange}
-                    placeholder="Enter phone number"
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Reference Name (T) "
-                    {...register("reference_name")}
-                  />
-                </div>
-              </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Company Email Address (N)"
+                      {...register("company_email")}
+                      type="email"
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      o
+                      label="Driver Name (T)"
+                      {...register("driver_name")}
+                    />
+                  </Grid>
 
-              <div className="mt-5 lg:mt-0">
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          fullWidth
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.code}
+                          value={driverCountryCode}
+                          onChange={(event, newValue) => {
+                            setDriverCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Country Code"
+                              variant="outlined"
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <TextField
+                          {...register("driver_contact")}
+                          fullWidth
+                          label="Driver Contact No (N)"
+                          variant="outlined"
+                          type="tel"
+                          value={driverPhoneNumber}
+                          onChange={handleDriverPhoneNumberChange}
+                          placeholder="Enter phone number"
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="flex items-center my-1"></div>
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Reference Name (T) "
+                      {...register("reference_name")}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+
+              <Box>
                 <h3 className="mb-1 ml-2 text-xl font-bold md:ml-0">
                   Vehicle Information{" "}
                 </h3>
-                <div className="flex items-center mt-1 productField">
-                  <Autocomplete
-                    className="jobCardSelect2"
-                    id="reg"
-                    Car
-                    Registration
-                    No
-                    options={cmDmOptions.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Car Reg No"
-                        {...register("carReg_no")}
-                      />
-                    )}
-                  />
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          fullWidth
+                          id="reg"
+                          Car
+                          Registration
+                          No
+                          options={cmDmOptions.map((option) => option.label)}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Car Reg No"
+                              {...register("carReg_no")}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <TextField
+                          fullWidth
+                          label="Car R (N)"
+                          {...register("car_registration_no", {
+                            pattern: {
+                              value: /^[\d-]+$/,
+                              message: "Only numbers and hyphens are allowed",
+                            },
+                            maxLength: {
+                              value: 7,
+                              message:
+                                "Car registration number must be exactly 7 characters",
+                            },
+                          })}
+                          onChange={handleCarRegistrationChange}
+                          error={
+                            !!errors.car_registration_no || !!registrationError
+                          }
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
-                  <TextField
-                    className="carRegField"
-                    label="Car R (N)"
-                    {...register("car_registration_no", {
-                      pattern: {
-                        value: /^[\d-]+$/,
-                        message: "Only numbers and hyphens are allowed",
-                      },
-                      maxLength: {
-                        value: 7,
-                        message:
-                          "Car registration number must be exactly 7 characters",
-                      },
-                    })}
-                    onChange={handleCarRegistrationChange}
-                    error={!!errors.car_registration_no || !!registrationError}
-                  />
-                </div>
-
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Chassis No (T&N)"
-                    {...register("chassis_no")}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="ENGINE NO & CC (T&N) "
-                    {...register("engine_no")}
-                  />
-                </div>
-
-                <div>
-                  <Autocomplete
-                    className="productField"
-                    freeSolo
-                    onInputChange={(event, newValue) => {
-                      handleBrandChange(newValue);
-                    }}
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Brand"
-                        {...register("vehicle_brand")}
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Chassis No (T&N)"
+                      {...register("chassis_no")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="ENGINE NO & CC (T&N) "
+                      {...register("engine_no")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      fullWidth
+                      freeSolo
+                      onInputChange={(event, newValue) => {
+                        handleBrandChange(newValue);
+                      }}
+                      options={carBrands.map((option) => option.label)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Vehicle Brand"
+                          {...register("vehicle_brand")}
+                        />
+                      )}
+                      onChange={handleBrandChange}
+                      value={selectedBrand}
+                      style={{ marginBottom: 20 }}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      fullWidth
+                      freeSolo
+                      Vehicle
+                      Name
+                      options={filteredVehicles.map((option) => option.value)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Vehicle Name "
+                          {...register("vehicle_name")}
+                        />
+                      )}
+                      getOptionLabel={(option) => option || ""}
+                      // disabled={!selectedBrand}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="relative ">
+                      <input
+                        value={yearSelectInput}
+                        onInput={handleYearSelectInput}
+                        {...register("vehicle_model")}
+                        type="text"
+                        className="border  border-[#11111194]  w-[100%] h-14 p-3 rounded-md"
+                        placeholder="Vehicle Model"
                       />
+                      {yearSelectInput && (
+                        <ul className="options-list">
+                          {filteredOptions.map((option, index) => (
+                            <li
+                              key={index}
+                              onClick={() => handleOptionClick(option)}
+                            >
+                              {option.label}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {errors.vehicle_model && (
+                        <span className="text-sm text-red-400">
+                          {errors.vehicle_model.message}
+                        </span>
+                      )}
+                    </div>
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      freeSolo
+                      fullWidth
+                      Vehicle
+                      Types
+                      options={vehicleTypes.map((option) => option.label)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label=" Vehicle Categories "
+                          {...register("vehicle_category")}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Color & Code (T&N) "
+                      {...register("color_code")}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Mileage (N) "
+                      {...register("mileage", {
+                        pattern: {
+                          value: /^\d+$/,
+                          message: "Please enter a valid number.",
+                        },
+                      })}
+                    />
+                    {errors.mileage && (
+                      <span className="text-sm text-red-400">
+                        {errors.mileage.message}
+                      </span>
                     )}
-                    onChange={handleBrandChange}
-                    value={selectedBrand}
-                    style={{ marginBottom: 20 }}
-                  />
-                </div>
-                <div>
-                  {/* <TextField
-                    className="productField"
-                    label="Vehicle Name "
-                    {...register("vehicle_name")}
-                  /> */}
-                  <Autocomplete
-                    className="productField"
-                    freeSolo
-                    Vehicle
-                    Name
-                    options={filteredVehicles.map((option) => option.value)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Name "
-                        {...register("vehicle_name")}
-                      />
-                    )}
-                    getOptionLabel={(option) => option || ""}
-                    // disabled={!selectedBrand}
-                  />
-                </div>
-
-                <div className="relative mt-3 ">
-                  <input
-                    value={yearSelectInput}
-                    onInput={handleYearSelectInput}
-                    {...register("vehicle_model")}
-                    type="text"
-                    className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
-                    placeholder="Vehicle Model"
-                  />
-                  {yearSelectInput && (
-                    <ul className="options-list">
-                      {filteredOptions.map((option, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleOptionClick(option)}
-                        >
-                          {option.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {errors.vehicle_model && (
-                    <span className="text-sm text-red-400">
-                      {errors.vehicle_model.message}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <Autocomplete
-                    freeSolo
-                    className="productField"
-                    Vehicle
-                    Types
-                    options={vehicleTypes.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=" Vehicle Categories "
-                        {...register("vehicle_category")}
-                      />
-                    )}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Color & Code (T&N) "
-                    {...register("color_code")}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Mileage (N) "
-                    {...register("mileage", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                  />
-                  {errors.mileage && (
-                    <span className="text-sm text-red-400">
-                      {errors.mileage.message}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <Autocomplete
-                    freeSolo
-                    className="productField"
-                    Fuel
-                    Type
-                    options={fuelType.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label=" Fuel Type"
-                        {...register("fuel_type")}
-                      />
-                    )}
-                  />
-                </div>
-              </div>
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      freeSolo
+                      fullWidth
+                      Fuel
+                      Type
+                      options={fuelType.map((option) => option.label)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label=" Fuel Type"
+                          {...register("fuel_type")}
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
             </div>
             <div className="my-2">
               {error && <ErrorMessage messages={error.data.errorSources} />}
@@ -684,7 +696,7 @@ const AddCompany = () => {
                             </td>
                             <td>
                               <button
-                               disabled={companyDeleteLoading}
+                                disabled={companyDeleteLoading}
                                 onClick={() => deletePackage(card._id)}
                                 className="editIconWrap"
                               >

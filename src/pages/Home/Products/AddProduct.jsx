@@ -18,6 +18,7 @@ import img from "../../../../public/assets/service2.png";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
+import { Box, Button, Grid, MenuItem } from "@mui/material";
 const AddProduct = () => {
   const [inputList, setInputList] = useState([
     { supplier: "", priice: "", addbtn: "", deleteBtn: "" },
@@ -69,126 +70,149 @@ const AddProduct = () => {
         </div>
         <div className="addProductWrap">
           <form>
-            <div className="productFieldWrap">
-              <TextField
-                className="productField"
-                fullWidth
-                label="Product Name"
-                id="Product Name "
-              />
-              <TextField
-                className="productField"
-                fullWidth
-                label="Serial Number "
-                id="Serial Number "
-              />
-            </div>
-            <div className="productFieldWrap">
-              <TextField
-                className="productField"
-                fullWidth
-                label="Model"
-                id="Model "
-              />
-              <FormControl className="productField">
-                <InputLabel htmlFor="grouped-native-select">
-                  Select Category{" "}
-                </InputLabel>
-                <Select
-                  native
-                  defaultValue=""
-                  id="grouped-native-select"
-                  label="Select Category "
-                >
-                  <option aria-label="None" value="" />
-                  <option value="First Category "> First Category </option>
-                  <option value="First Category "> First Category </option>
-                  <option value="First Category "> First Category </option>
-                  <option value="First Category "> First Category </option>
-                  <option value="First Category "> First Category </option>
-                </Select>
-              </FormControl>
-            </div>
+            <Box>
+              <Grid container spacing={2}>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Product Name"
+                    id="Product Name "
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Serial Number "
+                    id="Serial Number "
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField fullWidth label="Model" id="Model " />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="grouped-native-select">
+                      Select Category{" "}
+                    </InputLabel>
+                    <Select
+                      
+                      defaultValue=""
+                      id="grouped-native-select"
+                      label="Select Category "
+                    >
+                      <MenuItem value="First Category ">
+                        {" "}
+                        First Category{" "}
+                      </MenuItem>
+                      <MenuItem value="First Category ">
+                        {" "}
+                        First Category{" "}
+                      </MenuItem>
+                      <MenuItem value="First Category ">
+                        {" "}
+                        First Category{" "}
+                      </MenuItem>
+                      <MenuItem value="First Category ">
+                        {" "}
+                        First Category{" "}
+                      </MenuItem>
+                      <MenuItem value="First Category ">
+                        {" "}
+                        First Category{" "}
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField fullWidth label="Sale Price" id="Price " />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="grouped-native-select">
+                      Unit
+                    </InputLabel>
+                    <Select
+                      defaultValue=""
+                      id="grouped-native-select"
+                      label="Select Category "
+                    >
+                      <MenuItem value="First Category "> KG</MenuItem>
+                      <MenuItem value="First Category "> PCS </MenuItem>
+                      <MenuItem value="First Category ">Quantity </MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    type="file"
+                    fullWidth
+                    label=""
+                    id="Image "
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Tax"
+                    id="Tax"
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Minimum Stock"
+                    id="Minimum Stock "
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Re Order Level"
+                    id="Re Order Level"
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Product Location"
+                    id="Product Location "
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Global Markup"
+                    id="Global Markup"
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Individual Markup"
+                    id="Individual Markup "
+                  />
+                </Grid>
+                <Grid item lg={6} md={6} sm={12} xs={12}>
+                  <TextField
+                    className="productField"
+                    fullWidth
+                    label="Note"
+                    id="Note"
+                  />
+                </Grid>
+              </Grid>
+            </Box>
 
-            <div className="productFieldWrap">
-              <TextField
-                className="productField"
-                fullWidth
-                label="Sale Price"
-                id="Price "
-              />
-              <FormControl className="productField">
-                <InputLabel htmlFor="grouped-native-select">Unit</InputLabel>
-                <Select
-                  native
-                  defaultValue=""
-                  id="grouped-native-select"
-                  label="Select Category "
-                >
-                  <option aria-label="None" value="" />
-                  <option value="First Category "> KG</option>
-                  <option value="First Category "> PCS </option>
-                  <option value="First Category ">Quantity </option>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="productFieldWrap">
-              <TextField
-                className="productField"
-                type="file"
-                fullWidth
-                label=""
-                id="Image "
-              />
-              <TextField
-                className="productField"
-                fullWidth
-                label="Tax"
-                id="Tax"
-              />
-            </div>
-            <div className="productFieldWrap">
-              <TextField
-                className="productField"
-                fullWidth
-                label="Minimum Stock"
-                id="Minimum Stock "
-              />
-              <TextField
-                className="productField"
-                fullWidth
-                label="Re Order Level"
-                id="Re Order Level"
-              />
-            </div>
-            <div className="productFieldWrap">
-              <TextField
-                className="productField"
-                fullWidth
-                label="Product Location"
-                id="Product Location "
-              />
-              <TextField
-                className="productField"
-                fullWidth
-                label="Global Markup"
-                id="Global Markup"
-              />
-            </div>
-            <div className="productFieldWrap">
-              <TextField
-                className="productField"
-                fullWidth
-                label="Individual Markup"
-                id="Individual Markup "
-              />
-              <TextField
-                className="productField"
-                fullWidth
-                label="Note"
-                id="Note"
-              />
-            </div>
+            <div className="productFieldWrap"></div>
+
             <div className="supplierBox mt-8">
               <div className="flex items-center justify-between px-0 md:px-5 md:text-xl text-sm">
                 <b>Supplier </b>
@@ -198,28 +222,27 @@ const AddProduct = () => {
               {inputList.map((x, i) => {
                 return (
                   <div key={i} className=" addItemsWrap">
-                    <FormControl className="productField productField2">
-                      <InputLabel htmlFor="grouped-native-select">
-                        Select Price
-                      </InputLabel>
-                      <Select
-                        native
-                        defaultValue=""
-                        id="grouped-native-select"
-                        label="Select Category "
-                      >
-                        <option aria-label="None" value="" />
-                        <option value="First Category "> KG</option>
-                        <option value="First Category "> PCS </option>
-                        <option value="First Category ">Quantity </option>
-                      </Select>
-                    </FormControl>
-                    <TextField
-                      className="productField productField2"
-                      fullWidth
-                      label=""
-                      id=""
-                    />
+                    <Grid container spacing={2}>
+                      <Grid item lg={3} md={6} sm={12} xs={12}>
+                        <FormControl fullWidth>
+                          <InputLabel htmlFor="grouped-native-select">
+                            Select Price
+                          </InputLabel>
+                          <Select
+                            defaultValue=""
+                            id="grouped-native-select"
+                            label="Select Category "
+                          >
+                            <MenuItem value="KG"> KG</MenuItem>
+                            <MenuItem value="PCS"> PCS </MenuItem>
+                            <MenuItem value="Quantity">Quantity </MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item lg={9} md={6} sm={12} xs={12}>
+                        <TextField f fullWidth label="" id="" />
+                      </Grid>
+                    </Grid>
                     <div className="actionIcon ">
                       <div className="flex items-center">
                         {inputList.length - 1 === i && (
@@ -252,9 +275,8 @@ const AddProduct = () => {
                 rows="10"
               />
             </div>
-            <div className="savebtn mt-2">
-              <button>Save</button>
-              <button>Save & Add Another</button>
+            <div className="flex justify-end mt-3 ">
+              <Button sx={{ color: "white" }}>Add Product</Button>
             </div>
           </form>
         </div>
@@ -265,26 +287,6 @@ const AddProduct = () => {
             {" "}
             Products List:{" "}
           </h3>
-          <div className="productFieldWrap productSearch">
-            <FormControl className="searchProductField">
-              <InputLabel htmlFor="grouped-native-select">
-                Select Category{" "}
-              </InputLabel>
-              <Select
-                native
-                defaultValue=""
-                id="grouped-native-select"
-                label="Select Category "
-              >
-                <option aria-label="None" value="" />
-                <option value="Select Category  "> Select Category </option>
-                <option value="Product Name "> Product Name </option>
-                <option value="Supplier Name "> Supplier Name </option>
-                <option value="Product Model "> Product Model </option>
-              </Select>
-            </FormControl>
-            <button className="SearchBtn searchBtn2">Search </button>
-          </div>
         </div>
         <div className="overflow-x-auto ">
           <table className="table ">

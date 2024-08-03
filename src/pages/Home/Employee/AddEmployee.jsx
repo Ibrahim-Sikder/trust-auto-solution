@@ -189,10 +189,10 @@ const AddEmployee = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="addEmployeeFieldWraps space-y-3">
               <div>
-                <h3 className="text-xl font-bold mb-5 text-center ">
-                  Employee Information{" "}
-                </h3>
                 <Box>
+                  <h3 className="text-xl font-bold mb-5 text-center ">
+                    Personal Information
+                  </h3>
                   <Grid container spacing={2}>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
@@ -202,7 +202,7 @@ const AddEmployee = () => {
                         {...register("full_name")}
                       />
                     </Grid>
-                    
+
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
@@ -225,10 +225,17 @@ const AddEmployee = () => {
                       />
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Religion"
+                        {...register("religion")}
+                      />
+                    </Grid>
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
                       <Grid container spacing={2}>
                         <Grid item lg={4} md={6} sm={3} xs={12}>
                           <Autocomplete
-                            sx={{ marginRight: "2px", marginLeft: "5px" }}
+                            sx={{ marginRight: "2px" }}
                             fullWidth
                             freeSolo
                             options={countries}
@@ -236,7 +243,7 @@ const AddEmployee = () => {
                             value={countryCode}
                             onChange={(event, newValue) => {
                               setCountryCode(newValue);
-                              setPhoneNumber(""); // Reset the phone number when changing country codes
+                              setPhoneNumber("");
                             }}
                             renderInput={(params) => (
                               <TextField
@@ -271,21 +278,37 @@ const AddEmployee = () => {
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <FormControl fullWidth>
                         <InputLabel htmlFor="grouped-native-select">
-                          Gender
+                          Select Gender
                         </InputLabel>
                         <Select
-                          className=""
-                          native
                           id="grouped-native-select"
-                          label="Gender"
+                          label="Select Gender"
                           {...register("gender")}
                         >
-                          <option>Select</option>
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
+                          <MenuItem value="Male">Male</MenuItem>
+
+                          <MenuItem value="Female">Female</MenuItem>
+                          <MenuItem value="Other">Other</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
+
+                    <Grid item lg={6} md={6} sm={12} xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Password"
+                        id="Password"
+                        {...register("password")}
+                        type="password"
+                      />
+                    </Grid>
+                  </Grid>
+                </Box>
+                <Box sx={{ marginTop: "30px" }}>
+                  <h3 className="text-xl font-bold mb-5 text-center ">
+                    Employee Information
+                  </h3>
+                  <Grid container spacing={2}>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
@@ -305,30 +328,27 @@ const AddEmployee = () => {
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <FormControl fullWidth>
                         <InputLabel htmlFor="grouped-native-select">
-                          Select Status
+                          Select Employee Status
                         </InputLabel>
                         <Select
-                          native
+                          
                           id="grouped-native-select"
-                          label="Select Status "
+                          label="Select Employee Status"
                           {...register("status")}
                         >
-                          <option>Select</option>
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
+                             <MenuItem value="Active">Active</MenuItem>
+                             <MenuItem value="Inactive">Inactive</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Password"
-                        id="Password"
-                        {...register("password")}
-                        type="password"
-                      />
-                    </Grid>
-                   
+                  </Grid>
+                </Box>
+
+                <Box sx={{ marginTop: "30px" }}>
+                  <h3 className="text-xl font-bold mb-5 text-center ">
+                    Guardian Information
+                  </h3>
+                  <Grid container spacing={2}>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
@@ -403,15 +423,14 @@ const AddEmployee = () => {
                         {...register("nationality")}
                       />
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={12}>
-                      <TextField
-                        fullWidth
-                        label="Religion"
-                        {...register("religion")}
-                      />
-                    </Grid>
-                   
-                    
+                  </Grid>
+                </Box>
+
+                <Box sx={{ marginTop: "30px" }}>
+                  <h3 className="text-xl font-bold mb-5 text-center ">
+                    Address
+                  </h3>
+                  <Grid container spacing={2}>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth

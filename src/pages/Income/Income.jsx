@@ -67,7 +67,7 @@ const AddExpense = () => {
                   multiple
                   id="tags-filled"
                   options={incomeCategories.map((option) => option.title)}
-                  defaultValue={[incomeCategories[13]?.title]}
+                  sx={{ background: "white" }}
                   freeSolo
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => {
@@ -83,12 +83,7 @@ const AddExpense = () => {
                     })
                   }
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="filled"
-                      label="Income Category"
-                      placeholder="Income Category"
-                    />
+                    <TextField {...params} label="Income Category" />
                   )}
                 />
               </Grid>
@@ -105,6 +100,7 @@ const AddExpense = () => {
               <Grid item lg={6} md={6} xs={12} sm={6}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+                    sx={{ width: "100%" }}
                     label="Select Date"
                     value={value}
                     onChange={(newValue) => setValue(newValue)}

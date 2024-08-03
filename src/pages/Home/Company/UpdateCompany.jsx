@@ -16,7 +16,7 @@ import {
   vehicleName,
   vehicleTypes,
 } from "../../../constant";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Box, Grid } from "@mui/material";
 import { HiOfficeBuilding } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { FaUserGear } from "react-icons/fa6";
@@ -69,7 +69,6 @@ const UpdateCompany = () => {
       event.target.value = value.slice(0, 4);
     }
   };
-
 
   const handleOptionClick = (option) => {
     setYearSelectInput(option.label);
@@ -216,11 +215,7 @@ const UpdateCompany = () => {
     } catch (err) {
       toast.error("Failed to update customer");
     }
-
-     
   };
-
-  
 
   const handleChassisChange = (_, newValue) => {
     const filtered = singleCard?.data?.vehicles?.find(
@@ -263,347 +258,374 @@ const UpdateCompany = () => {
 
         <div className="addProductWrap">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-center">
-              <div>
-                <h3 className="mb-1 text-xl font-bold">Company Information </h3>
-                <div>
-                  <TextField
-                    className="productField"
-                    on
-                    label="Company Name (T)"
-                    {...register("company_name")}
-                    value={singleCard?.company_name}
-                    focused={singleCard?.data?.company_name || ""}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    onC
-                    label="Vehicle User Name (T)"
-                    {...register("vehicle_username")}
-                    value={singleCard?.vehicle_username}
-                    focused={singleCard?.data?.vehicle_username || ""}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    on
-                    label="Company Address (T)"
-                    {...register("company_address")}
-                    value={singleCard?.company_address}
-                    focused={singleCard?.data?.company_address || ""}
-                  />
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 ">
+              <Box>
+                <h3 className=" text-xl font-bold mb-3">
+                  Company Information{" "}
+                </h3>
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      on
+                      label="Company Name (T)"
+                      {...register("company_name")}
+                      value={singleCard?.company_name}
+                      focused={singleCard?.data?.company_name || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      onC
+                      label="Vehicle User Name (T)"
+                      {...register("vehicle_username")}
+                      value={singleCard?.vehicle_username}
+                      focused={singleCard?.data?.vehicle_username || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      on
+                      label="Company Address (T)"
+                      {...register("company_address")}
+                      value={singleCard?.company_address}
+                      focused={singleCard?.data?.company_address || ""}
+                    />
+                  </Grid>
 
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={
-                      countryCode || singleCard?.data?.company_country_code
-                    }
-                    onChange={(event, newValue) => {
-                      setCountryCode(newValue);
-                      setPhoneNumber(""); // Reset the phone number when changing country codes
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register("company_country_code")}
-                        label="Select Country Code"
-                        variant="outlined"
-                        focused={singleCard?.data?.company_country_code || ""}
-                      />
-                    )}
-                  />
-                  <TextField
-                    {...register("company_contact")}
-                    className="productField2"
-                    label="Company Contact No (N)"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      phoneNumber
-                        ? phoneNumber
-                        : singleCard?.data?.company_contact
-                    }
-                    onChange={handlePhoneNumberChange}
-                    placeholder="Enter phone number"
-                    focused={singleCard?.data?.company_contact || ""}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Company Email Address (N)"
-                    {...register("company_email")}
-                    focused={singleCard?.data?.company_email || ""}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    o
-                    label="Driver Name (T)"
-                    {...register("driver_name")}
-                    focused={singleCard?.data?.driver_name || ""}
-                  />
-                </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          fullWidth
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.code}
+                          value={
+                            countryCode ||
+                            singleCard?.data?.company_country_code
+                          }
+                          onChange={(event, newValue) => {
+                            setCountryCode(newValue);
+                            setPhoneNumber(""); // Reset the phone number when changing country codes
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              {...register("company_country_code")}
+                              label="Select Country Code"
+                              variant="outlined"
+                              focused={
+                                singleCard?.data?.company_country_code || ""
+                              }
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <TextField
+                          {...register("company_contact")}
+                          label="Company Contact No (N)"
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            phoneNumber
+                              ? phoneNumber
+                              : singleCard?.data?.company_contact
+                          }
+                          onChange={handlePhoneNumberChange}
+                          placeholder="Enter phone number"
+                          focused={singleCard?.data?.company_contact || ""}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
-                <div className="flex items-center my-1">
-                  <Autocomplete
-                    sx={{ marginRight: "2px", marginLeft: "5px" }}
-                    className="jobCardSelect2"
-                    freeSolo
-                    options={countries}
-                    getOptionLabel={(option) => option.code}
-                    value={
-                      driverCountryCode || singleCard?.data?.driver_country_code
-                    }
-                    onChange={(event, newValue) => {
-                      setDriverCountryCode(newValue);
-                      setPhoneNumber("");
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        {...register("driver_country_code")}
-                        label="Select Country Code"
-                        variant="outlined"
-                        focused={singleCard?.data?.driver_country_code || ""}
-                      />
-                    )}
-                  />
-                  <TextField
-                    {...register("driver_contact")}
-                    className="productField2"
-                    label="Driver Contact No (N)"
-                    variant="outlined"
-                    fullWidth
-                    type="tel"
-                    value={
-                      driverPhoneNumber
-                        ? driverPhoneNumber
-                        : singleCard?.data?.driver_contact
-                    }
-                    onChange={handleDriverPhoneNumberChange}
-                    placeholder="Enter phone number"
-                    focused={singleCard?.data?.driver_contact || ""}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Reference Name (T) "
-                    {...register("reference_name")}
-                    value={singleCard?.reference_name}
-                    focused={singleCard?.data?.reference_name || ""}
-                  />
-                </div>
-              </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Company Email Address (N)"
+                      {...register("company_email")}
+                      focused={singleCard?.data?.company_email || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      o
+                      label="Driver Name (T)"
+                      {...register("driver_name")}
+                      focused={singleCard?.data?.driver_name || ""}
+                    />
+                  </Grid>
 
-              <div>
-                <h3 className="mb-2 text-xl font-bold">Vehicle Information </h3>
-                <div>
-                   
-                  <Autocomplete
-                    disableClearable
-                    freeSolo
-                    className="productField"
-                    onChange={handleChassisChange}
-                    options={singleCard?.data?.vehicles.map(
-                      (option) => option.chassis_no
-                    )}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Select Chassis no"
-                        {...register("chassis_no")}
-                        inputProps={{
-                          ...params.inputProps,
-                          maxLength:
-                            getDataWithChassisNo?.chassis_no?.length || 30,
-                        }}
-                      />
-                    )}
-                  />
-                </div>
-                <div className="flex items-center mt-1 productField">
-                  <Autocomplete
-                    freeSolo
-                    className="productField"
-                    // value={singleCard?.carReg_no || ""}
-                    options={cmDmOptions.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="CarReg no"
-                        {...register("carReg_no")}
-                        focused={getDataWithChassisNo?.carReg_no || ""}
-                      />
-                    )}
-                  />
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          sx={{ marginRight: "2px", marginLeft: "5px" }}
+                          className="jobCardSelect2"
+                          freeSolo
+                          options={countries}
+                          getOptionLabel={(option) => option.code}
+                          value={
+                            driverCountryCode ||
+                            singleCard?.data?.driver_country_code
+                          }
+                          onChange={(event, newValue) => {
+                            setDriverCountryCode(newValue);
+                            setPhoneNumber("");
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              {...register("driver_country_code")}
+                              label="Select Country Code"
+                              variant="outlined"
+                              focused={
+                                singleCard?.data?.driver_country_code || ""
+                              }
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <TextField
+                          {...register("driver_contact")}
+                          className="productField2"
+                          label="Driver Contact No (N)"
+                          variant="outlined"
+                          fullWidth
+                          type="tel"
+                          value={
+                            driverPhoneNumber
+                              ? driverPhoneNumber
+                              : singleCard?.data?.driver_contact
+                          }
+                          onChange={handleDriverPhoneNumberChange}
+                          placeholder="Enter phone number"
+                          focused={singleCard?.data?.driver_contact || ""}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
-                  <InputMask
-                    mask="99-9999"
-                    maskChar={null}
-                    {...register("car_registration_no")}
-                  >
-                    {(inputProps) => (
-                      <TextField
-                        {...inputProps}
-                        {...register("car_registration_no")}
-                        className="carRegField"
-                        label="Car R (N)"
-                        focused={
-                          getDataWithChassisNo?.car_registration_no || ""
-                        }
-                      />
-                    )}
-                  </InputMask>
-                </div>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Reference Name (T) "
+                      {...register("reference_name")}
+                      value={singleCard?.reference_name}
+                      focused={singleCard?.data?.reference_name || ""}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
 
-                <div>
-                  <TextField
-                    className="productField"
-                    label="ENGINE NO & CC (T&N) "
-                    {...register("engine_no")}
-                    // value={singleCard?.engine_no}
-                    focused={getDataWithChassisNo?.engine_no || ""}
-                  />
-                </div>
+              <Box>
+                <h3 className=" text-xl font-bold mb-3">
+                  Vehicle Information{" "}
+                </h3>
+                <Grid container spacing={2}>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      disableClearable
+                      freeSolo
+                      fullWidth
+                      onChange={handleChassisChange}
+                      options={singleCard?.data?.vehicles.map(
+                        (option) => option.chassis_no
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Select Chassis no"
+                          {...register("chassis_no")}
+                          inputProps={{
+                            ...params.inputProps,
+                            maxLength:
+                              getDataWithChassisNo?.chassis_no?.length || 30,
+                          }}
+                        />
+                      )}
+                    />
+                  </Grid>
 
-                <div>
-                  <Autocomplete
-                    freeSolo
-                    className="productField"
-                    // value={singleCard?.vehicle_brand || ""}
-                    onChange={handleBrandChange}
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Brand"
-                        {...register("vehicle_brand")}
-                        focused={getDataWithChassisNo?.vehicle_brand || ""}
-                      />
-                    )}
-                  />
-                </div>
-                <div>
-                  <Autocomplete
-                    className="productField"
-                    freeSolo
-                    Vehicle
-                    Name
-                    // value={singleCard?.vehicle_name || ""}
-                    options={filteredVehicles.map((option) => option.value)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Name "
-                        {...register("vehicle_name")}
-                        focused={getDataWithChassisNo?.vehicle_name || ""}
-                      />
-                    )}
-                    getOptionLabel={(option) => option || ""}
-                  />
-                </div>
-                <div className="relative ">
-                  <input
-                     
-                    onInput={handleYearSelectInput}
-                    {...register("vehicle_model")}
-                    type="text"
-                    className="border productField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
-                    placeholder="Vehicle Model"
-                    defaultValue={getDataWithChassisNo?.vehicle_model}
-                  />
-
-                  {yearSelectInput && (
-                    <ul className="options-list">
-                      {filteredOptions.map((option, index) => (
-                        <li
-                          key={index}
-                          onClick={() => handleOptionClick(option)}
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Grid container spacing={1}>
+                      <Grid item lg={3} md={4} sm={12} xs={12}>
+                        <Autocomplete
+                          freeSolo
+                          fullWidth
+                          // value={singleCard?.carReg_no || ""}
+                          options={cmDmOptions.map((option) => option.label)}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="CarReg no"
+                              {...register("carReg_no")}
+                              focused={getDataWithChassisNo?.carReg_no || ""}
+                            />
+                          )}
+                        />
+                      </Grid>
+                      <Grid item lg={9} md={8} sm={12} xs={12}>
+                        <InputMask
+                          mask="99-9999"
+                          maskChar={null}
+                          {...register("car_registration_no")}
                         >
-                          {option.label}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {errors.vehicle_model && (
-                    <span className="text-sm text-red-400">
-                      {errors.vehicle_model.message}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <Autocomplete
-                    className="productField"
-                    // value={singleCard?.vehicle_category || ""}
-                    options={vehicleTypes.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Vehicle Category"
-                        {...register("vehicle_category")}
-                        focused={getDataWithChassisNo?.vehicle_category || ""}
+                          {(inputProps) => (
+                            <TextField
+                              {...inputProps}
+                              {...register("car_registration_no")}
+                              fullWidth
+                              label="Car R (N)"
+                              focused={
+                                getDataWithChassisNo?.car_registration_no || ""
+                              }
+                            />
+                          )}
+                        </InputMask>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="ENGINE NO & CC (T&N) "
+                      {...register("engine_no")}
+                      // value={singleCard?.engine_no}
+                      focused={getDataWithChassisNo?.engine_no || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      freeSolo
+                      fullWidth
+                      // value={singleCard?.vehicle_brand || ""}
+                      onChange={handleBrandChange}
+                      options={carBrands.map((option) => option.label)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Vehicle Brand"
+                          {...register("vehicle_brand")}
+                          focused={getDataWithChassisNo?.vehicle_brand || ""}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      fullWidth
+                      freeSolo
+                      Vehicle
+                      Name
+                      // value={singleCard?.vehicle_name || ""}
+                      options={filteredVehicles.map((option) => option.value)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Vehicle Name "
+                          {...register("vehicle_name")}
+                          focused={getDataWithChassisNo?.vehicle_name || ""}
+                        />
+                      )}
+                      getOptionLabel={(option) => option || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="relative ">
+                      <input
+                        onInput={handleYearSelectInput}
+                        {...register("vehicle_model")}
+                        type="text"
+                        className="border  border-[#11111194] w-[100%] h-14 p-3 rounded-md"
+                        placeholder="Vehicle Model"
+                        defaultValue={getDataWithChassisNo?.vehicle_model}
                       />
-                    )}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    className="productField"
-                    label="Color & Code (T&N) "
-                    {...register("color_code")}
-                    // value={singleCard?.color_code}
-                    focused={getDataWithChassisNo?.color_code || ""}
-                  />
-                </div>
-                <div>
-                  <TextField
-                    type="number"
-                    className="productField"
-                    label="Mileage (N) "
-                    {...register("mileage", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid number.",
-                      },
-                    })}
-                    // value={singleCard?.mileage}
-                    focused={getDataWithChassisNo?.mileage || ""}
-                  />
-                  {/* {errors.mileage && (
-                    <span className="text-sm text-red-400">
-                      {errors.mileage.message}
-                    </span>
-                  )} */}
-                </div>
-                <div>
-                  <Autocomplete
-                    className="productField"
-                    // value={singleCard?.fuel_type || ""}
-                    options={carBrands.map((option) => option.label)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Fuel Type "
-                        {...register("fuel_type")}
-                        focused={getDataWithChassisNo?.fuel_type || ""}
-                      />
-                    )}
-                  />
-                </div>
-              </div>
+
+                      {yearSelectInput && (
+                        <ul className="options-list">
+                          {filteredOptions.map((option, index) => (
+                            <li
+                              key={index}
+                              onClick={() => handleOptionClick(option)}
+                            >
+                              {option.label}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {errors.vehicle_model && (
+                        <span className="text-sm text-red-400">
+                          {errors.vehicle_model.message}
+                        </span>
+                      )}
+                    </div>
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      fullWidth
+                      // value={singleCard?.vehicle_category || ""}
+                      options={vehicleTypes.map((option) => option.label)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Vehicle Category"
+                          {...register("vehicle_category")}
+                          focused={getDataWithChassisNo?.vehicle_category || ""}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      fullWidth
+                      label="Color & Code (T&N) "
+                      {...register("color_code")}
+                      // value={singleCard?.color_code}
+                      focused={getDataWithChassisNo?.color_code || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <TextField
+                      type="number"
+                      fullWidth
+                      label="Mileage (N) "
+                      {...register("mileage", {
+                        pattern: {
+                          value: /^\d+$/,
+                          message: "Please enter a valid number.",
+                        },
+                      })}
+                      // value={singleCard?.mileage}
+                      focused={getDataWithChassisNo?.mileage || ""}
+                    />
+                  </Grid>
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <Autocomplete
+                      fullWidth
+                      // value={singleCard?.fuel_type || ""}
+                      options={carBrands.map((option) => option.label)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Fuel Type "
+                          {...register("fuel_type")}
+                          focused={getDataWithChassisNo?.fuel_type || ""}
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
             </div>
             <div className="my-2">
               {error && <ErrorMessage messages={error.data.errorSources} />}

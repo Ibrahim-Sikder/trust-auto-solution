@@ -22,7 +22,7 @@ const Login = () => {
   const handleLogin = (event) => {
     event.preventDefault();
 
-    if (
+    if ( 
       email.current.value === "trustautosolution@gmail.com" &&
       password.current.value === "trust@#Auto33"
     ) {
