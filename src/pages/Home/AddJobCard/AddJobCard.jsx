@@ -59,12 +59,11 @@ const AddJobCard = () => {
   const [newId, setNewId] = useState("customer");
 
   const [inputValue, setInputValue] = useState("");
-
-  // country code
-  const [countryCode, setCountryCode] = useState(countries[0]);
-  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [driverPhoneNumber, setDriverPhoneNumber] = useState("");
+
+  const [countryCode, setCountryCode] = useState(countries[0]);
+  const [driverCountryCode, setDriverCountryCode] = useState(countries[0]);
 
   const [note, setNote] = useState(null);
   const [vehicleBody, setVehicleBody] = useState(null);
