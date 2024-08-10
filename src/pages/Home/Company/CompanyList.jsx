@@ -175,7 +175,7 @@ const CompanyList = () => {
 
                           <td>
                             <div
-                              onClick={() => handleIconPreview(card.companyId)}
+                              onClick={() => handleIconPreview(card._id)}
                               className="flex items-center justify-center cursor-pointer"
                             >
                               <FaUserTie size={25} className="" />
