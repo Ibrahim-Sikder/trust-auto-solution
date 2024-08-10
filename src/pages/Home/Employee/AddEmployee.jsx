@@ -435,14 +435,14 @@ const AddEmployee = () => {
                       <TextField
                         fullWidth
                         label="Present Address "
-                        {...register("local_address")}
+                        {...register("present_address")}
                       />
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                       <TextField
                         fullWidth
                         label="Permanent Address "
-                        {...register("local_address")}
+                        {...register("permanent_address")}
                       />
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>

@@ -147,6 +147,7 @@ const SupplierList = () => {
                   <thead className="tableWrap">
                     <tr>
                       <th>SL</th>
+                      <th>Supplier Id </th>
                       <th>Supplier Name </th>
                       <th>Phone Number </th>
                       <th>Email</th>
@@ -157,6 +158,7 @@ const SupplierList = () => {
                     {suppliers?.data?.suppliers?.map((card, index) => (
                       <tr key={card._id}>
                         <td>{index + 1}</td>
+                        <td>{card?.supplierId}</td>
                         <td>{card?.full_name}</td>
                         <td>{card?.full_Phone_number}</td>
                         <td>{card?.email}</td>

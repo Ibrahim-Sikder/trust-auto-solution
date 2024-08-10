@@ -27,7 +27,6 @@ const UpdateQuotation = () => {
   const [vat, setVAT] = useState("");
 
   const [error, setError] = useState("");
-  const [registrationError, setRegistrationError] = useState("");
 
   const [removeButton, setRemoveButton] = useState("");
   const [reload, setReload] = useState(false);
@@ -39,25 +38,10 @@ const UpdateQuotation = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
 
-  // country code set
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [getDataWithChassisNo, setGetDataWithChassisNo] = useState({});
-
-  const handlePhoneNumberChange = (e) => {
-    const newPhoneNumber = e.target.value;
-    if (
-      /^\d*$/.test(newPhoneNumber) &&
-      newPhoneNumber.length <= 11 &&
-      (newPhoneNumber === "" ||
-        !newPhoneNumber.startsWith("0") ||
-        newPhoneNumber.length > 1)
-    ) {
-      setPhoneNumber(newPhoneNumber);
-    }
-  };
 
   const [items, setItems] = useState([
     { description: "", quantity: "", rate: "", total: "" },
@@ -83,6 +67,19 @@ const UpdateQuotation = () => {
       setSelectedDate(specificQuotation.date);
     }
   }, [specificQuotation]);
+
+  const handlePhoneNumberChange = (e) => {
+    const newPhoneNumber = e.target.value;
+    if (
+      /^\d*$/.test(newPhoneNumber) &&
+      newPhoneNumber.length <= 11 &&
+      (newPhoneNumber === "" ||
+        !newPhoneNumber.startsWith("0") ||
+        newPhoneNumber.length > 1)
+    ) {
+      setPhoneNumber(newPhoneNumber);
+    }
+  };
 
   const handleRemove = (index) => {
     if (!index) {
@@ -463,7 +460,10 @@ const UpdateQuotation = () => {
   };
 
   const handleAddClick = () => {
-    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
+    setItems([
+      ...items,
+      { description: "", quantity: "", rate: "", total: "" },
+    ]);
     if (partsDiscountRef.current) {
       partsDiscountRef.current.value = discount
         ? discount
@@ -594,7 +594,10 @@ const UpdateQuotation = () => {
         parts_total: partsTotal || specificQuotation.parts_total,
         service_total: serviceTotal || specificQuotation.serviceTotal,
         total_amount: grandTotal || specificQuotation?.total_amount,
-        discount: discount || specificQuotation?.discount,
+        discount:
+          discount === 0 || discount > 0
+            ? discount
+            : specificQuotation?.discount,
         vat: vat === 0 || vat > 0 ? vat : specificQuotation?.vat,
         net_total: calculateFinalTotal() || specificQuotation.net_total,
 
@@ -628,13 +631,6 @@ const UpdateQuotation = () => {
         setError(error.response.data.message);
       }
     }
-  };
-
-  const handleChassisChange = (_, newValue) => {
-    const filtered = specificQuotation?.vehicle?.find(
-      (vehicle) => vehicle.chassis_no === newValue
-    );
-    setGetDataWithChassisNo(filtered);
   };
 
   const handleOnSubmit = () => {

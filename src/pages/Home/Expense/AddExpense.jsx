@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import InputMask from "react-input-mask";
 import {
   FaFileInvoice,
   FaEye,
@@ -15,7 +16,7 @@ import {
   FaEdit,
 } from "react-icons/fa";
 import { TiEdit } from "react-icons/ti";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -28,18 +29,12 @@ import {
 } from "../../../redux/api/expense";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
-import {
-  Box,
-  Button,
-  Grid,
-  MenuItem,
-  Pagination,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, MenuItem, Pagination, Typography } from "@mui/material";
 import { HiOutlineSearch } from "react-icons/hi";
 import uploadFile from "../../../helper/uploadFile";
 
 const AddExpense = () => {
+  const navigate = useNavigate();
   const textInputRef = useRef(null);
   const [filterType, setFilterType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +44,6 @@ const AddExpense = () => {
   const payment = watch("payment_method");
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   const limit = 10;
 
@@ -82,15 +76,13 @@ const AddExpense = () => {
   const onSubmit = async (data) => {
     data.payment_method = payment;
     data.image = url;
-    data.amount = Number(data.amount);
 
     try {
       const response = await createExpense(data).unwrap();
       if (response.success) {
         toast.success(response.message);
+        navigate("/dashboard/expense");
       }
-
-      console.log(response);
     } catch (error) {
       toast.error(error.message);
     }
@@ -128,6 +120,8 @@ const AddExpense = () => {
     toast.error(deleteError?.data?.message);
   }
 
+ 
+
   return (
     <section>
       <div className="addProductWraps">
@@ -158,9 +152,9 @@ const AddExpense = () => {
                           label="Expense Category"
                           {...register("category")}
                         >
-                          <MenuItem value="Bkash">Daily</MenuItem>
-                          <MenuItem value="Bkash">Monthly</MenuItem>
-                          <MenuItem value="Bkash">Yearly</MenuItem>
+                          <MenuItem value="Daily">Daily</MenuItem>
+                          <MenuItem value="Monthly">Monthly</MenuItem>
+                          <MenuItem value="Yearly">Yearly</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -170,17 +164,16 @@ const AddExpense = () => {
                           Sub Category
                         </InputLabel>
                         <Select
-                         
                           labelId="payment-method-label"
                           id="grouped-native-select"
                           label="Sub Category"
                           {...register("sub_category")}
                         >
-                          <MenuItem value="Bkash">Rent</MenuItem>
-                          <MenuItem value="Nagad">Salary</MenuItem>
-                          <MenuItem value="Nagad">Electricity</MenuItem>
-                          <MenuItem value="Nagad">Other</MenuItem>
-                          <MenuItem value="Nagad">Salary</MenuItem>
+                          <MenuItem value="Rent">Rent</MenuItem>
+                          <MenuItem value="Salary">Salary</MenuItem>
+                          <MenuItem value="Electricity">Electricity</MenuItem>
+                          <MenuItem value="Salary">Salary</MenuItem>
+                          <MenuItem value="Other">Other</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -237,10 +230,9 @@ const AddExpense = () => {
                         id=""
                         cols="30"
                         rows="10"
-                        {...register("expense_note_second")}
+                        {...register("expense_note_first")}
                       />
                     </Grid>
-                  
                   </Grid>
                 </Box>
               </div>
@@ -252,7 +244,19 @@ const AddExpense = () => {
               </Typography>
               <Grid container spacing={2}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <TextField fullWidth label="Amount" {...register("amount")} />
+                  <InputMask
+                    mask="99999999999999999999999999999999999999999"
+                    maskChar={null}
+                    {...register("amount")}
+                  >
+                    {() => (
+                      <TextField
+                        fullWidth
+                        label="Amount"
+                        {...register("amount")}
+                      />
+                    )}
+                  </InputMask>
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
@@ -304,7 +308,7 @@ const AddExpense = () => {
                               <Select
                                 label="Payment Account"
                                 id="payment-account-select"
-                                {...register("payment_account")}
+                                {...register("selected_bank")}
                               >
                                 <MenuItem value="Bangladesh Bank">
                                   Bangladesh Bank
@@ -384,8 +388,8 @@ const AddExpense = () => {
                           <Grid item lg={6}>
                             <TextField
                               fullWidth
-                              label="Account Number "
-                              {...register("check_no")}
+                              label="Account Number"
+                              {...register("bank_account_no")}
                             />
                           </Grid>
                           <Grid item lg={6}>
@@ -414,7 +418,7 @@ const AddExpense = () => {
                             multiline
                             rows={4}
                             placeholder="Expense Note"
-                            {...register("cash_expense_note")}
+                            {...register("expense_note")}
                             marginTop={2}
                           />
                         </Grid>
@@ -481,11 +485,11 @@ const AddExpense = () => {
                       )}
                       {payment === "Other" && (
                         <>
-                          <Grid item  lg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Transition No"
-                              {...register("other_transaction_no")}
+                              {...register("transaction_no")}
                               marginTop={2}
                             />
                           </Grid>
@@ -493,7 +497,7 @@ const AddExpense = () => {
                             <TextField
                               fullWidth
                               label="Transition ID"
-                              {...register("other_transaction_id")}
+                              {...register("transactionId")}
                               marginTop={2}
                             />
                           </Grid>
@@ -507,7 +511,7 @@ const AddExpense = () => {
                             <TextField
                               fullWidth
                               label="Transition No"
-                              {...register("other_transaction_no")}
+                              {...register("transaction_no")}
                               marginTop={2}
                             />
                           </Grid>
@@ -515,19 +519,19 @@ const AddExpense = () => {
                             <TextField
                               fullWidth
                               label="Transition ID"
-                              {...register("other_transaction_id")}
+                              {...register("transactionId")}
                               marginTop={2}
                             />
                           </Grid>
                         </>
                       )}
-                      <Grid item  lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={6} md={6} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           multiline
                           rows={4}
                           placeholder="Expense Note"
-                          {...register("other_expense_note")}
+                          {...register("expense_note")}
                           marginTop={4}
                         />
                       </Grid>
@@ -536,16 +540,20 @@ const AddExpense = () => {
                 </Grid>
               </Box>
               <div className="flex justify-end mt-3">
-                <Button sx={{ color: "white", width: "200px" }}>Submit</Button>
+                <button
+                  disabled={createLoading}
+                  className="bg-[#42A1DA] text-white px-5 py-2 rounded-md"
+                >
+                  Submit
+                </button>
               </div>
             </Box>
-            <div className="my-2">
-              {createError && (
-                <ErrorMessage messages={createError?.data?.errorSources} />
-              )}
-            </div>
-           
           </form>
+          <div className="my-2">
+            {createError && (
+              <ErrorMessage messages={createError?.data?.errorSources} />
+            )}
+          </div>
         </div>
       </div>
       <div className="w-full mt-5 mb-24">
@@ -629,12 +637,13 @@ const AddExpense = () => {
                         </td>
 
                         <td>
-                          <div
+                          <button
+                            disabled={deleteLoading}
                             onClick={() => deletePackage(card._id)}
                             className="editIconWrap"
                           >
                             <FaTrashAlt className="deleteIcon" />
-                          </div>
+                          </button>
                         </td>
                       </tr>
                     ))}

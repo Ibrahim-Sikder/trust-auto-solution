@@ -239,7 +239,7 @@ const EmployeeAccount = ({ accountInfo }) => {
               <div className="space-y-3">
                 <span className="block"> : {accountInfo?.country} </span>
                 <span className="block">: {accountInfo?.city} </span>
-                <span className="block">: {accountInfo?.local_address} </span>
+                <span className="block">: {accountInfo?.present_address} </span>
               </div>
             </div>
           </div>

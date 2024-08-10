@@ -17,7 +17,10 @@ export const baseApi = createApi({
     "employee",
     "attendance",
     "expense",
+    "income",
     "moneyReceipt",
+    "bill-pay",
+    "purchase",
   ],
   endpoints: () => ({}),
 });
