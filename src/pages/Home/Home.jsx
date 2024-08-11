@@ -33,6 +33,7 @@ import ExpanseIncomeChart from "../../components/Chart/ExpanseIncomeChart";
 import client from "../../../public/assets/avatar.jpg";
 import { Link } from "react-router-dom";
 import WebsiteMade from "../../components/WebsiteMade";
+import { useGetAllJobCardsQuery } from "../../redux/api/jobCard";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme, color }) => ({
   height: 10,
@@ -44,13 +45,19 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme, color }) => ({
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
     backgroundColor:
-      color || (theme.palette.mode === "light" ? "#1a90ff" : "#308fe8"), 
+      color || (theme.palette.mode === "light" ? "#1a90ff" : "#308fe8"),
   },
 }));
 
 const Home = () => {
   const [expanded, setExpanded] = React.useState(false);
   const [salesData, setSalesData] = useState([]);
+  const { data, error, isLoading } = useGetAllJobCardsQuery({
+    id: 123,
+    limit: 10,
+    page: 1,
+    searchTerm: "example",
+  });
 
   const totalSalse = parseInt(
     salesData.reduce((total, { price }) => total + parseInt(price), 0)
@@ -90,6 +97,11 @@ const Home = () => {
       user: 200,
     },
   ];
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  console.log(data);
 
   return (
     <div className="mt-10 ">
@@ -207,7 +219,7 @@ const Home = () => {
             </small>
           </div>
         </div>
-        
+
         <div className="profitCard ">
           <div className="flex items-center justify-between">
             <b>Expense</b>
@@ -1072,7 +1084,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-     
     </div>
   );
 };

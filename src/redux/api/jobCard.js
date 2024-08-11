@@ -18,6 +18,7 @@ const jobCardApi = baseApi.injectEndpoints({
       }),
       providesTags: ["jobCard"],
     }),
+    
 
     getSingleJobCard: builder.query({
       query: (id) => ({
