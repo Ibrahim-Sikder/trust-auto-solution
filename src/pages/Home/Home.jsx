@@ -19,17 +19,6 @@ import {
   HiOutlineUserGroup,
   HiOutlineUsers,
 } from "react-icons/hi";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Legend,
-  Pie,
-  PieChart,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import "./Home.css";
 import ChartComponent from "../../components/Chart/ChartComponent";
 import MonthlyBarChart from "../../components/Chart/MonthlyBarChart";
@@ -55,7 +44,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme, color }) => ({
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
     backgroundColor:
-      color || (theme.palette.mode === "light" ? "#1a90ff" : "#308fe8"), // Default to existing color if no color prop
+      color || (theme.palette.mode === "light" ? "#1a90ff" : "#308fe8"), 
   },
 }));
 
@@ -218,6 +207,7 @@ const Home = () => {
             </small>
           </div>
         </div>
+        
         <div className="profitCard ">
           <div className="flex items-center justify-between">
             <b>Expense</b>
