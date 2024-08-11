@@ -3,14 +3,8 @@
 /* eslint-disable react/jsx-no-undef */
 
 import TextField from "@mui/material/TextField";
-import {
-  FaTrashAlt,
-  FaEdit,
-  FaUsers,
-  FaUserTie,
-  FaCloudUploadAlt,
-} from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { FaUsers, FaCloudUploadAlt } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Autocomplete,
   Box,
@@ -18,46 +12,54 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Pagination,
   Select,
 } from "@mui/material";
-import { HiOutlineSearch } from "react-icons/hi";
+
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+
 import { toast } from "react-toastify";
-import swal from "sweetalert";
+
 import { countries } from "../../../constant";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { FaUserGear } from "react-icons/fa6";
 import { NotificationAdd } from "@mui/icons-material";
-import {
-  useCreateSupplierMutation,
-  useDeleteSupplierMutation,
-  useGetAllSuppliersQuery,
-} from "../../../redux/api/supplier";
+
 import { ErrorMessage } from "../../../components/error-message";
 import uploadFile from "../../../helper/uploadFile";
-import Loading from "../../../components/Loading/Loading";
+
 import { Button } from "react-scroll";
-import PurchaseList from "./PurchasList";
+
+import {
+  useRemovePurchaseMutation,
+  useUpdatePurchaseMutation,
+} from "../../../redux/api/purchase";
 const AddSuppliers = () => {
+  const [grandTotal, setGrandTotal] = useState(0);
+  const [discount, setDiscount] = useState("");
+  const [vat, setVAT] = useState("");
+  const [items, setItems] = useState([
+    { description: "", quantity: "", rate: "", total: "" },
+  ]);
+
   const [url, setUrl] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [getAllSuppliers, setGetAllSuppliers] = useState([]);
-  const [filterType, setFilterType] = useState("");
-  const [noMatching, setNoMatching] = useState(null);
-  const [reload, setReload] = useState(false);
+
+  const [reload, setReload] = useState("");
+  const [addButton, setAddButton] = useState(false);
+
+  const partsDiscountRef = useRef(null);
+  const netTotalAmountRef = useRef(null);
+
   const [countryCode, setCountryCode] = useState(countries[0]);
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [specificPurchase, setSpecificPurchase] = useState({});
   const navigate = useNavigate();
-  const limit = 10;
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
 
-  const textInputRef = useRef(null);
   const {
     register,
     handleSubmit,
@@ -65,26 +67,253 @@ const AddSuppliers = () => {
     formState: { errors },
   } = useForm();
 
-  const [createSupplier, { isLoading: createLoading, error: createError }] =
-    useCreateSupplierMutation();
+  const [updatePurchase, { isLoading: updateLoading, error: updateError }] =
+    useUpdatePurchaseMutation();
+  const [removePurchase, { isLoading: removeLoading }] =
+    useRemovePurchaseMutation();
 
-  const [deleteSupplier, { isLoading: supplierLoading }] =
-    useDeleteSupplierMutation();
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/v1/purchases/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setSpecificPurchase(data.data);
+      });
+  }, [id, reload]);
 
-  const { data: suppliers, isLoading: suppliersLoading } =
-    useGetAllSuppliersQuery({
-      limit,
-      page: currentPage,
-      searchTerm: filterType,
-    });
+  useEffect(() => {
+    if (specificPurchase) {
+      reset({
+        full_name: specificPurchase?.full_name || "",
+        country_code: specificPurchase?.country_code || "",
+        phone_number: specificPurchase?.phone_number || "",
+
+        email: specificPurchase?.email || "",
+        category: specificPurchase?.category || "",
+        shop_name: specificPurchase?.shop_name || "",
+        country: specificPurchase?.country || "",
+        city: specificPurchase?.city || "",
+        state: specificPurchase?.state || "",
+      });
+    }
+  }, [specificPurchase, reset]);
+
+  const handleRemove = (index) => {
+    if (!index) {
+      const list = [...items];
+
+      setItems(list);
+    } else {
+      const list = [...items];
+      list.splice(index, 1);
+      setItems(list);
+    }
+  };
+
+  useEffect(() => {
+    const totalSum = specificPurchase?.input_data?.reduce(
+      (sum, item) => sum + Number(item.total),
+      0
+    );
+
+    const totalSum2 = items.reduce((sum, item) => sum + Number(item.total), 0);
+
+    const newTotalSum = isNaN(totalSum) ? 0 : totalSum;
+    const newTotalSum2 = isNaN(totalSum2) ? 0 : totalSum2;
+
+    const newGrandTotal = newTotalSum + newTotalSum2;
+
+    const totalGrand = parseFloat(newGrandTotal).toFixed(2);
+
+    setGrandTotal(totalGrand);
+  }, [items, specificPurchase?.input_data]);
+
+  const handleDescriptionChange = (index, value) => {
+    const newItems = [...specificPurchase.input_data];
+    newItems[index] = {
+      ...newItems[index],
+      description: value,
+    };
+    setSpecificPurchase((prevState) => ({
+      ...prevState,
+      input_data: newItems,
+    }));
+  };
+
+  const handleDescriptionChange2 = (index, value) => {
+    const newItems = [...items];
+
+    newItems[index].description = value;
+
+    setItems(newItems);
+  };
+
+  const handleQuantityChange = (index, value) => {
+    if (!isNaN(value)) {
+      // Create a deep copy of the specificPurchase object
+      const newItems = [...specificPurchase.input_data];
+
+      const roundedValue = Math.round(value);
+
+      newItems[index].quantity = Number(roundedValue);
+      newItems[index].total = Number(roundedValue) * newItems[index].rate;
+      newItems[index].total = Number(newItems[index].total.toFixed(2));
+
+      setSpecificPurchase((prevState) => ({
+        ...prevState,
+        input_data: newItems,
+      }));
+    }
+  };
+
+  const handleQuantityChange2 = (index, value) => {
+    const newItems = [...items];
+    const roundedValue = Math.round(value);
+    newItems[index].quantity = Number(roundedValue);
+
+    newItems[index].total = Number(roundedValue) * newItems[index].rate;
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setItems(newItems);
+  };
+
+  const handleRateChange = (index, value) => {
+    const newItems = [...specificPurchase.input_data];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setSpecificPurchase((prevState) => ({
+      ...prevState,
+      input_data: newItems,
+    }));
+  };
+
+  const handleRateChange2 = (index, value) => {
+    const newItems = [...items];
+    newItems[index].rate = Number(value).toFixed(2);
+    newItems[index].total = Number(
+      newItems[index].quantity * newItems[index].rate
+    );
+    newItems[index].total = Number(newItems[index].total.toFixed(2));
+    setItems(newItems);
+  };
+
+  const handleDiscountChange = (value) => {
+    const parsedValue = Number(value);
+
+    if (!isNaN(parsedValue)) {
+      setDiscount(parsedValue);
+    }
+  };
+
+  const handleVATChange = (value) => {
+    const parsedValue = Number(value);
+
+    if (!isNaN(parsedValue)) {
+      setVAT(parsedValue);
+    }
+  };
+
+  const calculateFinalTotal = () => {
+    let finalTotal;
+    let differenceExistAndNewGrandTotal;
+    let vatAsPercentage;
+    let discountAsPercentage;
+
+    let totalAfterDiscount;
+
+    if (grandTotal > specificPurchase.total_amount) {
+      differenceExistAndNewGrandTotal =
+        grandTotal - specificPurchase.total_amount;
+    } else if (grandTotal < specificPurchase.total_amount) {
+      differenceExistAndNewGrandTotal =
+        grandTotal - specificPurchase.total_amount;
+    } else {
+      differenceExistAndNewGrandTotal = 0;
+    }
+
+    if (discount > 0) {
+      discountAsPercentage = discount;
+    }
+    if (discount === 0) {
+      discountAsPercentage = 0;
+    }
+    if (discount === "") {
+      discountAsPercentage = specificPurchase.discount;
+    }
+
+    const differenceWithoutDiscount =
+      specificPurchase.total_amount + differenceExistAndNewGrandTotal;
+
+    if (discountAsPercentage === 0) {
+      totalAfterDiscount = differenceWithoutDiscount;
+    } else if (discountAsPercentage === "") {
+      totalAfterDiscount =
+        differenceWithoutDiscount - specificPurchase.discount;
+    } else {
+      totalAfterDiscount = differenceWithoutDiscount - discountAsPercentage;
+    }
+
+    if (vat === 0) {
+      vatAsPercentage = 0;
+    }
+    if (vat > 0) {
+      vatAsPercentage = vat;
+    }
+
+    if (vat === "") {
+      vatAsPercentage = specificPurchase.vat;
+    }
+
+    const totalAfterTax =
+      totalAfterDiscount + totalAfterDiscount * (vatAsPercentage / 100);
+
+    finalTotal = parseFloat(totalAfterTax).toFixed(2);
+
+    return finalTotal;
+  };
+
+  const handleAddButton = () => {
+    setAddButton(!addButton);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificPurchase?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handleAddClick = () => {
+    setItems([
+      ...items,
+      { description: "", quantity: "", rate: "", total: "" },
+    ]);
+    if (partsDiscountRef.current) {
+      partsDiscountRef.current.value = discount
+        ? discount
+        : specificPurchase?.discount;
+      netTotalAmountRef.current.innerText = calculateFinalTotal();
+    }
+  };
+
+  const handleRemoveButton = async (i) => {
+    const values = {
+      id: id,
+      data: { index: i },
+    };
+
+    const res = await removePurchase(values).unwrap();
+    if (res.success) {
+      setReload(!reload);
+      toast.success(res.message);
+    }
+  };
 
   const handleImageUpload = async (event) => {
     setLoading(true);
     const file = event.target.files?.[0];
 
     if (file) {
-      // setValue(name, file);
-
       const uploadPhoto = await uploadFile(file);
       console.log(uploadPhoto);
       setUrl(uploadPhoto?.secure_url);
@@ -92,51 +321,40 @@ const AddSuppliers = () => {
     }
   };
 
-  // const handleImageUpload = async (e) => {
-  //   try {
-  //     const file = e.target.files[0]; // Get the selected file
-  //     const formData = new FormData();
-  //     formData.append("image", file); // Use "image" as the key for single image upload
-  //     setImageLoading(true);
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_URL}/api/v1/uploads`,
-  //       {
-  //         method: "POST",
-  //         body: formData,
-  //       }
-  //     );
-
-  //     const data = await response.json();
-  //     if (data.message === "Image uploaded successful") {
-  //       setUrl(data.image_url);
-  //       setImageLoading(false);
-  //     }
-  //   } catch (error) {
-  //     setImageLoading(false);
-  //   }
-  // };
+  const inputData = [
+    ...(specificPurchase?.input_data || []),
+    ...items
+      .filter((item) => item.total !== undefined && item.total !== "")
+      .map((item) => ({
+        description: item.description,
+        quantity: item.quantity,
+        rate: item.rate,
+        total: item.total,
+      })),
+  ];
 
   const onSubmit = async (data) => {
-    setError("");
+    data.country_code = countryCode.code;
+    data.phone_number = phoneNumber;
+    data.image = url;
+    data.input_data = inputData;
+    data.total_amount = grandTotal || specificPurchase?.total_amount;
+    data.discount =
+      discount === 0 || discount > 0 ? discount : specificPurchase?.discount;
+    data.vat = vat === 0 || vat > 0 ? vat : specificPurchase?.vat;
+    data.net_total = calculateFinalTotal() || specificPurchase.net_total;
 
     const values = {
-      full_name: data.full_name,
-      phone_number: phoneNumber,
-      country_code: countryCode.code,
-      email: data.email,
-      vendor: data.vendor,
-      shop_name: data.shop_name,
-      country: data.country,
-      city: data.city,
-      state: data.state,
-      image: url,
+      id,
+      data,
     };
 
-    const response = await createSupplier(values).unwrap();
+    const response = await updatePurchase(values).unwrap();
 
     if (response.success) {
       toast.success(response.message);
-      navigate("/dashboard/supplier-list");
+      setReload(!reload);
+      navigate("/dashboard/purchase-list");
     }
   };
 
@@ -153,58 +371,10 @@ const AddSuppliers = () => {
     }
   };
 
-  const deletePackage = async (id) => {
-    const willDelete = await swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to delete this card?",
-      icon: "warning",
-      dangerMode: true,
-    });
-
-    if (willDelete) {
-      try {
-        await deleteSupplier(id).unwrap();
-        swal("Deleted!", "Card delete successful.", "success");
-      } catch (error) {
-        swal("Error", "An error occurred while deleting the card.", "error");
-      }
-    }
+  const handleOnSubmit = () => {
+    handleSubmit(onSubmit)();
   };
 
-  const handleAllSuppliers = () => {
-    setFilterType("");
-    if (textInputRef.current) {
-      textInputRef.current.value = "";
-    }
-  };
-
-  const [items, setItems] = useState([
-    { description: "", quantity: "", rate: "", total: "" },
-  ]);
-  const [serviceItems, setServiceItems] = useState([
-    {
-      description: "",
-      quantity: "",
-      rate: "",
-      total: "",
-    },
-  ]);
-
-  const handleRemove = (index) => {
-    if (!index) {
-      const list = [...items];
-
-      setItems(list);
-    } else {
-      const list = [...items];
-      list.splice(index, 1);
-      setItems(list);
-    }
-  };
-
-  const handleAddClick = () => {
-    setItems([...items, { flyingFrom: "", flyingTo: "", date: "" }]);
-  };
   return (
     <section>
       <div className=" addProductWraps min-h-screen ">
@@ -230,9 +400,9 @@ const AddSuppliers = () => {
           </div>
         </div>
 
-        <div className="addProductWrap">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <h3 className="text-xl font-bold mb-3">Saller Info </h3>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="addProductWrap">
+            <h3 className="text-xl font-bold mb-3">Seller Info </h3>
             <Box>
               <Grid container spacing={2}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -241,6 +411,7 @@ const AddSuppliers = () => {
                     label="Full Name "
                     id="Full Name "
                     {...register("full_name")}
+                    focused={specificPurchase?.full_name || ""}
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -270,8 +441,12 @@ const AddSuppliers = () => {
                     variant="outlined"
                     fullWidth
                     type="tel"
-                    value={phoneNumber}
+                    value={
+                      phoneNumber ? phoneNumber : specificPurchase?.phone_number
+                    }
                     onChange={handlePhoneNumberChange}
+                    {...register("phone_number")}
+                    focused={specificPurchase?.phone_number || ""}
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -280,6 +455,7 @@ const AddSuppliers = () => {
                     label="Email Address "
                     id="Email Address "
                     {...register("email")}
+                    focused={specificPurchase?.email || ""}
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -290,7 +466,8 @@ const AddSuppliers = () => {
                     <Select
                       id="grouped-native-select"
                       label="Car Registration No  "
-                      {...register("vendor")}
+                      {...register("category")}
+                      focused={specificPurchase?.category || ""}
                     >
                       <MenuItem value="New Parts">New Parts</MenuItem>
                       <MenuItem value="Recondition Parts">
@@ -314,6 +491,7 @@ const AddSuppliers = () => {
                     label="Shop Name"
                     id="Password"
                     {...register("shop_name")}
+                    focused={specificPurchase?.shop_name || ""}
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -321,6 +499,7 @@ const AddSuppliers = () => {
                     fullWidth
                     label="Country "
                     {...register("country")}
+                    focused={specificPurchase?.country || ""}
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -328,10 +507,16 @@ const AddSuppliers = () => {
                     fullWidth
                     label="Town/City "
                     {...register("city")}
+                    focused={specificPurchase?.city || ""}
                   />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <TextField fullWidth label="State " {...register("state")} />
+                  <TextField
+                    fullWidth
+                    label="State "
+                    {...register("state")}
+                    focused={specificPurchase?.state || ""}
+                  />
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <div className="productField">
@@ -355,7 +540,11 @@ const AddSuppliers = () => {
                           {url ? (
                             <span>Uploaded</span>
                           ) : (
-                            <span> Upload Image</span>
+                            <span>
+                              {specificPurchase?.image
+                                ? specificPurchase.image.slice(0, 20)
+                                : "Upload Image"}
+                            </span>
                           )}
                         </>
                       )}
@@ -364,9 +553,8 @@ const AddSuppliers = () => {
                 </Grid>
               </Grid>
             </Box>
-          </form>
-        </div>
-
+          </div>
+        </form>
         <Box
           marginTop="30px"
           marginBottom="50px"
@@ -380,108 +568,233 @@ const AddSuppliers = () => {
             <label>Rate</label>
             <label>Amount </label>
           </div>
-          {items.map((item, i) => {
-            return (
-              <div key={i}>
-                <div className="qutationForm">
-                  <div className="removeBtn">
-                    {items.length !== 0 && (
-                      <button
-                        onClick={() => handleRemove(i)}
-                        className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
-                      >
-                        Remove
-                      </button>
-                    )}
-                  </div>
-                  <div>
-                    <input
-                      className="firstInputField"
-                      autoComplete="off"
-                      type="text"
-                      placeholder="SL No "
-                      defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <input
-                      className="secondInputField"
-                      autoComplete="off"
-                      type="text"
-                      placeholder="Purchase Description"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      className="firstInputField"
-                      autoComplete="off"
-                      type="number"
-                      placeholder="Qty"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      className="thirdInputField"
-                      autoComplete="off"
-                      placeholder="Rate"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      className="thirdInputField"
-                      autoComplete="off"
-                      type="text"
-                      placeholder="Amount"
-                      value={item.total}
-                      readOnly
-                    />
-                  </div>
-                </div>
-
-                <div className="addInvoiceItem">
-                  {items.length - 1 === i && (
-                    <div
-                      onClick={handleAddClick}
-                      className="flex justify-end mt-2 addQuotationBtns "
-                    >
-                      <button className="btn bg-[#42A1DA] hover:bg-[#42A1DA] text-white p-2 rounded-md">
-                        Add
-                      </button>
+          <div>
+            {specificPurchase?.input_data?.length > 0 && (
+              <>
+                {specificPurchase?.input_data?.map((item, i) => {
+                  return (
+                    <div key={i}>
+                      <div className="qutationForm">
+                        <div>
+                          {items.length !== 0 && (
+                            <button
+                              disabled={removeLoading}
+                              onClick={() => handleRemoveButton(i)}
+                              className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="SL No "
+                            defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="secondInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Description"
+                            onChange={(e) =>
+                              handleDescriptionChange(i, e.target.value)
+                            }
+                            defaultValue={item.description}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Qty"
+                            onChange={(e) =>
+                              handleQuantityChange(i, e.target.value)
+                            }
+                            required
+                            defaultValue={item.quantity}
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Rate"
+                            onChange={(e) =>
+                              handleRateChange(i, e.target.value)
+                            }
+                            required
+                            defaultValue={item.rate}
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Amount"
+                            value={item.total}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+                  );
+                })}
+              </>
+            )}
+          </div>
+          <div>
+            {!addButton && (
+              <button
+                onClick={handleAddButton}
+                className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2 mb-2"
+              >
+                Add new
+              </button>
+            )}
+            {addButton && (
+              <button
+                onClick={handleAddButton}
+                className="border border-[#42A1DA] hover:border-[#42A1DA] text-black rounded-md px-2 py-2 mb-2"
+              >
+                Cancel
+              </button>
+            )}
+            {addButton && (
+              <>
+                {items.map((item, i) => {
+                  return (
+                    <div key={i}>
+                      <div className="qutationForm">
+                        <div>
+                          {items.length !== 0 && (
+                            <button
+                              onClick={() => handleRemove(i)}
+                              className="  bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="SL No "
+                            defaultValue={`${i + 1 < 10 ? `0${i + 1}` : i + 1}`}
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="secondInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Description"
+                            onChange={(e) =>
+                              handleDescriptionChange2(i, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="firstInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Qty"
+                            onChange={(e) =>
+                              handleQuantityChange2(i, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="number"
+                            placeholder="Rate"
+                            onChange={(e) =>
+                              handleRateChange2(i, e.target.value)
+                            }
+                            required
+                          />
+                        </div>
+                        <div>
+                          <input
+                            className="thirdInputField"
+                            autoComplete="off"
+                            type="text"
+                            placeholder="Amount"
+                            value={item.total}
+                            readOnly
+                          />
+                        </div>
+                      </div>
+
+                      <div className="addInvoiceItem">
+                        {items.length - 1 === i && (
+                          <div
+                            onClick={handleAddClick}
+                            className="flex justify-end mt-2"
+                          >
+                            <button className="bg-[#42A1DA] hover:bg-[#42A1DA] text-white rounded-md px-2 py-2">
+                              Add
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
 
           <div className="discountFieldWrap">
             <div className="flex items-center ">
               <b className="mr-2 hideAmountText"> Total Amount: </b>
-              <span>45678</span>
+              <span>
+                {grandTotal ? grandTotal : specificPurchase.total_amount}
+              </span>
             </div>
             <div>
               <b className="mr-2 hideAmountText "> Discount: </b>
               <input
                 className="py-1 text-center"
+                onChange={(e) => handleDiscountChange(e.target.value)}
                 autoComplete="off"
                 type="text"
                 placeholder="Discount"
+                defaultValue={specificPurchase.discount}
+                ref={partsDiscountRef}
               />
             </div>
             <div>
               <b className="mr-2 hideAmountText">Vat: </b>
               <input
                 className="text-center"
+                onChange={(e) => handleVATChange(e.target.value)}
                 autoComplete="off"
                 type="text"
                 placeholder="Vat"
+                defaultValue={specificPurchase?.vat}
               />
             </div>
             <div>
               <div className="flex items-center ml-3 ">
                 <b className="mr-2 ">Final Total: </b>
-                <span>45678</span>
+                <span ref={netTotalAmountRef}>{calculateFinalTotal()}</span>
               </div>
             </div>
           </div>
@@ -494,8 +807,19 @@ const AddSuppliers = () => {
               <Button>Print </Button>
             </div>
             <div className="submitQutationBtn">
-              <Button type="submit">Add Purchase </Button>
+              <button
+                onClick={handleOnSubmit}
+                type="submit"
+                disabled={updateLoading}
+              >
+                Add Purchase{" "}
+              </button>
             </div>
+          </div>
+          <div className="my-2">
+            {updateError && (
+              <ErrorMessage messages={updateError?.data?.errorSources} />
+            )}
           </div>
         </Box>
       </div>

@@ -52,7 +52,7 @@ const ImageUploader = ({
         id="files"
         className="hidden"
         onChange={handleFileChange}
-        accept="application/pdf"
+         
       />
       <label
         htmlFor="files"
@@ -92,7 +92,7 @@ const ImageUploader = ({
           {(uploadedFile || upload_file) && (
             <Box mt={2}>
               <Box mt={2}>
-                <iframe
+                <img
                   src={uploadedFile || upload_file}
                   width="100%"
                   height="100%"

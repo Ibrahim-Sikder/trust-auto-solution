@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-"use client";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Button, Grid, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -15,43 +16,31 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React from "react";
 import { Link } from "react-router-dom";
-import studentimg from "../../../public/assets/chat7.jpg";
+import swal from "sweetalert";
 
+import { useDeleteBillPayMutation } from "../../redux/api/bill-pay";
 
-const rows = [
-  {
-    supplierId: "123",
-    name: "John Doe",
-    mobile: "123-456-7890",
-    email: "john@example.com",
-    shopName: "John's Shop",
-    vendorCategory: "New Parts",
-    againstBill: "456",
-  },
-  {
-    supplierId: "123",
-    name: "John Doe",
-    mobile: "123-456-7890",
-    email: "john@example.com",
-    shopName: "John's Shop",
-    vendorCategory: "New Parts",
-    againstBill: "456",
-  },
-  {
-    supplierId: "123",
-    name: "John Doe",
-    mobile: "123-456-7890",
-    email: "john@example.com",
-    shopName: "John's Shop",
-    vendorCategory: "New Parts",
-    againstBill: "456",
-  },
-];
+const BillPayList = ({ allBillPays }) => {
+  const [deleteBillPay, { isLoading }] = useDeleteBillPayMutation();
 
-const BillPayList = () => {
-  const handleSubmit = (data) => {
-    console.log(data);
+  const deletePackage = async (id) => {
+    const willDelete = await swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this card?",
+      icon: "warning",
+      dangerMode: true,
+    });
+
+    if (willDelete) {
+      try {
+        await deleteBillPay(id).unwrap;
+        swal("Deleted!", "Card delete successful.", "success");
+      } catch (error) {
+        swal("Error", "An error occurred while deleting the card.", "error");
+      }
+    }
   };
+
   return (
     <Box bgcolor="white" padding={3}>
       <Typography variant="h5" fontWeight="bold" marginBottom="15px">
@@ -73,7 +62,7 @@ const BillPayList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {allBillPays?.data?.billPays?.map((row) => (
               <TableRow
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -81,11 +70,11 @@ const BillPayList = () => {
                 <TableCell align="center">{row.supplierId}</TableCell>
 
                 <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.mobile}</TableCell>
+                <TableCell align="center">{row.mobile_number}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
-                <TableCell align="center">{row.shopName}</TableCell>
-                <TableCell align="center">{row.vendorCategory}</TableCell>
-                <TableCell align="center">{row.againstBill}</TableCell>
+                <TableCell align="center">{row.shop_name}</TableCell>
+                <TableCell align="center">{row.category}</TableCell>
+                <TableCell align="center">{row.against_bill}</TableCell>
                 <TableCell align="center">
                   <div className="flex justify-center">
                     <Link to={`/dashboard/billpay-view`}>
@@ -93,12 +82,16 @@ const BillPayList = () => {
                         <VisibilityIcon className="text-green-600" />
                       </IconButton>
                     </Link>
-                    <Link to={`/dashboard/billpay-update`}>
+                    <Link to={`/dashboard/billpay-update?id=${row._id}`}>
                       <IconButton title="Edit">
                         <EditIcon />
                       </IconButton>
                     </Link>
-                    <IconButton title="Delete">
+                    <IconButton
+                      onClick={() => deletePackage(row._id)}
+                      disabled={isLoading}
+                      title="Delete"
+                    >
                       <DeleteIcon className="text-red-600" />
                     </IconButton>
                   </div>

@@ -86,7 +86,8 @@ const UpdateEmployee = () => {
 
         country: singleEmployee?.data?.country,
         city: singleEmployee?.data?.city,
-        local_address: singleEmployee?.data?.local_address,
+        present_address: singleEmployee?.data?.present_address,
+        permanent_address: singleEmployee?.data?.permanent_address,
       });
     }
   }, [reset, singleEmployee?.data]);
@@ -470,7 +471,6 @@ const UpdateEmployee = () => {
                       focused={singleEmployee?.data?.relationship || ""}
                     />
                   </Grid>
-                 
                 </Grid>
               </Box>
               <Box sx={{ marginTop: "30px" }}>
@@ -480,27 +480,27 @@ const UpdateEmployee = () => {
                     <TextField
                       fullWidth
                       label="Present Address "
-                      {...register("local_address")}
-                      focused={singleEmployee?.data?.local_address || ""}
+                      {...register("present_address")}
+                      focused={singleEmployee?.data?.present_address || ""}
                     />
                   </Grid>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <TextField
                       fullWidth
                       label="Permanent Address "
-                      {...register("local_address")}
-                      focused={singleEmployee?.data?.local_address || ""}
+                      {...register("permanent_address")}
+                      focused={singleEmployee?.data?.permanent_address || ""}
                     />
                   </Grid>
                   <Grid item lg={6} md={6} sm={12} xs={12}>
                     <div className="productField">
-                      <input
+                      {/* <input
                         onChange={handleImageUpload}
                         type="file"
                         id="files"
                         className="hidden"
-                      />
-                      <label
+                      /> */}
+                      {/* <label
                         for="files"
                         className="flex items-center justify-center cursor-pointer bg-[#42A1DA] text-white py-2 rounded-md "
                       >
@@ -518,8 +518,12 @@ const UpdateEmployee = () => {
                             )}
                           </>
                         )}
-                      </label>
-                      <ImageUploader />
+                      </label> */}
+                      <ImageUploader
+                        uploadedFile={url}
+                        setUploadedFile={setUrl}
+                        upload_file={singleEmployee?.data?.image}
+                      />
                     </div>
                   </Grid>
                 </Grid>

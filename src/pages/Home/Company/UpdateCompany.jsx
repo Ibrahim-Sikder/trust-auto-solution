@@ -121,9 +121,9 @@ const UpdateCompany = () => {
         company_name: singleCard?.data?.company_name,
         vehicle_username: singleCard?.data?.vehicle_username,
         company_address: singleCard?.data?.company_address,
-        company_contact: singleCard?.data?.company_contact,
+        company_contact:phoneNumber || singleCard?.data?.company_contact,
         company_country_code: singleCard?.data?.company_country_code,
-        company_email: phoneNumber || singleCard?.data?.company_email,
+        company_email:  singleCard?.data?.company_email,
         customer_address: singleCard?.data?.customer_address,
 
         driver_name: singleCard?.data?.driver_name,

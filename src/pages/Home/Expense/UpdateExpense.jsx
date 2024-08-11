@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import InputMask from "react-input-mask";
 import {
   FaFileInvoice,
   FaEye,
@@ -15,7 +16,7 @@ import {
   FaEdit,
 } from "react-icons/fa";
 import { TiEdit } from "react-icons/ti";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -25,48 +26,61 @@ import {
   useCreateExpenseMutation,
   useDeleteExpenseMutation,
   useGetAllExpensesQuery,
+  useGetSingleExpenseQuery,
+  useUpdateExpenseMutation,
 } from "../../../redux/api/expense";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
-import {
-  Box,
-  Button,
-  Grid,
-  MenuItem,
-  Pagination,
-  Typography,
-} from "@mui/material";
-import { HiOutlineSearch } from "react-icons/hi";
+import { Box, Button, Grid, MenuItem, Typography } from "@mui/material";
 import uploadFile from "../../../helper/uploadFile";
 
 const AddExpense = () => {
-  const textInputRef = useRef(null);
-  const [filterType, setFilterType] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const id = new URLSearchParams(location.search).get("id");
 
-  const { register, watch, handleSubmit } = useForm();
+  const { register, watch, handleSubmit, reset } = useForm();
 
   const payment = watch("payment_method");
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const limit = 10;
+  const [updateExpense, { isLoading: updateLoading, error: updateError }] =
+    useUpdateExpenseMutation();
 
-  const [createExpense, { isLoading: createLoading, error: createError }] =
-    useCreateExpenseMutation();
+  const { data: singleExpense, isLoading: expenseLoading } =
+    useGetSingleExpenseQuery(id);
 
-  const [deleteExpense, { isLoading: deleteLoading, error: deleteError }] =
-    useDeleteExpenseMutation();
-
-  const {
-    data: allExpenses,
-    isLoading: expenseLoading,
-    error: expenseError,
-  } = useGetAllExpensesQuery({
-    limit,
-    page: currentPage,
-    searchTerm: filterType,
-  });
+  useEffect(() => {
+    if (singleExpense?.data) {
+      reset({
+        category: singleExpense?.data?.category || "",
+        sub_category: singleExpense?.data?.sub_category || "",
+        expense_for: singleExpense?.data?.expense_for || "",
+        tax_application: singleExpense?.data?.tax_application || "",
+        amount: singleExpense?.data?.amount || "",
+        paid_on: singleExpense?.data?.paid_on || "",
+        payment_individual_markup:
+          singleExpense?.data?.payment_individual_markup || "",
+        payment_method: singleExpense?.data?.payment_method || "",
+        transaction_no: singleExpense?.data?.transaction_no || "",
+        transactionId: singleExpense?.data?.transactionId || "",
+        expense_note: singleExpense?.data?.expense_note || "",
+        selected_bank: singleExpense?.data?.selected_bank || "",
+        bank_account_no: singleExpense?.data?.bank_account_no || "",
+        card_number: singleExpense?.data?.card_number || "",
+        card_holder_name: singleExpense?.data?.card_holder_name || "",
+        card_transaction_no: singleExpense?.data?.card_transaction_no || "",
+        card_type: singleExpense?.data?.card_type || "",
+        month_first: singleExpense?.data?.month_first || "",
+        year: singleExpense?.data?.year || "",
+        month_second: singleExpense?.data?.month_second || "",
+        security_code: singleExpense?.data?.security_code || "",
+        check_no: singleExpense?.data?.check_no || "",
+        image: singleExpense?.data?.image || "",
+      });
+    }
+  }, [reset, singleExpense?.data]);
 
   const handleImageUpload = async (event) => {
     setLoading(true);
@@ -81,50 +95,25 @@ const AddExpense = () => {
   const onSubmit = async (data) => {
     data.payment_method = payment;
     data.image = url;
-    data.amount = Number(data.amount);
+
+    const values = {
+      id,
+      data,
+    };
 
     try {
-      const response = await createExpense(data).unwrap();
+      const response = await updateExpense(values).unwrap();
       if (response.success) {
         toast.success(response.message);
+        navigate("/dashboard/expense");
       }
-
-      console.log(response);
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  const deletePackage = async (id) => {
-    const willDelete = await swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to delete this card?",
-      icon: "warning",
-      dangerMode: true,
-    });
-
-    if (willDelete) {
-      try {
-        await deleteExpense(id).unwrap;
-        swal("Deleted!", "Card delete successful.", "success");
-      } catch (error) {
-        swal("Error", "An error occurred while deleting the card.", "error");
-      }
-    }
-  };
-
-  const handleAllExpense = () => {
-    setFilterType("");
-    if (textInputRef.current) {
-      textInputRef.current.value = "";
-    }
-  };
-
-  if (expenseError) {
-    toast.error(expenseError?.data?.message);
-  }
-  if (deleteError) {
-    toast.error(deleteError?.data?.message);
+  if (expenseLoading) {
+    return <Loading />;
   }
 
   return (
@@ -157,9 +146,9 @@ const AddExpense = () => {
                           label="Expense Category"
                           {...register("category")}
                         >
-                          <MenuItem value="Bkash">Daily</MenuItem>
-                          <MenuItem value="Bkash">Monthly</MenuItem>
-                          <MenuItem value="Bkash">Yearly</MenuItem>
+                          <MenuItem value="Daily">Daily</MenuItem>
+                          <MenuItem value="Monthly">Monthly</MenuItem>
+                          <MenuItem value="Yearly">Yearly</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -169,17 +158,16 @@ const AddExpense = () => {
                           Sub Category
                         </InputLabel>
                         <Select
-                         
                           labelId="payment-method-label"
                           id="grouped-native-select"
                           label="Sub Category"
                           {...register("sub_category")}
                         >
-                          <MenuItem value="Bkash">Rent</MenuItem>
-                          <MenuItem value="Nagad">Salary</MenuItem>
-                          <MenuItem value="Nagad">Electricity</MenuItem>
-                          <MenuItem value="Nagad">Other</MenuItem>
-                          <MenuItem value="Nagad">Salary</MenuItem>
+                          <MenuItem value="Rent">Rent</MenuItem>
+                          <MenuItem value="Salary">Salary</MenuItem>
+                          <MenuItem value="Electricity">Electricity</MenuItem>
+                          <MenuItem value="Salary">Salary</MenuItem>
+                          <MenuItem value="Other">Other</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -222,7 +210,12 @@ const AddExpense = () => {
                               {url ? (
                                 <span>Uploaded</span>
                               ) : (
-                                <span> Attach Document</span>
+                                <span>
+                                  {" "}
+                                  {singleExpense?.data?.image
+                                    ? singleExpense?.data?.image.slice(0, 20)
+                                    : "Attach Document"}
+                                </span>
                               )}
                             </>
                           )}
@@ -236,10 +229,9 @@ const AddExpense = () => {
                         id=""
                         cols="30"
                         rows="10"
-                        {...register("expense_note_second")}
+                        {...register("expense_note_first")}
                       />
                     </Grid>
-                  
                   </Grid>
                 </Box>
               </div>
@@ -251,7 +243,19 @@ const AddExpense = () => {
               </Typography>
               <Grid container spacing={2}>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
-                  <TextField fullWidth label="Amount" {...register("amount")} />
+                  <InputMask
+                    mask="99999999999999999999999999999999999999999"
+                    maskChar={null}
+                    {...register("amount")}
+                  >
+                    {() => (
+                      <TextField
+                        fullWidth
+                        label="Amount"
+                        {...register("amount")}
+                      />
+                    )}
+                  </InputMask>
                 </Grid>
                 <Grid item lg={6} md={6} sm={12} xs={12}>
                   <TextField
@@ -303,7 +307,7 @@ const AddExpense = () => {
                               <Select
                                 label="Payment Account"
                                 id="payment-account-select"
-                                {...register("payment_account")}
+                                {...register("selected_bank")}
                               >
                                 <MenuItem value="Bangladesh Bank">
                                   Bangladesh Bank
@@ -383,8 +387,8 @@ const AddExpense = () => {
                           <Grid item lg={6}>
                             <TextField
                               fullWidth
-                              label="Account Number "
-                              {...register("check_no")}
+                              label="Account Number"
+                              {...register("bank_account_no")}
                             />
                           </Grid>
                           <Grid item lg={6}>
@@ -413,7 +417,7 @@ const AddExpense = () => {
                             multiline
                             rows={4}
                             placeholder="Expense Note"
-                            {...register("cash_expense_note")}
+                            {...register("expense_note")}
                             marginTop={2}
                           />
                         </Grid>
@@ -480,11 +484,11 @@ const AddExpense = () => {
                       )}
                       {payment === "Other" && (
                         <>
-                          <Grid item  lg={6} md={6} sm={12} xs={12}>
+                          <Grid item lg={6} md={6} sm={12} xs={12}>
                             <TextField
                               fullWidth
                               label="Transition No"
-                              {...register("other_transaction_no")}
+                              {...register("transaction_no")}
                               marginTop={2}
                             />
                           </Grid>
@@ -492,7 +496,7 @@ const AddExpense = () => {
                             <TextField
                               fullWidth
                               label="Transition ID"
-                              {...register("other_transaction_id")}
+                              {...register("transactionId")}
                               marginTop={2}
                             />
                           </Grid>
@@ -506,7 +510,7 @@ const AddExpense = () => {
                             <TextField
                               fullWidth
                               label="Transition No"
-                              {...register("other_transaction_no")}
+                              {...register("transaction_no")}
                               marginTop={2}
                             />
                           </Grid>
@@ -514,19 +518,19 @@ const AddExpense = () => {
                             <TextField
                               fullWidth
                               label="Transition ID"
-                              {...register("other_transaction_id")}
+                              {...register("transactionId")}
                               marginTop={2}
                             />
                           </Grid>
                         </>
                       )}
-                      <Grid item  lg={6} md={6} sm={12} xs={12}>
+                      <Grid item lg={6} md={6} sm={12} xs={12}>
                         <TextField
                           fullWidth
                           multiline
                           rows={4}
                           placeholder="Expense Note"
-                          {...register("other_expense_note")}
+                          {...register("expense_note")}
                           marginTop={4}
                         />
                       </Grid>
@@ -535,123 +539,20 @@ const AddExpense = () => {
                 </Grid>
               </Box>
               <div className="flex justify-end mt-3">
-                <Button sx={{ color: "white", width: "200px" }}>Submit</Button>
+                <button
+                  disabled={updateLoading}
+                  className="bg-[#42A1DA] text-white px-5 py-2 rounded-md"
+                >
+                  Update
+                </button>
               </div>
             </Box>
-            <div className="my-2">
-              {createError && (
-                <ErrorMessage messages={createError.data.errorSources} />
-              )}
-            </div>
           </form>
-        </div>
-      </div>
-      <div className="w-full mt-5 mb-24">
-        <div className="flex flex-wrap items-center justify-between mb-5">
-          <h3 className="txt-center tet-sm ml- sm:ml-0 ont-bold md:text-3xl">
-            {" "}
-            Expense List:{" "}
-          </h3>
-          <div className="flex flex-wrap items-center">
-            <button
-              onClick={handleAllExpense}
-              className="bg-[#42A1DA] text-white px-4 py-2 rounded-md mr-1"
-            >
-              All
-            </button>
-            <input
-              onChange={(e) => setFilterType(e.target.value)}
-              type="text"
-              placeholder="Search"
-              className="border py-2 px-3 rounded-md border-[#ddd]"
-              ref={textInputRef}
-            />
-            <button
-              className="bg-[#42A1DA] text-white px-2 py-2 rounded-md ml-1"
-              disabled={filterType === ""}
-            >
-              {" "}
-              <HiOutlineSearch size={25} />
-            </button>
-          </div>
-        </div>
-        {expenseLoading ? (
-          <div className="flex items-center justify-center text-xl">
-            <Loading />
-          </div>
-        ) : (
-          <div>
-            {allExpenses?.data?.expenses?.length === 0 ? (
-              <div className="flex items-center justify-center h-full text-xl text-center">
-                No matching card found.
-              </div>
-            ) : (
-              <section>
-                <table className="table">
-                  <thead className="tableWrap">
-                    <tr>
-                      <th>SL</th>
-                      <th>Expense Category </th>
-                      <th>Sub Category </th>
-                      <th>Expense For </th>
-                      <th>Total Amount </th>
-                      <th>Payment Method </th>
-                      <th colSpan={3}>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {allExpenses?.data?.expenses?.map((card, index) => (
-                      <tr key={card._id}>
-                        <td>{index + 1}</td>
-                        <td>{card?.category}</td>
-                        <td>{card?.sub_category}</td>
-                        <td>{card?.expense_for}</td>
-                        <td>{card?.amount}</td>
-                        <td>{card?.payment_method}</td>
-                        <td>
-                          <div className="flex items-center justify-center ">
-                            {/* <Link to="/dashboard/employee-profile"> */}
-                            <FaEye size={25} className="" />
-                            {/* </Link> */}
-                          </div>
-                        </td>
 
-                        <td>
-                          <div className="editIconWrap edit">
-                            <Link
-                              to={`/dashboard/update-expense?id=${card._id}`}
-                            >
-                              <FaEdit className="editIcon" />
-                            </Link>
-                          </div>
-                        </td>
-
-                        <td>
-                          <div
-                            onClick={() => deletePackage(card._id)}
-                            className="editIconWrap"
-                          >
-                            <FaTrashAlt className="deleteIcon" />
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </section>
-            )}
-          </div>
-        )}
-        {allExpenses?.data?.expenses?.length > 0 && (
-          <div className="flex justify-center mt-4">
-            <Pagination
-              count={allExpenses?.data?.meta?.totalPages}
-              page={currentPage}
-              color="primary"
-              onChange={(_, page) => setCurrentPage(page)}
-            />
-          </div>
-        )}
+          {updateError && (
+            <ErrorMessage messages={updateError?.data?.errorSources} />
+          )}
+        </div>
       </div>
     </section>
   );

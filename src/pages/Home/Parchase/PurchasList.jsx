@@ -1,9 +1,9 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-"use client";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Button, Grid, Typography } from "@mui/material";
+import {   Pagination, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -15,41 +15,31 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import React from "react";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
+import { useDeletePurchaseMutation } from "../../../redux/api/purchase";
 
-const rows = [
-  {
-    supplierId: "123",
-    name: "John Doe",
-    mobile: "123-456-7890",
-    email: "john@example.com",
-    shopName: "John's Shop",
-    vendorCategory: "New Parts",
-    againstBill: "456",
-  },
-  {
-    supplierId: "123",
-    name: "John Doe",
-    mobile: "123-456-7890",
-    email: "john@example.com",
-    shopName: "John's Shop",
-    vendorCategory: "New Parts",
-    againstBill: "456",
-  },
-  {
-    supplierId: "123",
-    name: "John Doe",
-    mobile: "123-456-7890",
-    email: "john@example.com",
-    shopName: "John's Shop",
-    vendorCategory: "New Parts",
-    againstBill: "456",
-  },
-];
+const PurchaseList = ({ purchases, setCurrentPage, currentPage }) => {
+  const [deletePurchase, { isLoading: purchaseLoading }] =
+    useDeletePurchaseMutation();
 
-const PurchaseList = () => {
-  const handleSubmit = (data) => {
-    console.log(data);
+  const deletePackage = async (id) => {
+    const willDelete = await swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this card?",
+      icon: "warning",
+      dangerMode: true,
+    });
+
+    if (willDelete) {
+      try {
+        await deletePurchase(id).unwrap();
+        swal("Deleted!", "Card delete successful.", "success");
+      } catch (error) {
+        swal("Error", "An error occurred while deleting the card.", "error");
+      }
+    }
   };
+
   return (
     <Box bgcolor="white" padding={3}>
       <Typography variant="h5" fontWeight="bold" marginBottom="15px">
@@ -66,33 +56,36 @@ const PurchaseList = () => {
               <TableCell align="center">Email</TableCell>
               <TableCell align="center">Shop Name </TableCell>
               <TableCell align="center">Vendor Categories </TableCell>
-              <TableCell align="center">Against Bill </TableCell>
+              {/* <TableCell align="center">Against Bill </TableCell> */}
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {purchases?.data?.purchases?.map((row) => (
               <TableRow
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell align="center">{row.supplierId}</TableCell>
+                <TableCell align="center">{row.purchase_no}</TableCell>
 
-                <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.mobile}</TableCell>
+                <TableCell align="center">{row.full_name}</TableCell>
+                <TableCell align="center">{row.phone_number}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
-                <TableCell align="center">{row.shopName}</TableCell>
-                <TableCell align="center">{row.vendorCategory}</TableCell>
-                <TableCell align="center">{row.againstBill}</TableCell>
+                <TableCell align="center">{row.shop_name}</TableCell>
+                <TableCell align="center">{row.category}</TableCell>
+                {/* <TableCell align="center">{row.against_bill}</TableCell> */}
                 <TableCell align="center">
                   <div className="flex justify-center">
-                 
-                    <Link to={`/dashboard/update-purchase`}>
+                    <Link to={`/dashboard/update-purchase?id=${row._id}`}>
                       <IconButton title="Edit">
                         <EditIcon />
                       </IconButton>
                     </Link>
-                    <IconButton title="Delete">
+                    <IconButton
+                      onClick={() => deletePackage(row._id)}
+                      disabled={purchaseLoading}
+                      title="Delete"
+                    >
                       <DeleteIcon className="text-red-600" />
                     </IconButton>
                   </div>
@@ -101,6 +94,18 @@ const PurchaseList = () => {
             ))}
           </TableBody>
         </Table>
+        <div className="mt-2 mb-3">
+          {purchases?.data?.purchases?.length > 0 && (
+            <div className="flex justify-center mt-4">
+              <Pagination
+                count={purchases?.data?.meta?.totalPages}
+                page={currentPage}
+                color="primary"
+                onChange={(_, page) => setCurrentPage(page)}
+              />
+            </div>
+          )}
+        </div>
       </TableContainer>
     </Box>
   );
