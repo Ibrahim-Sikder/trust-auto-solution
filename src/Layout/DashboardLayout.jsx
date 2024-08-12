@@ -38,6 +38,7 @@ import {
   CurrencyExchange,
   ShoppingBag,
   NotificationsNone,
+  VolunteerActivism,
 } from "@mui/icons-material";
 import { animateScroll as scroll } from "react-scroll";
 import {
@@ -879,6 +880,12 @@ const DashboardLayout = () => {
             </Accordion>
 
             <div className="pl-3 space-y-3 mt-3 flex flex-col">
+              <NavLink to="/dashboard/donation">
+                <div className="flex items-center dashboardItems">
+                  <VolunteerActivism size={22} />
+                  <span className="ml-2"> Donation </span>
+                </div>
+              </NavLink>
               <NavLink to="/dashboard/bill-pay">
                 <div className="flex items-center dashboardItems">
                   <FaAlipay size={22} />

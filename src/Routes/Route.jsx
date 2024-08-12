@@ -76,6 +76,7 @@ import PurchaseList from "../pages/Home/Parchase/PurchasList";
 import Income from "../pages/Income/Income";
 import IncomeList from "../pages/Income/IncomeList";
 import UpdateIncome from "../pages/Income/UpdateIncome";
+import Donation from "../pages/Donation/Donation";
 
 export const router = createBrowserRouter([
   {
@@ -408,10 +409,12 @@ export const router = createBrowserRouter([
         path: "update-income",
         element: <UpdateIncome />,
       },
+      
       {
-        path: "tests",
-        element: <Practice />,
+        path: "donation",
+        element: <Donation />,
       },
+      
     ],
   },
 ]);
