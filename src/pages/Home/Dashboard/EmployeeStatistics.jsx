@@ -68,8 +68,6 @@ const EmployeeStatistics = () => {
     advanceSalary > 0 ? (advanceSalary / totalSalary) * 100 : 0
   );
 
-  console.log(advanceSalaryPercentage);
-
   // late employee calculate
 
   const lateEmployeeCount = employeeData?.data?.employees?.reduce(
@@ -100,10 +98,10 @@ const EmployeeStatistics = () => {
   const absentEmployeePercentage =
     totalEmployee > 0 ? (AbsentEmployeeCount / totalEmployee) * 100 : 0;
 
-  console.log(employeeData);
+
   return (
     <>
-      <div className=" xl:flex  justify-between mt-10">
+      <div className=" xl:flex gap-5  justify-between sectionMargin  mb-10 ">
         <div className="earningCardWrap ">
           <p className="mb-3 font-semibold">Employee Statistic</p>
           <div className="grid grid-cols-1 md:grid-cols-2 justify-between gap-5">
