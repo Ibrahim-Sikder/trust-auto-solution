@@ -33,7 +33,6 @@ const Home = () => {
         </h3>
       </div>
       <ProfitOverView />
-
       <ProjectOverView />
 
       <div className="recentCardWrap gap-5  xl:flex justify-between sectionMargin">
@@ -41,7 +40,7 @@ const Home = () => {
         <RecentProject />
       </div>
 
-      <div className="xl:flex items-center justify-between mt-[30px]">
+      <div className="xl:flex gap-5 justify-between mt-[30px]">
         <RcentQuotation />
         <RecentInvoice />
       </div>

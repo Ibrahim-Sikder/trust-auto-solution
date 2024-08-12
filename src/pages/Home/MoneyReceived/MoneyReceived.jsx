@@ -29,7 +29,6 @@ import {
   useGetAllMoneyReceiptsQuery,
 } from "../../../redux/api/money-receipt";
 import { ErrorMessage } from "../../../components/error-message";
-
 const MoneyReceiptView = () => {
   const parsedDate = new Date();
   const day = parsedDate.getDate().toString().padStart(2, "0");
@@ -37,24 +36,25 @@ const MoneyReceiptView = () => {
   const year = parsedDate.getFullYear();
   const formattedDate = `${day}-${month}-${year}`;
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
   const [advance, setAdvance] = useState(0);
   const [remaining, setRemaining] = useState(0);
   const [totalAmount, setTotalAmount] = useState(null);
   const [selectedDate, setSelectedDate] = useState(formattedDate);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm();
 
+  const bill = watch("against_bill_no_method");
   const [job_no, setJob_no] = useState(null);
 
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [billNo, setBillNo] = useState("Final Payment / against bill no");
+  const [billNo, setBillNo] = useState("Final payment against bill no");
   const [currentPage, setCurrentPage] = useState(1);
   const [filterType, setFilterType] = useState("");
-
   const navigate = useNavigate();
   const limit = 10;
 
@@ -265,6 +265,7 @@ const MoneyReceiptView = () => {
   const handleChange2 = (event) => {
     setBillNo(event.target.value);
   };
+  console.log(bill);
 
   const handleTotalAmount = (value) => {
     setTotalAmount(value);
@@ -279,7 +280,7 @@ const MoneyReceiptView = () => {
     return <Loading />;
   }
 
-  console.log(remaining);
+ 
 
   return (
     <>
@@ -371,13 +372,13 @@ const MoneyReceiptView = () => {
                   onChange={handleChange2}
                   {...register("against_bill_no_method", { required: true })}
                 >
-                  <MenuItem value="Final Payment / against bill no">
+                  <MenuItem value="Final payment against bill no">
                     {" "}
-                    Final Payment / against bill no
+                    Final payment against bill no
                   </MenuItem>
-                  <MenuItem value="Advance / against bill no">
+                  <MenuItem value="Advance against bill no">
                     {" "}
-                    Advance / against bill no{" "}
+                    Advance against bill no
                   </MenuItem>
                 </Select>
               </FormControl>
@@ -525,7 +526,7 @@ const MoneyReceiptView = () => {
                   )}
                 </div>
               </div>
-              {billNo === "Advance / against bill no" ? null : (
+              {bill === "Final payment against bill no" ? (
                 <div className="flex lg:flex-row  flex-col ">
                   <label>Payable Amount :</label>
                   <input
@@ -536,38 +537,38 @@ const MoneyReceiptView = () => {
                     readOnly
                   />
                 </div>
-              )}
+              ) : null}
             </div>
-            {billNo == "Advance / against bill no" ? (
-              <div className="flex lg:flex-row  flex-col">
-                <label>Advance:</label>
-                <div>
-                  <input
-                    {...register("advance", { required: true })}
-                    className="moneyViewInputField totalAmountInput"
-                    type="number"
-                    onChange={(e) => setAdvance(e.target.value)}
-                  />
-                  {errors.advance && advance === null && (
-                    <span className="text-sm text-red-400">
-                      This field is required
-                    </span>
-                  )}
+            {bill === "Advance against bill no" ? (
+              <>
+                <div className="flex lg:flex-row  flex-col">
+                  <label>Advance:</label>
+                  <div>
+                    <input
+                      {...register("advance", { required: true })}
+                      className="moneyViewInputField totalAmountInput"
+                      type="number"
+                      onChange={(e) => setAdvance(e.target.value)}
+                    />
+                    {errors.advance && advance === null && (
+                      <span className="text-sm text-red-400">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ) : null}
-            {billNo == "Advance / against bill no" ? (
-              <div className="flex lg:flex-row  flex-col ">
-                <label>Remaining:</label>
-                <input
-                  {...register("remaining")}
-                  className="moneyViewInputField totalAmountInput"
-                  type="text"
-                  value={getRemaining()}
-                  onChange={(e) => setRemaining(e.target.value)}
-                  readOnly
-                />
-              </div>
+                <div className="flex lg:flex-row  flex-col ">
+                  <label>Remaining:</label>
+                  <input
+                    {...register("remaining")}
+                    className="moneyViewInputField totalAmountInput"
+                    type="text"
+                    value={getRemaining()}
+                    onChange={(e) => setRemaining(e.target.value)}
+                    readOnly
+                  />
+                </div>
+              </>
             ) : null}
           </div>
           <div className="mt-5 wordTaka">
