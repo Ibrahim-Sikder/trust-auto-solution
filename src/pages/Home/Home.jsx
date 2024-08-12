@@ -34,7 +34,6 @@ const Home = () => {
         </h3>
       </div>
       <ProfitOverView />
-
       <ProjectOverView />
 
       <div className="recentCardWrap gap-5  xl:flex justify-between sectionMargin">

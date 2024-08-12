@@ -15,7 +15,7 @@ const RecentInvoice = () => {
   if (invoiceLoading) return <div>Loading...</div>;
   if (invoiceError) return <div>Someting went to wrong!</div>;
 
-  console.log(invoiceData);
+
   return (
     <>
       <div className="recentCard overflow-x-auto ">

@@ -10,12 +10,26 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useGetAllQuotationsQuery } from "../../redux/api/quotation";
-import { useGetAllJobCardsQuery } from "../../redux/api/jobCard";
-import { useGetAllInvoicesQuery } from "../../redux/api/invoice";
+import { useGetAllExpensesQuery } from "../../redux/api/expense";
+import { useGetAllIncomesQuery } from "../../redux/api/income";
+import dayjs from "dayjs";
+
+
+const groupByMonth = (data, key) => {
+  return data.reduce((acc, curr) => {
+    const month = dayjs(curr.date).format("YYYY-MM");
+    if (!acc[month]) acc[month] = 0;
+    acc[month] += Number(curr[key]);
+    return acc;
+  }, {});
+};
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
+    const income = payload.find((p) => p.dataKey === "income")?.value || 100;
+    const expense = payload.find((p) => p.dataKey === "expense")?.value || 100;
+    const profit = income - expense;
+
     return (
       <div
         className="custom-tooltip"
@@ -26,9 +40,9 @@ const CustomTooltip = ({ active, payload, label }) => {
         }}
       >
         <p className="label">{`${label}`}</p>
-        <p className="intro">{`Series1: ${payload[0].value}`}</p>
-        <p className="intro">{`Series2: ${payload[1].value}`}</p>
-        <p className="intro">{`Series3: ${payload[2].value}`}</p>
+        <p className="intro">{`Income: ${income}`}</p>
+        <p className="intro">{`Expense: ${expense}`}</p>
+        <p className="intro">{`Profit: ${profit}`}</p>
       </div>
     );
   }
@@ -37,41 +51,31 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function ExpanseIncomeChart() {
-  const { data: jobCardData } = useGetAllJobCardsQuery({
-    limit: 10,
+  const { data: expenseData } = useGetAllExpensesQuery({
+    limit: 10000, 
     page: 1,
   });
 
-  const { data: qutationData } = useGetAllQuotationsQuery({
-    limit: 10,
+  const { data: incomeData } = useGetAllIncomesQuery({
+    limit: 10000, 
     page: 1,
   });
 
-  const { data: invoiceData } = useGetAllInvoicesQuery({
-    limit: 10,
-    page: 1,
-  });
+  const monthlyIncome = groupByMonth(incomeData?.data?.incomes || [], "amount");
+  const monthlyExpense = groupByMonth(expenseData?.data?.expenses || [], "amount");
 
-  const data = [
-    {
-      name: "Jobcard",
-      series1: jobCardData?.data?.jobCards?.length || 0,
-      series2: 0,
-      series3: 0, 
-    },
-    {
-      name: "Quotation",
-      series1: qutationData?.data?.quotations?.length || 0,
-      series2: 0,
-      series3: 0, 
-    },
-    {
-      name: "Invoice",
-      series1: invoiceData?.data?.invoices?.length || 0,
-      series2: 0, 
-      series3: 0, 
-    },
-  ];
+  const months = Object.keys(monthlyIncome).concat(Object.keys(monthlyExpense)).sort();
+  const data = months.map((month) => {
+    const income = monthlyIncome[month] || 0;
+    const expense = monthlyExpense[month] || 0;
+    const profit = income - expense;
+    return {
+      name: dayjs(month).format("MMMM YYYY"),
+      income,
+      expense,
+      profit,
+    };
+  });
 
   return (
     <ResponsiveContainer width="100%" height={500}>
@@ -81,9 +85,9 @@ export default function ExpanseIncomeChart() {
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
-        <Line type="monotone" dataKey="series1" stroke="#8884d8" />
-        <Line type="monotone" dataKey="series2" stroke="#82ca9d" />
-        <Line type="monotone" dataKey="series3" stroke="#ffc658" />
+        <Line type="monotone" dataKey="income" stroke="#8884d8" />
+        <Line type="monotone" dataKey="expense" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="profit" stroke="#ffc658" />
       </LineChart>
     </ResponsiveContainer>
   );

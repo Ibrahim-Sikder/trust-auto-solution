@@ -32,25 +32,13 @@ const data2 = [
   {  value: 200 },
 ];
 
-// const data2 = [
-//   { label: "20%", value: 200 },
-//   { label: "30%", value: 200 },
-//   { label: "50%", value: 100 },
-//   { label: "60%", value: 100 },
-//   { label: "100%", value: 100 },
-//   { label: "10%", value: 100 },
-//   { label: "90%", value: 100 },
-//   { label: "80%", value: 200 },
-//   { label: "60%", value: 200 },
-//   { label: "88%", value: 150 },
-//   { label: "94%", value: 250 },
-//   { label: "90%", value: 200 },
-// ];
+
 
 export default function YearlyIncomeChart() {
   const [radius, setRadius] = React.useState(50);
   const [itemNb, setItemNb] = React.useState(12);
   const [skipAnimation, setSkipAnimation] = React.useState(false);
+
 
   return (
     <Box sx={{ width: "100%" }}>

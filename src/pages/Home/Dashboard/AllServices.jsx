@@ -15,6 +15,7 @@ import { useGetAllJobCardsQuery } from "../../../redux/api/jobCard";
 import { useGetAllCustomersQuery } from "../../../redux/api/customerApi";
 import { useGetAllCompaniesQuery } from "../../../redux/api/companyApi";
 import { useGetAllShowRoomsQuery } from "../../../redux/api/showRoomApi";
+import { useGetAllMoneyReceiptsQuery } from "../../../redux/api/money-receipt";
 
 const AllServices = () => {
   const {
@@ -67,18 +68,32 @@ const AllServices = () => {
     limit: 10,
     page: 1,
   });
+  const { data: moneyRecieptData } = useGetAllMoneyReceiptsQuery({
+    limit: 10,
+    page: 1,
+  });
 
   if (invoiceLoading || quotationLoading || jobCardLoading)
     return <div>Loading...</div>;
   if (invoiceError || jobCardError || quotationError)
     return <div>Someting went to wrong!</div>;
 
+  console.log(moneyRecieptData);
+  const paidServiceBill = moneyRecieptData?.data?.moneyReceipts.reduce(
+    (sum, paid) => sum + paid.total_amount,
+    0
+  );
+  const remainingBill = moneyRecieptData?.data?.moneyReceipts.reduce(
+    (sum, paid) => sum + paid.remaining,
+    0
+  );
+  console.log(paidServiceBill);
+  console.log(remainingBill);
+
   const allCustomer =
     Number(customerData?.data?.customers?.length) +
     Number(companyData?.data?.companies?.length) +
     Number(showroomData?.data?.showrooms?.length);
-
-
 
   return (
     <div className="dashBoardRight mt-5 lg:mt-0 ">
@@ -133,7 +148,7 @@ const AllServices = () => {
         <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#f77f00] text-white">
           <div className="mr-5">
             <h3 className="xl:text-xl">Paid Services Bill</h3>
-            <span className="text-xl xl:text-2xl font-bold">856৳</span>
+            <span className="text-xl xl:text-2xl font-bold">{paidServiceBill}৳</span>
           </div>
           <div className="valueRight">
             <FaFileInvoice className="dashboardCardIcon" />
@@ -143,7 +158,7 @@ const AllServices = () => {
         <div className="completedServiceCards flex justify-between items-center rounded-lg bg-[#ef233c] text-white">
           <div className="mr-5">
             <h3 className="xl:text-xl">Due Service Bill </h3>
-            <span className="text-xl xl:text-2xl font-bold">8106৳ </span>
+            <span className="text-xl xl:text-2xl font-bold">{remainingBill}৳ </span>
           </div>
           <div className="valueRight">
             <FaFileInvoiceDollar className="dashboardCardIcon" />
