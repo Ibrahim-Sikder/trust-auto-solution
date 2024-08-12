@@ -19,6 +19,7 @@ const expenseApi = baseApi.injectEndpoints({
       providesTags: ["expense"],
     }),
 
+    
     getSingleExpense: builder.query({
       query: (id) => ({
         url: `/expenses/${id}`,

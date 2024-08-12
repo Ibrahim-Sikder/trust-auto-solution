@@ -67,6 +67,7 @@ const AddExpense = () => {
 
     try {
       const response = await createIncome(data).unwrap();
+      console.log(response)
       if (response.success) {
         toast.success(response.message);
         navigate("/dashboard/income-list");
