@@ -58,7 +58,6 @@ const ProfitOverView = () => {
   const incomePercentage = Number(
     Math.round((totalIncome / (totalIncome + totalExpenses)) * 100)
   );
-  console.log(incomePercentage);
 
   const expensePercentage = Number(
     Math.round((totalExpenses / (totalIncome + totalExpenses)) * 100)

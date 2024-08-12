@@ -78,7 +78,7 @@ const AllServices = () => {
   if (invoiceError || jobCardError || quotationError)
     return <div>Someting went to wrong!</div>;
 
-  console.log(moneyRecieptData);
+
   const paidServiceBill = moneyRecieptData?.data?.moneyReceipts.reduce(
     (sum, paid) => sum + paid.total_amount,
     0
@@ -87,8 +87,7 @@ const AllServices = () => {
     (sum, paid) => sum + paid.remaining,
     0
   );
-  console.log(paidServiceBill);
-  console.log(remainingBill);
+
 
   const allCustomer =
     Number(customerData?.data?.customers?.length) +

@@ -1,14 +1,56 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { useGetAllExpensesQuery } from "../../redux/api/expense";
+import { useGetAllIncomesQuery } from "../../redux/api/income";
+import dayjs from "dayjs";
 
-const data = [
-  { month: 'Jan', Earnings: 70000, Expense: 50000, Profit: 20000 },
-  { month: 'Feb', Earnings: 200000, Expense: 150000, Profit: 50000 },
-  { month: 'Mar', Earnings: 300000, Expense: 200000, Profit: 100000},
-  { month: 'Apr', Earnings: 50000, Expense: 45000, Profit: 25000},
-  { month: 'May', Earnings: 100000, Expense: 60000, Profit: 40000},
-];
+// Helper function to group data by month
+const groupByMonth = (data, key) => {
+  return data.reduce((acc, curr) => {
+    const month = dayjs(curr.date).format("YYYY-MM");
+    if (!acc[month]) acc[month] = 0;
+    acc[month] += Number(curr[key]);
+    return acc;
+  }, {});
+};
 
 export default function StackBars() {
+  const { data: expenseData } = useGetAllExpensesQuery({
+    limit: 10000,
+    page: 1,
+  });
+
+  const { data: incomeData } = useGetAllIncomesQuery({
+    limit: 10000,
+    page: 1,
+  });
+
+  const monthlyIncome = groupByMonth(incomeData?.data?.incomes || [], "amount");
+  const monthlyExpense = groupByMonth(expenseData?.data?.expenses || [], "amount");
+
+  const months = Object.keys(monthlyIncome).concat(Object.keys(monthlyExpense)).sort();
+  const data = months.map((month) => {
+    const income = monthlyIncome[month] || 0;
+    const expense = monthlyExpense[month] || 0;
+    const profit = income - expense;
+    return {
+      month: dayjs(month).format("MMMM YYYY"),
+      Earnings: income,
+      Expense: expense,
+      Profit: profit,
+    };
+  });
+
   return (
     <ResponsiveContainer width="100%" height={450}>
       <BarChart

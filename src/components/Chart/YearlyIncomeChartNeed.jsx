@@ -15,29 +15,25 @@ export default function YearlyIncomeChart() {
     page: 1,
   });
 
-  // Group incomes by month
-  const groupByMonth = (data) => {
-    const incomeByMonth = {};
-    for (const item of data) {
-      const month = dayjs(item.date, "DD-MM-YYYY").format("MMMM YYYY");
-      if (!incomeByMonth[month]) {
-        incomeByMonth[month] = 0;
+  console.log(incomeData);
+  const groupByMonth = (data, key) => {
+    return data.reduce((acc, curr) => {
+      const month = dayjs(curr.date).isValid()
+        ? dayjs(curr.date).format("MMMM")
+        : null;
+      if (month) {
+        if (!acc[month]) acc[month] = 0;
+        acc[month] += Number(curr[key]);
       }
-      incomeByMonth[month] += Number(item.amount || 0);
-    }
-    return incomeByMonth;
+      return acc;
+    }, {});
   };
-  // Create dynamic data for the chart
-  const monthlyIncome = groupByMonth(incomeData?.data?.incomes || []);
 
-  const dynamicData1 = Object.keys(monthlyIncome).map((month) => ({
+  const monthlyIncome = groupByMonth(incomeData?.data?.incomes || [], "amount");
+
+  const dynamicData = Object.keys(monthlyIncome).map((month) => ({
     label: month,
     value: monthlyIncome[month],
-  }));
-
-  console.log("formated data", monthlyIncome);
-  const dynamicData2 = Object.keys(monthlyIncome).map((month) => ({
-    value: monthlyIncome[month] / 2, // Example: Adjust this based on your requirement
   }));
 
   return (
@@ -45,9 +41,9 @@ export default function YearlyIncomeChart() {
       <PieChart
         height={400}
         series={[
-          { data: dynamicData1, outerRadius: radius },
+          { data: dynamicData, outerRadius: radius },
           {
-            data: dynamicData2.slice(0, itemNb),
+            data: dynamicData.slice(0, itemNb),
             innerRadius: radius,
             arcLabel: (params) => params.label ?? "",
           },
