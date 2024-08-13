@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-unused-vars */
 const years = [{ value: "Select Year", label: "Select Year" }];
 // Start from 2024 and go up to 2030
@@ -6,7 +7,6 @@ for (let year = 2024; year <= 2030; year++) {
 }
 
 import "react-circular-progressbar/dist/styles.css";
-import Select from "react-select";
 
 import { useEffect, useState } from "react";
 import { months } from "../../../constant/Vehicle.constant";
@@ -21,13 +21,33 @@ import {
 } from "../../../redux/api/salary";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 const initialSelectedOption = months[0];
+
+export const allMonths = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const AddAttendance = () => {
   // const [getAllEmployee, setGetAllEmployee] = useState([]);
 
   const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
+  const [selectedMonth, setSelectedMonth] = useState("");
 
+  const handleMonthChange = (event) => {
+    setSelectedMonth(event.target.value);
+  };
   const handleChange = (value) => {
     setSelectedOption(value);
   };
@@ -46,7 +66,7 @@ const AddAttendance = () => {
     data: getAllSalary,
     isLoading: salaryLoading,
     error: salaryError,
-    refetch
+    refetch,
   } = useGetAllSalaryQuery({
     searchTerm: filterType.value,
   });
@@ -192,7 +212,7 @@ const AddAttendance = () => {
       const response = await createSalary(newSalaryData).unwrap();
       if (response.success) {
         toast.success(response.message);
-        refetch()
+        refetch();
       }
     } catch (error) {
       toast.error(error.message);
@@ -263,12 +283,30 @@ const AddAttendance = () => {
                     <td>{employee.employeeId}</td>
                     <td>
                       <div>
-                        <Select
+                        {/* <Select
                           value={selectedOption}
                           onChange={handleChange}
                           options={months}
-                        />
+                        /> */}
                       </div>
+
+                      <FormControl fullWidth>
+                        <InputLabel htmlFor="grouped-native-select">
+                          Select Month
+                        </InputLabel>
+                        <Select
+                          fullWidth
+                          id="grouped-native-select"
+                          label="Select Month"
+                          onChange={handleMonthChange}
+                        >
+                          {allMonths.map((month) => (
+                            <MenuItem value={month} key={month}>
+                              {month}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </td>
                     <td>
                       <input

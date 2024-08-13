@@ -10,7 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button, Divider } from "@mui/material";
 import { formatDate } from "../../utils/formateDate";
 
-const Detail = () => {
+const BillPayInvoice = () => {
   const componentRef = useRef();
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
@@ -541,4 +541,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default BillPayInvoice;

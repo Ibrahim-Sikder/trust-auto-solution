@@ -22,6 +22,7 @@ const PreviewJobCard = () => {
 
   const previewData = data?.data;
   console.log(previewData);
+  console.log(previewData.customer.customer_name);
 
   const extractTextFromHTML = (htmlString) => {
     const doc = new DOMParser().parseFromString(htmlString, "text/html");
@@ -194,7 +195,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Customer Name"
-                          defaultValue={previewData?.customer_name}
+                          defaultValue={previewData?.customer?.customer_name}
                           disabled
                         />
                       </div>
@@ -203,7 +204,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Contact No"
-                          defaultValue={previewData?.driver_contact}
+                          defaultValue={previewData?.customer?.driver_contact}
                           disabled
                         />
                       </div>
@@ -212,7 +213,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Car Driver Name"
-                          defaultValue={previewData?.driver_name}
+                          defaultValue={previewData?.customer?.driver_name}
                           disabled
                         />
                       </div>
@@ -223,7 +224,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Phone"
-                          defaultValue={previewData?.customer_contact}
+                          defaultValue={previewData?.customer?.customer_contact}
                           disabled
                         />
                       </div>
@@ -232,7 +233,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Reference Number"
-                          defaultValue={previewData?.reference_name}
+                          defaultValue={previewData?.customer?.reference_name}
                           disabled
                         />
                       </div>
@@ -241,7 +242,7 @@ const PreviewJobCard = () => {
                         <input
                           type="text"
                           placeholder="Customer Address "
-                          defaultValue={previewData?.customer_email}
+                          defaultValue={previewData?.customer?.customer_email}
                           disabled
                         />
                       </div>

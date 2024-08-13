@@ -43,6 +43,7 @@ const IncomeList = () => {
       dangerMode: true,
     });
 
+    
     if (willDelete) {
       try {
         await deleteIncome(id).unwrap();

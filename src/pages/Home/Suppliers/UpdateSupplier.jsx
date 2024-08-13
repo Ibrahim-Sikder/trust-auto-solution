@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Autocomplete,
   Box,
+  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -346,9 +347,13 @@ const UpdateSupplier = () => {
               )}{" "}
             </div>
             <div className="mt-2 savebtn">
-              <button disabled={updateLoading || loading}>
+              <Button
+                type="submit"
+                sx={{ color: "white" }}
+                disabled={updateLoading || loading}
+              >
                 Update Supplier{" "}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

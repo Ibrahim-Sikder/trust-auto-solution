@@ -29,7 +29,7 @@ import { ErrorMessage } from "../../../components/error-message";
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-
+  const { watch } = useForm();
   const { data: singleMoneyReceipt, refetch } =
     useGetSingleMoneyReceiptQuery(id);
 
@@ -41,7 +41,7 @@ const UpdateMoneyReceipt = () => {
     singleMoneyReceipt?.data?.remaining
   );
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [billNo, setBillNo] = useState("Final Payment / against bill no");
+  const [billNo, setBillNo] = useState("Final Payment against bill no");
   const [totalAmount, setTotalAmount] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -49,6 +49,7 @@ const UpdateMoneyReceipt = () => {
   const [finalPayment, setFinalPayment] = useState(false);
   const [cash, setCash] = useState(false);
   const [cheque, setCheque] = useState(false);
+  const bill = watch("against_bill_no_method");
 
   const {
     register,
@@ -290,7 +291,7 @@ const UpdateMoneyReceipt = () => {
       if (response.success) {
         toast.success(response.message);
         navigate("/dashboard/money-receipt-list");
-        refetch()
+        refetch();
       }
     } catch (error) {
       toast.error(error.message);
@@ -326,6 +327,7 @@ const UpdateMoneyReceipt = () => {
   const handleChange2 = (event) => {
     setBillNo(event.target.value);
   };
+  console.log(bill);
 
   const buttonStyle = {
     color: "white",
@@ -416,18 +418,16 @@ const UpdateMoneyReceipt = () => {
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
-                value={billNo}
-                label="Payment Method "
+           
+                label=" Against bill no"
                 onChange={handleChange2}
                 {...register("against_bill_no_method", { required: true })}
               >
-                <MenuItem value="Final Payment / against bill no">
-                  {" "}
-                  Final Payment / against bill no
+                <MenuItem value="Final payment against bill no">
+                  Final payment against bill no
                 </MenuItem>
-                <MenuItem value="Advance / against bill no">
-                  {" "}
-                  Advance / against bill no{" "}
+                <MenuItem value="Advance against bill no">
+                  Advance against bill no
                 </MenuItem>
               </Select>
             </FormControl>
@@ -578,7 +578,7 @@ const UpdateMoneyReceipt = () => {
                 )}
               </div>
             </div>
-            {billNo == "Advance / against bill no" ? null : (
+            {bill === "Final payment against bill no" ? null : (
               <div className="flex lg:flex-row  flex-col ">
                 <label>Payable Amount :</label>
                 <input
@@ -591,7 +591,7 @@ const UpdateMoneyReceipt = () => {
               </div>
             )}
           </div>
-          {billNo == "Advance / against bill no" ? (
+          {bill === "Advance against bill no" ? (
             <div className="flex lg:flex-row  flex-col">
               <label>Advance:</label>
               <div>
@@ -609,7 +609,7 @@ const UpdateMoneyReceipt = () => {
               </div>
             </div>
           ) : null}
-          {billNo == "Advance / against bill no" ? (
+          {bill === "Advance against bill no" ? (
             <div className="flex lg:flex-row  flex-col ">
               <label>Remaining:</label>
               <input
@@ -645,6 +645,7 @@ const UpdateMoneyReceipt = () => {
       </div>
       <div className="flex gap-2">
         <Button sx={buttonStyle}>Preview</Button>
+        <Button sx={buttonStyle}>Print </Button>
         <Button sx={buttonStyle}>Download </Button>
       </div>
     </div>
