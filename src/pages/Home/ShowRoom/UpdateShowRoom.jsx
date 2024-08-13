@@ -3,7 +3,7 @@
 
 import TextField from "@mui/material/TextField";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Autocomplete, Box, Grid } from "@mui/material";
+import { Autocomplete, Box, Button, Grid } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
@@ -305,7 +305,7 @@ const UpdateShowRoom = () => {
                     <Grid container spacing={1}>
                       <Grid item lg={3} md={4} sm={12} xs={12}>
                         <Autocomplete
-                          sx={{ marginRight: "2px", }}
+                          sx={{ marginRight: "2px" }}
                           fullWidth
                           freeSolo
                           options={countries}
@@ -383,7 +383,7 @@ const UpdateShowRoom = () => {
                     <Grid container spacing={1}>
                       <Grid item lg={3} md={4} sm={12} xs={12}>
                         <Autocomplete
-                          sx={{ marginRight: "2px",}}
+                          sx={{ marginRight: "2px" }}
                           fullWidth
                           freeSolo
                           options={countries}
@@ -633,8 +633,14 @@ const UpdateShowRoom = () => {
             <div className="my-2">
               {error && <ErrorMessage messages={error.data.errorSources} />}
             </div>
-            <div className="mt-2 ml-3 savebtn">
-              <button disabled={updateLoading}>Update Show Room </button>
+            <div className="mt-2 ml-3 flex justify-end ">
+              <Button
+                type="submit"
+                sx={{ color: "white" }}
+                disabled={updateLoading}
+              >
+                Update Show Room{" "}
+              </Button>
             </div>
           </form>
         </div>

@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Tabs, Tab, Box, Typography } from "@mui/material";
 import EmployeeAccount from "./EmployeeAccount";
 import SingleEmployeeLeaveList from "./SingleEmployeeLeaveList";
-import avatar from "../../../../../public/assets/avatar.jpg";
 import "../Employee.css";
 import EmployeeSalary from "./EmployeeSalary";
 import EmployeeOvertime from "./EmployeeOvertime";
@@ -77,7 +77,7 @@ const CustomerProfile = () => {
     toast.error(error?.status);
   }
 
-  console.log(data?.data);
+
   const getMonthName = (monthNumber) => {
     const date = new Date();
     date.setMonth(monthNumber - 1);
@@ -117,7 +117,7 @@ const CustomerProfile = () => {
             <div className="w-full lg:w-[50%]">
               <div className="flex flex-wrap gap-3 p-5 ">
                 <img
-                  src={avatar}
+                  src={data?.data?.image}
                   className="object-cover w-24 h-24 mr-3 rounded-full"
                   alt="profile"
                 />
@@ -190,26 +190,27 @@ const CustomerProfile = () => {
           <Tab sx={tabStyles} label="Overtime" />
         </Tabs>
 
+
         <TabPanel value={value} index={0}>
-          <EmployeeAccount accountInfo={data?.data} />
+          <EmployeeAccount id={id} accountInfo={data?.data} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <EmployeeAttendance />
+          <EmployeeAttendance  id={id}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <SingleEmployeeLeaveList />
+          <SingleEmployeeLeaveList  id={id}/>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <EmployeeHoliday />
+          <EmployeeHoliday  id={id}/>
         </TabPanel>
         <TabPanel value={value} index={4}>
           <h3 className="text-3xl font-bold">Employee Holiday</h3>
         </TabPanel>
         <TabPanel value={value} index={5}>
-          <EmployeeSalary />
+          <EmployeeSalary id={id}/>
         </TabPanel>
         <TabPanel value={value} index={6}>
-          <EmployeeOvertime />
+          <EmployeeOvertime id={id}/>
         </TabPanel>
 
         <div>

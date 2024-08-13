@@ -1,13 +1,18 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import "../Employee.css";
-import avatar from "../../../../../public/assets/avatar.jpg";
+import { useGetSingleSalaryQuery } from "../../../../redux/api/salary";
 import "../Employee.css";
 
-const EmployeeSalary = ({ open }) => {
+import "../Employee.css";
+
+const EmployeeSalary = ({ id }) => {
+  const { data, isLoading } = useGetSingleSalaryQuery({ id });
+  if (isLoading) {
+    return <p>Loading.....</p>;
+  }
+
   return (
     <div className="table-container">
-    
       <table className="leaveTable">
         <thead>
           <tr>
@@ -15,7 +20,7 @@ const EmployeeSalary = ({ open }) => {
             <th>Bonus </th>
             <th>Overtime Salary </th>
             <th>Amount of Salary </th>
-            <th>Total Payment  </th>
+            <th>Total Payment </th>
           </tr>
         </thead>
         <tbody>

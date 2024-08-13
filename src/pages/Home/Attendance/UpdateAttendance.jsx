@@ -16,6 +16,7 @@ import {
 } from "../../../redux/api/attendance";
 import Loading from "../../../components/Loading/Loading";
 import { ErrorMessage } from "../../../components/error-message";
+import { Close } from "@mui/icons-material";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 for (let year = 2024; year <= 2030; year++) {
@@ -253,7 +254,7 @@ const UpdateAttendance = () => {
                 <td>
                   <input
                     type="checkbox"
-                    className="border"
+                   className="border w-5 h-5"
                     onClick={() => handlePresent(index)}
                     checked={
                       presentState[index] !== undefined
@@ -265,7 +266,7 @@ const UpdateAttendance = () => {
                 <td>
                   <input
                     type="checkbox"
-                    className="border"
+                    className="border w-5 h-5"
                     onClick={() => handleAbsent(index)}
                     checked={
                       absentState[index] !== undefined
@@ -300,18 +301,23 @@ const UpdateAttendance = () => {
                   />
                 </td>
                 <td>
-                  <div className="flex items-center justify-center cursor-pointer ">
-                    <HiCheck
-                      size={20}
-                      className="text-[#F62D51] attendanceIcon"
-                      onClick={() => handleLate(index, true)}
-                    />
-                    <HiCheck
-                      className="text-[#4AB657] attendanceIcon "
-                      size={20}
-                      onClick={() => handleLate(index, false)}
-                    />
-                  </div>
+                  {presentState[index] ? (
+                    <div className="flex items-center justify-center cursor-pointer">
+                      <HiCheck
+                        className="text-[#4AB657] attendanceIcon"
+                        size={20}
+                        onClick={() => handleLate(index, false)}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center cursor-pointer">
+                      <Close
+                        className="text-[#FF0000] attendanceIcon"
+                        size={20}
+                        onClick={() => handleLate(index, true)}
+                      />
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}

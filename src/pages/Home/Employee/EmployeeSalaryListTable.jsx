@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import { months } from "../../../constant/Vehicle.constant";
-import Select from "react-select";
+import { useGetAllSalaryQuery } from "../../../redux/api/salary";
+import { useState } from "react";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const years = [{ value: "Select Year", label: "Select Year" }];
 // Start from 2024 and go up to 2030
@@ -10,14 +11,37 @@ for (let year = 2024; year <= 2030; year++) {
   years.push({ value: String(year), label: String(year) });
 }
 
-const EmployeeSalaryListTable = ({
-  getAllSalary,
-  filterType,
-  setFilterType,
-}) => {
+export const allMonths = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const EmployeeSalaryListTable = () => {
+  const [filterType, setFilterType] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const limit = 10;
   const currentDate = new Date();
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
   const currentYear = currentDate.getFullYear();
+  const {
+    data: getAllSalary,
+    isLoading: salaryLoading,
+    error: salaryError,
+    refetch,
+  } = useGetAllSalaryQuery({
+    searchTerm: filterType?.value,
+  });
 
   const handleChange = (filterType) => {
     setFilterType(filterType);
@@ -28,16 +52,37 @@ const EmployeeSalaryListTable = ({
   };
 
   return (
-    <div className="mt-10 table-container">
+    <div className="mt-10 table-container mb-20 ">
       <h3 className="mt-5 mb-8 md:text-2xl font-semibold">
         Employee Salary Sheet :{" "}
-        {filterType.value ? filterType.value : currentMonth} {currentYear}
+        {filterType?.value ? filterType?.value : currentMonth} {currentYear}
       </h3>
 
-      <div className="flex flex-wrap gap-5 mt-5 mb-8">
-        <div>
+      <div className="flex  gap-5 mt-5 mb-8">
+        {/* <div>
           <Select value={filterType} onChange={handleChange} options={months} />
-        </div>
+        </div> */}
+
+        <Box width="300px">
+          <FormControl fullWidth>
+            <InputLabel htmlFor="grouped-native-select">
+              Select Month
+            </InputLabel>
+            <Select
+              fullWidth
+              id="grouped-native-select"
+              label="Select Month"
+              value={filterType}
+              onChange={handleChange}
+            >
+              {allMonths.map((month) => (
+                <MenuItem value={month} key={month}>
+                  {month}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
 
         <div className="relative rounded-sm w-max">
           <button

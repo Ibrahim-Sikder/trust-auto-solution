@@ -29,7 +29,6 @@ const AddQuotation = () => {
   const job_no = new URLSearchParams(location.search).get("order_no");
   const navigate = useNavigate();
 
-  console.log(job_no);
   // const [job_no, setJob_no] = useState(serial_no);
   // const [jobCardData, setJobCardData] = useState({});
 
@@ -60,8 +59,7 @@ const AddQuotation = () => {
   // for customer id edit
   const handleInputChange = (e) => {
     const newId = e.target.value;
-    console.log("New ID:", newId); // Log the input for debugging
-    // setJobCardData({ ...jobCardData, Id: newId });
+
   };
 
   const {
@@ -201,92 +199,6 @@ const AddQuotation = () => {
 
 
 
-
-//   const calculateFinalTotal = () => {
-//     let finalTotal;
-//     let differenceExistAndNewGrandTotal;
-//     let vatAsPercentage;
-//     let discountAsPercentage;
-//     let differenceWithoutDiscount;
-//     let totalAfterDiscount;
-
-//     if (grandTotal > specificQuotation.total_amount) {
-//       differenceExistAndNewGrandTotal =
-//         grandTotal - specificQuotation.total_amount;
-//     } else if (grandTotal < specificQuotation.total_amount) {
-//       differenceExistAndNewGrandTotal =
-//         grandTotal - specificQuotation.total_amount;
-//     } else {
-//       differenceExistAndNewGrandTotal = 0;
-//     }
-
-   
-//     if (discount === 0) {
-//       discountAsPercentage = 0;
-//     } else if (Number(discount) > specificQuotation.discount) {
-//       discountAsPercentage = Number(discount) - specificQuotation.discount;
-//     } else if (Number(discount) < specificQuotation.discount) {
-//       discountAsPercentage = Number(discount) - specificQuotation.discount;
-//     } else {
-//       discountAsPercentage = 0;
-//     }
- 
-
-//     if (discount > 0 && differenceExistAndNewGrandTotal > 0) {
-//       differenceWithoutDiscount = differenceExistAndNewGrandTotal - discount;
-//     } else if (discount === 0 && differenceExistAndNewGrandTotal > 0) {
-//       differenceWithoutDiscount =
-//         differenceExistAndNewGrandTotal - specificQuotation.discount;
-//     } else {
-//       differenceWithoutDiscount = 0;
-//     }
-
-
-//     if (differenceWithoutDiscount === 0) {
-//       totalAfterDiscount = specificQuotation.net_total - discountAsPercentage;
-//     } else {
-//       totalAfterDiscount =
-//         specificQuotation.net_total + differenceWithoutDiscount;
-//     }
-
- 
-
-//  console.log("totalAfterDiscount", totalAfterDiscount)
-
-
-//     // console.log("newNetTotal", newNetTotal);
-
-//     // const totalAfterDiscount = newNetTotal;
-
-//     if (vat === 0) {
-//       vatAsPercentage = 0;
-//     } else if (vat > specificQuotation.vat) {
-//       vatAsPercentage = vat - specificQuotation.vat;
-//     } else if (vat < specificQuotation.vat) {
-//       vatAsPercentage = vat - specificQuotation.vat;
-//     } else {
-//       vatAsPercentage = 0;
-//     }
-
-//     console.log(vatAsPercentage)
-
-//     // console.log("vatAsPercentage", vatAsPercentage);
-
-//     // const newVat = vatAsPercentage / 100;
-
-//     // console.log("newVat", newVat);
-
-//     // if (!isNaN(vatAsPercentage)) {
-//     //   finalTotal = totalAfterDiscount + totalAfterDiscount * newVat;
-//     // } else {
-//     //   finalTotal = totalAfterDiscount;
-//     // }
-//     finalTotal = parseFloat(totalAfterDiscount).toFixed(2);
-
-//     return finalTotal;
-//   };
-
-
   const onSubmit = async (data) => {
     if (!jobCardData.Id) {
       return toast.error("No account found.");
@@ -316,7 +228,6 @@ const AddQuotation = () => {
         net_total: calculateFinalTotal(),
         input_data: items,
       };
-      console.log(values);
 
       setLoading(true);
       const response = await axios.post(

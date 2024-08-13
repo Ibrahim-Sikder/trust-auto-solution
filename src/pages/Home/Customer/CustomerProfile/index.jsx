@@ -171,6 +171,7 @@ const CustomerProfile = () => {
       </div>
     </div>
   );
+  
 };
 
 export default CustomerProfile;

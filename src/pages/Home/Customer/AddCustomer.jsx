@@ -3,7 +3,7 @@
 import TextField from "@mui/material/TextField";
 import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { Autocomplete, Box, Grid, Pagination } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, Pagination } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
@@ -555,7 +555,6 @@ const AddCustomer = () => {
                           )}
                           onChange={handleBrandChange}
                           value={selectedBrand}
-                          
                         />
                       </Grid>
                       <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -675,8 +674,14 @@ const AddCustomer = () => {
               {error && <ErrorMessage messages={error.data.errorSources} />}
             </div>
 
-            <div className="mt-2 ml-3 savebtn">
-              <button disabled={isLoading}>Add Customer </button>
+            <div className=" ml-3">
+              <Button
+                type="submit"
+                sx={{ color: "white" }}
+                disabled={isLoading}
+              >
+                Add Customer{" "}
+              </Button>
             </div>
           </form>
         </div>

@@ -35,7 +35,6 @@ export default function YearlyIncomeChart() {
     value: monthlyIncome[month],
   }));
 
-  console.log("formated data", monthlyIncome);
   const dynamicData2 = Object.keys(monthlyIncome).map((month) => ({
     value: monthlyIncome[month] / 2, // Example: Adjust this based on your requirement
   }));

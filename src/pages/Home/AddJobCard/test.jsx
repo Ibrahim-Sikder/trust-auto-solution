@@ -383,7 +383,6 @@ const AddJobCard = () => {
 
     const res = await createJobCard(newCard).unwrap();
 
-    console.log(res);
 
     if (res.success) {
       toast.success(res.message);
@@ -401,8 +400,6 @@ const AddJobCard = () => {
       }
     }
   };
-
-  console.log(jobCardCreateError);
 
   const handleNameChange = (_, newInputValue) => {
     setBrand(newInputValue);
@@ -482,7 +479,7 @@ const AddJobCard = () => {
     setIdType(userType);
     setNewId(userType);
 
-    console.log({ userType });
+
 
     switch (userType) {
       case "customer":
@@ -506,8 +503,6 @@ const AddJobCard = () => {
         toast.error("Invalid id type");
     }
   };
-
-  console.log(showId);
 
   const handleIconPreview = async (e) => {
     navigate(`/dashboard/preview?id=${e}`);
@@ -571,8 +566,6 @@ const AddJobCard = () => {
 
   const handleIdChange = (_, newValue) => {
     setUserId(newValue);
-
-    console.log(newValue);
 
     if (newId === "customer") {
       const filtered = customerData?.data?.customers?.find(
@@ -1673,7 +1666,7 @@ const AddJobCard = () => {
                   </thead>
                   <tbody>
                     {allJobCards?.data?.jobCards?.map((card, index) => {
-                      //  console.log(card)
+       
 
                       return (
                         <tr key={card?._id}>

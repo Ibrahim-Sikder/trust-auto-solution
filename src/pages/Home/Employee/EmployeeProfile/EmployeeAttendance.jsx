@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import {
   Table,
@@ -10,6 +11,8 @@ import {
   Typography,
   Box,
 } from '@mui/material';
+import { useGetSingleAttendanceQuery } from '../../../../redux/api/attendance';
+import { useSearchParams } from 'react-router-dom';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -24,8 +27,14 @@ const generateIndicator = () => {
   }
 };
 
-const MonthlyTable = () => {
+const MonthlyTable = (id) => {
+
   const days = Array.from({ length: 31 }, (_, i) => i + 1); 
+const {data, error, isLoading} = useGetSingleAttendanceQuery({id})
+if(isLoading){
+  return <p>Loading</p>
+}
+
 
   return (
     <Paper>

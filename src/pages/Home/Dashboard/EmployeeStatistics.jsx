@@ -63,7 +63,7 @@ const EmployeeStatistics = () => {
     },
     0
   );
-  console.log(advanceSalary);
+  
   const advanceSalaryPercentage = Math.ceil(
     advanceSalary > 0 ? (advanceSalary / totalSalary) * 100 : 0
   );

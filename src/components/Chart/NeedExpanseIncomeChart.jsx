@@ -57,10 +57,7 @@ import {
       { name: "Quotation", series1: 2, series2: 3, series3: 5 },
       { name: "Invoice", series1: 2, series2: 7, series3: 3 },
     ];
-    console.log('jobcard data', jobCardData)
-    console.log('invoice data', invoiceData)
-    console.log('quotation data', qutationData)
-  
+
     return (
       <ResponsiveContainer width="100%" height={500}>
         <LineChart data={data} margin={{ top: 5, right: 30, bottom: 5, left: 0 }}>

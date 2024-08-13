@@ -1322,7 +1322,7 @@ const Detail = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
-  console.log(invoicePreview);
+
 
   const [loading, setLoading] = useState(false);
 

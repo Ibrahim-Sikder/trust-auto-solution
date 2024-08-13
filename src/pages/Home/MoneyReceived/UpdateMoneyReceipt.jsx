@@ -29,7 +29,6 @@ import { ErrorMessage } from "../../../components/error-message";
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-  const { watch } = useForm();
   const { data: singleMoneyReceipt, refetch } =
     useGetSingleMoneyReceiptQuery(id);
 
@@ -49,15 +48,15 @@ const UpdateMoneyReceipt = () => {
   const [finalPayment, setFinalPayment] = useState(false);
   const [cash, setCash] = useState(false);
   const [cheque, setCheque] = useState(false);
-  const bill = watch("against_bill_no_method");
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
-
+  const bill = watch("against_bill_no_method");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -327,8 +326,6 @@ const UpdateMoneyReceipt = () => {
   const handleChange2 = (event) => {
     setBillNo(event.target.value);
   };
-  console.log(bill);
-
   const buttonStyle = {
     color: "white",
     borderRadius: "20px",
@@ -418,8 +415,7 @@ const UpdateMoneyReceipt = () => {
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
-           
-                label=" Against bill no"
+                label="Against bill no"
                 onChange={handleChange2}
                 {...register("against_bill_no_method", { required: true })}
               >
@@ -578,7 +574,7 @@ const UpdateMoneyReceipt = () => {
                 )}
               </div>
             </div>
-            {bill === "Final payment against bill no" ? null : (
+            {bill === "Final payment against bill no" ? (
               <div className="flex lg:flex-row  flex-col ">
                 <label>Payable Amount :</label>
                 <input
@@ -589,37 +585,37 @@ const UpdateMoneyReceipt = () => {
                   readOnly
                 />
               </div>
-            )}
+            ) : null}
           </div>
           {bill === "Advance against bill no" ? (
-            <div className="flex lg:flex-row  flex-col">
-              <label>Advance:</label>
-              <div>
-                <input
-                  {...register("advance", { required: true })}
-                  className="moneyViewInputField totalAmountInput"
-                  type="number"
-                  onChange={(e) => setAdvance(e.target.value)}
-                />
-                {errors.advance && advance === null && (
-                  <span className="text-sm text-red-400">
-                    This field is required
-                  </span>
-                )}
+            <>
+              <div className="flex lg:flex-row  flex-col">
+                <label>Advance:</label>
+                <div>
+                  <input
+                    {...register("advance", { required: true })}
+                    className="moneyViewInputField totalAmountInput"
+                    type="number"
+                    onChange={(e) => setAdvance(e.target.value)}
+                  />
+                  {errors.advance && advance === null && (
+                    <span className="text-sm text-red-400">
+                      This field is required
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-          ) : null}
-          {bill === "Advance against bill no" ? (
-            <div className="flex lg:flex-row  flex-col ">
-              <label>Remaining:</label>
-              <input
-                {...register("remaining")}
-                className="moneyViewInputField totalAmountInput"
-                type="text"
-                value={getRemaining()}
-                readOnly
-              />
-            </div>
+              <div className="flex lg:flex-row  flex-col ">
+                <label>Remaining:</label>
+                <input
+                  {...register("remaining")}
+                  className="moneyViewInputField totalAmountInput"
+                  type="text"
+                  value={getRemaining()}
+                  readOnly
+                />
+              </div>
+            </>
           ) : null}
         </div>
         <div className="mt-5 wordTaka">

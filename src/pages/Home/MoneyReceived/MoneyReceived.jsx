@@ -49,6 +49,7 @@ const MoneyReceiptView = () => {
   } = useForm();
 
   const bill = watch("against_bill_no_method");
+
   const [job_no, setJob_no] = useState(null);
 
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -265,7 +266,6 @@ const MoneyReceiptView = () => {
   const handleChange2 = (event) => {
     setBillNo(event.target.value);
   };
-  console.log(bill);
 
   const handleTotalAmount = (value) => {
     setTotalAmount(value);
@@ -350,35 +350,33 @@ const MoneyReceiptView = () => {
           </div>
           <div className="mt-5 lg:flex-row  flex flex-col gap-4 ">
             <div className="flex f ">
-              <FormControl
-                sx={{
-                  minWidth: 170,
-                  minHeight: "30px",
-                  marginRight: 0.5,
-                  backgroundColor: "#D9D9D9",
-                }}
-                size="small"
+            <FormControl
+              sx={{
+                minWidth: 170,
+                minHeight: "30px",
+                marginRight: 0.5,
+                backgroundColor: "#D9D9D9",
+              }}
+              size="small"
+            >
+              <InputLabel id="demo-select-small-label">
+                Against bill no
+              </InputLabel>
+              <Select
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                label="Against bill no"
+                onChange={handleChange2}
+                {...register("against_bill_no_method", { required: true })}
               >
-                <InputLabel id="demo-select-small-label">
-                  Against bill no
-                </InputLabel>
-                <Select
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  label="  Against bill no"
-                  onChange={handleChange2}
-                  {...register("against_bill_no_method", { required: true })}
-                >
-                  <MenuItem value="Final payment against bill no">
-                    {" "}
-                    Final payment against bill no
-                  </MenuItem>
-                  <MenuItem value="Advance against bill no">
-                    {" "}
-                    Advance against bill no
-                  </MenuItem>
-                </Select>
-              </FormControl>
+                <MenuItem value="Final payment against bill no">
+                  Final payment against bill no
+                </MenuItem>
+                <MenuItem value="Advance against bill no">
+                  Advance against bill no
+                </MenuItem>
+              </Select>
+            </FormControl>
               <div>
                 <input
                   // {...register("against_bill_no_method", { required: true })}

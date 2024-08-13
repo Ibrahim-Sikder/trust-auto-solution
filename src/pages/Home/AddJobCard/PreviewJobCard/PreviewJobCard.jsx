@@ -21,8 +21,6 @@ const PreviewJobCard = () => {
   const { data, isLoading } = useGetSingleJobCardQuery(id);
 
   const previewData = data?.data;
-  console.log(previewData);
-  console.log(previewData.customer.customer_name);
 
   const extractTextFromHTML = (htmlString) => {
     const doc = new DOMParser().parseFromString(htmlString, "text/html");

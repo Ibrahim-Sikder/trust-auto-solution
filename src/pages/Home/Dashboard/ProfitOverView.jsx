@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { Stack, styled } from "@mui/material";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { useGetAllExpensesQuery } from "../../../redux/api/expense";
 import { useGetAllIncomesQuery } from "../../../redux/api/income";
+import { useGetAllDonationQuery } from "../../../redux/api/donationApi";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme, color }) => ({
   height: 10,
@@ -20,6 +22,8 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme, color }) => ({
 }));
 
 const ProfitOverView = () => {
+  const { data: donationData, isLoading: donationLoading } =
+    useGetAllDonationQuery();
   const {
     data: expenseData,
     error: expenseError,
@@ -42,11 +46,13 @@ const ProfitOverView = () => {
   if (expenseError || incomeError)
     return <div>Error: {expenseError?.message || incomeError?.message}</div>;
 
+  // calculate total income
   const totalIncome =
     incomeData?.data?.incomes?.reduce(
       (sum, income) => sum + income.amount,
       0
     ) || 0;
+  // calculate total expense
   const totalExpenses =
     expenseData?.data?.expenses?.reduce(
       (sum, expense) => sum + Number(expense.amount),
@@ -54,21 +60,36 @@ const ProfitOverView = () => {
     ) || 0;
 
   const profit = totalIncome - totalExpenses;
-
+  // calculate total donation amount
+  const totalDonation =
+    donationData?.data?.reduce((sum, donate) => {
+   
+      return sum + parseFloat(donate.donation_amount);
+    }, 0) || 0;
+  // calculate income percentgage
   const incomePercentage = Number(
     Math.round((totalIncome / (totalIncome + totalExpenses)) * 100)
   );
 
+  // calculate expense percentage
+
   const expensePercentage = Number(
     Math.round((totalExpenses / (totalIncome + totalExpenses)) * 100)
   );
+  // calculate profie
   const profitPercentage = Number(
     Math.round((profit / (totalIncome + totalExpenses)) * 100)
   );
 
+  const donationPercentage = Number(
+    Math.round((totalDonation / (totalDonation + profit)) * 100)
+  );
+
+
   const previousMonthEarnings = 5785;
   const previousMonthExpenses = 305785;
 
+   
   return (
     <div className="profiteCardWrap lg:flex-nowrap flex-wrap flex items-center justify-between sectionMargin">
       <div className="profitCard ">
@@ -134,13 +155,16 @@ const ProfitOverView = () => {
       <div className="profitCard ">
         <div className="flex items-center justify-between">
           <b>Donations</b>
-          <small className="text-[#55CE63]">+35%</small>
+          <small className="text-[#55CE63]">+{donationPercentage}%</small>
         </div>
 
         <div className="space-y-2 mt-3">
-          <b className="block ">৳465785</b>
+          <b className="block ">৳{totalDonation}</b>
           <Stack spacing={2} sx={{ flexGrow: 1, color: " red" }}>
-            <BorderLinearProgress variant="determinate" value={50} />
+            <BorderLinearProgress
+              variant="determinate"
+              value={donationPercentage}
+            />
           </Stack>
           <small className="block">
             Previous month <b className="text-[#]">৳ 305785</b>

@@ -22,7 +22,7 @@ const BillPayInvoice = () => {
   });
 
   const [invoicePreview, setInvoicePreview] = useState({});
-  console.log(invoicePreview);
+ 
 
   // const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import { Autocomplete, Box, Grid, Pagination } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, Pagination } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
@@ -602,8 +602,8 @@ const AddCompany = () => {
             <div className="my-2">
               {error && <ErrorMessage messages={error.data.errorSources} />}
             </div>
-            <div className="mt-2 ml-0 md:ml-3 savebtn">
-              <button disabled={isLoading}>Add Company </button>
+            <div className="mt-2 ml-0 md:ml-3 justify-end flex ">
+              <Button type="submit" sx={{color:'white'}} disabled={isLoading}>Add Company </Button>
             </div>
           </form>
         </div>

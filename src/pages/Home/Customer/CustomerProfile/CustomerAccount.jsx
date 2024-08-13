@@ -78,7 +78,7 @@ const CustomerAccount = ({ profileData }) => {
       : null;
 
 
- console.log(lastQuotation)
+
 
   return (
     <div className="customerProfileWrap">

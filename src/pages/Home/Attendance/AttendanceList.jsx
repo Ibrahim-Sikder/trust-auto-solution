@@ -81,7 +81,6 @@ const AttendanceList = () => {
     toast.error("Something went wrong!");
   }
 
-  console.log(error);
 
   return (
     <div className="mt-10 table-container">
@@ -112,7 +111,7 @@ const AttendanceList = () => {
               <th>Present </th>
               <th>Absent </th>
               <th>Late </th>
-              <th colSpan={3}>Action </th>
+              <th>Action </th>
             </tr>
           </thead>
           {allAttendance?.data?.records?.map((attendance) => (
@@ -136,32 +135,28 @@ const AttendanceList = () => {
                   </div>
                 </td>
                 <td>
-                  <Link
-                    to={`/dashboard/update-attendance?date=${attendance?.date}`}
-                  >
-                    <FaUserEdit
-                      className="text-[#60BF6B] cursor-pointer mx-auto"
+                  <div className="flex items-center justify-center gap-5">
+                    <Link
+                      to={`/dashboard/update-attendance?date=${attendance?.date}`}
+                    >
+                      <FaUserEdit
+                        className="text-[#60BF6B] cursor-pointer"
+                        size={30}
+                      />
+                    </Link>
+                    <Link to={`/dashboard/view-attendance?date=${""}`}>
+                      {" "}
+                      <HiOutlineEye
+                        className="text-[#42A1DA] cursor-pointer"
+                        size={30}
+                      />{" "}
+                    </Link>
+                    <FaRegTrashAlt
+                      className="text-[#F62F52] cursor-pointer "
                       size={30}
+                      onClick={() => handleDeleteFilter(attendance?.date)}
                     />
-                  </Link>
-                </td>
-
-                <td>
-                  <Link to={`/dashboard/view-attendance?date=${""}`}>
-                    {" "}
-                    <HiOutlineEye
-                      className="text-[#42A1DA] cursor-pointer mx-auto"
-                      size={30}
-                    />{" "}
-                  </Link>
-                </td>
-                <td>
-                  {" "}
-                  <FaRegTrashAlt
-                    className="text-[#F62F52] cursor-pointer mx-auto"
-                    size={30}
-                    onClick={() => handleDeleteFilter(attendance?.date)}
-                  />
+                  </div>
                 </td>
               </tr>
             </tbody>

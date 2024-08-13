@@ -15,7 +15,6 @@ export default function YearlyIncomeChart() {
     page: 1,
   });
 
-  console.log(incomeData);
   const groupByMonth = (data, key) => {
     return data.reduce((acc, curr) => {
       const month = dayjs(curr.date).isValid()

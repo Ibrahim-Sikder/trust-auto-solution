@@ -113,27 +113,7 @@ const AddAttendance = () => {
   const currentDate = new Date();
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
 
-  // Output: The name of the current month (e.g., "April" if current month is April)
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-  //     .then((response) => {
-  //       setGetAllEmployee(response.data.employee);
-  //       const allEmployee = response.data.employee.map(
-  //         (data) => data.salary_details
-  //       );
-  //       const showData = allEmployee.flat();
-  //       const filteredSalary = showData.filter(
-  //         (salary) => salary.month_of_salary === currentMonth
-  //       );
-
-  //       setGetAllEmployeeSalary(filteredSalary);
-  //     })
-  //     .catch((error) => {
-  //       setError(error.message);
-  //     });
-  // }, [currentMonth]);
+ 
 
   const handleBonus = (index, value) => {
     const newBonus = [...bonus];
@@ -228,201 +208,205 @@ const AddAttendance = () => {
   // }
 
   return (
-    <div className="pt-8 pb-20">
-      <div className="flex items-center justify-between my-3 mb-8">
-        <div className="flex items-center justify-center ">
-          <div className="ml-2">
-            <h3 className="mb-2 text-2xl font-bold"> Employee Salary </h3>
-            <span> Dashboard / Employee Salary </span>
+    <>
+      <div className="pt-8 pb-20">
+        <div className="flex items-center justify-between my-3 mb-8">
+          <div className="flex items-center justify-center ">
+            <div className="ml-2">
+              <h3 className="mb-2 text-2xl font-bold"> Employee Salary </h3>
+              <span> Dashboard / Employee Salary </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="overflow-x-auto">
-        <table className="attendanceTable salaryTable min-w-full">
-          <thead>
-            <tr>
-              <th>Employee</th>
-              <th>Employee ID</th>
-              <th>Month of Salary</th>
-              <th>Bonus</th>
-              <th>Overtime Hour</th>
-              <th>Overtime Amount</th>
-              <th>Amount of Salary</th>
-              <th>Previous Due</th>
-              <th>Cut Salary</th>
-              <th>Total Payment</th>
-              <th>Advance</th>
-              <th>Pay</th>
-              <th>Due</th>
-              <th>Paid</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(getAllEmployee?.data?.employees) &&
-              getAllEmployee?.data?.employees?.map((employee, index) => {
-                const userOvertime = {};
-                employee.attendance.forEach((attendanceRecord) => {
-                  if (
-                    attendanceRecord.overtime &&
-                    typeof attendanceRecord.overtime === "number"
-                  ) {
-                    if (!userOvertime[employee._id]) {
-                      userOvertime[employee._id] = 0;
+        <div className="overflow-x-auto">
+          <table className="attendanceTable salaryTable min-w-full">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Employee ID</th>
+                <th>Month of Salary</th>
+                <th>Bonus</th>
+                <th>Overtime Hour</th>
+                <th>Overtime Amount</th>
+                <th>Amount of Salary</th>
+                <th>Previous Due</th>
+                <th>Cut Salary</th>
+                <th>Total Payment</th>
+                <th>Advance</th>
+                <th>Pay</th>
+                <th>Due</th>
+                <th>Paid</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(getAllEmployee?.data?.employees) &&
+                getAllEmployee?.data?.employees?.map((employee, index) => {
+                  const userOvertime = {};
+                  employee.attendance.forEach((attendanceRecord) => {
+                    if (
+                      attendanceRecord.overtime &&
+                      typeof attendanceRecord.overtime === "number"
+                    ) {
+                      if (!userOvertime[employee._id]) {
+                        userOvertime[employee._id] = 0;
+                      }
+                      userOvertime[employee._id] += attendanceRecord.overtime;
                     }
-                    userOvertime[employee._id] += attendanceRecord.overtime;
-                  }
-                });
+                  });
 
-                return (
-                  <tr
-                    className={index % 2 === 0 ? "odd-row" : "odd-row"}
-                    key={employee._id}
-                  >
-                    <td>{employee.full_name}</td>
-                    <td>{employee.employeeId}</td>
-                    <td>
-                      <div>
-                        {/* <Select
+                  return (
+                    <tr
+                      className={index % 2 === 0 ? "odd-row" : "odd-row"}
+                      key={employee._id}
+                    >
+                      <td>{employee.full_name}</td>
+                      <td>{employee.employeeId}</td>
+                      <td>
+                        <div>
+                          {/* <Select
                           value={selectedOption}
                           onChange={handleChange}
                           options={months}
                         /> */}
-                      </div>
+                        </div>
 
-                      <FormControl fullWidth>
-                        <InputLabel htmlFor="grouped-native-select">
-                          Select Month
-                        </InputLabel>
-                        <Select
-                          fullWidth
-                          id="grouped-native-select"
-                          label="Select Month"
-                          onChange={handleMonthChange}
-                        >
-                          {allMonths.map((month) => (
-                            <MenuItem value={month} key={month}>
-                              {month}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="Bonus"
-                        onChange={(e) => handleBonus(index, e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <b>
-                        {userOvertime[employee._id]
-                          ? userOvertime[employee._id]
-                          : 0}{" "}
-                        h
-                      </b>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="O Amount"
-                        onChange={(e) =>
-                          handleOvertimeAmount(index, e.target.value)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder=" A of Salary "
-                        onChange={(e) =>
-                          handleSalaryAmount(index, e.target.value)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="Previous A"
-                        onChange={(e) =>
-                          handlePreviousDue(index, e.target.value)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="Cut Salary "
-                        onChange={(e) => handleSalaryCut(index, e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="T Payment "
-                        onChange={(e) =>
-                          handleTotalPayment(index, e.target.value)
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="Advance"
-                        onChange={(e) => handleAdvance(index, e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="Pay"
-                        onChange={(e) => handlePay(index, e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="Pay"
-                        onChange={(e) => handleDue(index, e.target.value)}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="border overTimeInput"
-                        placeholder="Pay"
-                        onChange={(e) => handlePaid(index, e.target.value)}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-        <div className="my-2">
-          {createError && (
-            <ErrorMessage messages={createError?.data?.errorSources} />
-          )}
-        </div>
-        <div className="flex justify-end mt-3">
-          <button
-            disabled={createLoading}
-            className="bg-[#42A1DA] text-white px-3 py-2 rounded-sm"
-            type="submit"
-            onClick={handleSubMitSalary}
-          >
-            Submit Salary
-          </button>
+                        <FormControl fullWidth>
+                          <InputLabel htmlFor="grouped-native-select">
+                            Select Month
+                          </InputLabel>
+                          <Select
+                            fullWidth
+                            id="grouped-native-select"
+                            label="Select Month"
+                            onChange={handleChange}
+                          >
+                            {allMonths.map((month) => (
+                              <MenuItem value={month} key={month}>
+                                {month}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="Bonus"
+                          onChange={(e) => handleBonus(index, e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <b>
+                          {userOvertime[employee._id]
+                            ? userOvertime[employee._id]
+                            : 0}{" "}
+                          h
+                        </b>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="O Amount"
+                          onChange={(e) =>
+                            handleOvertimeAmount(index, e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder=" A of Salary "
+                          onChange={(e) =>
+                            handleSalaryAmount(index, e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="Previous A"
+                          onChange={(e) =>
+                            handlePreviousDue(index, e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="Cut Salary "
+                          onChange={(e) =>
+                            handleSalaryCut(index, e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="T Payment "
+                          onChange={(e) =>
+                            handleTotalPayment(index, e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="Advance"
+                          onChange={(e) => handleAdvance(index, e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="Pay"
+                          onChange={(e) => handlePay(index, e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="Pay"
+                          onChange={(e) => handleDue(index, e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          className="border overTimeInput"
+                          placeholder="Pay"
+                          onChange={(e) => handlePaid(index, e.target.value)}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+          <div className="my-2">
+            {createError && (
+              <ErrorMessage messages={createError?.data?.errorSources} />
+            )}
+          </div>
+          <div className="flex justify-end mt-3">
+            <button
+              disabled={createLoading}
+              className="bg-[#42A1DA] text-white px-3 py-2 rounded-sm"
+              type="submit"
+              onClick={handleSubMitSalary}
+            >
+              Submit Salary
+            </button>
+          </div>
         </div>
       </div>
       <EmployeeSalaryListTable
@@ -430,7 +414,7 @@ const AddAttendance = () => {
         setFilterType={setFilterType}
         getAllSalary={getAllSalary}
       />
-    </div>
+    </>
   );
 };
 

@@ -214,8 +214,6 @@ const Detail = () => {
     return `${takaInWords} only`;
   };
 
-  console.log(servicePagesData.length)
-  console.log(servicePagesData[0]?.length)
   const totalAmountInWords = amountInWords(invoicePreview?.net_total);
   const partsTotalAmountInWords = amountInWords(invoicePreview?.parts_total);
 
