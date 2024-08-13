@@ -4,35 +4,54 @@ import "./Attendance.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useGetAllAttendancesQuery } from "../../../redux/api/attendance";
+import { useGetAllEmployeesQuery } from "../../../redux/api/employee";
 
 const ViewEmployeeAttendance = () => {
   const [employeeAttendance, setEmployeeAttendance] = useState([]);
-  
+  const { data, isLoading } = useGetAllAttendancesQuery({
+    limit: 10,
+    page: 1,
+  });
+  const { data: employeeData } = useGetAllEmployeesQuery({
+    limit: 10,
+    page: 1,
+  });
+
   const [error, setError] = useState("");
 
   const location = useLocation();
   const date = new URLSearchParams(location.search).get("date");
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-      .then((response) => {
-        const attendanceData = response.data.employee.map(
-          (data) => data.attendance
-        );
+  // useEffect(() => {
+  //   axios
+  //     .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
+  //     .then((response) => {
+  //       const attendanceData = response.data.employee.map(
+  //         (data) => data.attendance
+  //       );
 
-        const allAttendance = attendanceData.flat();
+  //       const allAttendance = attendanceData.flat();
 
-        const filteredAttendance = allAttendance.filter(
-          (attendance) => attendance.date === date
-        );
+  //       const filteredAttendance = allAttendance.filter(
+  //         (attendance) => attendance.date === date
+  //       );
 
-        setEmployeeAttendance(filteredAttendance);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }, [date]);
+  //       setEmployeeAttendance(filteredAttendance);
+  //     })
+  //     .catch((error) => {
+  //       setError(error.message);
+  //     });
+  // }, [date]);
+
+  if (isLoading) {
+    return <p>Loading.....</p>;
+  }
+
+  const attendanceData = employeeData?.data?.employees?.map((employee) =>
+    employee.attendance.map((attend) => attend)
+  );
+
 
   return (
     <div className="pt-8 pb-20">
@@ -68,52 +87,83 @@ const ViewEmployeeAttendance = () => {
             </tr>
           </thead>
           <tbody>
-            {employeeAttendance.map((data, i) => (
+            {employeeData?.data?.employees?.map((employee, i) => (
               <tr
                 key={data.id}
                 className={i % 2 === 0 ? "even-row" : "odd-row"}
               >
                 <td>{i + 1}</td>
-                <td>{data.date}</td>
-                <td>{data.full_name}</td>
-                <td> {data.employeeId}</td>
-                <td> {data.designation}</td>
+                <td>{employee.attendance.map((attend, index) => (
+                    <div key={index}>
+                      {attend.date}
+                    </div>
+                  ))}</td>
+                <td>{employee.full_name}</td>
+                <td> {employee.employeeId}</td>
+                <td> {employee.designation}</td>
 
                 <td>
-                  {data.present && (
-                    <HiCheck
-                      className="text-[#4AB657] attendanceIcon "
-                      size={25}
-                    />
-                  )}
+                  {employee.attendance.map((attend, index) => (
+                    <div key={index}>
+                      {attend.present === true ? (
+                        <HiCheck
+                          className="text-[#4AB657] attendanceIcon "
+                          size={25}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  ))}
                 </td>
                 <td>
-                  {data.absent && (
-                    <HiCheck
-                      className="text-[#F62D51] attendanceIcon "
-                      size={25}
-                    />
-                  )}
+                  {employee.attendance.map((attend, index) => (
+                    <div key={index}>
+                      {attend.present === false ? (
+                        <HiCheck
+                          className="text-[#F62D51] attendanceIcon "
+                          size={25}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  ))}
                 </td>
                 <td>10.00</td>
-                <td> {data.in_time}</td>
-                <td> {data.out_time}</td>
-                <td>{data.overtime}</td>
                 <td>
-                  <div className="flex items-center justify-center cursor-pointer ">
-                    {data.late_status && (
-                      <HiCheck
-                        className="text-[#F62D51] attendanceIcon "
-                        size={25}
-                      />
-                    )}
-                    {!data.late_status && (
-                      <HiCheck
+                  {employee.attendance.map((attend, index) => (
+                    <div key={index}>{attend.in_time}</div>
+                  ))}
+                </td>
+                <td>
+                  {employee.attendance.map((attend, index) => (
+                    <div key={index}>{attend.out_time}</div>
+                  ))}
+                </td>
+                <td>
+                  {" "}
+                  {employee.salary.map((slr, index) => (
+                    <div key={index}>{slr.overtime_amount}</div>
+                  ))}
+                </td>
+                <td>
+                {employee.attendance.map((attend, index) => (
+                    <div key={index}>
+                      {attend.late_status === true ? (
+                        <HiCheck
                         className="text-[#4AB657] attendanceIcon "
                         size={25}
                       />
-                    )}
-                  </div>
+                      ) : (
+                        <HiCheck
+                        className="text-[#F62D51] attendanceIcon "
+                        size={25}
+                      />
+                      )}
+                    </div>
+                  ))}
+                 
                 </td>
               </tr>
             ))}

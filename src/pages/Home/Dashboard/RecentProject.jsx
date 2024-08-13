@@ -42,6 +42,7 @@ const RecentProject = () => {
         </div>
 
         <hr />
+
         <table className="min-w-full">
           <thead>
             <tr>
@@ -75,7 +76,7 @@ const RecentProject = () => {
                     <BorderLinearProgress
                       stroke="#60BE6B"
                       variant="determinate"
-                      value={job.progress || 80} // Replace with actual progress value if available
+                      value={job.progress || 50}
                     />
                   </Stack>
                 </td>

@@ -509,7 +509,7 @@ const AddQuotation = () => {
 
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 my-10">
             <Box>
-              <h3 className="text-xl lg:text-3xl font-bold">Customer Info</h3>
+              <h3 className="text-xl lg:text-3xl font-bold mb-5">Customer Info</h3>
               <Grid container spacing={2}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextField
@@ -696,7 +696,7 @@ const AddQuotation = () => {
             </Box>
 
             <Box>
-              <h3 className="text-xl lg:text-3xl font-bold">Vehicle Info</h3>
+              <h3 className="text-xl lg:text-3xl font-bold mb-5 ">Vehicle Info</h3>
               <Grid container spacing={2}>
                 <Grid item lg={12} md={12} sm={12} xs={12}>
                   <Autocomplete

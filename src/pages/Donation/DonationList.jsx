@@ -19,9 +19,15 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 
 import { useDeleteBillPayMutation } from "../../redux/api/bill-pay";
+import {
+  useDeleteDonationMutation,
+  useGetAllDonationQuery,
+} from "../../redux/api/donationApi";
 
-const DonatinList = ({ allBillPays }) => {
-  const [deleteBillPay, { isLoading }] = useDeleteBillPayMutation();
+const DonatinList = () => {
+  const [deleteDonation, { isLoading }] = useDeleteDonationMutation();
+  const { data: donationData, isLoading: donationLoading } =
+    useGetAllDonationQuery();
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -33,62 +39,66 @@ const DonatinList = ({ allBillPays }) => {
 
     if (willDelete) {
       try {
-        await deleteBillPay(id).unwrap;
-        swal("Deleted!", "Card delete successful.", "success");
+        await deleteDonation(id).unwrap;
+        swal("Deleted!", "Donation delete successful.", "success");
       } catch (error) {
-        swal("Error", "An error occurred while deleting the card.", "error");
+        swal(
+          "Error",
+          "An error occurred while deleting the donation.",
+          "error"
+        );
       }
     }
   };
+  if (donationLoading) {
+    return <p>Loading</p>;
+  }
 
   return (
     <Box bgcolor="white" padding={3}>
       <Typography variant="h5" fontWeight="bold" marginBottom="15px">
-       Donatin List
+        Donatin List
       </Typography>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Suplier ID</TableCell>
               <TableCell align="center">Name</TableCell>
               <TableCell align="center">Mobile</TableCell>
               <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Shop Name </TableCell>
-              <TableCell align="center">Vendor Categories </TableCell>
-              <TableCell align="center">Against Bill </TableCell>
+              <TableCell align="center">Address </TableCell>
+              <TableCell align="center">Dopnation Purpose </TableCell>
+              <TableCell align="center">Donation Amount </TableCell>
+              <TableCell align="center">Country</TableCell>
+              <TableCell align="center">Payment Method </TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {allBillPays?.data?.billPays?.map((row) => (
+            {donationData?.data?.map((data, i) => (
               <TableRow
-                key={row.id}
+                key={i}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell align="center">{row.supplierId}</TableCell>
-
-                <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.mobile_number}</TableCell>
-                <TableCell align="center">{row.email}</TableCell>
-                <TableCell align="center">{row.shop_name}</TableCell>
-                <TableCell align="center">{row.category}</TableCell>
-                <TableCell align="center">{row.against_bill}</TableCell>
+                <TableCell align="center">{data.name}</TableCell>
+                <TableCell align="center">{data.mobile_number}</TableCell>
+                <TableCell align="center">{data.email}</TableCell>
+                <TableCell align="center">{data.address}</TableCell>
+                <TableCell align="center">{data.donation_purpose}</TableCell>
+                <TableCell align="center">{data.donation_amount}</TableCell>
+                <TableCell align="center">{data.donation_country}</TableCell>
+                <TableCell align="center">{data.payment_method}</TableCell>
                 <TableCell align="center">
                   <div className="flex justify-center">
-                    <Link to={`/dashboard/billpay-view`}>
-                      <IconButton title="See Profile">
-                        <VisibilityIcon className="text-green-600" />
-                      </IconButton>
-                    </Link>
-                    <Link to={`/dashboard/billpay-update?id=${row._id}`}>
-                      <IconButton title="Edit">
-                        <EditIcon />
-                      </IconButton>
-                    </Link>
+                    <IconButton title="See Profile">
+                      <VisibilityIcon className="text-green-600" />
+                    </IconButton>
+                    <IconButton title="Edit">
+                      <EditIcon />
+                    </IconButton>
                     <IconButton
-                      onClick={() => deletePackage(row._id)}
+                      onClick={() => deletePackage(data._id)}
                       disabled={isLoading}
                       title="Delete"
                     >

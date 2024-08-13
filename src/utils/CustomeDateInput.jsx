@@ -12,7 +12,7 @@ function DatePicker({ defaultValue }) {
             dateFormat: "d/m/Y", 
             defaultDate: defaultValue, 
             onChange: function(selectedDates, dateStr, instance) {
-                console.log(dateStr); 
+              
             },
         });
 

@@ -26,9 +26,9 @@ const CustomTooltip = ({ active, payload, label }) => {
         }}
       >
         <p className="label">{`${label}`}</p>
-        <p className="intro">{`Series1: ${payload[0].value}`}</p>
-        <p className="intro">{`Series2: ${payload[1].value}`}</p>
-        <p className="intro">{`Series3: ${payload[2].value}`}</p>
+        <p className="intro">{`Jobcard: ${payload[0].value}`}</p>
+        <p className="intro">{`Invoice: ${payload[1].value}`}</p>
+        <p className="intro">{`Quotation: ${payload[2].value}`}</p>
       </div>
     );
   }
@@ -55,21 +55,21 @@ export default function ExpanseIncomeChart() {
   const data = [
     {
       name: "Jobcard",
-      series1: jobCardData?.data?.jobCards?.length || 0,
-      series2: 0,
-      series3: 0, 
+      Jobcard: jobCardData?.data?.jobCards?.length || 0,
+      Quotation: qutationData?.data?.quotations?.length || 0,
+      Invoice: invoiceData?.data?.invoices?.length || 0,
     },
     {
       name: "Quotation",
-      series1: qutationData?.data?.quotations?.length || 0,
-      series2: 0,
-      series3: 0, 
+      Jobcard: qutationData?.data?.quotations?.length || 0,
+      Quotation: 0,
+      Invoice: 0,
     },
     {
       name: "Invoice",
-      series1: invoiceData?.data?.invoices?.length || 0,
-      series2: 0, 
-      series3: 0, 
+      Jobcard: jobCardData?.data?.jobCards?.length || 0,
+      Quotation: qutationData?.data?.quotations?.length || 0,
+      Invoice: invoiceData?.data?.invoices?.length || 0,
     },
   ];
 
@@ -81,9 +81,9 @@ export default function ExpanseIncomeChart() {
         <YAxis />
         <Tooltip content={<CustomTooltip />} />
         <Legend />
-        <Line type="monotone" dataKey="series1" stroke="#8884d8" />
-        <Line type="monotone" dataKey="series2" stroke="#82ca9d" />
-        <Line type="monotone" dataKey="series3" stroke="#ffc658" />
+        <Line type="monotone" dataKey="Jobcard" stroke="#8884d8" />
+        <Line type="monotone" dataKey="Quotation" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="Invoice" stroke="#ffc658" />
       </LineChart>
     </ResponsiveContainer>
   );

@@ -418,7 +418,7 @@ const AddJobCard = () => {
     setIdType(userType);
     setNewId(userType);
 
-    console.log({ userType });
+
 
     switch (userType) {
       case "customer":
@@ -1607,7 +1607,7 @@ const AddJobCard = () => {
                   </thead>
                   <tbody>
                     {allJobCards?.data?.jobCards?.map((card, index) => {
-                      //  console.log(card)
+                 
 
                       return (
                         <tr key={card?._id}>

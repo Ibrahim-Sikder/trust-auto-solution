@@ -9,7 +9,7 @@ const EmployeeAccount = ({ accountInfo }) => {
   ).length;
 
   const absentPercentage = Number(
-    (absentEntries / myAttendance.length) * 100
+    (absentEntries / myAttendance?.length) * 100
   ).toFixed(2);
 
   const isIntegerAbsentPercentage = absentPercentage.endsWith(".00");
@@ -26,7 +26,7 @@ const EmployeeAccount = ({ accountInfo }) => {
   ).length;
 
   const latePercentage = Number(
-    (lateEntries / myAttendance.length) * 100
+    (lateEntries / myAttendance?.length) * 100
   ).toFixed(2);
 
   const isIntegerLatePercentage = latePercentage.endsWith(".00");
@@ -184,7 +184,7 @@ const EmployeeAccount = ({ accountInfo }) => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-5 mt-10 place-items-center  place-content-center  ">
+        <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-5 mt-10  ">
           <div className="employeeProfileCard">
             <h3 className="text-xl font-semibold">Personal Information </h3>
             <div className="flex items-center justify-between mt-5">

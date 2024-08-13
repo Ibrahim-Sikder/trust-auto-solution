@@ -26,6 +26,7 @@ const attendanceApi = baseApi.injectEndpoints({
       providesTags: ["attendance"],
     }),
 
+    
     getSingleAttendance: builder.query({
       query: (date) => ({
         url: `/attendances/${date}`,
@@ -34,6 +35,7 @@ const attendanceApi = baseApi.injectEndpoints({
       invalidatesTags: ["attendance"],
     }),
 
+    
     deleteAttendance: builder.mutation({
       query: (attendanceInfo) => ({
         url: "/attendances/remove",

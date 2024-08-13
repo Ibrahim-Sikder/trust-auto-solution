@@ -171,7 +171,7 @@ const AddSuppliers = () => {
 
     if (file) {
       const uploadPhoto = await uploadFile(file);
-      console.log(uploadPhoto);
+
       setUrl(uploadPhoto?.secure_url);
       setLoading(false);
     }

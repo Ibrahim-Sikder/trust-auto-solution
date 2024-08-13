@@ -3,7 +3,7 @@
 
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import {   Pagination, Typography } from "@mui/material";
+import { Pagination, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -13,12 +13,26 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
-import { useDeletePurchaseMutation } from "../../../redux/api/purchase";
+import {
+  useDeletePurchaseMutation,
+  useGetAllPurchasesQuery,
+} from "../../../redux/api/purchase";
 
-const PurchaseList = ({ purchases, setCurrentPage, currentPage }) => {
+const PurchaseList = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterType, setFilterType] = useState("");
+
+  const limit = 10;
+  const { data: purchases, isLoading: purchasesLoading } =
+    useGetAllPurchasesQuery({
+      limit,
+      page: currentPage,
+      searchTerm: filterType,
+    });
+
   const [deletePurchase, { isLoading: purchaseLoading }] =
     useDeletePurchaseMutation();
 

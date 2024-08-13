@@ -27,6 +27,7 @@ import {
 } from "../../../redux/api/attendance";
 import { ErrorMessage } from "../../../components/error-message";
 import Loading from "../../../components/Loading/Loading";
+import { Close } from "@mui/icons-material";
 const AddAttendance = () => {
   const generateIcons = (totalCells, closePositions) => {
     const icons = [];
@@ -354,8 +355,6 @@ const AddAttendance = () => {
 
   const [filteredDate, setFilteredDate] = useState(null);
 
-  console.log(filteredDate);
-
   const handleDateSearch = (e) => {
     const parsedDate = new Date(e.$d);
     const day = parsedDate.getDate().toString().padStart(2, "0");
@@ -445,13 +444,17 @@ const AddAttendance = () => {
     ? 0
     : todayAttendance?.data?.latePercentage;
 
+  const handlePresentCange = (e) => {
+  
+  };
+
   return (
     <div className="pt-8 pb-20">
       <div className="flex items-center justify-between my-3 mb-8">
         <div className="flex items-center justify-center ">
           <div className="ml-2">
-            <h3 className="text-2xl font-bold"> Attendance </h3>{" "}
-            <span> Dashboard / Attendance </span>{" "}
+            <h3 className="text-2xl font-bold"> Attendance </h3>
+            <span> Dashboard / Attendance </span>
           </div>
         </div>
       </div>
@@ -489,8 +492,10 @@ const AddAttendance = () => {
                     <input
                       type="checkbox"
                       className="border w-5 h-5"
+                      onChange={handlePresentCange}
                       onClick={() => handlePresent(index)}
                       checked={presentState[index]}
+                      value={`someValue-${index}`}
                     />
                   </td>
                   <td>
@@ -522,15 +527,28 @@ const AddAttendance = () => {
                         handleAttendanceOvertime(index, e.target.value)
                       }
                     />
+
                   </td>
                   <td>
-                    <div className="flex items-center justify-center cursor-pointer ">
-                      <HiCheck
-                        className="text-[#4AB657] attendanceIcon "
-                        size={20}
-                        onClick={() => handleLate(index, false)}
-                      />
-                    </div>
+                    {presentState[index] ? (
+                      <div className="flex items-center justify-center cursor-pointer">
+                        <HiCheck
+                          className="text-[#4AB657] attendanceIcon"
+                          size={20}
+                          onClick={() => handleLate(index, false)}
+                        />
+                       
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center cursor-pointer">
+                        <Close
+                          className="text-[#FF0000] attendanceIcon" 
+                          size={20}
+                          onClick={() => handleLate(index, true)}
+                        />
+                     
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -562,7 +580,7 @@ const AddAttendance = () => {
               <th>Present</th>
               <th>Absent</th>
               <th>Late</th>
-              <th colSpan={3}>Action </th>
+              <th>Action </th>
             </tr>
           </thead>
           <tbody>
@@ -577,17 +595,16 @@ const AddAttendance = () => {
                           value={presentPercentage}
                           text={`${presentPercentage}%`}
                           styles={{
-                           
                             path: {
-                              stroke: `#60BE6B`, 
+                              stroke: `#60BE6B`,
                             },
-                  
+
                             text: {
-                              fill: "#3e98c7", 
+                              fill: "#3e98c7",
                             },
-                      
+
                             trail: {
-                              stroke: "#f4f4f4", 
+                              stroke: "#f4f4f4",
                             },
                           }}
                         />
@@ -608,15 +625,14 @@ const AddAttendance = () => {
                           value={absentPercentage}
                           text={`${absentPercentage}%`}
                           styles={{
-                         
                             path: {
-                              stroke: `#F62D51`, 
+                              stroke: `#F62D51`,
                             },
-                            
+
                             text: {
                               fill: "#3e98c7",
                             },
-                      
+
                             trail: {
                               stroke: "#f4f4f4",
                             },
@@ -639,16 +655,15 @@ const AddAttendance = () => {
                           value={latePercentage}
                           text={`${latePercentage}%`}
                           styles={{
-                           
                             path: {
-                              stroke: `#FF851A`, 
+                              stroke: `#FF851A`,
                             },
-                        
+
                             text: {
                               fill: "#3e98c7",
                             },
                             trail: {
-                              stroke: "#f4f4f4", 
+                              stroke: "#f4f4f4",
                             },
                           }}
                         />
@@ -661,31 +676,27 @@ const AddAttendance = () => {
                 </div>
               </td>
               <td>
-                <Link
-                  to={`/dashboard/update-attendance?date=${todayAttendance?.data?.date}`}
-                >
-                  <FaUserEdit
-                    className="text-[#60BF6B] cursor-pointer mx-auto"
+                <div className="flex items-center gap-3 ">
+                  <Link
+                    to={`/dashboard/update-attendance?date=${todayAttendance?.data?.date}`}
+                  >
+                    <FaUserEdit
+                      className="text-[#60BF6B] cursor-pointer mx-auto"
+                      size={30}
+                    />
+                  </Link>
+                  <HiOutlineEye
+                    className="text-[#42A1DA] cursor-pointer mx-auto"
                     size={30}
                   />
-                </Link>
-              </td>
-              <td>
-                {" "}
-                <HiOutlineEye
-                  className="text-[#42A1DA] cursor-pointer mx-auto"
-                  size={30}
-                />{" "}
-              </td>
-              <td>
-                {" "}
-                <FaRegTrashAlt
-                  className="text-[#F62F52] cursor-pointer mx-auto"
-                  size={30}
-                  onClick={() =>
-                    handleDeleteAttendance(todayAttendance?.data?.date)
-                  }
-                />
+                  <FaRegTrashAlt
+                    className="text-[#F62F52] cursor-pointer mx-auto"
+                    size={30}
+                    onClick={() =>
+                      handleDeleteAttendance(todayAttendance?.data?.date)
+                    }
+                  />
+                </div>
               </td>
             </tr>
           </tbody>
@@ -720,7 +731,7 @@ const AddAttendance = () => {
                 <th>Present </th>
                 <th>Absent </th>
                 <th>Late </th>
-                <th colSpan={3}>Action </th>
+                <th>Action </th>
               </tr>
             </thead>
             {allAttendance?.data?.records?.map((attendance) => (
@@ -744,34 +755,30 @@ const AddAttendance = () => {
                     </div>
                   </td>
                   <td>
-                    <Link
-                      to={`/dashboard/update-attendance?date=${attendance?.date}`}
-                    >
-                      <FaUserEdit
-                        className="text-[#60BF6B] cursor-pointer mx-auto"
+                    <div className="flex items-center justify-center gap-5 ">
+                      <Link
+                        to={`/dashboard/update-attendance?date=${attendance?.date}`}
+                      >
+                        <FaUserEdit
+                          className="text-[#60BF6B] cursor-pointer mx-auto"
+                          size={30}
+                        />
+                      </Link>
+                      <Link
+                        to={`/dashboard/view-attendance?date=${attendance.date}`}
+                      >
+                        {" "}
+                        <HiOutlineEye
+                          className="text-[#42A1DA] cursor-pointer "
+                          size={30}
+                        />{" "}
+                      </Link>
+                      <FaRegTrashAlt
+                        className="text-[#F62F52] cursor-pointer "
                         size={30}
+                        onClick={() => handleDeleteAttendance(attendance.date)}
                       />
-                    </Link>
-                  </td>
-
-                  <td>
-                    <Link
-                      to={`/dashboard/view-attendance?date=${attendance.date}`}
-                    >
-                      {" "}
-                      <HiOutlineEye
-                        className="text-[#42A1DA] cursor-pointer mx-auto"
-                        size={30}
-                      />{" "}
-                    </Link>
-                  </td>
-                  <td>
-                    {" "}
-                    <FaRegTrashAlt
-                      className="text-[#F62F52] cursor-pointer mx-auto"
-                      size={30}
-                      onClick={() => handleDeleteAttendance(attendance.date)}
-                    />
+                    </div>
                   </td>
                 </tr>
               </tbody>

@@ -4,7 +4,7 @@
 import TextField from "@mui/material/TextField";
 import { FaTrashAlt, FaEdit, FaUserTie } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { Autocomplete, Box, Grid, Pagination } from "@mui/material";
+import { Autocomplete, Box, Button, Grid, Pagination } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
@@ -620,8 +620,14 @@ const AddShowRoom = () => {
             <div className="my-2">
               {error && <ErrorMessage messages={error.data.errorSources} />}
             </div>
-            <div className="mt-2 ml-3 savebtn">
-              <button disabled={isLoading}>Add Show Room </button>
+            <div className="mt-2 ml-3 flex justify-end ">
+              <Button
+                type="submit"
+                sx={{ color: "white" }}
+                disabled={isLoading}
+              >
+                Add Show Room{" "}
+              </Button>
             </div>
           </form>
         </div>

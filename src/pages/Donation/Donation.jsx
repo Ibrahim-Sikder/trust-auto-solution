@@ -18,23 +18,23 @@ import { NotificationAdd } from "@mui/icons-material";
 import { FaUserGear } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import DonatinList from "./DonationList";
+import { useCreateDonationMutation } from "../../redux/api/donationApi";
+import { toast } from "react-toastify";
 
 const Donation = () => {
+  const [createDonation] = useCreateDonationMutation()
   const { register, watch, handleSubmit } = useForm();
   const payment = watch("payment_method");
 
   const onSubmit = async (data) => {
-    //   data.payment_method = payment;
-    //   data.image = url;
-    //   data.amount = Number(data.amount);
-    //   try {
-    //     const response = await createBillPay(data).unwrap();
-    //     if (response.success) {
-    //       toast.success(response.message);
-    //     }
-    //   } catch (error) {
-    //     toast.error(error.message);
-    //   }
+      try {
+        const response = await createDonation(data).unwrap();
+        if (response.success) {
+          toast.success(response.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
   };
 
   return (

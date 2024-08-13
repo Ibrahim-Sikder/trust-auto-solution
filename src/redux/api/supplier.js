@@ -28,7 +28,7 @@ const supplierApi = baseApi.injectEndpoints({
     }),
     updateSupplier: builder.mutation({
       query: (customerInfo) => {
-        console.log(customerInfo);
+      
         return {
           url: `/suppliers/${customerInfo.id}`,
           method: "PUT",

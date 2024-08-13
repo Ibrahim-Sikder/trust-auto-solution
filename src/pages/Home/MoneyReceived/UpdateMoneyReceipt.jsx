@@ -29,7 +29,6 @@ import { ErrorMessage } from "../../../components/error-message";
 const UpdateMoneyReceipt = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get("id");
-
   const { data: singleMoneyReceipt, refetch } =
     useGetSingleMoneyReceiptQuery(id);
 
@@ -41,7 +40,7 @@ const UpdateMoneyReceipt = () => {
     singleMoneyReceipt?.data?.remaining
   );
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [billNo, setBillNo] = useState("Final Payment / against bill no");
+  const [billNo, setBillNo] = useState("Final Payment against bill no");
   const [totalAmount, setTotalAmount] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -54,9 +53,10 @@ const UpdateMoneyReceipt = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm();
-
+  const bill = watch("against_bill_no_method");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -290,7 +290,7 @@ const UpdateMoneyReceipt = () => {
       if (response.success) {
         toast.success(response.message);
         navigate("/dashboard/money-receipt-list");
-        refetch()
+        refetch();
       }
     } catch (error) {
       toast.error(error.message);
@@ -326,7 +326,6 @@ const UpdateMoneyReceipt = () => {
   const handleChange2 = (event) => {
     setBillNo(event.target.value);
   };
-
   const buttonStyle = {
     color: "white",
     borderRadius: "20px",
@@ -416,18 +415,15 @@ const UpdateMoneyReceipt = () => {
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
-                value={billNo}
-                label="Payment Method "
+                label="Against bill no"
                 onChange={handleChange2}
                 {...register("against_bill_no_method", { required: true })}
               >
-                <MenuItem value="Final Payment / against bill no">
-                  {" "}
-                  Final Payment / against bill no
+                <MenuItem value="Final payment against bill no">
+                  Final payment against bill no
                 </MenuItem>
-                <MenuItem value="Advance / against bill no">
-                  {" "}
-                  Advance / against bill no{" "}
+                <MenuItem value="Advance against bill no">
+                  Advance against bill no
                 </MenuItem>
               </Select>
             </FormControl>
@@ -578,7 +574,7 @@ const UpdateMoneyReceipt = () => {
                 )}
               </div>
             </div>
-            {billNo == "Advance / against bill no" ? null : (
+            {bill === "Final payment against bill no" ? (
               <div className="flex lg:flex-row  flex-col ">
                 <label>Payable Amount :</label>
                 <input
@@ -589,37 +585,37 @@ const UpdateMoneyReceipt = () => {
                   readOnly
                 />
               </div>
-            )}
+            ) : null}
           </div>
-          {billNo == "Advance / against bill no" ? (
-            <div className="flex lg:flex-row  flex-col">
-              <label>Advance:</label>
-              <div>
-                <input
-                  {...register("advance", { required: true })}
-                  className="moneyViewInputField totalAmountInput"
-                  type="number"
-                  onChange={(e) => setAdvance(e.target.value)}
-                />
-                {errors.advance && advance === null && (
-                  <span className="text-sm text-red-400">
-                    This field is required
-                  </span>
-                )}
+          {bill === "Advance against bill no" ? (
+            <>
+              <div className="flex lg:flex-row  flex-col">
+                <label>Advance:</label>
+                <div>
+                  <input
+                    {...register("advance", { required: true })}
+                    className="moneyViewInputField totalAmountInput"
+                    type="number"
+                    onChange={(e) => setAdvance(e.target.value)}
+                  />
+                  {errors.advance && advance === null && (
+                    <span className="text-sm text-red-400">
+                      This field is required
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-          ) : null}
-          {billNo == "Advance / against bill no" ? (
-            <div className="flex lg:flex-row  flex-col ">
-              <label>Remaining:</label>
-              <input
-                {...register("remaining")}
-                className="moneyViewInputField totalAmountInput"
-                type="text"
-                value={getRemaining()}
-                readOnly
-              />
-            </div>
+              <div className="flex lg:flex-row  flex-col ">
+                <label>Remaining:</label>
+                <input
+                  {...register("remaining")}
+                  className="moneyViewInputField totalAmountInput"
+                  type="text"
+                  value={getRemaining()}
+                  readOnly
+                />
+              </div>
+            </>
           ) : null}
         </div>
         <div className="mt-5 wordTaka">
@@ -645,6 +641,7 @@ const UpdateMoneyReceipt = () => {
       </div>
       <div className="flex gap-2">
         <Button sx={buttonStyle}>Preview</Button>
+        <Button sx={buttonStyle}>Print </Button>
         <Button sx={buttonStyle}>Download </Button>
       </div>
     </div>

@@ -12,30 +12,68 @@ import {
 import { useGetAllExpensesQuery } from "../../redux/api/expense";
 import { useGetAllIncomesQuery } from "../../redux/api/income";
 
-const data = [
-  { month: "Jan", Earnings: 70000, Expense: 50000, Profit: 20000 },
-  { month: "Feb", Earnings: 200000, Expense: 150000, Profit: 50000 },
-  { month: "Mar", Earnings: 300000, Expense: 200000, Profit: 100000 },
-  { month: "Apr", Earnings: 50000, Expense: 45000, Profit: 25000 },
-  { month: "May", Earnings: 100000, Expense: 60000, Profit: 40000 },
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
-
 export default function StackBars() {
-  const { data: expenseData } = useGetAllExpensesQuery({
-    limit: 10,
-    page: 1,
-  });
+  const { data: expenseData, isLoading: incomeLoading } =
+    useGetAllExpensesQuery({
+      limit: 10,
+      page: 1,
+    });
 
-  const { data: incomeData } = useGetAllIncomesQuery({
-    limit: 10,
-    page: 1,
-  });
+  const { data: incomeData, isLoading: expenseLoading } = useGetAllIncomesQuery(
+    {
+      limit: 10,
+      page: 1,
+    }
+  );
 
+  if (incomeLoading || expenseLoading) {
+    return <p>Loading........</p>;
+  }
+
+  const monthlyIncom = incomeData?.data?.incomes.map((income) => income.amount);
+  const monthlyExpense = expenseData?.data?.expenses.map(
+    (expense) => expense.amount
+  );
+
+  const maxLength = Math.max(monthlyIncom?.length, monthlyExpense?.length);
+
+  const monthlyProfit = new Array(maxLength).fill(0);
+
+  // Calculate profit for each month
+  for (let i = 0; i < maxLength; i++) {
+    const income = monthlyIncom[i] || 0;
+    const expense = monthlyExpense[i] || 0;
+    monthlyProfit[i] = income - expense;
+  }
+
+  const dynamicData = [];
+  for (let i = 0; i < 5; i++) {
+    dynamicData.push({
+      month: monthNames[i],
+      Earnings: monthlyIncom[i] || 0,
+      Expense: monthlyExpense[i] || 0,
+      Profit: monthlyProfit[i] || 0,
+    });
+  }
 
   return (
     <ResponsiveContainer width="100%" height={450}>
       <BarChart
-        data={data}
+        data={dynamicData}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
         barCategoryGap="15%"
       >

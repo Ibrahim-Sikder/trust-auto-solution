@@ -39,4 +39,4 @@ const salaryApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateSalaryMutation, useGetAllSalaryQuery } = salaryApi;
+export const { useCreateSalaryMutation, useGetAllSalaryQuery, useGetSingleSalaryQuery } = salaryApi;

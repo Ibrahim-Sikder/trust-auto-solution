@@ -15,7 +15,7 @@ import {
   vehicleName,
   vehicleTypes,
 } from "../../../constant";
-import { Autocomplete, Box, Grid } from "@mui/material";
+import { Autocomplete, Box, Button, Grid } from "@mui/material";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import HeaderButton from "../../../components/CommonButton/HeaderButton";
 import { NotificationAdd } from "@mui/icons-material";
@@ -221,6 +221,11 @@ const UpdateCustomer = () => {
     );
     setGetDataWithChassisNo(filtered);
   };
+
+  if (isLoading) {
+    return <p>Loading.....</p>;
+  }
+
 
   return (
     <section>
@@ -464,7 +469,7 @@ const UpdateCustomer = () => {
                           options={cmDmOptions.map((option) => option.label)}
                           renderInput={(params) => (
                             <TextField
-                            fullWidth
+                              fullWidth
                               {...params}
                               label="CarReg no"
                               {...register("carReg_no")}
@@ -481,10 +486,9 @@ const UpdateCustomer = () => {
                         >
                           {(inputProps) => (
                             <TextField
-                            fullWidth
+                              fullWidth
                               {...inputProps}
                               {...register("car_registration_no")}
-                             
                               label="Car R (N)"
                               focused={
                                 getDataWithChassisNo?.car_registration_no || ""
@@ -625,7 +629,13 @@ const UpdateCustomer = () => {
             </div>
 
             <div className="flex justify-end mt-2 ml-3 savebtn">
-              <button disabled={updateLoading}>Update Customer </button>
+              <Button
+                type="submit"
+                sx={{ color: "white" }}
+                disabled={updateLoading}
+              >
+                Update Customer{" "}
+              </Button>
             </div>
           </form>
         </div>
