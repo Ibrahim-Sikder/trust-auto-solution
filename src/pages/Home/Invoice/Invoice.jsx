@@ -1043,7 +1043,12 @@ const Invoice = () => {
               </Button>
 
               <Button>Print </Button>
-              <Button>Download </Button>
+
+              {/* <Button>
+                <a href={`/dashboard/detail`} target="_blank" rel="noreferrer">
+                  Download
+                </a>
+              </Button> */}
               <Button>Money Receipt </Button>
             </div>
             <div className="submitQutationBtn">
@@ -1134,6 +1139,15 @@ const Invoice = () => {
                             >
                               <FaEye className="editIcon" />
                             </div>
+                            {/* <>
+                              <a
+                                href={`http://localhost:5000/api/v1/invoices/invoice/${card._id}`}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Download
+                              </a>
+                            </> */}
                           </td>
                           <td>
                             <div className="editIconWrap edit">
