@@ -68,6 +68,8 @@ const CustomerProfile = () => {
     },
   };
 
+  console.log(profileData)
+
   return (
     <div>
       <div className="w-full md:h-32 mt-5 bg-[#42A1DA] text-white flex items-center">
@@ -131,6 +133,7 @@ const CustomerProfile = () => {
         <TabPanel value={value} index={0}>
           <CustomerAccount profileData={profileData} />
         </TabPanel>
+
         <TabPanel value={value} index={1}>
           <VehicleDetails id={id} />
         </TabPanel>

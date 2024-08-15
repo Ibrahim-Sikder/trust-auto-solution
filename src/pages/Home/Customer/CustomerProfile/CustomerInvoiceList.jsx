@@ -2,15 +2,14 @@
 /* eslint-disable react/prop-types */
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { HiOutlineSearch } from "react-icons/hi";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import swal from "sweetalert";
-import axios from "axios";
-import { toast } from "react-toastify";
+
 import Loading from "../../../../components/Loading/Loading";
 import {
   useDeleteInvoiceMutation,
   useGetAllInvoicesQuery,
+  useGetSingleInvoiceQuery,
 } from "../../../../redux/api/invoice";
 import { Pagination } from "@mui/material";
 const CustomerInvoiceList = ({ id }) => {
@@ -30,12 +29,7 @@ const CustomerInvoiceList = ({ id }) => {
     useDeleteInvoiceMutation();
 
   const { data: allInvoices, isLoading: invoiceLoading } =
-    useGetAllInvoicesQuery({
-      id,
-      limit,
-      page: currentPage,
-      searchTerm: filterType,
-    });
+    useGetSingleInvoiceQuery({ id });
 
   const deletePackage = async (id) => {
     const willDelete = await swal({
@@ -61,6 +55,8 @@ const CustomerInvoiceList = ({ id }) => {
       textInputRef.current.value = "";
     }
   };
+
+  console.log(allInvoices);
 
   return (
     <div className=" mb-24 mt-10 w-full">

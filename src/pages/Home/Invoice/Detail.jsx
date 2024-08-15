@@ -57,6 +57,7 @@ const Detail = () => {
     if (pageNumber !== undefined && pageNumber === 1) {
       return 28;
     }
+    
 
     return Math.floor(availableHeight / itemHeight);
   });
@@ -440,6 +441,7 @@ const Detail = () => {
             )}
           </main>
         ))}
+
       {servicePagesData[0]?.length > 0 &&
         servicePagesData?.map((pageData, pageNumber) => (
           <main ref={targetRef} key={pageNumber} className="invoicePrintWrap">

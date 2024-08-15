@@ -222,8 +222,8 @@ const PdfGenerator = () => {
       </div>
       <div className="moneyReceiptBtnGroup mt-5">
         <button onClick={handlePrint}>Print </button>
+          <button onClick={downloadPdf}> Donwload </button>
         <Link to={`/dashboard/money-receipt-update?id=${id}`}>
-          <button> Donwload </button>
           <button> Edit </button>
         </Link>
       </div>
