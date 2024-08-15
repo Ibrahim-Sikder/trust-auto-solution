@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Box, Grid, TextField } from "@mui/material";
 import {
   carBrands,
   cmDmOptions,
@@ -109,13 +109,13 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
         </h2>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 gap-x-6"></div>
-            <div>
-              <div className="mt-3 mb-3">
-                <div className="flex items-center">
+            <Box>
+              <Grid container spacing={2}>
+                <Grid  item lg={12} md={12} sm={12} xs={12}>
                   <Autocomplete
                     freeSolo
-                    className="jobCardSelect2"
+                  fullWidth
+                  size="small"
                     id="reg"
                     Car
                     Registration
@@ -129,15 +129,11 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
                       />
                     )}
                   />
-                  {/* <TextField
-                  sx={{width:'485px'}}
-                    className=""
-                    on
-                    label="Car R (T&N)"
-                    {...register("car_registration_no")}
-                  /> */}
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
                   <TextField
-                    className="carRegField"
+                fullWidth
+                size="small"
                     label="Car R (N)"
                     {...register("car_registration_no", {
                       pattern: {
@@ -153,153 +149,164 @@ const JobCardForm = ({ onClose, reload, setReload }) => {
                     onChange={handleCarRegistrationChange}
                     error={!!errors.car_registration_no || !!registrationError}
                   />
-                </div>
-              </div>
-              <div>
-                <TextField
-                  className="addJobInputField"
-                  label="Chassis No (T&N)"
-                  {...register("chassis_no")}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="ENGINE NO & CC (T&N) "
-                  {...register("engine_no")}
-                />
-              </div>
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  freeSolo
-                  onInputChange={(event, newValue) => {
-                    handleBrandChange(newValue);
-                  }}
-                  options={carBrands.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Vehicle Brand"
-                      {...register("vehicle_brand")}
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                   fullWidth
+                   size="small"
+                    label="Chassis No (T&N)"
+                    {...register("chassis_no")}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                   fullWidth
+                   size="small"
+                    label="ENGINE NO & CC (T&N) "
+                    {...register("engine_no")}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                  fullWidth
+                  size="small"
+                    freeSolo
+                    onInputChange={(event, newValue) => {
+                      handleBrandChange(newValue);
+                    }}
+                    options={carBrands.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                      fullWidth
+                      size="small"
+                        {...params}
+                        label="Vehicle Brand"
+                        {...register("vehicle_brand")}
+                      />
+                    )}
+                    onChange={handleBrandChange}
+                    value={selectedBrand}
+                    
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                  fullWidth
+                  size="small"
+                    freeSolo
+                    Vehicle
+                    Name
+                    options={filteredVehicles.map((option) => option.value)}
+                    renderInput={(params) => (
+                      <TextField
+                      fullWidth
+                      size="small"
+                        {...params}
+                        label="Vehicle Name "
+                        {...register("vehicle_name")}
+                      />
+                    )}
+                    getOptionLabel={(option) => option || ""}
+                    // disabled={!selectedBrand}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="relative">
+                    <input
+                      value={yearSelectInput}
+                      onInput={handleYearSelectInput}
+                      {...register("vehicle_model")}
+                      type="text"
+                      className="border  border-[#11111194]  w-[100%] h-10 p-3 rounded-md"
+                      placeholder="Vehicle Model"
                     />
-                  )}
-                  onChange={handleBrandChange}
-                  value={selectedBrand}
-                  style={{ marginBottom: 20 }}
-                />
-              </div>
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  freeSolo
-                  Vehicle
-                  Name
-                  options={filteredVehicles.map((option) => option.value)}
-                  renderInput={(params) => (
+                    {yearSelectInput && (
+                      <ul className="options-list">
+                        {filteredOptions.map((option, index) => (
+                          <li
+                            key={index}
+                            onClick={() => handleOptionClick(option)}
+                          >
+                            {option.label}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {errors.vehicle_model && (
+                      <span className="text-sm text-red-400">
+                        {errors.vehicle_model.message}
+                      </span>
+                    )}
+                  </div>
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                  fullWidth
+                  size="small"
+                    freeSolo
+                    Vehicle
+                    Types
+                    options={vehicleTypes.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=" Vehicle Categories "
+                        {...register("vehicle_category")}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <TextField
+                   fullWidth
+                   size="small"
+                    freeSolo
+                    label="Color & Code (T&N) "
+                    {...register("color_code")}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                 
                     <TextField
-                      {...params}
-                      label="Vehicle Name "
-                      {...register("vehicle_name")}
+                     fullWidth
+                     size="small"
+                      label="Mileage (N)"
+                      {...register("mileage", {
+                        pattern: {
+                          value: /^\d+$/,
+                          message: "Please enter a valid number.",
+                        },
+                      })}
                     />
-                  )}
-                  getOptionLabel={(option) => option || ""}
-                  // disabled={!selectedBrand}
-                />
-              </div>
-              <div className="relative mt-3 ">
-                {/* <TextField
-                    className="productField"
-                    label="Vehicle Model (N)"
-                    {...register("vehicle_model", {
-                      pattern: {
-                        value: /^\d+$/,
-                        message: "Please enter a valid model number.",
-                      },
-                    })}
-                  /> */}
-                <input
-                  value={yearSelectInput}
-                  onInput={handleYearSelectInput}
-                  {...register("vehicle_model")}
-                  type="text"
-                  className="border addJobInputField border-[#11111194] mb-5 w-[98%] h-12 p-3 rounded-md"
-                  placeholder="Vehicle Model"
-                />
-                {yearSelectInput && (
-                  <ul className="options-list">
-                    {filteredOptions.map((option, index) => (
-                      <li key={index} onClick={() => handleOptionClick(option)}>
-                        {option.label}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {errors.vehicle_model && (
-                  <span className="text-sm text-red-400">
-                    {errors.vehicle_model.message}
-                  </span>
-                )}
-              </div>
-              <div>
-                <Autocomplete
-                  className="addJobInputField"
-                  freeSolo
-                  Vehicle
-                  Types
-                  options={vehicleTypes.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label=" Vehicle Categories "
-                      {...register("vehicle_category")}
-                    />
-                  )}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  freeSolo
-                  label="Color & Code (T&N) "
-                  {...register("color_code")}
-                />
-              </div>
-              <div className="mt-3">
-                <TextField
-                  className="addJobInputField"
-                  label="Mileage (N)"
-                  {...register("mileage", {
-                    pattern: {
-                      value: /^\d+$/,
-                      message: "Please enter a valid number.",
-                    },
-                  })}
-                />
 
-                {errors.mileage && (
-                  <span className="text-sm text-red-400">
-                    {errors.mileage.message}
-                  </span>
-                )}
-              </div>
-              <div className="mt-3">
-                <Autocomplete
-                  className="addJobInputField"
-                  freeSolo
-                  Fuel
-                  Type
-                  options={fuelType.map((option) => option.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label=" Fuel Type"
-                      {...register("fuel_type")}
-                    />
-                  )}
-                />
-              </div>
-            </div>
+                    {errors.mileage && (
+                      <span className="text-sm text-red-400">
+                        {errors.mileage.message}
+                      </span>
+                    )}
+                 
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Autocomplete
+                   fullWidth
+                   size="small"
+                    freeSolo
+                    Fuel
+                    Type
+                    options={fuelType.map((option) => option.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label=" Fuel Type"
+                        {...register("fuel_type")}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item lg={12} md={12} sm={12} xs={12}></Grid>
+              </Grid>
+            </Box>
+
             <div className="my-2">
               {error && <ErrorMessage messages={error?.data?.errorSources} />}
             </div>

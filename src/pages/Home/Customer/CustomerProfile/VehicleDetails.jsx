@@ -217,6 +217,7 @@ const VehicleDetails = ({ id }) => {
           reload={reload}
         />
       )}
+      
       {vehicleDetails && (
         <VehicleDetailsModal
           handVehicleDetailsOpen={handVehicleDetailsOpen}
