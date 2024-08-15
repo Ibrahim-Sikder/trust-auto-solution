@@ -119,14 +119,7 @@ const AddAttendance = () => {
     new Array(getAllEmployee?.data?.employees?.length).fill(false)
   );
 
-  // const [presentPercentage, setPresentPercentage] = useState(null);
-  // const [presentNumber, setPresentNumber] = useState(null);
-
-  // const [absentPercentage, setAbsentPercentage] = useState(null);
-  // const [absentNumber, setAbsentNumber] = useState(null);
-
-  // const [latePercentage, setLatePercentage] = useState(null);
-  // const [lateNumber, setLateNumber] = useState(null);
+   
 
   const parsedDate = new Date();
   const day = parsedDate.getDate().toString().padStart(2, "0");
@@ -140,96 +133,7 @@ const AddAttendance = () => {
     return dayjs(time).format("h:mmA");
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${import.meta.env.VITE_API_URL}/api/v1/employee`)
-  //     .then((response) => {
-  //       setGetAllEmployee(response.data.employee);
-
-  //       const attendanceData = response.data.employee.map(
-  //         (data) => data.attendance
-  //       );
-  //       const allAttendance = attendanceData.flat();
-  //       const filteredAttendance = allAttendance.filter(
-  //         (attendance) => attendance.date === formattedDate
-  //       );
-  //       const totalEntries = filteredAttendance.length;
-
-  //       const presentEntries = filteredAttendance.filter(
-  //         (attendance) => attendance.present === true
-  //       ).length;
-
-  //       setPresentNumber(presentEntries);
-  //       const presentPercentage = parseFloat(
-  //         (presentEntries / totalEntries) * 100
-  //       ).toFixed(2);
-  //       // If there are no entries for today, set presentPercentage to 0 to avoid NaN
-  //       // const finalPresentPercentage =
-  //       //   totalEntries === 0 ? 0 : presentPercentage;
-  //       const isIntegerPresentPercentage = presentPercentage.endsWith(".00");
-
-  //       // If the decimal part is .00, parse the number to an integer
-  //       const finalPresentPercentage = isIntegerPresentPercentage
-  //         ? parseInt(presentPercentage)
-  //         : presentPercentage;
-  //       if (isNaN(finalPresentPercentage)) {
-  //         setPresentPercentage(0);
-  //       } else {
-  //         setPresentPercentage(finalPresentPercentage);
-  //       }
-
-  //       //  for absent
-
-  //       const absentEntries = filteredAttendance.filter(
-  //         (attendance) => attendance.present === false
-  //       ).length;
-
-  //       setAbsentNumber(absentEntries);
-  //       const absentPercentage = parseFloat(
-  //         (absentEntries / totalEntries) * 100
-  //       ).toFixed(2);
-  //       // If there are no entries for today, set presentPercentage to 0 to avoid NaN
-  //       const isIntegerAbsentPercentage = absentPercentage.endsWith(".00");
-
-  //       // If the decimal part is .00, parse the number to an integer
-  //       const finalAbsentPercentage = isIntegerAbsentPercentage
-  //         ? parseInt(absentPercentage)
-  //         : absentPercentage;
-  //       // const finalAbsentPercentage = totalEntries === 0 ? 0 : absentPercentage;
-  //       if (isNaN(finalAbsentPercentage)) {
-  //         setAbsentPercentage(0);
-  //       } else {
-  //         setAbsentPercentage(finalAbsentPercentage);
-  //       }
-
-  //       // for late status
-  //       const lateEntries = filteredAttendance.filter(
-  //         (attendance) => attendance.late_status === true
-  //       ).length;
-
-  //       setLateNumber(lateEntries);
-  //       const latePercentage = parseFloat(
-  //         (lateEntries / totalEntries) * 100
-  //       ).toFixed(2);
-  //       // If there are no entries for today, set presentPercentage to 0 to avoid NaN
-  //       const isIntegerPercentage = latePercentage.endsWith(".00");
-
-  //       // If the decimal part is .00, parse the number to an integer
-  //       const finalLatePercentage = isIntegerPercentage
-  //         ? parseInt(latePercentage)
-  //         : latePercentage;
-  //       // const finalLatePercentage = totalEntries === 0 ? 0 : latePercentage;
-  //       if (isNaN(finalLatePercentage)) {
-  //         setLatePercentage(0);
-  //       } else {
-  //         setLatePercentage(finalLatePercentage);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setError(error.message);
-  //     });
-  // }, [formattedDate, reload]);
-
+  
   const handlePresent = (index) => {
     const newPresentState = [...presentState];
     const newAbsentState = [...absentState];

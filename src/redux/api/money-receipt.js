@@ -11,12 +11,12 @@ const moneyReceiptApi = baseApi.injectEndpoints({
       invalidatesTags: ["moneyReceipt"],
     }),
     getAllMoneyReceipts: builder.query({
-      query: ({ limit, page, searchTerm }) => ({
+      query: ({ id, limit, page, searchTerm }) => ({
         url: `/money-receipts`,
         method: "GET",
-        params: { limit, page, searchTerm },
+        params: { id, limit, page, searchTerm },
       }),
-      providesTags: ["moneyReceipt" ],
+      providesTags: ["moneyReceipt"],
     }),
 
     getSingleMoneyReceipt: builder.query({

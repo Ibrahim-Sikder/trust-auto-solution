@@ -42,14 +42,11 @@ export const allMonths = [
 const AddAttendance = () => {
   // const [getAllEmployee, setGetAllEmployee] = useState([]);
 
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
+  // const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
   const [selectedMonth, setSelectedMonth] = useState("");
 
   const handleMonthChange = (event) => {
     setSelectedMonth(event.target.value);
-  };
-  const handleChange = (value) => {
-    setSelectedOption(value);
   };
 
   const [filterType, setFilterType] = useState(initialSelectedOption);
@@ -65,7 +62,7 @@ const AddAttendance = () => {
   const {
     data: getAllSalary,
     isLoading: salaryLoading,
-    error: salaryError,
+
     refetch,
   } = useGetAllSalaryQuery({
     searchTerm: filterType.value,
@@ -74,10 +71,8 @@ const AddAttendance = () => {
   const [createSalary, { isLoading: createLoading, error: createError }] =
     useCreateSalaryMutation();
 
-  const [salaryMonth, setSalaryMonth] = useState(
-    new Array(getAllEmployee?.data?.employees?.length).fill(
-      initialSelectedOption
-    )
+  const [selectedOption, setSelectedOption] = useState(
+    new Array(getAllEmployee?.data?.employees?.length).fill(null)
   );
   const [bonus, setBonus] = useState(
     new Array(getAllEmployee?.data?.employees?.length).fill(null)
@@ -113,7 +108,12 @@ const AddAttendance = () => {
   const currentDate = new Date();
   const currentMonth = currentDate.toLocaleString("default", { month: "long" });
 
- 
+  const handleChange = (index, value) => {
+    const newMonth = [...selectedOption];
+    newMonth[index] = value;
+
+    setSelectedOption(newMonth);
+  };
 
   const handleBonus = (index, value) => {
     const newBonus = [...bonus];
@@ -173,7 +173,7 @@ const AddAttendance = () => {
           employee: employee._id,
           full_name: employee.full_name,
           employeeId: employee.employeeId,
-          month_of_salary: selectedOption.value,
+          month_of_salary: selectedOption[index],
           bonus: bonus[index],
           overtime_amount: overtimeAmount[index],
           salary_amount: salaryAmount[index],
@@ -203,9 +203,7 @@ const AddAttendance = () => {
     return <Loading />;
   }
 
-  // if (salaryError) {
-  //   toast.error(salaryError?.data?.message);
-  // }
+  // console.log(selectedOption);
 
   return (
     <>
@@ -279,7 +277,9 @@ const AddAttendance = () => {
                             fullWidth
                             id="grouped-native-select"
                             label="Select Month"
-                            onChange={handleChange}
+                            onChange={(e) =>
+                              handleChange(index, e.target.value)
+                            }
                           >
                             {allMonths.map((month) => (
                               <MenuItem value={month} key={month}>
